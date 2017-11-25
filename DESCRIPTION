@@ -1,11 +1,22 @@
-Package: blorr
 Type: Package
-Title: Tools for Learning Binary Logistic Regression 
+Package: blorr
+Title: Tools for Building Binary Logistic Regression Models
 Version: 0.1.0
-Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
-Description: Tools for teaching and learning binary logistic regression.
+Authors@R: c(
+    person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre")),
+    person("Rsquared", "Academy", role = c("cph", "fnd"))
+    )
+Description: Tools for building binary logistic regression models. Includes 
+    comprehensive regression output, variable selection procedure and model
+    validation statistics.
 License: MIT + file LICENSE
-URL: https://github.com/rsquaredacademy/blorr
+URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
+Imports: 
+    rlang (>= 0.1.2)
+Suggests: 
+    covr (>= 3.0.0)
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
