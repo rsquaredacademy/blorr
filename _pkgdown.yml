@@ -1,0 +1,26 @@
+templates:
+  params:
+    bootswatch: cosmo
+
+navbar:
+  title: "blorr"
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.html
+
+  right:
+   - icon: fa-github
+     href: https://github.com/rsquaredacademy/blorr
+
+
+home:
+  links:
+  - text: Learn more
+    href: http://www.rsquaredacademy.com
+  - text: Shiny App
+    href: http://rsquaredlabs.com:3838/explorer/
+  - text: Docker Image
+    href: https://hub.docker.com/r/rsquaredacademy/olsrr/
+
+
