@@ -1,18 +1,21 @@
-# import data
-library(readr)
-chd <- readr::read_csv("chd.csv")
-head(chd)
-
-# convert chd to type factor
-chd$chd <- factor(chd$chd, levels = c("0", "1"))
-
+#' @importFrom stats as.formula glm qnorm
+#' @importFrom magrittr %>%
+#' @importFrom dplyr select
+#' @title Logit
+#' @description Logit
+#' @param data a data.frame
+#' @param predictors a character vector
+#' @param response response variable
+#' @param conf confidence interval
+#' @return a data.frame
+#' @export
 logi <- function(data, predictors, response, conf = 0.95) {
 
   # generate regression function
   reg_func <- as.formula(paste(response, "~", paste(predictors,
                                                     collapse= " + ")))
   predictor <- data %>%
-    select_(predictors)
+    select(predictors)
 
   # regression model
   model <- glm(formula =  reg_func, data = data, family = binomial)
@@ -36,6 +39,13 @@ logi <- function(data, predictors, response, conf = 0.95) {
 }
 
 # test
+# import data
+library(readr)
+chd <- readr::read_csv("chd.csv")
+head(chd)
+
+# convert chd to type factor
+chd$chd <- factor(chd$chd, levels = c("0", "1"))
 logi(chd, "age", "chd")
 
 

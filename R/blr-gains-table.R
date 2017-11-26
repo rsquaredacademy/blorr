@@ -1,7 +1,8 @@
-# packages
-library(dplyr)
-
-# gains table
+#' @title Gains Table & Lift Curve
+#' @description Gains table and lift curve
+#' @param a data.frame with response variable and probability
+#' @return a data.frame
+#' @export
 gainsTable <- function(dataframe) {
     # sort the table in descending order by prob column
     custom <- dataframe[order(-prob), ]
@@ -53,6 +54,8 @@ gainsTable <- function(dataframe) {
     return(lift)
 }
 
+# packages
+library(dplyr)
 
 # create test data
 x <- 0:1

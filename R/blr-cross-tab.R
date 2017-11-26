@@ -1,3 +1,11 @@
+#' @title Weight of Evidence & Information Value
+#' @description Weight of evidence and information value
+#' @param dframe a data.frame
+#' @param var_col predictor
+#' @param response_col response variable
+#' @return a data.frame
+#' @export
+#'
 crossTab <- function(dframe, var_col, response_col) {
 
   dat <- dframe[, c(var_col, response_col)]
@@ -19,5 +27,6 @@ crossTab <- function(dframe, var_col, response_col) {
 
 }
 
+# test
 chd <- readr::read_csv('chd.csv')
 crossTab(chd, 'age', 'chd')

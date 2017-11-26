@@ -1,26 +1,11 @@
-library(readr)
-library(dplyr)
-
-# import data
-chd <- readr::read_csv("chd.csv")
-
-
-# convert chd to type factor
-chd$chd <- factor(chd$chd, levels = c("0", "1"))
-
-# create dummy variables
-chd1 <-  chd %>%
-  mutate(age1 = ifelse(age >= 20 & age <= 29, 1, 0),
-         age2 = ifelse(age >= 30 & age <= 34, 1, 0),
-         age3 = ifelse(age >= 35 & age <= 39, 1, 0),
-         age4 = ifelse(age >= 40 & age <= 44, 1, 0),
-         age5 = ifelse(age >= 45 & age <= 49, 1, 0),
-         age6 = ifelse(age >= 50 & age <= 54, 1, 0),
-         age7 = ifelse(age >= 55 & age <= 59, 1, 0),
-         age8 = ifelse(age >= 60 & age <= 69, 1, 0)
-  )
-
-# function
+#' @title Log Frequency
+#' @description Mean response for each bin
+#' @param data a data.frame
+#' @param rcol response variable
+#' @param ndummy number of dummy variables
+#' @return a data.frame
+#' @export
+#'
 freq_log <- function(data, rcol, ndummy) {
   n <- ndummy
   hesru <- names(data)[-rcol]
@@ -45,6 +30,27 @@ freq_log <- function(data, rcol, ndummy) {
 }
 
 # example
+library(readr)
+library(dplyr)
+
+# import data
+chd <- readr::read_csv("chd.csv")
+
+
+# convert chd to type factor
+chd$chd <- factor(chd$chd, levels = c("0", "1"))
+
+# create dummy variables
+chd1 <-  chd %>%
+  mutate(age1 = ifelse(age >= 20 & age <= 29, 1, 0),
+         age2 = ifelse(age >= 30 & age <= 34, 1, 0),
+         age3 = ifelse(age >= 35 & age <= 39, 1, 0),
+         age4 = ifelse(age >= 40 & age <= 44, 1, 0),
+         age5 = ifelse(age >= 45 & age <= 49, 1, 0),
+         age6 = ifelse(age >= 50 & age <= 54, 1, 0),
+         age7 = ifelse(age >= 55 & age <= 59, 1, 0),
+         age8 = ifelse(age >= 60 & age <= 69, 1, 0)
+  )
 data <- chd1
 rcol <- 1
 ft <- freq_log(chd1[, c(3:11)], 1, 8)
