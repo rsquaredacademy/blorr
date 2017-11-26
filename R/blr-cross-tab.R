@@ -6,7 +6,7 @@
 #' @return a data.frame
 #' @export
 #'
-crossTab <- function(dframe, var_col, response_col) {
+blr_cross_tab <- function(dframe, var_col, response_col) {
 
   dat <- dframe[, c(var_col, response_col)]
   f <- table(dat)
@@ -29,4 +29,4 @@ crossTab <- function(dframe, var_col, response_col) {
 
 # test
 chd <- readr::read_csv('chd.csv')
-crossTab(chd, 'age', 'chd')
+blr_cross_tab(chd, 'age', 'chd')

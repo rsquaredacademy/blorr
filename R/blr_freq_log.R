@@ -6,7 +6,7 @@
 #' @return a data.frame
 #' @export
 #'
-freq_log <- function(data, rcol, ndummy) {
+blr_freq_log <- function(data, rcol, ndummy) {
   n <- ndummy
   hesru <- names(data)[-rcol]
   response <- data[[rcol]]
@@ -53,6 +53,6 @@ chd1 <-  chd %>%
   )
 data <- chd1
 rcol <- 1
-ft <- freq_log(chd1[, c(3:11)], 1, 8)
+ft <- blr_freq_log(chd1[, c(3:11)], 1, 8)
 plot(ft$Mean, xaxt = "n")
 axis(side = 1, labels = ft$Group, at = seq_len(8))

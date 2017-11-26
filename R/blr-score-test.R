@@ -6,7 +6,7 @@
 #' @return list with score test and probability
 #' @export
 #'
-scoretest <- function(x, y) {
+blr_score_test <- function(x, y) {
 
   # table of factor variable
   ta <- table(y)
@@ -38,5 +38,5 @@ chd <- readr::read_csv("chd.csv")
 # convert chd to type factor
 chd$chd <- factor(chd$chd, levels = c("0", "1"))
 
-st <- scoretest(chd$age, chd$chd)
+st <- blr_score_test(chd$age, chd$chd)
 

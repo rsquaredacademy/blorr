@@ -9,7 +9,7 @@
 #' @param conf confidence interval
 #' @return a data.frame
 #' @export
-logi <- function(data, predictors, response, conf = 0.95) {
+blr_logi <- function(data, predictors, response, conf = 0.95) {
 
   # generate regression function
   reg_func <- as.formula(paste(response, "~", paste(predictors,
@@ -46,7 +46,7 @@ head(chd)
 
 # convert chd to type factor
 chd$chd <- factor(chd$chd, levels = c("0", "1"))
-logi(chd, "age", "chd")
+blr_logi(chd, "age", "chd")
 
 
 

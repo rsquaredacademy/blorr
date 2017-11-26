@@ -3,7 +3,7 @@
 #' @param a data.frame with response variable and probability
 #' @return a data.frame
 #' @export
-gainsTable <- function(dataframe) {
+blr_gains_table <- function(dataframe) {
     # sort the table in descending order by prob column
     custom <- dataframe[order(-prob), ]
     # number of columns
@@ -66,7 +66,7 @@ prob <- sample(y1, size = 2600, replace = TRUE)
 customer <- data.frame(purchase, prob)
 
 # result
-output <- gainsTable(customer)
+output <- blr_gains_table(customer)
 
 # testing
 a <- sum(customer$purchase)
