@@ -1,12 +1,9 @@
 Type: Package
 Package: blorr
-Title: Tools for Building Binary Logistic Regression Models
+Title: Tools for Developing Binary Logistic Regression Models
 Version: 0.1.0
-Authors@R: c(
-    person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre")),
-    person("Rsquared", "Academy", role = c("cph", "fnd"))
-    )
-Description: Tools for building binary logistic regression models. Includes 
+Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
+Description: Tools for developing binary logistic regression models. Includes 
     comprehensive regression output, variable selection procedure and model
     validation statistics.
 License: MIT + file LICENSE
