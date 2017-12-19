@@ -1,128 +1,95 @@
-# libraries ------------------------
-library(dplyr)
-library(aod)
-library(car)
-library(lmtest)
-library(magrittr)
-library(forcats)
-library(ResourceSelection)
+#' @importFrom magrittr %>% %<>% use_series extract2
+#' @importFrom dplyr mutate if_else pull
+#' @importFrom rlang sym eval_tidy !!
+#' @importFrom glue glue
+response_var <- function(model) {
 
-# load data ------------------------
-hsb <- descriptr::hsb
+  model %>%
+    use_series(terms) %>%
+    extract2(2)
 
-# create honcomp variable ----------
-hsb %<>%
-  mutate(honcomp = if_else(write >= 60, 1, 0))
+}
 
-# regression -----------------------
-model <- glm(honcomp ~ female + read + science, data = hsb,
-             family = binomial(link = 'logit'))
+# name of the data set
+data_name <- function(model) {
 
-# number of iterations
-model %>%
-  use_series(iter)
+  model %>%
+    use_series(call) %>%
+    extract2(4)
 
-# response variable levels ---------
-model %>%
-  model.frame() %>%
-  model.response %>%
-  unique()
-
-
-# response variable name -----------
-var_name <- model %>%
-  model.frame() %>%
-  names() %>%
-  extract(1)
+}
 
 # number of observations
-model %>%
-  use_series(data) %>%
-  nrow
+data_nrows <- function(model) {
+
+  model %>%
+    use_series(data) %>%
+    nrow
+
+}
+
+# model convergence status
+converge_status <- function(model) {
+
+  model %>%
+    use_series(converged)
+
+}
+
+# residual degrees of freedom
+residual_df <- function(model) {
+
+  model %>%
+    use_series(df.residual)
+
+}
+
+# model degrees of freedom
+model_df <- function(model) {
+
+  model %>%
+    use_series(df.null)
+
+}
+
+# log likelihood
+model_loglik <- function(model) {
+
+  model %>%
+    use_series(deviance)
+
+}
+
+# null likelihood
+null_ll <- function(model) {
+
+  dep <- response_var(model)
+
+  dat <- model %>%
+    use_series(call) %>%
+    use_series(data) %>%
+    eval_tidy()
+
+  glm(glue(dep, ' ~ 1'), data = dat,
+      family = binomial(link = 'logit')) %>%
+    logLik %>%
+    extract2(1)
+
+}
 
 # response profile
-model %>%
-  use_series(model) %>%
-  select(var_name) %>%
-  table
+resp_profile <- function(model) {
 
-# model fit statistics
-# AIC
-model %>% AIC()
-model %>% BIC()
-model %>%
-  logLik() %>%
-  multiply_by(-2)
+  resp <- model %>%
+    response_var
 
-# odds ratio effects
-model %>%
-  coef %>%
-  names %>%
-  extract(-1)
+  model %>%
+    use_series(data) %>%
+    pull(!!resp) %>%
+    as.factor %>%
+    table
 
-# odds ratio point estimates
-model %>%
-  coef %>%
-  exp %>%
-  extract(-1)
-
-# odds ratio confidence intervals
-model %>%
-  confint %>%
-  as_tibble %>%
-  slice(2:n()) %>%
-  exp
+}
 
 
-# goodness of fit tests
-# hosmer lemeshow test
-hoslem.test(model$y, fitted(model))
-
-# pearson chi square statistics
-sum(residuals(model, type = "pearson")^2)
-model %>%
-  residuals(type = "pearson") %>%
-  raise_to_power(2) %>%
-  sum
-
-# wald test
-wald.test(b = coef(model), Sigma = vcov(model), Terms = 2:4)
-Anova(model, type = 'II', test = 'Wald')
-
-# score test
-
-# confidence intervals
-model %>%
-  confint()
-
-# anova
-anova(model, test = "Chisq")
-
-# fitted values
-fitt <- predict.glm(model, newdata = hsb, type = "response", se.fit = T)
-fitt
-
-# likelihood ratio test
-library(lmtest)
-model0 <- glm(honcomp ~ 1, data = hsb, family = binomial(link = "logit"))
-lrtest(model, model0)
-
-# likelihood ration test using anova
-anova(model, model0, test = "Chisq")
-
-# confidence interval estimation
-confint(model)
-predict.glm(model, newdata = chd, type = "terms", se.fit = T)
-predict.glm(model, newdata = chd, type = "response", se.fit = T)
-
-# variance covariance matrix
-vcov(model)
-
-# percent concordant
-# percent discordant
-# percent tied
-# percent pairs
-# somers' D
-# Gamma
-# tau-a
-# c
+#
