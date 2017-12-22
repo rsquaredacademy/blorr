@@ -1,7 +1,9 @@
-#' @importFrom magrittr %>% %<>% use_series extract2
-#' @importFrom dplyr mutate if_else pull
+#' @importFrom magrittr %>% %<>% use_series extract2 extract
+#' @importFrom dplyr mutate if_else pull slice
+#' @importFrom tibble tibble as_tibble
 #' @importFrom rlang sym eval_tidy !!
 #' @importFrom glue glue
+#' @importFrom stats coef confint
 response_var <- function(model) {
 
   model %>%
@@ -92,4 +94,91 @@ resp_profile <- function(model) {
 }
 
 
-#
+# analysis of maximum likelihood estimates
+predictor_names <- function(model) {
+
+  model %>%
+    use_series(coefficients) %>%
+    names
+
+}
+
+# model df
+predictor_df <- function(model) {
+
+  model %>%
+    use_series(rank) %>%
+    rep_len(x = 1)
+
+}
+
+# model estimate
+predictor_est <- function(model) {
+
+  model %>%
+    use_series(coefficients) %>%
+    unname
+
+}
+
+# extract columns from model summary
+predictor_mine <- function(model, col_name = NULL) {
+
+  model %>%
+    summary %>%
+    use_series(coefficients) %>%
+    extract(, col_name) %>%
+    unname
+
+}
+
+# standard error
+predictor_se <- function(model) {
+  predictor_mine(model, 'Std. Error')
+}
+
+# z value
+predictor_zval <- function(model) {
+  predictor_mine(model, 'z value')
+}
+
+# p values
+predictor_pval <- function(model) {
+  predictor_mine(model, 'Pr(>|z|)')
+}
+
+# odds ratio estimate
+# odds ratio effects
+odds_effect <- function(model) {
+
+  model %>%
+    coef %>%
+    names %>%
+    extract(-1)
+
+}
+
+# odds ratio point estimates
+odds_point <- function(model) {
+
+  model %>%
+    coef %>%
+    exp %>%
+    extract(-1) %>%
+    unname
+
+}
+
+# odds ratio confidence intervals
+odds_conf_limit <- function(model) {
+
+  model %>%
+    confint %>%
+    as_tibble %>%
+    slice(2:n()) %>%
+    exp
+
+}
+
+
+
