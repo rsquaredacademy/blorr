@@ -1,7 +1,7 @@
 Type: Package
 Package: blorr
 Title: Tools for Developing Binary Logistic Regression Models
-Version: 0.1.0
+Version: 0.0.9
 Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
 Description: Tools for developing and monitoring binary logistic regression 
     models. Includes comprehensive regression output, variable selection 
@@ -14,7 +14,9 @@ Imports:
     dplyr,
     glue,
     magrittr,
-    rlang
+    rlang,
+    stats,
+    tibble
 Suggests: 
     covr,
     testthat
