@@ -20,23 +20,18 @@ Performs the likelihood ratio test for full and reduced model.
 }
 \examples{
 # compare full model with intercept only model
-hsb <- descriptr::hsb
-
-create honcomp variable
-hsb \%<>\%
- mutate(honcomp = if_else(write >= 60, 1, 0))
-
-regression
-model_1 <- glm(honcomp ~ female + read + science, data = hsb,
+# full model
+model_1 <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
-blr_ls_test(model_1)
+blr_lr_test(model_1)
 
 # compare full model with nested model
-model_2 <- glm(honcomp ~ female + read, data = hsb,
+# nested model
+model_2 <- glm(honcomp ~ female + read, data = hsb2,
             family = binomial(link = 'logit'))
 
-blr_ls_test(model_1, model_2)
+blr_lr_test(model_1, model_2)
 }
 \seealso{
 \code{\link[lmtest]{lrtest}}
