@@ -59,3 +59,12 @@ test_that('output from mcfadden_rsq is as expected', {
   expect_equal(actual, expected)
 
 })
+
+test_that('output from mcfadden_adj_rsq is as expected', {
+
+  actual <- mcfadden_adj_rsq(model) %>%
+    round(4)
+  expected <- 0.2726
+  expect_equal(actual, expected)
+
+})

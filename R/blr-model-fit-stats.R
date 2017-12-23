@@ -55,13 +55,43 @@ model_bic <- function(model) {
 mcfadden_rsq <- function(model) {
 
   f_model_ll <- model %>%
-    extract_ll
+    model_ll
 
   i_model_ll <- model %>%
-    extract_ll(n = 2)
+    i_model %>%
+    model_ll
 
   1 %>%
     subtract(f_model_ll %>%
+               divide_by(i_model_ll))
+
+}
+
+#' @title McFadden's Adjusted R2
+#' @description McFadden's adjusted pseudo r-squared for the model.
+#' @param model an object of class \code{glm}
+#' @return McFadden's adjusted r-squared
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'             family = binomial(link = 'logit'))
+#'
+#' mcfadden_adj_rsq(model)
+#' @export
+#'
+mcfadden_adj_rsq <- function(model) {
+
+  f_model_ll <- model %>%
+    model_ll
+
+  i_model_ll <- model %>%
+    i_model %>%
+    model_ll
+
+  k <- model %>%
+    model_d_f
+
+  1 %>%
+    subtract((f_model_ll - k) %>%
                divide_by(i_model_ll))
 
 }

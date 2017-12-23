@@ -208,3 +208,12 @@ extract_ll <- function(model, n = 1) {
     extract(n)
 
 }
+
+# log likelihood
+model_ll <- function(model) {
+
+  model %>%
+    logLik %>%
+    extract(1)
+
+}
