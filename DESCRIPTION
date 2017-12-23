@@ -16,9 +16,11 @@ Imports:
     magrittr,
     rlang,
     stats,
-    tibble
+    tibble,
+    crayon
 Suggests: 
     covr,
+    knitr,
     testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
