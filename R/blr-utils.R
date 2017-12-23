@@ -3,7 +3,8 @@
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang sym eval_tidy !!
 #' @importFrom glue glue
-#' @importFrom stats coef confint
+#' @importFrom stats coef confint binomial df.residual glm terms
+#' @importFrom utils data
 response_var <- function(model) {
 
   model %>%
@@ -195,5 +196,15 @@ model_d_f <- function(model) {
   model %>%
     use_series(coefficients) %>%
     length
+
+}
+
+# extract log likelihood from blr_lr_test
+extract_ll <- function(model, n = 1) {
+
+  blr_lr_test(model) %>%
+    use_series(model_info) %>%
+    pull(log_lik) %>%
+    extract(n)
 
 }
