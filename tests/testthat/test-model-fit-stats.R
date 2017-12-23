@@ -1,13 +1,7 @@
 context("test-model-fit-stats.R")
 
-hsb <- descriptr::hsb
-
-# create honcomp variable
-hsb %<>%
-  mutate(honcomp = if_else(write >= 60, 1, 0))
-
 # regression
-model <- glm(honcomp ~ female + read + science, data = hsb,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 
 test_that('model_deviance returns deviance', {
