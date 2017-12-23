@@ -58,26 +58,6 @@ test_that('model_df returns the model degrees of freedom', {
 
 })
 
-test_that('model_loglik returns log likelihood', {
-
-  actual <- model_loglik(model) %>%
-    round(4)
-  expected <- 160.2364
-  expect_equal(actual, expected)
-
-})
-
-test_that('null returns null log likelihood', {
-
-  model <- glm(vs ~ cyl + disp + hp, data = mtcars,
-               family = binomial(link = 'logit'))
-  actual <- null_ll(model) %>%
-    round(3)
-  expected <- -21.93
-  expect_equal(actual, expected)
-
-})
-
 test_that('output from resp_profile is as expected', {
 
   actual <- resp_profile(model) %>%

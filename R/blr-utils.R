@@ -54,31 +54,6 @@ model_df <- function(model) {
 
 }
 
-# log likelihood
-model_loglik <- function(model) {
-
-  model %>%
-    use_series(deviance)
-
-}
-
-# null likelihood
-null_ll <- function(model) {
-
-  dep <- response_var(model)
-
-  dat <- model %>%
-    use_series(call) %>%
-    use_series(data) %>%
-    eval_tidy()
-
-  glm(glue(dep, ' ~ 1'), data = dat,
-      family = binomial(link = 'logit')) %>%
-    logLik %>%
-    extract2(1)
-
-}
-
 # response profile
 resp_profile <- function(model) {
 
@@ -180,5 +155,45 @@ odds_conf_limit <- function(model) {
 
 }
 
+# -2 log likelihood
+mll <- function(model) {
 
+  model %>%
+    logLik %>%
+    extract(1) %>%
+    multiply_by(-2)
 
+}
+
+# model class
+model_class <- function(model) {
+
+  model %>%
+    class %>%
+    extract(1)
+
+}
+
+# create intercept only model
+i_model <- function(model) {
+
+  dep <- response_var(model)
+
+  dat <- model %>%
+    use_series(call) %>%
+    use_series(data) %>%
+    eval_tidy()
+
+  glm(glue(dep, ' ~ 1'), data = dat,
+      family = binomial(link = 'logit'))
+
+}
+
+# model dfs
+model_d_f <- function(model) {
+
+  model %>%
+    use_series(coefficients) %>%
+    length
+
+}
