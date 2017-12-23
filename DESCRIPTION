@@ -6,9 +6,8 @@ Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", rol
 Description: Tools for developing and monitoring binary logistic regression 
     models. Includes comprehensive regression output, variable selection 
     procedure and model validation statistics.
-License: MIT + file LICENSE
-URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
-BugReports: https://github.com/rsquaredacademy/blorr/issues
+Depends:
+    R(>= 3.2.4)
 Imports: 
     descriptr,
     dplyr,
@@ -17,11 +16,15 @@ Imports:
     rlang,
     stats,
     tibble,
-    crayon
+    crayon,
+    utils
 Suggests: 
     covr,
     knitr,
     testthat
+License: MIT + file LICENSE
+URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
+BugReports: https://github.com/rsquaredacademy/blorr/issues
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
