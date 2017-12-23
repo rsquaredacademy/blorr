@@ -143,3 +143,36 @@ test_that('output from odds_point is as expected', {
 #
 # })
 
+test_that('output from mll is as expected', {
+
+  actual <- mll(model) %>%
+    round(4)
+  expected <- 160.2364
+  expect_equivalent(actual, expected)
+
+})
+
+test_that('output from model_class is as expected', {
+
+  actual <- model_class(model)
+  expected <- "glm"
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from model_d_f is as expected', {
+
+  actual <- model_d_f(model)
+  expected <- 4
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from extract_ll is as expected', {
+
+  actual <- extract_ll(model)%>%
+    round(4)
+  expected <- 160.2364
+  expect_equivalent(actual, expected)
+
+})
