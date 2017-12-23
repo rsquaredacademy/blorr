@@ -1,4 +1,5 @@
-#' @importFrom stats AIC BIC logLik
+#' @importFrom stats AIC BIC logLik deviance
+#' @importFrom magrittr divide_by
 model_deviance <- function(model) {
 
   model %>%
@@ -40,4 +41,17 @@ model_bic <- function(model) {
 
 }
 
+# mcfadden's R2
+mcfadden_rsq <- function(model) {
 
+  f_model_ll <- model %>%
+    extract_ll
+
+  i_model_ll <- model %>%
+    extract_ll(n = 2)
+
+  1 %>%
+    subtract(f_model_ll %>%
+               divide_by(i_model_ll))
+
+}
