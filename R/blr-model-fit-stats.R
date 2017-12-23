@@ -41,7 +41,17 @@ model_bic <- function(model) {
 
 }
 
-# mcfadden's R2
+#' @title McFadden's R2
+#' @description McFadden's pseudo r-squared for the model.
+#' @param model an object of class \code{glm}
+#' @return McFadden's r-squared
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'             family = binomial(link = 'logit'))
+#'
+#' mcfadden_rsq(model)
+#' @export
+#'
 mcfadden_rsq <- function(model) {
 
   f_model_ll <- model %>%
