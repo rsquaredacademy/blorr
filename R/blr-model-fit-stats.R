@@ -137,6 +137,42 @@ blr_cox_snell_rsq <- function(model) {
 }
 
 
+#' @title Cragg-Uhler (Nagelkerke) R2
+#' @description Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+#' @param model an object of class \code{glm}
+#' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'             family = binomial(link = 'logit'))
+#'
+#' blr_nagelkerke_rsq(model)
+#' @export
+#'
+blr_nagelkerke_rsq <- function(model) {
+
+  cox_snell <- blr_cox_snell_rsq(model)
+
+  i_model_ll <- model %>%
+    i_model %>%
+    model_ll %>%
+    exp
+
+  n <- model %>%
+    use_series(data) %>%
+    nrow
+
+  pow <- 2 %>%
+    divide_by(n)
+
+  den <- 1 %>%
+    subtract(i_model_ll %>%
+    raise_to_power(pow))
+
+  cox_snell %>%
+    divide_by(den)
+
+}
+
 
 
 

@@ -77,3 +77,13 @@ test_that('output from blr_cox_snell_rsq is as expected', {
   expect_equal(actual, expected)
 
 })
+
+
+test_that('output from blr_nagelkerke_rsq is as expected', {
+
+  actual <- blr_nagelkerke_rsq(model) %>%
+    round(4)
+  expected <- 0.4363
+  expect_equal(actual, expected)
+
+})
