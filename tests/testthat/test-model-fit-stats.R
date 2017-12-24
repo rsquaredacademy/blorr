@@ -51,20 +51,29 @@ test_that('output from model_bic is as expected', {
 
 })
 
-test_that('output from mcfadden_rsq is as expected', {
+test_that('output from blr_mcfadden_rsq is as expected', {
 
-  actual <- mcfadden_rsq(model) %>%
+  actual <- blr_mcfadden_rsq(model) %>%
     round(4)
   expected <- 0.3072
   expect_equal(actual, expected)
 
 })
 
-test_that('output from mcfadden_adj_rsq is as expected', {
+test_that('output from blr_mcfadden_adj_rsq is as expected', {
 
-  actual <- mcfadden_adj_rsq(model) %>%
+  actual <- blr_mcfadden_adj_rsq(model) %>%
     round(4)
   expected <- 0.2726
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from blr_cox_snell_rsq is as expected', {
+
+  actual <- blr_cox_snell_rsq(model) %>%
+    round(4)
+  expected <- 0.299
   expect_equal(actual, expected)
 
 })

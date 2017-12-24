@@ -1,5 +1,5 @@
 #' @importFrom stats AIC BIC logLik deviance
-#' @importFrom magrittr divide_by
+#' @importFrom magrittr divide_by raise_to_power
 model_deviance <- function(model) {
 
   model %>%
@@ -49,10 +49,10 @@ model_bic <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' mcfadden_rsq(model)
+#' blr_mcfadden_rsq(model)
 #' @export
 #'
-mcfadden_rsq <- function(model) {
+blr_mcfadden_rsq <- function(model) {
 
   f_model_ll <- model %>%
     model_ll
@@ -75,10 +75,10 @@ mcfadden_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' mcfadden_adj_rsq(model)
+#' blr_mcfadden_adj_rsq(model)
 #' @export
 #'
-mcfadden_adj_rsq <- function(model) {
+blr_mcfadden_adj_rsq <- function(model) {
 
   f_model_ll <- model %>%
     model_ll
@@ -95,3 +95,50 @@ mcfadden_adj_rsq <- function(model) {
                divide_by(i_model_ll))
 
 }
+
+#' @title Cox Snell R2
+#' @description Cox Snell pseudo r-squared
+#' @param model an object of class \code{glm}
+#' @return Cox Snell pseudo r-squared
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'             family = binomial(link = 'logit'))
+#'
+#' blr_cox_snell_rsq(model)
+#' @export
+#'
+blr_cox_snell_rsq <- function(model) {
+
+  f_model_ll <- model %>%
+    model_ll %>%
+    exp
+
+  i_model_ll <- model %>%
+    i_model %>%
+    model_ll %>%
+    exp
+
+  n <- model %>%
+    use_series(data) %>%
+    nrow
+
+  ratio <- i_model_ll %>%
+    divide_by(f_model_ll)
+
+  pow <- 2 %>%
+    divide_by(n)
+
+  ratio_pow <- ratio %>%
+    raise_to_power(pow)
+
+  1 %>%
+    subtract(ratio_pow)
+
+}
+
+
+
+
+
+
+
