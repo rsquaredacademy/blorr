@@ -4,7 +4,7 @@
 \alias{blr_woe_iv}
 \title{Weight of Evidence & Information Value}
 \usage{
-blr_woe_iv(data, predictor, response)
+blr_woe_iv(data, predictor, response, digits = 2)
 }
 \arguments{
 \item{data}{a tibble}
@@ -12,10 +12,15 @@ blr_woe_iv(data, predictor, response)
 \item{predictor}{name of the predictor}
 
 \item{response}{name of the response variable}
+
+\item{digits}{number of decimal digits to round off}
 }
 \value{
 a tibble
 }
 \description{
 Weight of evidence and information value
+}
+\examples{
+blr_woe_iv(hsb2, female, honcomp)
 }

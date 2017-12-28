@@ -6,6 +6,7 @@
 #' @param data a tibble
 #' @param predictor name of the predictor
 #' @param response name of the response variable
+#' @param digits number of decimal digits to round off
 #' @return a tibble
 #' @examples
 #' blr_woe_iv(hsb2, female, honcomp)
@@ -15,6 +16,7 @@ blr_woe_iv <- function(data, predictor, response, digits = 2) {
 
   pred <- enquo(predictor)
   resp <- enquo(response)
+
   dat <- data %>%
     select(!!pred, !!resp)
 
