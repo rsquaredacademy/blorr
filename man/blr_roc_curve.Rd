@@ -11,6 +11,22 @@ blr_roc_curve(gains_table, title = "ROC Curve",
 }
 \arguments{
 \item{gains_table}{an object of class \code{blr_gains_table}}
+
+\item{title}{plot title}
+
+\item{xaxis_title}{x axis title}
+
+\item{yaxis_title}{y axis title}
+
+\item{roc_curve_col}{color of the roc curve}
+
+\item{point_shape}{shape of the points on the roc curve}
+
+\item{point_fill}{fill of the points on the roc curve}
+
+\item{point_color}{color of the points on the roc curve}
+
+\item{plot_title_justify}{horizontal justification on the plot title}
 }
 \description{
 ROC Curve
