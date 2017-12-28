@@ -2,6 +2,14 @@
 #' @title ROC Curve
 #' @description ROC Curve
 #' @param gains_table an object of class \code{blr_gains_table}
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param roc_curve_col color of the roc curve
+#' @param point_shape shape of the points on the roc curve
+#' @param point_fill fill of the points on the roc curve
+#' @param point_color color of the points on the roc curve
+#' @param plot_title_justify horizontal justification on the plot title
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #'              family = binomial(link = 'logit'))
