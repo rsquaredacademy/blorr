@@ -7,9 +7,11 @@
 #' @param predictor name of the predictor
 #' @param response name of the response variable
 #' @return a tibble
+#' @examples
+#' blr_woe_iv(hsb2, female, honcomp)
 #' @export
 #'
-blr_woe_iv <- function(data, predictor, response) {
+blr_woe_iv <- function(data, predictor, response, digits = 2) {
 
   pred <- enquo(predictor)
   resp <- enquo(response)
@@ -29,15 +31,17 @@ blr_woe_iv <- function(data, predictor, response) {
     rename("no" = `0`, "yes" = `1`) %>%
     mutate(
       total = no + yes,
-      distribution = round((total / sum(total) * 100), digits = 2),
-      approval = round(((yes / total) * 100), digits = 2),
-      dist_yes = round(yes / sum(yes), digits = 2),
-      dist_no = round(no / sum(no), digits = 2),
-      WOE = round(log(dist_yes / dist_no), digits = 2),
+      distribution = round((total / sum(total) * 100), digits = digits),
+      approval = round(((yes / total) * 100), digits = digits),
+      dist_yes = round(yes / sum(yes), digits = digits),
+      dist_no = round(no / sum(no), digits = digits),
+      woe = round(log(dist_yes / dist_no), digits = digits),
       dist_diff = dist_yes - dist_no,
-      IV = round((dist_diff * WOE), digits = 2)
+      iv = round((dist_diff * woe), digits = digits)
     ) %>%
-    add_column(levels = lev, .before = 1)
+    add_column(levels = lev, .before = 1) %>%
+    select(-distribution, -approval) %>%
+    rename(`0` = no, `1` = yes, dist_1 = dist_yes, dist_0 = dist_no)
 
 }
 
