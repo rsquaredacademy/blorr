@@ -17,7 +17,8 @@ Imports:
     stats,
     tibble,
     crayon,
-    utils
+    utils,
+    scales
 Suggests: 
     covr,
     knitr,
