@@ -1,6 +1,7 @@
 #' @importFrom stats model.frame model.response predict.glm
 #' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all
-#' @importFrom tibble add_column
+#' @importFrom tibble add_column add_row
+#' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
 #' @title Gains Table & Lift Curve
 #' @description Gains table
 #' @param model an object of class \code{glm}
@@ -68,3 +69,21 @@ print.blr_gains_table <- function(x, ...) {
     print
 }
 
+#' @export
+#'
+plot.blr_gains_table <- function(x, title = 'Lift Chart', xaxis_title = '% Population',
+                                 yaxis_title = '% Cumulative 1s', diag_line_col = 'red',
+                                 lift_curve_col = 'blue', ...) {
+
+  x %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`) %>%
+    add_row(`cum_total_%` = 0, `cum_1s_%` = 0, .before = 1) %>%
+    mutate(`cum_total_y` = `cum_total_%`) %>%
+    ggplot() +
+    geom_line(aes(x = `cum_total_%`, y = `cum_1s_%`), color = lift_curve_col) +
+    geom_line(aes(x = `cum_total_%`, y = `cum_total_y`), color = diag_line_col) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+
+}
