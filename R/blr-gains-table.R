@@ -1,5 +1,5 @@
 #' @importFrom stats model.frame model.response predict.glm
-#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all
+#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all desc
 #' @importFrom tibble add_column add_row
 #' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
 #' scale_x_continuous scale_y_continuous theme element_text
@@ -29,7 +29,7 @@ blr_gains_table.default <- function(model, data) {
       model.frame() %>%
       model.response() %>%
       as_tibble() %>%
-      bind_cols(predict.glm(model, newdata = hsb2, type = 'response') %>%
+      bind_cols(predict.glm(model, newdata = data, type = 'response') %>%
                   as_tibble) %>%
       rename(response = value, prob = value1) %>%
       arrange(desc(prob)) %>%
