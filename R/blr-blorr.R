@@ -16,4 +16,5 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "n", "data",
   "cum_1s_%", "cum_0s_%", "tp", "tn", "fp", "fn", "sensitivity", "specificity",
   "1 - specificity", "sensitivity_per", "no", "yes", "total", "dist_yes",
   "dist_no", "dist_diff", "woe", "iv", "distribution", "approval", "gains_table",
-  "cum_total_per", "cum_1s_per", "cum_total_y"))
+  "cum_total_per", "cum_1s_per", "cum_total_y", "y", "fitted.values",
+  "response", "fit_val"))
