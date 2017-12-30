@@ -64,7 +64,7 @@ blr_pairs <- function(model) {
     pairs = pairs_count,
     concordant = concordance,
     discordant = discordance,
-    tied = ties,
+    tied = pairs_tied,
     somers_d = somers_d,
     gamma = gamma,
     tau_a = tau
