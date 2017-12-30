@@ -19,7 +19,8 @@ Imports:
     scales,
     stats,
     tibble,
-    utils
+    utils,
+    cli
 Suggests: 
     covr,
     knitr,

@@ -218,3 +218,36 @@ model_ll <- function(model) {
 
 }
 
+# output formatting
+fc <- function(x, w) {
+    x <- as.character(x)
+    ret <- format(x, width = w, justify = "centre")
+    return(ret)
+}
+
+fs <- function() {
+    x <- rep("  ")
+    return(x)
+}
+
+fs2 <- function() {
+    x <- rep("     ")
+    return(x)
+}
+
+fg <- function(x, w) {
+    z <- as.character(x)
+    y <- format(z, width = w, justify = 'right')
+    return(y)
+}
+
+fw <- function(x, w) {
+    z <- format(as.character(x), width = w, justify = 'right')
+    return(z)
+}
+
+fl <- function(x, w) {
+    x <- as.character(x)
+    ret <- format(x, width = w, justify = "left")
+    return(ret)
+}
