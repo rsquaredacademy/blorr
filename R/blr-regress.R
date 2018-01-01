@@ -13,7 +13,7 @@ blr_regress <- function(formula, ...) UseMethod('blr_regress')
 
 #' @export
 #'
-blr_regress <- function(formula, data, ...) {
+blr_regress.default <- function(formula, data, ...) {
 
   result        <- blr_reg_comp(formula, data)
   class(result) <- 'blr_regress'

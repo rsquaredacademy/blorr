@@ -59,6 +59,7 @@ blr_pairs <- function(model) {
   somers_d <- (concordant - discordant) / (concordant + discordant)
   gamma <- (concordant - discordant) / (pairs_count)
   tau <- (2 * (concordant - discordant)) / (n * (n - 1))
+  c <- concordance + (0.5 * pairs_tied)
 
   result <- tibble(
     pairs = pairs_count,
@@ -67,7 +68,8 @@ blr_pairs <- function(model) {
     tied = pairs_tied,
     somers_d = somers_d,
     gamma = gamma,
-    tau_a = tau
+    tau_a = tau,
+    c = c
   )
 
   return(result)

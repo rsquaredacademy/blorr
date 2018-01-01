@@ -104,14 +104,14 @@ print_blr_reg <- function(x) {
 
   w23 <- 12
   w24 <- x$blr_cord %>%
-    extract(2:4) %>%
+    extract(1:4) %>%
     unlist(use.names = FALSE) %>%
     format(round(4), nsmall = 4) %>%
     nchar %>%
     max
   w25 <- 9
   w26 <- x$blr_cord %>%
-    extract(5:7) %>%
+    extract(5:8) %>%
     unlist(use.names = FALSE) %>%
     format(round(4), nsmall = 4) %>%
     nchar %>%
@@ -120,18 +120,103 @@ print_blr_reg <- function(x) {
 
   cat(fc('Association of Predicted Probabilities and Observed Responses', w27), '\n')
   cat(rep("-", w27), sep = "", '\n')
-  cat(fc('% Concordant', w23), fs2(),
+  cat(fl('% Concordant', w23), fs2(),
       fc(format(round(x$blr_cord[[2]], 4), nsmall = 4), w24), fs2(),
-      fc("Somers' D", w25), fs2(),
+      fl("Somers' D", w25), fs2(),
       fc(format(round(x$blr_cord[[5]], 4), nsmall = 4), w26),'\n')
-  cat(fc('% Discordant', w23), fs2(),
+  cat(fl('% Discordant', w23), fs2(),
       fc(format(round(x$blr_cord[[3]], 4), nsmall = 4), w24), fs2(),
-      fc('Gamma', w25), fs2(),
+      fl('Gamma', w25), fs2(),
       fc(format(round(x$blr_cord[[6]], 4), nsmall = 4), w26),'\n')
-  cat(fc('% Tied', w23), fs2(),
+  cat(fl('% Tied', w23), fs2(),
       fc(format(round(x$blr_cord[[4]], 4), nsmall = 4), w24), fs2(),
-      fc('Tau-a', w25), fs2(),
+      fl('Tau-a', w25), fs2(),
       fc(format(round(x$blr_cord[[7]], 4), nsmall = 4), w26),'\n')
+  cat(fl('Pairs', w23), fs2(),
+      fc(x$blr_cord[[1]], w24), fs2(),
+      fl('c', w25), fs2(),
+      fc(format(round(x$blr_cord[[8]], 4), nsmall = 4), w26),'\n')
   cat(rep("-", w27), sep = "", '\n\n')
 
+  # model fit stats
+  # w28 <- 24
+  # w30 <- 27
+  # w29 <- c(x$modfit$loglik_null, x$modfit$m_deviance, x$modfit$m_bic) %>%
+  #   format(round(3), nsmall = 3) %>%
+  #   nchar %>%
+  #   max
+  # w31 <- c(x$modfit$loglik_model, x$modfit$lr_ratio, x$modfit$m_aic) %>%
+  #   format(round(3), nsmall = 3) %>%
+  #   nchar %>%
+  #   max
+  # w <- sum(w28, w29, w30, w31, 12)
+  #
+  # cat(fc('Model Fit Statistics', w), '\n')
+  # cat(rep("-", w), sep = "", '\n')
+  # col1names <- c('Log-Lik Intercept Only:', glue('Deviance(', x$modfit$dev_df, '):'), '',
+  #                "MCFadden's R2", 'ML (Cox-Snell) R2:',
+  #                "McKelvey & Zavoina's R2:", 'Count R2:', 'BIC:')
+  # col3names <- c('Log-Lik Full Model:', glue('LR(', x$modfit$lr_df, '):'), 'Prob > LR:',
+  #                "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
+  #                "Efron's R2:", "Adj Count R2:", "AIC:")
+  # col2vals <- c(x$modfit$loglik_null, x$modfit$m_deviance, x$modfit$mcfadden, x$modfit$cox_snell,
+  #               x$modfit$mckelvey, x$modfit$count_r2, x$modfit$m_bic) %>%
+  #   round(3) %>%
+  #   format(nsmall = 3) %>%
+  #   prepend(value = '', before = 3)
+  # col4vals <- c(x$modfit$loglik_model, x$modfit$lr_ratio, x$modfit$lr_pval, x$modfit$adj_mcfadden,
+  #               x$modfit$nagelkerke, x$modfit$effron, x$modfit$count_adj, x$modfit$m_aic) %>%
+  #   round(3) %>%
+  #   format(nsmall = 3)
+  # nlen <- length(col3names)
+  # for (i in seq_len(nlen)) {
+  #   cat(fl(col1names[i], w28), fs(),
+  #       fg(col2vals[i], w29), fs(),
+  #       fl(col3names[i], w30), fs(),
+  #       fg(col4vals[i], w31), '\n')
+  # }
+  # cat(rep("-", w), sep = "", '\n\n')
+
+}
+
+
+print_model_fit_stats <- function(x) {
+
+  w1 <- 24
+  w3 <- 27
+  w2 <- c(x$loglik_null, x$m_deviance, x$m_bic) %>%
+    format(round(3), nsmall = 3) %>%
+    nchar %>%
+    max
+  w4 <- c(x$loglik_model, x$lr_ratio, x$m_aic) %>%
+    format(round(3), nsmall = 3) %>%
+    nchar %>%
+    max
+  w <- sum(w1, w2, w3, w4, 12)
+
+  cat(fc('Model Fit Statistics', w), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  col1names <- c('Log-Lik Intercept Only:', glue('Deviance(', x$dev_df, '):'), '',
+                 "MCFadden's R2", 'ML (Cox-Snell) R2:',
+                 "McKelvey & Zavoina's R2:", 'Count R2:', 'BIC:')
+  col3names <- c('Log-Lik Full Model:', glue('LR(', x$lr_df, '):'), 'Prob > LR:',
+                 "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
+                 "Efron's R2:", "Adj Count R2:", "AIC:")
+  col2vals <- c(x$loglik_null, x$m_deviance, x$mcfadden, x$cox_snell,
+                x$mckelvey, x$count_r2, x$m_bic) %>%
+    round(3) %>%
+    format(nsmall = 3) %>%
+    prepend(value = '', before = 3)
+  col4vals <- c(x$loglik_model, x$lr_ratio, x$lr_pval, x$adj_mcfadden,
+                x$nagelkerke, x$effron, x$count_adj, x$m_aic) %>%
+    round(3) %>%
+    format(nsmall = 3)
+  nlen <- length(col3names)
+  for (i in seq_len(nlen)) {
+    cat(fl(col1names[i], w1), fs(),
+        fg(col2vals[i], w2), fs(),
+        fl(col3names[i], w3), fs(),
+        fg(col4vals[i], w4), '\n')
+  }
+  cat(rep("-", w), sep = "", '\n\n')
 }

@@ -5,9 +5,9 @@
 \alias{blr_regress.glm}
 \title{Ordinary Least Squares Regression}
 \usage{
-blr_regress(formula, data, ...)
+blr_regress(formula, ...)
 
-blr_regress.glm(object, ...)
+\method{blr_regress}{glm}(object, ...)
 }
 \arguments{
 \item{...}{other inputs}
@@ -18,4 +18,7 @@ that class): a symbolic description of the model to be fitted or class
 }
 \description{
 Ordinary Least Squares Regression
+}
+\examples{
+blr_regress(formula = honcomp ~ female + read + science, data = hsb2)
 }
