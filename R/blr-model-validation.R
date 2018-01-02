@@ -22,7 +22,7 @@ blr_confusion_matrix.default <- function(model, data, cutoff) {
     extract2(2) %>%
     as.character
 
-  result <- data %>%
+  conf_matrix <- data %>%
     mutate(
       prob = predict.glm(object = model, type = 'response'),
       predicted = if_else(prob > cutoff, 1, 0)
@@ -30,6 +30,43 @@ blr_confusion_matrix.default <- function(model, data, cutoff) {
     select(resp, predicted) %>%
     table
 
+  accuracy <- conf_matrix %>%
+    diag %>%
+    sum %>%
+    divide_by(conf_matrix %>%
+                sum)
+
+  precision <- conf_matrix %>%
+    diag %>%
+    `[`(2) %>%
+    unname %>%
+    divide_by(conf_matrix %>%
+                `[`(, 2) %>%
+                sum)
+
+  sensitivity <- conf_matrix %>%
+    diag %>%
+    `[`(2) %>%
+    unname %>%
+    divide_by(conf_matrix %>%
+                `[`(2, ) %>%
+                sum)
+
+  specificity <- conf_matrix %>%
+    diag %>%
+    `[`(1) %>%
+    unname %>%
+    divide_by(conf_matrix %>%
+                `[`(1, ) %>%
+                sum)
+
+  result <- list(
+    confusion_matrix = conf_matrix,
+    accuracy = accuracy,
+    precision = precision,
+    sensitivity = sensitivity,
+    specificity = specificity
+  )
   class(result) <- 'blr_confusion_matrix'
   return(result)
 }
