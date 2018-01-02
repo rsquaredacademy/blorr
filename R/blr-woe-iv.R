@@ -1,4 +1,5 @@
 #' @importFrom rlang enquo !!
+#' @importFrom ggplot2 coord_flip
 #' @importFrom dplyr select rename
 #' @importFrom tibble add_column
 #' @title Weight of Evidence & Information Value
@@ -12,7 +13,12 @@
 #' blr_woe_iv(hsb2, female, honcomp)
 #' @export
 #'
-blr_woe_iv <- function(data, predictor, response, digits = 2) {
+blr_woe_iv <- function(data, predictor, response, digits = 2, ...)
+  UseMethod('blr_woe_iv')
+
+#' @export
+#'
+blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
 
   pred <- enquo(predictor)
   resp <- enquo(response)
@@ -27,7 +33,7 @@ blr_woe_iv <- function(data, predictor, response, digits = 2) {
   f <- table(dat)
   f1 <- table(dat)
 
-  rbind(f, f1) %>%
+  woe_iv <- rbind(f, f1) %>%
     unique() %>%
     as_tibble() %>%
     rename("no" = `0`, "yes" = `1`) %>%
@@ -45,7 +51,42 @@ blr_woe_iv <- function(data, predictor, response, digits = 2) {
     select(-distribution, -approval) %>%
     rename(`0` = no, `1` = yes, dist_1 = dist_yes, dist_0 = dist_no)
 
+  var_name <- dat %>%
+    names %>%
+    extract(1)
+
+  result <- list(woe_iv_table = woe_iv, var_name = var_name)
+  class(result) <- 'blr_woe_iv'
+  return(result)
+
 }
 
+#' @export
+#'
+print.blr_woe_iv <- function(x, ...) {
+  x %>%
+    use_series(woe_iv_table) %>%
+    print
+}
 
+#' @export
+#' @rdname blr_woe_iv
+#'
+plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
+                            yaxis_title = 'WoE',
+                            bar_color = 'blue', ...) {
 
+  if (is.na(title)) {
+    plot_title <- x$var_name
+  } else {
+    plot_title <- title
+  }
+
+  x %>%
+    use_series(woe_iv_table) %>%
+    ggplot() +
+    geom_col(aes(x = levels, y = woe), fill = bar_color) +
+    coord_flip() +
+    ggtitle(plot_title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}

@@ -2,9 +2,13 @@
 % Please edit documentation in R/blr-woe-iv.R
 \name{blr_woe_iv}
 \alias{blr_woe_iv}
+\alias{plot.blr_woe_iv}
 \title{Weight of Evidence & Information Value}
 \usage{
-blr_woe_iv(data, predictor, response, digits = 2)
+blr_woe_iv(data, predictor, response, digits = 2, ...)
+
+\method{plot}{blr_woe_iv}(x, title = NA, xaxis_title = "Levels",
+  yaxis_title = "WoE", bar_color = "blue", ...)
 }
 \arguments{
 \item{data}{a tibble}
