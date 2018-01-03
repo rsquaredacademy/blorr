@@ -99,3 +99,73 @@ plot.blr_gains_table <- function(x, title = 'Lift Chart', xaxis_title = '% Popul
 
 }
 
+#' @importFrom ggplot2 element_blank annotate geom_segment
+#' @title KS Chart
+#' @description Kolmogorov Smirnov statisitcs graph
+#' @param gains_table an object of class \code{blr_gains_table}
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param ks_line_color color of the line indicating maximum ks
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model, hsb2)
+#' blr_ks_chart(gt)
+#'
+#' @export
+#'
+blr_ks_chart <- function(gains_table, title = 'KS Chart', yaxis_title = ' ',
+                         xaxis_title = 'Cumulative Population %',
+                         ks_line_color = 'black') {
+
+  ks_line <- gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
+    filter(ks == max(ks)) %>%
+    divide_by(100)
+
+  annotate_y <- ks_line %>%
+    mutate(
+      ann_loc = (`cum_1s_%` - `cum_0s_%`) / 2,
+      ann_locate = `cum_0s_%` + ann_loc
+    ) %>%
+    pull(ann_locate)
+
+  ks_stat <- ks_line %>%
+    pull(4) %>%
+    round(2) %>%
+    multiply_by(100)
+
+  annotate_x <- ks_line %>%
+    pull(1) +
+    0.1
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
+    mutate(
+      cum_total_per = `cum_total_%` / 100 ,
+      cum_1s_per = `cum_1s_%` / 100 ,
+      cum_0s_per = `cum_0s_%` / 100
+    ) %>%
+    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
+    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1) %>%
+    ggplot(aes(x = cum_total_per)) +
+    geom_line(aes(y = cum_1s_per, color = 'Cumulative 1s %')) +
+    geom_line(aes(y = cum_0s_per, color = 'Cumulative 0s %')) +
+    geom_point(aes(y = cum_1s_per, color = 'Cumulative 1s %')) +
+    geom_point(aes(y = cum_0s_per, color = 'Cumulative 0s %')) +
+    geom_segment(x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
+                 yend = ks_line[[2]], color = ks_line_color) +
+    annotate("text", x = annotate_x, y = annotate_y, label = paste0('KS: ', ks_stat, '%')) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
+    scale_x_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent) +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      legend.title=element_blank()
+    )
+
+
+}
