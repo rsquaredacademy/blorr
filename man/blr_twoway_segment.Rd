@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-bivariate-analysis.R
 \name{blr_twoway_segment}
 \alias{blr_twoway_segment}
-\title{Response by Segments}
+\title{Response Distribution by Multiple Segments}
 \usage{
 blr_twoway_segment(data, response, variable_1, variable_2)
 }
@@ -19,7 +19,7 @@ blr_twoway_segment(data, response, variable_1, variable_2)
 a tibble
 }
 \description{
-Response by segements
+Response distribution by multiple segements
 }
 \examples{
 blr_twoway_segment(hsb2, honcomp, prog, female)
