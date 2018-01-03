@@ -4,7 +4,7 @@
 \alias{blr_hosmer_lemeshow_test}
 \title{Hosmer Lemeshow Test}
 \usage{
-blr_hosmer_lemeshow_test(model, data)
+blr_hosmer_lemeshow_test(model, data = NULL)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
