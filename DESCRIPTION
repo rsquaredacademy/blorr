@@ -9,18 +9,19 @@ Description: Tools for developing and monitoring binary logistic regression
 Depends:
     R(>= 3.2.4)
 Imports: 
+    cli,
     crayon,
     descriptr,
     dplyr,
     ggplot2,
     glue,
     magrittr,
+    purrr,
     rlang,
     scales,
     stats,
     tibble,
-    utils,
-    cli
+    utils
 Suggests: 
     covr,
     knitr,
