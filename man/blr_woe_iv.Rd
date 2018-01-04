@@ -18,6 +18,18 @@ blr_woe_iv(data, predictor, response, digits = 2, ...)
 \item{response}{name of the response variable}
 
 \item{digits}{number of decimal digits to round off}
+
+\item{...}{other inputs}
+
+\item{x}{an object of class \code{blr_segment_dist}}
+
+\item{title}{plot title}
+
+\item{xaxis_title}{x axis title}
+
+\item{yaxis_title}{y axis title}
+
+\item{bar_color}{color of the bar}
 }
 \value{
 a tibble

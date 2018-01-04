@@ -7,11 +7,9 @@
 blr_model_fit_stats(model, ...)
 }
 \arguments{
-\item{...}{other inputs}
+\item{model}{an object of class \code{glm}}
 
-\item{object}{an object of class "formula" (or one that can be coerced to
-that class): a symbolic description of the model to be fitted or class
-\code{glm}}
+\item{...}{other inputs}
 }
 \description{
 Model Fit Statistics

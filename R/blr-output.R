@@ -206,7 +206,7 @@ print_model_fit_stats <- function(x) {
                 x$mckelvey, x$count_r2, x$m_bic) %>%
     round(3) %>%
     format(nsmall = 3) %>%
-    prepend(value = '', before = 3)
+    prepend(values = '', before = 3)
   col4vals <- c(x$loglik_model, x$lr_ratio, x$lr_pval, x$adj_mcfadden,
                 x$nagelkerke, x$effron, x$count_adj, x$m_aic) %>%
     round(3) %>%

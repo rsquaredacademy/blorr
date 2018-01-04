@@ -17,6 +17,22 @@ blr_segment_dist(data, response, predictor)
 \item{response}{response variable}
 
 \item{predictor}{predictor variable}
+
+\item{x}{an object of class \code{blr_segment_dist}}
+
+\item{title}{plot title}
+
+\item{xaxis_title}{x axis title}
+
+\item{yaxis_title}{y axis title}
+
+\item{sec_yaxis_title}{secondary y axis title}
+
+\item{bar_color}{color of the bar}
+
+\item{line_color}{line color}
+
+\item{...}{other inputs}
 }
 \value{
 a tibble

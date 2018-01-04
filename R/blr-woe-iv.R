@@ -8,6 +8,12 @@
 #' @param predictor name of the predictor
 #' @param response name of the response variable
 #' @param digits number of decimal digits to round off
+#' @param x an object of class \code{blr_segment_dist}
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param bar_color color of the bar
+#' @param ... other inputs
 #' @return a tibble
 #' @examples
 #' blr_woe_iv(hsb2, female, honcomp)

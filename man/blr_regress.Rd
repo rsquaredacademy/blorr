@@ -3,22 +3,22 @@
 \name{blr_regress}
 \alias{blr_regress}
 \alias{blr_regress.glm}
-\title{Ordinary Least Squares Regression}
+\title{Binary Logistic Regression}
 \usage{
-blr_regress(formula, ...)
+blr_regress(object, ...)
 
 \method{blr_regress}{glm}(object, ...)
 }
 \arguments{
-\item{...}{other inputs}
-
 \item{object}{an object of class "formula" (or one that can be coerced to
 that class): a symbolic description of the model to be fitted or class
 \code{glm}}
+
+\item{...}{other inputs}
 }
 \description{
-Ordinary Least Squares Regression
+Binary logistic regression
 }
 \examples{
-blr_regress(formula = honcomp ~ female + read + science, data = hsb2)
+blr_regress(object = honcomp ~ female + read + science, data = hsb2)
 }

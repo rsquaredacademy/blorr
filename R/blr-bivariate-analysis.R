@@ -22,6 +22,7 @@ blr_bivariate_analysis <- function(data, response, predictor) {
 
   # information value
   iv <- blr_woe_iv(mdata, predictor, response) %>%
+    use_series(woe_iv_table) %>%
     pull(iv) %>%
     sum
 
@@ -113,6 +114,14 @@ blr_twoway_segment <- function(data, response, variable_1, variable_2) {
 #' @param data a tibble
 #' @param response response variable
 #' @param predictor predictor variable
+#' @param x an object of class \code{blr_segment_dist}
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param sec_yaxis_title secondary y axis title
+#' @param bar_color color of the bar
+#' @param line_color line color
+#' @param ... other inputs
 #' @return a tibble
 #' @examples
 #' k <- blr_segment_dist(hsb2, honcomp, prog)

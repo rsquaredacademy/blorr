@@ -2,9 +2,7 @@
 #' @importFrom magrittr divide_by raise_to_power add
 #' @title Model Fit Statistics
 #' @description Model Fit Statistics
-#' @param object an object of class "formula" (or one that can be coerced to
-#' that class): a symbolic description of the model to be fitted or class
-#' \code{glm}
+#' @param model an object of class \code{glm}
 #' @param ... other inputs
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
