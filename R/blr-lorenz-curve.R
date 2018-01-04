@@ -40,3 +40,70 @@ blr_gini_index <- function(model, data = NULL) {
     divide_by(n)
 
 }
+
+#' @title Lorenz Curve
+#' @description Lorenz curve
+#' @param model an object of class \code{glm}
+#' @param data a tibble or a data.frame
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param lorenz_curve_col color of the lorenz curve
+#' @param diag_line_col diagonal line color
+#' @return Lorenz Curve
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_lorenz_curve(model)
+#' @export
+#'
+blr_lorenz_curve <- function(model, data = NULL, title = 'Lorenz Curve',
+                             xaxis_title = 'Cumulative Population %',
+                             yaxis_title = 'Cumulative Events %',
+                             diag_line_col = 'red',
+                             lorenz_curve_col = 'blue') {
+
+  if (is.null(data)) {
+    data <- eval(model$call$data)
+  }
+
+  data$prob <- predict.glm(model, newdata = data, type = 'response')
+
+  prob <- data %>%
+    arrange(prob) %>%
+    pull(prob)
+
+
+  n <- prob %>%
+    length %>%
+    rep(x = 1)
+
+  p <- cumsum(n) %>%
+    divide_by(sum(n)) %>%
+    prepend(0)
+
+  prob_cum <- prob %>%
+    multiply_by(n)
+
+  l <- cumsum(prob_cum) %>%
+    divide_by(sum(prob_cum)) %>%
+    prepend(0)
+
+  g_index <- blr_gini_index(model = model, data = data) %>%
+    round(2)
+
+  tibble(p = p, l = l) %>%
+    ggplot() +
+    geom_line(aes(x = p, y = l), color = lorenz_curve_col) +
+    geom_line(aes(x = p, y = p), color = diag_line_col) +
+    ggtitle(label = title, subtitle = glue('Gini Index = ', {g_index})) +
+    xlab(xaxis_title) + ylab(yaxis_title) +
+    scale_x_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent) +
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(hjust = 0.5)
+    )
+
+}
