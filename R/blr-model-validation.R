@@ -30,43 +30,44 @@ blr_confusion_matrix.default <- function(model, data, cutoff) {
     select(resp, predicted) %>%
     table
 
-  accuracy <- conf_matrix %>%
-    diag %>%
-    sum %>%
-    divide_by(conf_matrix %>%
-                sum)
+  a <- conf_matrix[4]
+  b <- conf_matrix[3]
+  c <- conf_matrix[2]
+  d <- conf_matrix[1]
+  abcd <- sum(a, b, c ,d)
 
-  precision <- conf_matrix %>%
-    diag %>%
-    `[`(2) %>%
-    unname %>%
-    divide_by(conf_matrix %>%
-                `[`(, 2) %>%
-                sum)
+  accuracy <- (a + d) / abcd
+  precision <- a / (a + b)
+  recall <- a / (a + c)
+  sensitivity <- a / (a + c)
+  specificity <- d / (d + b)
+  prevalence <- (a + c) / abcd
+  detection_rate <- a / abcd
+  detection_prevalence <- (a + b) / abcd
+  balanced_accuracy <- (sensitivity + specificity) / 2
 
-  sensitivity <- conf_matrix %>%
-    diag %>%
-    `[`(2) %>%
-    unname %>%
-    divide_by(conf_matrix %>%
-                `[`(2, ) %>%
-                sum)
+  ppv <- (sensitivity * prevalence) / ((sensitivity * prevalence) +
+                                         ((1 - specificity) * (1 - prevalence)))
+  npv <- (specificity * (1 - prevalence)) / (((1 - sensitivity) * prevalence) +
+                                               (specificity * (1 - prevalence)))
 
-  specificity <- conf_matrix %>%
-    diag %>%
-    `[`(1) %>%
-    unname %>%
-    divide_by(conf_matrix %>%
-                `[`(1, ) %>%
-                sum)
 
   result <- list(
     confusion_matrix = conf_matrix,
     accuracy = accuracy,
     precision = precision,
     sensitivity = sensitivity,
-    specificity = specificity
+    specificity = specificity,
+    recall = recall,
+    prevalence = prevalence,
+    detection_rate = detection_rate,
+    detection_prevalence = detection_prevalence,
+    balanced_accuracy = balanced_accuracy,
+    pos_pred_value = ppv,
+    neg_pred_value = npv
   )
+
   class(result) <- 'blr_confusion_matrix'
   return(result)
+
 }
