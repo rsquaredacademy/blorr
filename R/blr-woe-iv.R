@@ -42,7 +42,7 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
   woe_iv <- rbind(f, f1) %>%
     unique() %>%
     as_tibble() %>%
-    rename("no" = `0`, "yes" = `1`) %>%
+    select(no = `0`, yes = `1`) %>%
     mutate(
       total = no + yes,
       distribution = round((total / sum(total) * 100), digits = digits),
@@ -55,7 +55,7 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
     ) %>%
     add_column(levels = lev, .before = 1) %>%
     select(-distribution, -approval) %>%
-    rename(`0` = no, `1` = yes, dist_1 = dist_yes, dist_0 = dist_no)
+    select(levels, `0` = no, `1` = yes, dist_1 = dist_yes, dist_0 = dist_no, woe = woe, iv = iv)
 
   var_name <- dat %>%
     names %>%
