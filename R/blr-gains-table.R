@@ -11,14 +11,18 @@
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #'              family = binomial(link = 'logit'))
-#' blr_gains_table(model, hsb2)
+#' blr_gains_table(model)
 #' @export
 #'
-blr_gains_table <- function(model, data) UseMethod('blr_gains_table')
+blr_gains_table <- function(model, data = NULL) UseMethod('blr_gains_table')
 
 #' @export
 #'
-blr_gains_table.default <- function(model, data) {
+blr_gains_table.default <- function(model, data = NULL) {
+
+  if (is.null(data)) {
+    data <- eval(model$call$data)
+  }
 
   decile_count <- data %>%
     nrow %>%
@@ -31,7 +35,7 @@ blr_gains_table.default <- function(model, data) {
       as_tibble() %>%
       bind_cols(predict.glm(model, newdata = data, type = 'response') %>%
                   as_tibble) %>%
-      rename(response = value, prob = value1) %>%
+      select(response = value, prob = value1) %>%
       arrange(desc(prob)) %>%
       add_column(decile = rep(1:10, each = decile_count)) %>%
       group_by(decile) %>%

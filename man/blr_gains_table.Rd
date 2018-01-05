@@ -4,7 +4,7 @@
 \alias{blr_gains_table}
 \title{Gains Table & Lift Curve}
 \usage{
-blr_gains_table(model, data)
+blr_gains_table(model, data = NULL)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
@@ -20,5 +20,5 @@ Gains table
 \examples{
 model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
              family = binomial(link = 'logit'))
-blr_gains_table(model, hsb2)
+blr_gains_table(model)
 }
