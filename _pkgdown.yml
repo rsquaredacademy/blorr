@@ -8,6 +8,16 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Guides"
+      menu:
+        - text: "Intro"
+          href: articles/intro.html
+    - text: "Reference"
+      menu:
+        - text: "Functions"
+          href: reference/index.html
+        - text: "News"
+          href: news/index.html
 
   right:
    - icon: fa-github
@@ -18,9 +28,51 @@ home:
   links:
   - text: Learn more
     href: http://www.rsquaredacademy.com
-  - text: Shiny App
-    href: http://rsquaredlabs.com:3838/explorer/
-  - text: Docker Image
-    href: https://hub.docker.com/r/rsquaredacademy/olsrr/
+
+reference:
+
+- title: Bivariate Analysis
+
+  contents:
+  - blr_bivariate_analysis
+  - blr_segment
+  - blr_twoway_segment
+  - blr_segment_dist
+  - blr_woe_iv
+
+- title: Regression
+
+  contents:
+  - blr_regress
+
+- title: Model Fit Statistics
+
+  contents:
+  - blr_model_fit_stats
+  - blr_mcfadden_rsq
+  - blr_mcfadden_adj_rsq
+  - blr_cox_snell_rsq
+  - blr_nagelkerke_rsq
+  - blr_mckelvey_zavoina_rsq
+  - blr_effron_rsq
+  - blr_count_rsq
+  - blr_adj_count_rsq
+
+- title: Model Validation
+
+  contents:
+  - blr_gains_table
+  - blr_ks_chart
+  - blr_hosmer_lemeshow_test
+  - blr_gini_index
+  - blr_lorenz_curve
+  - blr_confusion_matrix
+  - blr_pairs
+  - blr_roc_curve
+
+- title: Data
+
+  contents:
+  - hsb2
 
 

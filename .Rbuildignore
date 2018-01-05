@@ -9,3 +9,4 @@
 ^doc$
 ^appveyor\.yml$
 ^codecov\.yml$
+^docs$
