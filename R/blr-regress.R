@@ -5,7 +5,14 @@
 #' \code{glm}
 #' @param ... other inputs
 #' @examples
+#' # using formula
 #' blr_regress(object = honcomp ~ female + read + science, data = hsb2)
+#'
+#' # using a model built with glm
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#'              family = binomial(link = 'logit'))
+#'
+#' blr_regress(model)
 #' @export
 #'
 blr_regress <- function(object, ...) UseMethod('blr_regress')

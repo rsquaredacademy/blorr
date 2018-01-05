@@ -20,5 +20,12 @@ that class): a symbolic description of the model to be fitted or class
 Binary logistic regression
 }
 \examples{
+# using formula
 blr_regress(object = honcomp ~ female + read + science, data = hsb2)
+
+# using a model built with glm
+model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+             family = binomial(link = 'logit'))
+
+blr_regress(model)
 }
