@@ -6,8 +6,8 @@
 \usage{
 blr_roc_curve(gains_table, title = "ROC Curve",
   xaxis_title = "1 - Specificity", yaxis_title = "Sensitivity",
-  roc_curve_col = "blue", point_shape = 18, point_fill = "blue",
-  point_color = "blue", plot_title_justify = 0.5)
+  roc_curve_col = "blue", diag_line_col = "red", point_shape = 18,
+  point_fill = "blue", point_color = "blue", plot_title_justify = 0.5)
 }
 \arguments{
 \item{gains_table}{an object of class \code{blr_gains_table}}
@@ -19,6 +19,8 @@ blr_roc_curve(gains_table, title = "ROC Curve",
 \item{yaxis_title}{y axis title}
 
 \item{roc_curve_col}{color of the roc curve}
+
+\item{diag_line_col}{diagonal line color}
 
 \item{point_shape}{shape of the points on the roc curve}
 
@@ -34,6 +36,6 @@ ROC Curve
 \examples{
 model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
              family = binomial(link = 'logit'))
-k <- blr_gains_table(model, hsb2)
+k <- blr_gains_table(model)
 blr_roc_curve(k)
 }
