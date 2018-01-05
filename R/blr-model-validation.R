@@ -8,14 +8,18 @@
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_confusion_matrix(model, hsb2, 0.4)
+#' blr_confusion_matrix(model, cutoff = 0.4)
 #' @export
 #'
-blr_confusion_matrix <- function(model, data, cutoff) UseMethod('blr_confusion_matrix')
+blr_confusion_matrix <- function(model, cutoff, data = NULL) UseMethod('blr_confusion_matrix')
 
 #' @export
 #'
-blr_confusion_matrix.default <- function(model, data, cutoff) {
+blr_confusion_matrix.default <- function(model, cutoff, data = NULL) {
+
+  if (is.null(data)) {
+    data <- eval(model$call$data)
+  }
 
   resp <- model %>%
     formula %>%

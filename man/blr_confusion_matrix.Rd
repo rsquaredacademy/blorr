@@ -4,14 +4,14 @@
 \alias{blr_confusion_matrix}
 \title{Confusion Matrix}
 \usage{
-blr_confusion_matrix(model, data, cutoff)
+blr_confusion_matrix(model, cutoff, data = NULL)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
 
-\item{data}{a tibble}
-
 \item{cutoff}{cutoff for classification}
+
+\item{data}{a tibble}
 }
 \value{
 table
@@ -23,5 +23,5 @@ Confusion matrix
 model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
-blr_confusion_matrix(model, hsb2, 0.4)
+blr_confusion_matrix(model, cutoff = 0.4)
 }
