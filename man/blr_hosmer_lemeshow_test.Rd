@@ -2,9 +2,12 @@
 % Please edit documentation in R/blr-hosmer-lemeshow-test.R
 \name{blr_hosmer_lemeshow_test}
 \alias{blr_hosmer_lemeshow_test}
+\alias{print.blr_hosmer_lemeshow_test}
 \title{Hosmer Lemeshow Test}
 \usage{
 blr_hosmer_lemeshow_test(model, data = NULL)
+
+\method{print}{blr_hosmer_lemeshow_test}(x, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
