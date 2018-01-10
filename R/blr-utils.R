@@ -235,6 +235,16 @@ fs2 <- function() {
     return(x)
 }
 
+fs3 <- function() {
+    x <- rep("      ")
+    return(x)
+}
+
+f16 <- function() {
+  x <- rep('                ')
+  return(x)
+}
+
 fg <- function(x, w) {
     z <- as.character(x)
     y <- format(z, width = w, justify = 'right')

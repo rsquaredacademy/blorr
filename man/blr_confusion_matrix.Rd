@@ -2,9 +2,12 @@
 % Please edit documentation in R/blr-model-validation.R
 \name{blr_confusion_matrix}
 \alias{blr_confusion_matrix}
+\alias{print.blr_confusion_matrix}
 \title{Confusion Matrix}
 \usage{
-blr_confusion_matrix(model, cutoff, data = NULL)
+blr_confusion_matrix(model, cutoff = 0.5, data = NULL)
+
+\method{print}{blr_confusion_matrix}(x, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
