@@ -120,9 +120,11 @@ print.blr_woe_iv <- function(x, ...) {
     pull(rnames[7]) %>%
     prepend(rnames[7])
 
+  clen <- length(c1)
+
   cat(fc('Weight of Evidence', wsum), '\n')
   cat(rep("-", wsum), sep = "", '\n')
-  for (i in seq_len(3)) {
+  for (i in seq_len(clen)) {
     cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
         fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
         fc(c5[i], w[5]), fs(), fc(c6[i], w[6]), fs(),
