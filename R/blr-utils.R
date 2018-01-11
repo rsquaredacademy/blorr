@@ -240,6 +240,11 @@ fs3 <- function() {
     return(x)
 }
 
+fs4 <- function() {
+    x <- rep("         ")
+    return(x)
+}
+
 f16 <- function() {
   x <- rep('                ')
   return(x)

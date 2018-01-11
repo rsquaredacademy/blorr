@@ -100,12 +100,17 @@ print.blr_bivariate_analysis <- function(x, ...) {
 #' blr_segment(hsb2, honcomp, prog)
 #' @export
 #'
-blr_segment <- function(data, response, predictor) {
+blr_segment <- function(data, response, predictor) UseMethod('blr_segment')
+
+#' @rdname blr_segment
+#' @export
+#'
+blr_segment.default <- function(data, response, predictor) {
 
   resp <- enquo(response)
   pred <- enquo(predictor)
 
-  data %>%
+  segment_data <- data %>%
     select(!!pred, !!resp) %>%
     group_by(!!pred) %>%
     summarise(n = n(), `1s` = sum(!!resp)) %>%
@@ -113,6 +118,62 @@ blr_segment <- function(data, response, predictor) {
       `1s%` = round((`1s` / sum(n)), 2)
     ) %>%
     select(-n, -`1s`)
+
+  result <- list(segment_data = segment_data)
+  class(result) <- 'blr_segment'
+  return(result)
+
+}
+
+#' @rdname blr_segment
+#' @export
+#'
+print.blr_segment <- function(x, ...) {
+
+  y1 <- x %>%
+    use_series(segment_data) %>%
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
+    unname
+
+  y2 <- x %>%
+    use_series(segment_data) %>%
+    names %>%
+    nchar
+
+  w <- map2_int(y1, y2, max)
+  wsum <- sum(w, 11)
+
+  rnames <- x %>%
+    use_series(segment_data) %>%
+    names
+
+  dtable <- x %>%
+    use_series(segment_data)
+
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(rnames[1])
+
+  c2 <- dtable %>%
+    pull(rnames[2]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[2])
+
+  clen <- length(c1)
+
+  cat(fc('Event By Attributes', wsum), '\n')
+  cat(rep("-", wsum), sep = "", '\n')
+  for (i in seq_len(clen)) {
+    cat(fc(c1[i], w[1]), fs4(), fc(c2[i], w[2]), '\n')
+    if (i == 1) {
+      cat(rep("-", wsum), sep = "", '\n')
+    }
+  }
+  cat(rep("-", wsum), sep = "", '\n\n')
+
 }
 
 #' @title Response Distribution by Multiple Segments
