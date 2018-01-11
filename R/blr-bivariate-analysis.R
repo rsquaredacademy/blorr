@@ -9,7 +9,14 @@
 #' blr_bivariate_analysis(hsb2, honcomp, prog)
 #'
 #' @export
-blr_bivariate_analysis <- function(data, response, predictor) {
+#'
+blr_bivariate_analysis <- function(data, response, predictor)
+  UseMethod('blr_bivariate_analysis')
+
+#' @rdname blr_bivariate_analysis
+#' @export
+#'
+blr_bivariate_analysis.default <- function(data, response, predictor) {
 
   resp <- enquo(response)
   pred <- enquo(predictor)
@@ -50,7 +57,36 @@ blr_bivariate_analysis <- function(data, response, predictor) {
                    df = lr_df,
                    pval = lr_pval)
 
+  class(result) <- 'blr_bivariate_analysis'
   return(result)
+
+}
+
+#' @rdname blr_bivariate_analysis
+#' @export
+#'
+print.blr_bivariate_analysis <- function(x, ...) {
+
+  w1 <- max(nchar(c('Variable', x$variable)))
+  w2 <- max(nchar(c('Information Value', x$iv)))
+  w3 <- max(nchar(c('LR Chi Square', format(round(x$likelihood_ratio, 4),
+                                          nsmall = 4))))
+  w4 <- max(nchar(c('LR DF', x$df)))
+  w5 <- max(nchar(c('LR p-value', format(round(x$pval, 4),
+                                       nsmall = 4))))
+  w <- sum(w1, w2, w3, w4, w5, 16)
+
+  cat(fc('Bivariate Analysis', w), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc('Variable', w1), fs(), fc('Information Value', w2), fs(),
+      fc('LR Chi Square', w3),fs(), fc('LR DF', w4), fs(),
+      fc('LR p-value', w5), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc(x$variable, w1), fs(), fc(x$iv, w2), fs(),
+      fc(format(round(x$likelihood_ratio, 4), nsmall = 4), w3), fs(),
+      fc(x$df, w4), fs(),
+      fc(format(round(x$pval, 4), nsmall = 4), w5), '\n')
+  cat(rep("-", w), sep = "", '\n')
 
 }
 
