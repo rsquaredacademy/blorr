@@ -22,11 +22,27 @@
 #' blr_lr_test(model_1, model_2)
 #' @seealso \code{\link[lmtest]{lrtest}}
 #' @export
-blr_lr_test <- function(full_model, reduced_model) {
+#'
+blr_lr_test <- function(full_model, reduced_model) UseMethod('blr_lr_test')
+
+#' @rdname blr_lr_test
+#' @export
+#'
+blr_lr_test.default <- function(full_model, reduced_model) {
 
   # create intercept only model
   if (missing(reduced_model)) {
-    reduced_model <- i_model(full_model)
+
+    dep <- response_var(full_model)
+
+    dat <- full_model %>%
+      use_series(call) %>%
+      use_series(data) %>%
+      eval_tidy()
+
+    reduced_model <- glm(glue(dep, ' ~ 1'), data = dat,
+        family = binomial(link = 'logit'))
+
   }
 
   # error handling
@@ -83,7 +99,44 @@ blr_lr_test <- function(full_model, reduced_model) {
   )
 
   result <- list(model_info = model_info, test_result = test_info)
-
+  class(result) <- 'blr_lr_test'
   return(result)
 
+}
+
+
+#' @rdname blr_lr_test
+#' @export
+#'
+print.blr_lr_test <- function(x, ...) {
+
+  w9 <- x %>%
+    use_series(test_result) %>%
+    pull(lr_ratio) %>%
+    round(4) %>%
+    format(nsmall = 4) %>%
+    prepend('Chi-Square') %>%
+    nchar %>%
+    max
+  w10 <- x %>%
+    use_series(test_result) %>%
+    pull(d_f) %>%
+    prepend('DF') %>%
+    nchar %>%
+    max
+  w11 <- 10
+  w12 <- sum(w9, w10, w11, 8)
+
+  j <- x %>%
+    use_series(test_result)
+
+  cat(fc('Likelihood Ratio Test', w12), '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc('Chi-Square', w9), fs(), fc('DF', w10), fs(), fc('Pr > ChiSq', w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc(format(round(j$lr_ratio, 4), nsmall = 4), w9), fs(), fc(j$d_f, w10),
+      fs(), fc(format(round(j$p_value, 4), nsmall = 4), w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
 }
