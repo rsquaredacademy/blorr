@@ -126,7 +126,12 @@ blr_segment <- function(data, response, predictor) {
 #' blr_twoway_segment(hsb2, honcomp, prog, female)
 #' @export
 #'
-blr_twoway_segment <- function(data, response, variable_1, variable_2) {
+blr_twoway_segment <- function(data, response, variable_1, variable_2) UseMethod('blr_twoway_segment')
+
+#' @rdname blr_twoway_segment
+#' @export
+#'
+blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
 
   resp <- enquo(response)
   var_1 <- enquo(variable_1)
@@ -135,11 +140,23 @@ blr_twoway_segment <- function(data, response, variable_1, variable_2) {
   n <- data %>%
     nrow
 
-  data %>%
+  twoway <- data %>%
     filter(!!resp == 1) %>%
     select(!!var_1, !!var_2) %>%
     table %>%
     divide_by(n)
+
+  result <- list(twoway_segment = twoway)
+  class(result) <- 'blr_twoway_segment'
+  return(result)
+}
+
+#' @rdname blr_twoway_segment
+#' @export
+#'
+print.blr_twoway_segment <- function(x, ...) {
+
+
 
 }
 
@@ -198,9 +215,69 @@ blr_segment_dist.default <- function(data, response, predictor) {
 #' @export
 #'
 print.blr_segment_dist <- function(x, ...) {
-  x %>%
+
+  y1 <- x %>%
     use_series(dist_table) %>%
-    print
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
+    unname
+
+  y2 <- x %>%
+    use_series(dist_table) %>%
+    names %>%
+    nchar
+
+  w <- map2_int(y1, y2, max)
+  wsum <- sum(w, 16)
+
+  rnames <- x %>%
+    use_series(dist_table) %>%
+    names
+
+  dtable <- x %>%
+    use_series(dist_table)
+
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(x %>%
+              use_series(var_name))
+
+  c2 <- dtable %>%
+    pull(rnames[2]) %>%
+    prepend(rnames[2])
+
+  c3 <- dtable %>%
+    pull(rnames[3]) %>%
+    prepend(rnames[3])
+
+  c4 <- dtable %>%
+    pull(rnames[4]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[4])
+
+  c5 <- dtable %>%
+    pull(rnames[5]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[5])
+
+  clen <- length(c1)
+
+  cat(fc('Event Segmentation', wsum), '\n')
+  cat(rep("-", wsum), sep = "", '\n')
+  for (i in seq_len(clen)) {
+    cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
+        fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
+        fc(c5[i], w[5]), '\n')
+    if (i == 1) {
+      cat(rep("-", wsum), sep = "", '\n')
+    }
+  }
+  cat(rep("-", wsum), sep = "", '\n\n')
+
+
 }
 
 #' @export
@@ -226,6 +303,8 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = 'Levels',
     plot_title <- title
   }
 
+  vname <- x %>%
+    use_series(var_name)
 
   x %>%
     use_series(dist_table) %>%

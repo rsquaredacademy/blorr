@@ -2,9 +2,15 @@
 % Please edit documentation in R/blr-bivariate-analysis.R
 \name{blr_twoway_segment}
 \alias{blr_twoway_segment}
+\alias{blr_twoway_segment.default}
+\alias{print.blr_twoway_segment}
 \title{Response Distribution by Multiple Segments}
 \usage{
 blr_twoway_segment(data, response, variable_1, variable_2)
+
+\method{blr_twoway_segment}{default}(data, response, variable_1, variable_2)
+
+\method{print}{blr_twoway_segment}(x, ...)
 }
 \arguments{
 \item{data}{a tibble}
