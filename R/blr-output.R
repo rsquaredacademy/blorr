@@ -220,3 +220,408 @@ print_model_fit_stats <- function(x) {
   }
   cat(rep("-", w), sep = "", '\n\n')
 }
+
+
+print_bivariate_analysis <- function(x) {
+
+  w1 <- max(nchar(c('Variable', x$variable)))
+  w2 <- max(nchar(c('Information Value', x$iv)))
+  w3 <- max(nchar(c('LR Chi Square', format(round(x$likelihood_ratio, 4),
+                                          nsmall = 4))))
+  w4 <- max(nchar(c('LR DF', x$df)))
+  w5 <- max(nchar(c('LR p-value', format(round(x$pval, 4),
+                                       nsmall = 4))))
+  w <- sum(w1, w2, w3, w4, w5, 16)
+
+  cat(fc('Bivariate Analysis', w), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc('Variable', w1), fs(), fc('Information Value', w2), fs(),
+      fc('LR Chi Square', w3),fs(), fc('LR DF', w4), fs(),
+      fc('LR p-value', w5), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc(x$variable, w1), fs(), fc(x$iv, w2), fs(),
+      fc(format(round(x$likelihood_ratio, 4), nsmall = 4), w3), fs(),
+      fc(x$df, w4), fs(),
+      fc(format(round(x$pval, 4), nsmall = 4), w5), '\n')
+  cat(rep("-", w), sep = "", '\n')
+
+}
+
+
+print_blr_segment <- function(x) {
+
+  y1 <- x %>%
+    use_series(segment_data) %>%
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
+    unname
+
+  y2 <- x %>%
+    use_series(segment_data) %>%
+    names %>%
+    nchar
+
+  w <- map2_int(y1, y2, max)
+  wsum <- sum(w, 11)
+
+  rnames <- x %>%
+    use_series(segment_data) %>%
+    names
+
+  dtable <- x %>%
+    use_series(segment_data)
+
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(rnames[1])
+
+  c2 <- dtable %>%
+    pull(rnames[2]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[2])
+
+  clen <- length(c1)
+
+  cat(fc('Event By Attributes', wsum), '\n')
+  cat(rep("-", wsum), sep = "", '\n')
+  for (i in seq_len(clen)) {
+    cat(fc(c1[i], w[1]), fs4(), fc(c2[i], w[2]), '\n')
+    if (i == 1) {
+      cat(rep("-", wsum), sep = "", '\n')
+    }
+  }
+  cat(rep("-", wsum), sep = "", '\n\n')
+
+}
+
+
+print_blr_segment_dist <- function(x) {
+
+  y1 <- x %>%
+    use_series(dist_table) %>%
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
+    unname
+
+  y2 <- x %>%
+    use_series(dist_table) %>%
+    names %>%
+    nchar
+
+  w <- map2_int(y1, y2, max)
+  wsum <- sum(w, 16)
+
+  rnames <- x %>%
+    use_series(dist_table) %>%
+    names
+
+  dtable <- x %>%
+    use_series(dist_table)
+
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(x %>%
+              use_series(var_name))
+
+  c2 <- dtable %>%
+    pull(rnames[2]) %>%
+    prepend(rnames[2])
+
+  c3 <- dtable %>%
+    pull(rnames[3]) %>%
+    prepend(rnames[3])
+
+  c4 <- dtable %>%
+    pull(rnames[4]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[4])
+
+  c5 <- dtable %>%
+    pull(rnames[5]) %>%
+    round(2) %>%
+    format(nsamll = 2) %>%
+    prepend(rnames[5])
+
+  clen <- length(c1)
+
+  cat(fc('Event Segmentation', wsum), '\n')
+  cat(rep("-", wsum), sep = "", '\n')
+  for (i in seq_len(clen)) {
+    cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
+        fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
+        fc(c5[i], w[5]), '\n')
+    if (i == 1) {
+      cat(rep("-", wsum), sep = "", '\n')
+    }
+  }
+  cat(rep("-", wsum), sep = "", '\n\n')
+
+}
+
+print_blr_hosmer_lemeshow_test <- function(x) {
+
+  w1 <- nchar('group')
+  w2 <- x %>%
+    use_series(partition_table) %>%
+    use_series(n) %>%
+    prepend('Total') %>%
+    nchar %>%
+    max
+  w3 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`1s_observed`) %>%
+    prepend('Observed') %>%
+    nchar %>%
+    max
+  w4 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`1s_expected`) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
+    prepend('Expected') %>%
+    nchar %>%
+    max
+  w5 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`0s_observed`) %>%
+    prepend('Observed') %>%
+    nchar %>%
+    max
+  w6 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`0s_expected`) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
+    prepend('Expected') %>%
+    nchar %>%
+    max
+  w7 <- w3 + w4 + 4
+  w8 <- w5 + w6 + 4
+  w <- sum(w1, w2, w3, w4, w5, w6, 20)
+  j <- x %>%
+    use_series(partition_table)
+
+  cat(fc('Partition for the Hosmer & Lemeshow Test', w), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc('     ', w1), fs(), fc('     ', w2), fs(), fc('def = 1', w7), fs(),
+      fc('def = 0', w8), '\n')
+  cat(fc('Group', w1), fs(), fc('Total', w2), fs(), fc('Observed', w3), fs(),
+      fc('Expected', w4), fs(), fc('Observed', w5), fs(), fc('Expected', w6),
+      '\n')
+  cat(rep("-", w), sep = "", '\n')
+  for (i in seq_len(10)) {
+    cat(fc(j$group[i], w1), fs(), fc(j$n[i], w2), fs(), fc(j$`1s_observed`[i], w3), fs(),
+        fc(format(round(j$`1s_expected`[i], 2), nsmall = 2), w4), fs(), fc(j$`0s_observed`[i], w5), fs(),
+        fc(format(round(j$`0s_expected`[i], 2), nsmall = 2), w6), '\n')
+  }
+  cat(rep("-", w), sep = "", '\n\n')
+
+  w9 <- x %>%
+    use_series(chisq_stat) %>%
+    round(4) %>%
+    format(nsmall = 4) %>%
+    prepend('Chi-Square') %>%
+    nchar %>%
+    max
+  w10 <- 2
+  w11 <- 10
+  w12 <- sum(w9, w10, w11, 8)
+
+  cat(fc('Goodness of Fit Test', w12), '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc('Chi-Square', w9), fs(), fc('DF', w10), fs(), fc('Pr > ChiSq', w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc(format(round(x$chisq_stat, 4), nsmall = 4), w9), fs(), fc(x$df, w10),
+      fs(), fc(format(round(x$pvalue, 4), nsmall = 4), w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
+
+
+}
+
+
+print_blr_lr_test <- function(x) {
+
+  w9 <- x %>%
+    use_series(test_result) %>%
+    pull(lr_ratio) %>%
+    round(4) %>%
+    format(nsmall = 4) %>%
+    prepend('Chi-Square') %>%
+    nchar %>%
+    max
+  w10 <- x %>%
+    use_series(test_result) %>%
+    pull(d_f) %>%
+    prepend('DF') %>%
+    nchar %>%
+    max
+  w11 <- 10
+  w12 <- sum(w9, w10, w11, 8)
+
+  j <- x %>%
+    use_series(test_result)
+
+  cat(fc('Likelihood Ratio Test', w12), '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc('Chi-Square', w9), fs(), fc('DF', w10), fs(), fc('Pr > ChiSq', w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
+  cat(fc(format(round(j$lr_ratio, 4), nsmall = 4), w9), fs(), fc(j$d_f, w10),
+      fs(), fc(format(round(j$p_value, 4), nsmall = 4), w11),
+      '\n')
+  cat(rep("-", w12), sep = "", '\n')
+
+}
+
+
+print_blr_confusion_matrix <- function(x) {
+
+  r1 <- x %>%
+    use_series(confusion_matrix) %>%
+    rownames
+
+
+  w1 <- r1 %>%
+    prepend('Observed') %>%
+    nchar %>%
+    max
+
+  r2 <- x %>%
+    use_series(confusion_matrix) %>%
+    `[`(, 1) %>%
+    unname
+
+
+  w2 <- r2 %>%
+    prepend('0') %>%
+    nchar %>%
+    max
+
+  r3 <- x %>%
+    use_series(confusion_matrix) %>%
+    `[`(, 2) %>%
+    unname
+
+
+  w3 <- r3 %>%
+    prepend('1') %>%
+    nchar %>%
+    max
+
+  w <- sum(w1, w2, w3, 16)
+  w16 <- sum(w2, w3, 8)
+
+  cat(f16(), fc('Predicted', w16), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  cat(fc('Observed', w1), fs3(), fg('0', w2), fs3(), fg('1', w3), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  for (i in seq_len(2)) {
+    cat(fc(r1[i], w1), fs3(), fg(r2[i], w2), fs3(), fg(r3[i], w3), '\n')
+  }
+  cat(rep("-", w), sep = "", '\n\n')
+  cat(fc('Model Performance Measures', 30), '\n')
+  cat(rep("-", 30), sep = "", '\n')
+  cat('Accuracy               ', format(round(x$accuracy, 4), nsmall = 4),
+      '\nPrecision              ', format(round(x$precision, 4), nsmall = 4),
+      '\nSensitivity            ', format(round(x$sensitivity, 4), nsmall = 4),
+      '\nSpecificity            ', format(round(x$specificity, 4), nsmall = 4),
+      '\nRecall                 ', format(round(x$recall, 4), nsmall = 4),
+      '\nPrevalence             ', format(round(x$prevalence, 4), nsmall = 4),
+      '\nDetection Rate         ', format(round(x$detection_rate, 4), nsmall = 4),
+      '\nDetection Prevalence   ', format(round(x$detection_prevalence, 4), nsmall = 4),
+      '\nBalanced Accuracy      ', format(round(x$balanced_accuracy, 4), nsmall = 4),
+      '\nPos Predicted Value    ', format(round(x$pos_pred_value, 4), nsmall = 4),
+      '\nNeg Predicted Value    ', format(round(x$neg_pred_value, 4), nsmall = 4))
+
+}
+
+
+print_blr_woe_iv <- function(x) {
+
+  y1 <- x %>%
+    use_series(woe_iv_table) %>%
+    map(nchar) %>%
+    map_int(max)
+
+  y2 <- x %>%
+    use_series(woe_iv_table) %>%
+    names %>%
+    nchar
+
+  w <- map2_int(y1, y2, max)
+  wsum <- sum(w, 24)
+
+  rnames <- x %>%
+    use_series(woe_iv_table) %>%
+    names
+
+  woe_iv <- x %>%
+    use_series(woe_iv_table)
+
+  c1 <- woe_iv %>%
+    pull(rnames[1]) %>%
+    prepend(rnames[1])
+
+  c2 <- woe_iv %>%
+    pull(rnames[2]) %>%
+    prepend(rnames[2])
+
+  c3 <- woe_iv %>%
+    pull(rnames[3]) %>%
+    prepend(rnames[3])
+
+  c4 <- woe_iv %>%
+    pull(rnames[4]) %>%
+    prepend(rnames[4])
+
+  c5 <- woe_iv %>%
+    pull(rnames[5]) %>%
+    prepend(rnames[5])
+
+  c6 <- woe_iv %>%
+    pull(rnames[6]) %>%
+    prepend(rnames[6])
+
+  c7 <- woe_iv %>%
+    pull(rnames[7]) %>%
+    prepend(rnames[7])
+
+  clen <- length(c1)
+
+  cat(fc('Weight of Evidence', wsum), '\n')
+  cat(rep("-", wsum), sep = "", '\n')
+  for (i in seq_len(clen)) {
+    cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
+        fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
+        fc(c5[i], w[5]), fs(), fc(c6[i], w[6]), fs(),
+        fc(c7[i], w[7]), '\n')
+    if (i == 1) {
+      cat(rep("-", wsum), sep = "", '\n')
+    }
+  }
+  cat(rep("-", wsum), sep = "", '\n\n')
+
+  l1 <- c('Variable', x$var_name) %>%
+    nchar %>%
+    max
+  l2 <- 17
+  lsum <- sum(l1, l2, 4)
+
+  ivalue <- woe_iv %>%
+    pull(iv) %>%
+    sum
+
+  cat(fc('Information Value', lsum), '\n')
+  cat(rep("-", lsum), sep = "", '\n')
+  cat(fc('Variable', l1), fs(), fc('Information Value', l2), '\n')
+  cat(rep("-", lsum), sep = "", '\n')
+  cat(fc(x$var_name, l1), fs(), fc(ivalue, l2), '\n')
+  cat(rep("-", lsum), sep = "", '\n')
+
+}

@@ -110,33 +110,6 @@ blr_lr_test.default <- function(full_model, reduced_model) {
 #'
 print.blr_lr_test <- function(x, ...) {
 
-  w9 <- x %>%
-    use_series(test_result) %>%
-    pull(lr_ratio) %>%
-    round(4) %>%
-    format(nsmall = 4) %>%
-    prepend('Chi-Square') %>%
-    nchar %>%
-    max
-  w10 <- x %>%
-    use_series(test_result) %>%
-    pull(d_f) %>%
-    prepend('DF') %>%
-    nchar %>%
-    max
-  w11 <- 10
-  w12 <- sum(w9, w10, w11, 8)
+  print_blr_lr_test(x)
 
-  j <- x %>%
-    use_series(test_result)
-
-  cat(fc('Likelihood Ratio Test', w12), '\n')
-  cat(rep("-", w12), sep = "", '\n')
-  cat(fc('Chi-Square', w9), fs(), fc('DF', w10), fs(), fc('Pr > ChiSq', w11),
-      '\n')
-  cat(rep("-", w12), sep = "", '\n')
-  cat(fc(format(round(j$lr_ratio, 4), nsmall = 4), w9), fs(), fc(j$d_f, w10),
-      fs(), fc(format(round(j$p_value, 4), nsmall = 4), w11),
-      '\n')
-  cat(rep("-", w12), sep = "", '\n')
 }

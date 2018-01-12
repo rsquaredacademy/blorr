@@ -67,27 +67,8 @@ blr_bivariate_analysis.default <- function(data, response, predictor) {
 #'
 print.blr_bivariate_analysis <- function(x, ...) {
 
-  w1 <- max(nchar(c('Variable', x$variable)))
-  w2 <- max(nchar(c('Information Value', x$iv)))
-  w3 <- max(nchar(c('LR Chi Square', format(round(x$likelihood_ratio, 4),
-                                          nsmall = 4))))
-  w4 <- max(nchar(c('LR DF', x$df)))
-  w5 <- max(nchar(c('LR p-value', format(round(x$pval, 4),
-                                       nsmall = 4))))
-  w <- sum(w1, w2, w3, w4, w5, 16)
-
-  cat(fc('Bivariate Analysis', w), '\n')
-  cat(rep("-", w), sep = "", '\n')
-  cat(fc('Variable', w1), fs(), fc('Information Value', w2), fs(),
-      fc('LR Chi Square', w3),fs(), fc('LR DF', w4), fs(),
-      fc('LR p-value', w5), '\n')
-  cat(rep("-", w), sep = "", '\n')
-  cat(fc(x$variable, w1), fs(), fc(x$iv, w2), fs(),
-      fc(format(round(x$likelihood_ratio, 4), nsmall = 4), w3), fs(),
-      fc(x$df, w4), fs(),
-      fc(format(round(x$pval, 4), nsmall = 4), w5), '\n')
-  cat(rep("-", w), sep = "", '\n')
-
+  print_bivariate_analysis(x)
+  
 }
 
 #' @title Response by Segments
@@ -130,49 +111,7 @@ blr_segment.default <- function(data, response, predictor) {
 #'
 print.blr_segment <- function(x, ...) {
 
-  y1 <- x %>%
-    use_series(segment_data) %>%
-    map(as.character) %>%
-    map(nchar) %>%
-    map_int(max) %>%
-    unname
-
-  y2 <- x %>%
-    use_series(segment_data) %>%
-    names %>%
-    nchar
-
-  w <- map2_int(y1, y2, max)
-  wsum <- sum(w, 11)
-
-  rnames <- x %>%
-    use_series(segment_data) %>%
-    names
-
-  dtable <- x %>%
-    use_series(segment_data)
-
-  c1 <- dtable %>%
-    pull(rnames[1]) %>%
-    prepend(rnames[1])
-
-  c2 <- dtable %>%
-    pull(rnames[2]) %>%
-    round(2) %>%
-    format(nsamll = 2) %>%
-    prepend(rnames[2])
-
-  clen <- length(c1)
-
-  cat(fc('Event By Attributes', wsum), '\n')
-  cat(rep("-", wsum), sep = "", '\n')
-  for (i in seq_len(clen)) {
-    cat(fc(c1[i], w[1]), fs4(), fc(c2[i], w[2]), '\n')
-    if (i == 1) {
-      cat(rep("-", wsum), sep = "", '\n')
-    }
-  }
-  cat(rep("-", wsum), sep = "", '\n\n')
+  print_blr_segment(x)
 
 }
 
@@ -277,67 +216,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
 #'
 print.blr_segment_dist <- function(x, ...) {
 
-  y1 <- x %>%
-    use_series(dist_table) %>%
-    map(as.character) %>%
-    map(nchar) %>%
-    map_int(max) %>%
-    unname
-
-  y2 <- x %>%
-    use_series(dist_table) %>%
-    names %>%
-    nchar
-
-  w <- map2_int(y1, y2, max)
-  wsum <- sum(w, 16)
-
-  rnames <- x %>%
-    use_series(dist_table) %>%
-    names
-
-  dtable <- x %>%
-    use_series(dist_table)
-
-  c1 <- dtable %>%
-    pull(rnames[1]) %>%
-    prepend(x %>%
-              use_series(var_name))
-
-  c2 <- dtable %>%
-    pull(rnames[2]) %>%
-    prepend(rnames[2])
-
-  c3 <- dtable %>%
-    pull(rnames[3]) %>%
-    prepend(rnames[3])
-
-  c4 <- dtable %>%
-    pull(rnames[4]) %>%
-    round(2) %>%
-    format(nsamll = 2) %>%
-    prepend(rnames[4])
-
-  c5 <- dtable %>%
-    pull(rnames[5]) %>%
-    round(2) %>%
-    format(nsamll = 2) %>%
-    prepend(rnames[5])
-
-  clen <- length(c1)
-
-  cat(fc('Event Segmentation', wsum), '\n')
-  cat(rep("-", wsum), sep = "", '\n')
-  for (i in seq_len(clen)) {
-    cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
-        fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
-        fc(c5[i], w[5]), '\n')
-    if (i == 1) {
-      cat(rep("-", wsum), sep = "", '\n')
-    }
-  }
-  cat(rep("-", wsum), sep = "", '\n\n')
-
+  print_blr_segment_dist(x)
 
 }
 
