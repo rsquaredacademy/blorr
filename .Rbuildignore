@@ -10,3 +10,4 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^docs$
+^hex_blorr\.png$
