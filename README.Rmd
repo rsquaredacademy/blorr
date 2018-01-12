@@ -75,6 +75,22 @@ blr_model_fit_stats(model)
 
 <br>
 
+#### Confusion Matrix
+
+```{r conf}
+blr_confusion_matrix(model)
+```
+
+<br>
+
+#### Hosmer Lemeshow Test
+
+```{r hoslem}
+blr_hosmer_lemeshow_test(model)
+```
+
+<br>
+
 #### Gains Table
 
 ```{r gains}
