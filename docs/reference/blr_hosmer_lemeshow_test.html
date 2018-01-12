@@ -128,32 +128,29 @@
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>blorr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/blorr/topics/hsb2'>hsb2</a></span>,
              <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_hosmer_lemeshow_test</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; $partition_table
-#&gt; # A tibble: 10 x 9
-#&gt;    group     n `1s_observed` `0s_observed` avg_prob `1s_e~ `0s_~ posit~ negati~
-#&gt;    &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-#&gt;  1  1.00    20          0            20.0   0.00791  0.158 19.8  0.158  0.00126
-#&gt;  2  2.00    20          0            20.0   0.0265   0.531 19.5  0.531  0.0145 
-#&gt;  3  3.00    20          2.00         18.0   0.0494   0.989 19.0  1.03   0.0538 
-#&gt;  4  4.00    20          1.00         19.0   0.0819   1.64  18.4  0.249  0.0222 
-#&gt;  5  5.00    21          3.00         18.0   0.129    2.72  18.3  0.0291 0.00433
-#&gt;  6  6.00    19          3.00         16.0   0.213    4.05  14.9  0.274  0.0744 
-#&gt;  7  7.00    20          7.00         13.0   0.325    6.50  13.5  0.0383 0.0185 
-#&gt;  8  8.00    20         10.0          10.0   0.445    8.90  11.1  0.136  0.109  
-#&gt;  9  9.00    20         13.0           7.00  0.574   11.5    8.51 0.200  0.269  
-#&gt; 10 10.0     20         14.0           6.00  0.801   16.0    3.98 0.255  1.03   
+<span class='fu'>blr_hosmer_lemeshow_test</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;            Partition for the Hosmer &amp; Lemeshow Test            
+#&gt; --------------------------------------------------------------
+#&gt;                         def = 1                 def = 0        
+#&gt; Group    Total    Observed    Expected    Observed    Expected 
+#&gt; --------------------------------------------------------------
+#&gt;   1       20         0          0.16         20        19.84   
+#&gt;   2       20         0          0.53         20        19.47   
+#&gt;   3       20         2          0.99         18        19.01   
+#&gt;   4       20         1          1.64         19        18.36   
+#&gt;   5       21         3          2.72         18        18.28   
+#&gt;   6       19         3          4.05         16        14.95   
+#&gt;   7       20         7          6.50         13        13.50   
+#&gt;   8       20         10         8.90         10        11.10   
+#&gt;   9       20         13        11.49         7          8.51   
+#&gt;  10       20         14        16.02         6          3.98   
+#&gt; --------------------------------------------------------------
 #&gt; 
-#&gt; $chisq_stat
-#&gt; [1] 4.499806
-#&gt; 
-#&gt; $df
-#&gt; [1] 8
-#&gt; 
-#&gt; $pvalue
-#&gt; [1] 0.8094525
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "blr_hosmer_lemeshow_test"</div></pre>
+#&gt;      Goodness of Fit Test      
+#&gt; ------------------------------
+#&gt; Chi-Square    DF    Pr &gt; ChiSq 
+#&gt; ------------------------------
+#&gt;   4.4998      8       0.8095   
+#&gt; ------------------------------</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

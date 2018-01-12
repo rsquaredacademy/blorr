@@ -81,7 +81,7 @@
       <h1>Introduction</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-05</h4>
+            <h4 class="date">2018-01-12</h4>
           </div>
 
     
@@ -96,31 +96,30 @@
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 5</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;   variable    iv likelihood_ratio    df     pval</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 1 prog     0.440             16.1  2.00 0.000312</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;                          Bivariate Analysis                           </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   prog            0.44              16.1450         2        3e-04    </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; ---------------------------------------------------------------------</span></a></code></pre></div>
 </div>
 <div id="response-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#response-distribution" class="anchor"></a>Response Distribution</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment.html">blr_segment</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 2</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   prog    `1s%`</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;   &lt;fctr&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1 1      0.0400</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2 2      0.200 </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3 3      0.0300</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Event By Attributes </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; -------------------</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; prog           1s%  </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; -------------------</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  1             0.04 </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  2             0.20 </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  3             0.03 </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; -------------------</span></a></code></pre></div>
 </div>
 <div id="response-distribution-by-multiple-segments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#response-distribution-by-multiple-segments" class="anchor"></a>Response Distribution by Multiple Segments</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, female)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;     female</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; prog     0     1</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    1 0.010 0.025</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;    2 0.075 0.125</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;    3 0.005 0.025</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, female)</a></code></pre></div>
 </div>
 <div id="response-distribution-by-segments" class="section level2">
 <h2 class="hasAnchor">
@@ -129,12 +128,14 @@
 <h4 class="hasAnchor">
 <a href="#introduction-1" class="anchor"></a>Introduction</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 3 x 5</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   variable     n  `1s`  `n%`  `1s%`</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;fctr&gt;   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 1           45  7.00 0.220 0.0400</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 2 2          105 40.0  0.520 0.200 </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 3 3           50  6.00 0.250 0.0300</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;          Event Segmentation           </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; -------------------------------------</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   prog       n     1s     n%     1s%  </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; -------------------------------------</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;    1        45     7     0.22    0.04 </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;    2        105    40    0.52    0.20 </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;    3        50     6     0.25    0.03 </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; -------------------------------------</span></a></code></pre></div>
 </div>
 <div id="plot" class="section level4">
 <h4 class="hasAnchor">
@@ -151,11 +152,20 @@
 <h4 class="hasAnchor">
 <a href="#introduction-2" class="anchor"></a>Introduction</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, female, honcomp)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 7</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;   levels   `0`   `1` dist_1 dist_0    woe     iv</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1 0         73    18  0.340  0.500 -0.390 0.0600</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2 1         74    35  0.660  0.500  0.280 0.0400</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist     woe      iv  </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   0          73          18         0.5       0.34      -0.39    0.06 </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;   1          74          35         0.5       0.66      0.28     0.04 </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;       Information Value       </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Variable    Information Value </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  female            0.1        </span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
 </div>
 <div id="plot-1" class="section level4">
 <h4 class="hasAnchor">
@@ -277,78 +287,55 @@
 <h3 class="hasAnchor">
 <a href="#confusion-matrix" class="anchor"></a>Confusion Matrix</h3>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span>(model, <span class="dt">cutoff =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; $confusion_matrix</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt;        predicted</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; honcomp   0   1</span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;       0 135  12</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;       1  26  27</span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; $accuracy</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt; [1] 0.81</span></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; $precision</span></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; [1] 0.6923077</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; $sensitivity</span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; [1] 0.509434</span></a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; $specificity</span></a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt; [1] 0.9183673</span></a>
-<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; $recall</span></a>
-<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="co">#&gt; [1] 0.509434</span></a>
-<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-23" data-line-number="23"><span class="co">#&gt; $prevalence</span></a>
-<a class="sourceLine" id="cb15-24" data-line-number="24"><span class="co">#&gt; [1] 0.265</span></a>
-<a class="sourceLine" id="cb15-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-26" data-line-number="26"><span class="co">#&gt; $detection_rate</span></a>
-<a class="sourceLine" id="cb15-27" data-line-number="27"><span class="co">#&gt; [1] 0.135</span></a>
-<a class="sourceLine" id="cb15-28" data-line-number="28"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-29" data-line-number="29"><span class="co">#&gt; $detection_prevalence</span></a>
-<a class="sourceLine" id="cb15-30" data-line-number="30"><span class="co">#&gt; [1] 0.195</span></a>
-<a class="sourceLine" id="cb15-31" data-line-number="31"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-32" data-line-number="32"><span class="co">#&gt; $balanced_accuracy</span></a>
-<a class="sourceLine" id="cb15-33" data-line-number="33"><span class="co">#&gt; [1] 0.7139007</span></a>
-<a class="sourceLine" id="cb15-34" data-line-number="34"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-35" data-line-number="35"><span class="co">#&gt; $pos_pred_value</span></a>
-<a class="sourceLine" id="cb15-36" data-line-number="36"><span class="co">#&gt; [1] 0.6923077</span></a>
-<a class="sourceLine" id="cb15-37" data-line-number="37"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-38" data-line-number="38"><span class="co">#&gt; $neg_pred_value</span></a>
-<a class="sourceLine" id="cb15-39" data-line-number="39"><span class="co">#&gt; [1] 0.8385093</span></a>
-<a class="sourceLine" id="cb15-40" data-line-number="40"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-41" data-line-number="41"><span class="co">#&gt; attr(,"class")</span></a>
-<a class="sourceLine" id="cb15-42" data-line-number="42"><span class="co">#&gt; [1] "blr_confusion_matrix"</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt;                    Predicted   </span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; Observed          0         1 </span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;    0            135        12 </span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt;    1             26        27 </span></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;   Model Performance Measures   </span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; Accuracy                0.8100 </span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; Precision               0.6923 </span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; Sensitivity             0.5094 </span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; Specificity             0.9184 </span></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt; Recall                  0.5094 </span></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; Prevalence              0.2650 </span></a>
+<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt; Detection Rate          0.1350 </span></a>
+<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="co">#&gt; Detection Prevalence    0.1950 </span></a>
+<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; Balanced Accuracy       0.7139 </span></a>
+<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="co">#&gt; Pos Predicted Value     0.6923 </span></a>
+<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="co">#&gt; Neg Predicted Value     0.8385</span></a></code></pre></div>
 </div>
 <div id="hosmer-lemeshow-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#hosmer-lemeshow-test" class="anchor"></a>Hosmer Lemeshow Test</h3>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/blr_hosmer_lemeshow_test.html">blr_hosmer_lemeshow_test</a></span>(model)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; $partition_table</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; # A tibble: 10 x 9</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;    group     n `1s_observed` `0s_ob~ avg_pr~ `1s_ex~ `0s_e~ posit~ negati~</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt;    &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt;  1  1.00    20          0      20.0  0.00791   0.158  19.8  0.158  0.00126</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;  2  2.00    20          0      20.0  0.0265    0.531  19.5  0.531  0.0145 </span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;  3  3.00    20          2.00   18.0  0.0494    0.989  19.0  1.03   0.0538 </span></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt;  4  4.00    20          1.00   19.0  0.0819    1.64   18.4  0.249  0.0222 </span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;  5  5.00    21          3.00   18.0  0.129     2.72   18.3  0.0291 0.00433</span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt;  6  6.00    19          3.00   16.0  0.213     4.05   14.9  0.274  0.0744 </span></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt;  7  7.00    20          7.00   13.0  0.325     6.50   13.5  0.0383 0.0185 </span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;  8  8.00    20         10.0    10.0  0.445     8.90   11.1  0.136  0.109  </span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;  9  9.00    20         13.0     7.00 0.574    11.5     8.51 0.200  0.269  </span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 10 10.0     20         14.0     6.00 0.801    16.0     3.98 0.255  1.03   </span></a>
-<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="co">#&gt; $chisq_stat</span></a>
-<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="co">#&gt; [1] 4.499806</span></a>
-<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="co">#&gt; $df</span></a>
-<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="co">#&gt; [1] 8</span></a>
-<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co">#&gt; $pvalue</span></a>
-<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="co">#&gt; [1] 0.8094525</span></a>
-<a class="sourceLine" id="cb16-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb16-26" data-line-number="26"><span class="co">#&gt; attr(,"class")</span></a>
-<a class="sourceLine" id="cb16-27" data-line-number="27"><span class="co">#&gt; [1] "blr_hosmer_lemeshow_test"</span></a></code></pre></div>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt;            Partition for the Hosmer &amp; Lemeshow Test            </span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;                         def = 1                 def = 0        </span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; Group    Total    Observed    Expected    Observed    Expected </span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;   1       20         0          0.16         20        19.84   </span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;   2       20         0          0.53         20        19.47   </span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt;   3       20         2          0.99         18        19.01   </span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;   4       20         1          1.64         19        18.36   </span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt;   5       21         3          2.72         18        18.28   </span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt;   6       19         3          4.05         16        14.95   </span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;   7       20         7          6.50         13        13.50   </span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;   8       20         10         8.90         10        11.10   </span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt;   9       20         13        11.49         7          8.51   </span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt;  10       20         14        16.02         6          3.98   </span></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co">#&gt;      Goodness of Fit Test      </span></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="co">#&gt; Chi-Square    DF    Pr &gt; ChiSq </span></a>
+<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co">#&gt;   4.4998      8       0.8095   </span></a>
+<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="co">#&gt; ------------------------------</span></a></code></pre></div>
 </div>
 </div>
 </div>

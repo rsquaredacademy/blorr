@@ -183,48 +183,104 @@
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a></code></pre></div>
 <p><br></p>
 </div>
+<div id="confusion-matrix" class="section level4">
+<h4 class="hasAnchor">
+<a href="#confusion-matrix" class="anchor"></a>Confusion Matrix</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span>(model)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt;                    Predicted   </span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Observed          0         1 </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;    0            135        12 </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;    1             26        27 </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;   Model Performance Measures   </span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; Accuracy                0.8100 </span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; Precision               0.6923 </span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; Sensitivity             0.5094 </span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; Specificity             0.9184 </span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; Recall                  0.5094 </span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; Prevalence              0.2650 </span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; Detection Rate          0.1350 </span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; Detection Prevalence    0.1950 </span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; Balanced Accuracy       0.7139 </span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; Pos Predicted Value     0.6923 </span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; Neg Predicted Value     0.8385</span></a></code></pre></div>
+<p><br></p>
+</div>
+<div id="hosmer-lemeshow-test" class="section level4">
+<h4 class="hasAnchor">
+<a href="#hosmer-lemeshow-test" class="anchor"></a>Hosmer Lemeshow Test</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/blr_hosmer_lemeshow_test.html">blr_hosmer_lemeshow_test</a></span>(model)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;            Partition for the Hosmer &amp; Lemeshow Test            </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;                         def = 1                 def = 0        </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Group    Total    Observed    Expected    Observed    Expected </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;   1       20         0          0.16         20        19.84   </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   2       20         0          0.53         20        19.47   </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;   3       20         2          0.99         18        19.01   </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   4       20         1          1.64         19        18.36   </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;   5       21         3          2.72         18        18.28   </span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;   6       19         3          4.05         16        14.95   </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;   7       20         7          6.50         13        13.50   </span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;   8       20         10         8.90         10        11.10   </span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;   9       20         13        11.49         7          8.51   </span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  10       20         14        16.02         6          3.98   </span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; --------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;      Goodness of Fit Test      </span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; Chi-Square    DF    Pr &gt; ChiSq </span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; ------------------------------</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt;   4.4998      8       0.8095   </span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; ------------------------------</span></a></code></pre></div>
+<p><br></p>
+</div>
 <div id="gains-table" class="section level4">
 <h4 class="hasAnchor">
 <a href="#gains-table" class="anchor"></a>Gains Table</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; 10     10    20  0    20.0    0    53.0   0   147     0      100       0  </span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: accuracy &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 10     10    20  0    20.0    0    53.0   0   147     0      100       0  </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: accuracy &lt;dbl&gt;</span></a></code></pre></div>
 <p><br></p>
 </div>
 <div id="roc-curve" class="section level4">
 <h4 class="hasAnchor">
 <a href="#roc-curve" class="anchor"></a>ROC Curve</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
 <p><img src="README-roc-1.png" width="672"></p>
 <p><br></p>
 </div>
 <div id="ks-chart" class="section level4">
 <h4 class="hasAnchor">
 <a href="#ks-chart" class="anchor"></a>KS Chart</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
 <p><img src="README-kschart-1.png" width="672"></p>
 <p><br></p>
 </div>
 <div id="lorenz-curve" class="section level4">
 <h4 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h4>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
 <p><img src="README-unnamed-chunk-2-1.png" width="672"></p>
 <p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>

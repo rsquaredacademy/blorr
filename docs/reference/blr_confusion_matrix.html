@@ -108,7 +108,7 @@
     <p>Confusion matrix</p>
     
 
-    <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='no'>cutoff</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -136,47 +136,27 @@
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; $confusion_matrix
-#&gt;        predicted
-#&gt; honcomp   0   1
-#&gt;       0 125  22
-#&gt;       1  16  37
+<span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt;                    Predicted   
+#&gt; -----------------------------
+#&gt; Observed          0         1 
+#&gt; -----------------------------
+#&gt;    0            125        22 
+#&gt;    1             16        37 
+#&gt; -----------------------------
 #&gt; 
-#&gt; $accuracy
-#&gt; [1] 0.81
-#&gt; 
-#&gt; $precision
-#&gt; [1] 0.6271186
-#&gt; 
-#&gt; $sensitivity
-#&gt; [1] 0.6981132
-#&gt; 
-#&gt; $specificity
-#&gt; [1] 0.8503401
-#&gt; 
-#&gt; $recall
-#&gt; [1] 0.6981132
-#&gt; 
-#&gt; $prevalence
-#&gt; [1] 0.265
-#&gt; 
-#&gt; $detection_rate
-#&gt; [1] 0.185
-#&gt; 
-#&gt; $detection_prevalence
-#&gt; [1] 0.295
-#&gt; 
-#&gt; $balanced_accuracy
-#&gt; [1] 0.7742267
-#&gt; 
-#&gt; $pos_pred_value
-#&gt; [1] 0.6271186
-#&gt; 
-#&gt; $neg_pred_value
-#&gt; [1] 0.8865248
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "blr_confusion_matrix"</div></pre>
+#&gt;   Model Performance Measures   
+#&gt; ------------------------------
+#&gt; Accuracy                0.8100 
+#&gt; Precision               0.6271 
+#&gt; Sensitivity             0.6981 
+#&gt; Specificity             0.8503 
+#&gt; Recall                  0.6981 
+#&gt; Prevalence              0.2650 
+#&gt; Detection Rate          0.1850 
+#&gt; Detection Prevalence    0.2950 
+#&gt; Balanced Accuracy       0.7742 
+#&gt; Pos Predicted Value     0.6271 
+#&gt; Neg Predicted Value     0.8865</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

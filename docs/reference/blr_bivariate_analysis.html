@@ -108,7 +108,10 @@
     <p>Bivariate analysis</p>
     
 
-    <pre class="usage"><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -133,10 +136,12 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 5
-#&gt;   variable    iv likelihood_ratio    df     pval
-#&gt;   &lt;chr&gt;    &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 prog     0.440             16.1  2.00 0.000312</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)</div><div class='output co'>#&gt;                          Bivariate Analysis                           
+#&gt; ---------------------------------------------------------------------
+#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value 
+#&gt; ---------------------------------------------------------------------
+#&gt;   prog            0.44              16.1450         2        3e-04    
+#&gt; ---------------------------------------------------------------------</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
