@@ -76,7 +76,6 @@ blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL) {
 
 }
 
-#' @rdname blr_confusion_matrix
 #' @export
 #'
 print.blr_confusion_matrix <- function(x, ...) {

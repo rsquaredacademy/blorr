@@ -76,8 +76,8 @@ print.blr_woe_iv <- function(x, ...) {
 
 }
 
-#' @export
 #' @rdname blr_woe_iv
+#' @export
 #'
 plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
                             yaxis_title = 'WoE',

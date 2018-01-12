@@ -3,14 +3,11 @@
 \name{blr_bivariate_analysis}
 \alias{blr_bivariate_analysis}
 \alias{blr_bivariate_analysis.default}
-\alias{print.blr_bivariate_analysis}
 \title{Bivariate Analysis}
 \usage{
 blr_bivariate_analysis(data, response, predictor)
 
 \method{blr_bivariate_analysis}{default}(data, response, predictor)
-
-\method{print}{blr_bivariate_analysis}(x, ...)
 }
 \arguments{
 \item{data}{a tibble}

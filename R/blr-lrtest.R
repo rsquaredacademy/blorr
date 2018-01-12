@@ -104,8 +104,6 @@ blr_lr_test.default <- function(full_model, reduced_model) {
 
 }
 
-
-#' @rdname blr_lr_test
 #' @export
 #'
 print.blr_lr_test <- function(x, ...) {

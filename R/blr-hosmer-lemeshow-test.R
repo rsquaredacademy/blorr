@@ -77,7 +77,6 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
 
 }
 
-#' @rdname blr_hosmer_lemeshow_test
 #' @export
 #'
 print.blr_hosmer_lemeshow_test <- function(x, ...) {

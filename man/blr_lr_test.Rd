@@ -3,14 +3,11 @@
 \name{blr_lr_test}
 \alias{blr_lr_test}
 \alias{blr_lr_test.default}
-\alias{print.blr_lr_test}
 \title{Likelihood Ratio Test}
 \usage{
 blr_lr_test(full_model, reduced_model)
 
 \method{blr_lr_test}{default}(full_model, reduced_model)
-
-\method{print}{blr_lr_test}(x, ...)
 }
 \arguments{
 \item{full_model}{an object of class \code{glm}; model with all predictors}

@@ -62,7 +62,6 @@ blr_bivariate_analysis.default <- function(data, response, predictor) {
 
 }
 
-#' @rdname blr_bivariate_analysis
 #' @export
 #'
 print.blr_bivariate_analysis <- function(x, ...) {
@@ -106,7 +105,6 @@ blr_segment.default <- function(data, response, predictor) {
 
 }
 
-#' @rdname blr_segment
 #' @export
 #'
 print.blr_segment <- function(x, ...) {
@@ -151,7 +149,7 @@ blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
   return(result)
 }
 
-#' @rdname blr_twoway_segment
+
 #' @export
 #'
 print.blr_twoway_segment <- function(x, ...) {
@@ -220,8 +218,8 @@ print.blr_segment_dist <- function(x, ...) {
 
 }
 
-#' @export
 #' @rdname blr_segment_dist
+#' @export
 #'
 plot.blr_segment_dist <- function(x, title = NA, xaxis_title = 'Levels',
                                   yaxis_title = 'Sample Distribution',

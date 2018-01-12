@@ -3,14 +3,11 @@
 \name{blr_segment}
 \alias{blr_segment}
 \alias{blr_segment.default}
-\alias{print.blr_segment}
 \title{Response by Segments}
 \usage{
 blr_segment(data, response, predictor)
 
 \method{blr_segment}{default}(data, response, predictor)
-
-\method{print}{blr_segment}(x, ...)
 }
 \arguments{
 \item{data}{a tibble}
