@@ -2,9 +2,14 @@
 % Please edit documentation in R/blr-bivariate-analysis.R
 \name{blr_segment_dist}
 \alias{blr_segment_dist}
+\alias{plot.blr_segment_dist}
 \title{Response Distribution by Segments}
 \usage{
 blr_segment_dist(data, response, predictor)
+
+\method{plot}{blr_segment_dist}(x, title = NA, xaxis_title = "Levels",
+  yaxis_title = "Sample Distribution", sec_yaxis_title = "1s Distribution",
+  bar_color = "blue", line_color = "red", ...)
 }
 \arguments{
 \item{data}{a tibble}
