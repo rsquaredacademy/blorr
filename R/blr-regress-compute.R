@@ -29,8 +29,7 @@ blr_reg_comp <- function(formula, data) {
 
   # concordant and discordant
   blr_cord <- blr_pairs(model)
-
-
+  
   result <- list(
     dataname = dataname, resp_name = resp_name, n_obs = n_obs,
     converge = converge, resid_df = resid_df, mod_df = mod_df,
