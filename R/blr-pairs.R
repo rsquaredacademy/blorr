@@ -1,3 +1,5 @@
+#' @useDynLib blorr
+#' @importFrom Rcpp sourceCpp
 #' @importFrom dplyr filter
 #' @title Concordant & Discordant Pairs
 #' @description Association of predicted probabilities and observed responses
@@ -19,39 +21,22 @@ blr_pairs <- function(model) {
     use_series(fitted.values)
 
   pairs <- tibble(response = resp, fit_val = fit)
+  n <- nrow(pairs)
 
   p_ones <- pairs %>%
-    filter(response == 1)
+    filter(response == 1) %>%
+    pull(fit_val)
+
   p_zeros <- pairs %>%
-    filter(response == 0)
+    filter(response == 0) %>%
+    pull(fit_val)
 
-  somers_1 <- p_zeros %>%
-    pull(1)
+  compute_pairs <- blr_pairs_cpp(p_ones, p_zeros)
 
-  n1 <- nrow(p_ones)
-  n2 <- nrow(p_zeros)
-  n <- n1 + n2
-
-  pairs_count <- 0
-  concordant <- 0
-  discordant <- 0
-  ties <- 0
-
-  for (i in seq_len(n1)) {
-    for (j in seq_len(n2)) {
-
-      pairs_count <- pairs_count + 1
-
-      if (p_ones[i, 2] > p_zeros[j, 2]) {
-        concordant <- concordant + 1
-      } else if (p_ones[i, 2] == p_zeros[j, 2]) {
-        ties <- ties + 1
-      } else {
-        discordant <- discordant + 1
-      }
-
-    }
-  }
+  pairs_count <- compute_pairs[["pairs"]]
+  concordant <- compute_pairs[["concordant"]]
+  discordant <- compute_pairs[["discordant"]]
+  ties <- compute_pairs[["ties"]]
 
   concordance <- concordant / pairs_count
   discordance <- discordant / pairs_count
