@@ -207,3 +207,87 @@ blr_plot_leverage <- function(model, point_color = 'blue',
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
+
+
+#' @title Residual Diagnostics
+#' @description Diagnostics for confidence interval displacement and
+#' detecting ill fitted observations
+#' @param model an object of class \code{glm}
+#' @return C, CBAR, DIFDEV and DIFCHISQ
+#' @examples
+#' #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_residual_diagnostics(model)
+#'
+#' @export
+#'
+blr_residual_diagnostics <- function(model) {
+
+  hat_val <- model %>%
+    hatvalues
+
+  res_val <- model %>%
+    residuals(type = "pearson") %>%
+    raise_to_power(2)
+
+  num <- res_val * hat_val
+
+  den <- 1 %>%
+    subtract(hat_val)
+
+  c <- num %>%
+    divide_by(den %>%
+                raise_to_power(2))
+
+  cbar <- num %>%
+    divide_by(den)
+
+  difdev <- model %>%
+    rstandard %>%
+    raise_to_power(2) %>%
+    divide_by(cbar)
+
+  difchisq <- cbar %>%
+    divide_by(hat_val)
+
+  result <- tibble(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
+  return(result)
+
+}
+
+
+#' @title CI Displacement C Plot
+#' @description Confidence interval displacement diagnostics C plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_diag_c(model)
+#'
+#' @export
+#'
+blr_plot_diag_c <- function(model, point_color = 'blue',
+                              title = 'CI Displacement C Plot',
+                              xaxis_title = 'id',
+                              yaxis_title = 'CI Displacement C') {
+
+  res_val <- model %>%
+    blr_residual_diagnostics %>%
+    pull(c)
+
+  id <- res_val %>%
+    length %>%
+    seq_len
+
+  tibble(id = id, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = id, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
