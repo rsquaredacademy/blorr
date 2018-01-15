@@ -103,3 +103,37 @@ blr_plot_deviance_fitted <- function(model, point_color = 'blue', line_color = '
     geom_hline(yintercept = 0, color = line_color)
 
 }
+
+#' @title Deviance Residual Values
+#' @description Deviance residuals plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_deviance_residual(model)
+#'
+#' @export
+#'
+blr_plot_deviance_residual <- function(model, point_color = 'blue',
+                                      title = 'Deviance Residuals Plot',
+                                      xaxis_title = 'id',
+                                      yaxis_title = 'Deviance Residuals') {
+
+  res_val <- model %>%
+    rstandard()
+
+  id <- res_val %>%
+    length %>%
+    seq_len
+
+  tibble(id = id, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = id, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
