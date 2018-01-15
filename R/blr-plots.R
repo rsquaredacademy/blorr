@@ -1,4 +1,5 @@
 #' @importFrom ggplot2 geom_hline
+#' @importFrom stats residuals rstandard hatvalues
 #' @title Residual vs Fitted Values Plot
 #' @description Residual vs fitted values plot
 #' @param model an object of class \code{glm}
@@ -168,6 +169,41 @@ blr_plot_leverage_fitted <- function(model, point_color = 'blue',
   tibble(fit = fit_val, resid = res_val) %>%
     ggplot() +
     geom_point(aes(x = fit, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
+
+
+#' @title Leverage Plot
+#' @description Leverage plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_leverage(model)
+#'
+#' @export
+#'
+blr_plot_leverage <- function(model, point_color = 'blue',
+                                       title = 'Leverage Plot',
+                                       xaxis_title = 'id',
+                                       yaxis_title = 'Leverage') {
+
+  res_val <- model %>%
+    hatvalues
+
+  id <- res_val %>%
+    length %>%
+    seq_len
+
+  tibble(id = id, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = id, y = resid), color = point_color) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
