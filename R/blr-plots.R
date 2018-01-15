@@ -329,7 +329,7 @@ blr_plot_diag_cbar <- function(model, point_color = 'blue',
 }
 
 
-#' @title Diff Chisquare Plot
+#' @title Delta Chisquare Plot
 #' @description Diagnostics for detecting ill fitted observations
 #' @param model an object of class \code{glm}
 #' @param point_color color of the points
@@ -345,13 +345,48 @@ blr_plot_diag_cbar <- function(model, point_color = 'blue',
 #' @export
 #'
 blr_plot_diag_difchisq <- function(model, point_color = 'blue',
-                               title = 'Diff Chisquare Plot',
+                               title = 'Delta Chisquare Plot',
                                xaxis_title = 'id',
-                               yaxis_title = 'Diff Chisquare') {
+                               yaxis_title = 'Delta Chisquare') {
 
   res_val <- model %>%
     blr_residual_diagnostics %>%
     pull(difchisq)
+
+  id <- res_val %>%
+    length %>%
+    seq_len
+
+  tibble(id = id, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = id, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
+
+#' @title Delta Deviance Plot
+#' @description Diagnostics for detecting ill fitted observations
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_diag_difdev(model)
+#'
+#' @export
+#'
+blr_plot_diag_difdev <- function(model, point_color = 'blue',
+                                   title = 'Delta Deviance Plot',
+                                   xaxis_title = 'id',
+                                   yaxis_title = 'Delta Deviance') {
+
+  res_val <- model %>%
+    blr_residual_diagnostics %>%
+    pull(difdev)
 
   id <- res_val %>%
     length %>%
