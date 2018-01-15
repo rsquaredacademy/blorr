@@ -91,10 +91,10 @@ blr_plot_deviance_fitted <- function(model, point_color = 'blue', line_color = '
                                      yaxis_title = 'Deviance Residual') {
 
   fit_val <- model %>%
-    rstandard
+    fitted.values
 
   res_val <- model %>%
-    residuals
+    rstandard
 
   tibble(fit = fit_val, resid = res_val) %>%
     ggplot() +
@@ -134,6 +134,40 @@ blr_plot_deviance_residual <- function(model, point_color = 'blue',
   tibble(id = id, resid = res_val) %>%
     ggplot() +
     geom_point(aes(x = id, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
+
+
+#' @title Leverage vs Fitted Values Plot
+#' @description Leverage vs fitted values plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_leverage_fitted(model)
+#'
+#' @export
+#'
+blr_plot_leverage_fitted <- function(model, point_color = 'blue',
+                                     title = 'Leverage vs Fitted Values',
+                                     xaxis_title = 'Fitted Values',
+                                     yaxis_title = 'Leverage') {
+
+  fit_val <- model %>%
+    fitted.values
+
+  res_val <- model %>%
+    hatvalues
+
+  tibble(fit = fit_val, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = fit, y = resid), color = point_color) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
