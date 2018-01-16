@@ -696,3 +696,35 @@ print_backward_elimination <- function(data) {
     cat(rep("-", w), sep = "", '\n\n')
 
 }
+
+
+print_stepwise_selection <- function(data) {
+
+  if (data$steps < 1) {
+    stop('No variables have been added to or removed from the model.')
+  }
+
+    # width
+    w1 <- max(nchar('Variable'), nchar(data$predictors))
+    w2 <- max(nchar('AIC'), nchar(format(round(data$aic, 3), nsmall = 3)))
+    w3 <- max(nchar('BIC'), nchar(format(round(data$bic, 3), nsmall = 3)))
+    w4 <- max(nchar('Deviance'), nchar(format(round(data$dev, 3), nsmall = 3)))
+    w5 <- nchar('Addition')
+    w <- sum(w1, w2, w3, w4, w5, 16)
+
+    ln <- length(data$aic)
+
+    cat('\n\n', format('Stepwise Summary', width = w, justify = 'centre'), '\n')
+    cat(rep("-", w), sep = "", '\n')
+    cat(fl('Variable', w1), fs(), fc('Method', w5), fs(), fc('AIC', w2), fs(),
+        fc('BIC', w3), fs(), fc('Deviance', w4), '\n')
+    cat(rep("-", w), sep = "", '\n')
+    for (i in seq_len(ln)) {
+        cat(fl(data$predictors[i], w1), fs(), fl(data$method[i], w5), fs(),
+            fg(format(round(data$aic[i], 3), nsmall = 3), w2), fs(),
+            fg(format(round(data$bic[i], 3), nsmall = 3), w3), fs(), 
+            fg(format(round(data$dev[i], 3), nsmall = 3), w4), '\n')
+    }
+    cat(rep("-", w), sep = "", '\n\n')
+
+}
