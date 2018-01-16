@@ -547,3 +547,37 @@ blr_plot_difchisq_fitted <- function(model, point_color = 'blue',
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
+
+#' @title Delta Deviance vs Fitted Values Plot
+#' @description Delta deviance vs fitted values plot for detecting ill fitted observations
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_difdev_fitted(model)
+#'
+#' @export
+#'
+blr_plot_difdev_fitted <- function(model, point_color = 'blue',
+                                     title = 'Delta Deviance vs Fitted Values Plot',
+                                     xaxis_title = 'Fitted Values',
+                                     yaxis_title = 'Delta Deviance') {
+
+  res_val <- model %>%
+    blr_residual_diagnostics %>%
+    pull(difdev)
+
+  fit_val <- model %>%
+    fitted.values
+
+  tibble(fit = fit_val, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = fit, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
