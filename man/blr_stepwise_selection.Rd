@@ -12,8 +12,6 @@ blr_stepwise_selection(model, details = FALSE, ...)
 \item{details}{logical; if \code{TRUE}, details of variable selection will be printed on screen}
 
 \item{...}{other arguments}
-
-\item{x}{an object of class \code{ols_stepaic_both}}
 }
 \value{
 \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.

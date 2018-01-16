@@ -2,7 +2,6 @@
 #' @description Build regression model from a set of candidate predictor variables by entering and removing predictors based on
 #' Akaike Information Criteria, in a stepwise manner until there is no variable left to enter or remove any more.
 #' @param model an object of class \code{lm}
-#' @param x an object of class \code{ols_stepaic_both}
 #' @param details logical; if \code{TRUE}, details of variable selection will be printed on screen
 #' @param ... other arguments
 #' @return \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.
