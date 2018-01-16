@@ -49,6 +49,8 @@ reference:
 
   contents:
   - blr_model_fit_stats
+  - blr_multi_model_fit_stats
+  - blr_lr_test
   - blr_mcfadden_rsq
   - blr_mcfadden_adj_rsq
   - blr_cox_snell_rsq
@@ -57,6 +59,40 @@ reference:
   - blr_effron_rsq
   - blr_count_rsq
   - blr_adj_count_rsq
+
+- title: Residual Diagnostics
+
+  contents:
+  - blr_plot_residual_fitted
+  - blr_plot_pearson_residual
+  - blr_plot_deviance_fitted
+  - blr_plot_deviance_residual
+  - blr_plot_leverage_fitted
+  - blr_plot_leverage
+  - blr_residual_diagnostics
+  - blr_plot_diag_c
+  - blr_plot_diag_cbar
+  - blr_plot_diag_difchisq
+  - blr_plot_diag_difdev
+  - blr_dfbetas_panel
+  - blr_plot_c_fitted
+  - blr_plot_difchisq_fitted
+  - blr_plot_difdev_fitted
+  - blr_plot_difchisq_leverage
+  - blr_plot_difdev_leverage
+  - blr_plot_c_leverage
+  - blr_plot_fitted_leverage
+
+- title: Collinearity Diagnostics
+
+  contents:
+  - blr_coll_diag
+
+- title: Model Specification Error
+
+  contents:
+  - blr_linktest
+
 
 - title: Model Validation
 
