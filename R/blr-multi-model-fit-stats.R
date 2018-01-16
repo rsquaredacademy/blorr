@@ -1,4 +1,5 @@
-#' @importFrom purrr map_df
+#' @importFrom purrr map_df 
+#' @importFrom magrittr set_colnames
 #' @title Multi Model Fit Statistics
 #' @description Measures of model fit statistics for multiple models
 #' @param model an object of class \code{glm}
@@ -51,7 +52,7 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
                 "McKelvey & Zavoina's R2:", "Efron's R2:", 'Count R2:',
                 "Adj Count R2:", "AIC:", 'BIC:')
 
-  col_names <- paste('Model', y %>%
+  col_names <- paste('Model', x %>%
           use_series(mfit) %>%
           nrow %>%
           seq_len) %>%
