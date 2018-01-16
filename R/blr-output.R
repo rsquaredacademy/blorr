@@ -625,3 +625,42 @@ print_blr_woe_iv <- function(x) {
   cat(rep("-", lsum), sep = "", '\n')
 
 }
+
+
+print_forward_selection <- function(data) {
+
+  if (data$steps < 1) {
+    stop('No variables have been added to the model.')
+  }
+
+        # width
+        w3 <- max(nchar('Step'), nchar(data$steps))
+        w1 <- max(nchar('Predictor'), nchar(data$predictors))
+        w2 <- max(nchar('AIC'), nchar(format(round(data$aics, 3), nsmall = 3)))
+        w4 <- max(nchar('BIC'), nchar(format(round(data$bics, 3), nsmall = 3)))
+        w5 <- max(nchar('Deviance'), nchar(format(round(data$devs, 3), nsmall = 3)))
+        w <- sum(w3, w1, w2, w4, w5, 16)
+
+        ln <- length(data$aics)
+
+        # cat(format("Forward Selection Method", justify = "left", width = w), "\n")
+        # cat(rep("-", 24), sep = "", '\n\n')
+        # cat(format("Candidate Terms:", justify = "left", width = w), "\n\n")
+        # for (i in seq_len(length(data$candidates))) {
+        #     cat(format(paste(i, ".", data$candidates[i]), justify = "left", width = w), "\n")
+        # }
+        cat("\n")
+        cat(format("Selection Summary", justify = "centre", width = w), "\n")
+        cat(rep("-", w), sep = "", '\n')
+        cat(fl('Step', w3), fs(), fl('Variable', w1), fs(), fc('AIC', w2), fs(),
+         fc('BIC', w4), fs(), fc('Deviance', w5), '\n')
+        cat(rep("-", w), sep = "", '\n')
+        for (i in seq_len(ln)) {
+            cat(fl(seq_len(data$steps)[i], w3), fs(), fl(data$predictors[i], w1), fs(), 
+              fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(), 
+              fg(format(round(data$bics[i], 3), nsmall = 3), w4), fs(), 
+              fg(format(round(data$devs[i], 3), nsmall = 3), w5), '\n')
+        }
+        cat(rep("-", w), sep = "", '\n')
+
+}

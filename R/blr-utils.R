@@ -320,3 +320,8 @@ pveindex <- function(z) {
   pv <- prop.table(ph %*% diag(rowSums(ph, 1)), 2)
   return(pv)
 }
+
+
+mod_sel_data <- function(model) {
+    eval(model$call$data)
+}
