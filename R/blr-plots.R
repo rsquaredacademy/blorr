@@ -683,3 +683,37 @@ blr_plot_c_leverage <- function(model, point_color = 'blue',
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
+
+
+#' @title Fitted Values vs Leverage Plot
+#' @description Fitted values vs leverage plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_fitted_leverage(model)
+#'
+#' @export
+#'
+blr_plot_fitted_leverage <- function(model, point_color = 'blue',
+                                title = 'Fitted Values vs Leverage Plot',
+                                xaxis_title = 'Leverage',
+                                yaxis_title = 'Fitted Values') {
+
+  fit_val <- model %>%
+    fitted.values
+
+  hat_val <- model %>%
+    hatvalues
+
+  tibble(hat = hat_val, fit = fit_val) %>%
+    ggplot() +
+    geom_point(aes(x = hat, y = fit), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
