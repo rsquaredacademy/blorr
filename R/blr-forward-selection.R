@@ -4,19 +4,27 @@
 #' @param model an object of class \code{glm}
 #' @param details logical; if \code{TRUE}, will print the regression result at each step
 #' @param ... other arguments
-#' @return a tibble with the following columns
+#' @return \code{blr_forward_selection} returns an object of class
+#' \code{"blr_forward_selection"}. An object of class
+#' \code{"blr_forward_selection"} is a list containing the following components:
 #'
-#' \item{step}{the step in forward selection}
-#' \item{variable}{name of the variable entered}
-#' \item{chisq}{chi square statistic}
-#' \item{pvalue}{p value associated with the chi square statistic}
+#' \item{candidates}{candidate predictor variables}
+#' \item{steps}{total number of steps}
+#' \item{predictors}{variables entered into the model}
+#' \item{aics}{akaike information criteria}
+#' \item{bics}{bayesian information criteria}
+#' \item{devs}{deviances}
 #'
+#' @references Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #' @examples
 #' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #' family = binomial(link = 'logit'))
-#'
+#' 
+#' # selection summary
 #' blr_forward_selection(model)
+#'
+#' # print details of each step
 #' blr_forward_selection(model, details = TRUE)
 #' }
 #' @export

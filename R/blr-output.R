@@ -664,3 +664,35 @@ print_forward_selection <- function(data) {
         cat(rep("-", w), sep = "", '\n')
 
 }
+
+
+print_backward_elimination <- function(data) {
+
+  if (data$steps < 1) {
+    stop('No variables have been removed from the model.')
+  }
+
+    # width
+    w1 <- max(nchar('Full Model'), nchar(data$predictors))
+    w2 <- max(nchar('AIC'), nchar(format(round(data$aics, 3), nsmall = 3)))
+    w3 <- max(nchar('BIC'), nchar(format(round(data$bics, 3), nsmall = 3)))
+    w4 <- max(nchar('Deviance'), nchar(format(round(data$devs, 3), nsmall = 3)))
+    w <- sum(w1, w2, w3, w4, 12)
+
+    predictors <- c('Full Model', data$predictors)
+
+    ln <- length(data$aics)
+
+    cat('\n\n', format('Backward Elimination Summary', width = w, justify = 'centre'), '\n')
+    cat(rep("-", w), sep = "", '\n')
+    cat(fl('Variable', w1), fs(), fc('AIC', w2), fs(),
+        fc('BIC', w3), fs(), fc('Deviance', w4), '\n')
+    cat(rep("-", w), sep = "", '\n')
+    for (i in seq_len(ln)) {
+        cat(fl(predictors[i], w1), fs(), fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(),
+            fg(format(round(data$bics[i], 3), nsmall = 3), w3), fs(), 
+            fg(format(round(data$devs[i], 3), nsmall = 3), w4), '\n')
+    }
+    cat(rep("-", w), sep = "", '\n\n')
+
+}
