@@ -215,7 +215,7 @@ blr_plot_leverage <- function(model, point_color = 'blue',
 #' @param model an object of class \code{glm}
 #' @return C, CBAR, DIFDEV and DIFCHISQ
 #' @examples
-#' #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_residual_diagnostics(model)

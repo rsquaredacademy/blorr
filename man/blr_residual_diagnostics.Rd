@@ -17,7 +17,7 @@ Diagnostics for confidence interval displacement and
 detecting ill fitted observations
 }
 \examples{
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 family = binomial(link = 'logit'))
 
 blr_residual_diagnostics(model)
