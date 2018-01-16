@@ -5,24 +5,16 @@
 \alias{blr_forward_selection.default}
 \title{Forward Selection}
 \usage{
-blr_forward_selection(model, enter = 0.3, include = NULL, stop = NULL,
-  details = FALSE, ...)
+blr_forward_selection(model, details = FALSE, ...)
 
-\method{blr_forward_selection}{default}(model, enter = 0.3, include = NULL,
-  stop = NULL, details = FALSE, ...)
+\method{blr_forward_selection}{default}(model, details = FALSE, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
 
-\item{enter}{significance level for entering the variable into the model}
-
-\item{include}{variables that must be included in the model}
-
 \item{details}{logical; if \code{TRUE}, will print the regression result at each step}
 
 \item{...}{other arguments}
-
-\item{steps}{the maximum number of steps to be considered}
 }
 \value{
 a tibble with the following columns
@@ -35,4 +27,13 @@ a tibble with the following columns
 \description{
 Build regression model from a set of candidate predictor variables by entering predictors based on
 Chi Square statistic, in a stepwise manner until there is no variable left to enter any more.
+}
+\examples{
+\dontrun{
+model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+family = binomial(link = 'logit'))
+
+blr_forward_selection(model)
+blr_forward_selection(model, details = TRUE)
+}
 }
