@@ -615,3 +615,37 @@ blr_plot_difdev_leverage <- function(model, point_color = 'blue',
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
+
+#' @title Delta Chi Square vs Leverage Plot
+#' @description Delta chi square vs leverage plot
+#' @param model an object of class \code{glm}
+#' @param point_color color of the points
+#' @param title title of the plot
+#' @param xaxis_title x axis label
+#' @param yaxis_title y axis label
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_difchisq_leverage(model)
+#'
+#' @export
+#'
+blr_plot_difchisq_leverage <- function(model, point_color = 'blue',
+                                     title = 'Delta Chi Square vs Leverage Plot',
+                                     xaxis_title = 'Leverage',
+                                     yaxis_title = 'Delta Chi Square') {
+
+  res_val <- model %>%
+    blr_residual_diagnostics %>%
+    pull(difchisq)
+
+  hat_val <- model %>%
+    hatvalues
+
+  tibble(hat = hat_val, resid = res_val) %>%
+    ggplot() +
+    geom_point(aes(x = hat, y = resid), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+}
