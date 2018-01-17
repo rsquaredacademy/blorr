@@ -20,7 +20,7 @@
 #' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #' family = binomial(link = 'logit'))
-#' 
+#'
 #' # selection summary
 #' blr_forward_selection(model)
 #'
@@ -128,7 +128,13 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
   if (!details) {
     cat('Variables Entered:', '\n\n')
   }
-  cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
+
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
+  } else {
+    cat(paste('-', dplyr::last(preds)), '\n')
+  }
+
 
   while (step < mlen_p) {
 
@@ -195,7 +201,12 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
       len_p    <- length(all_pred)
       step     <- step + 1
 
-      cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
+      if (interactive()) {
+        cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
+      } else {
+        cat(paste('-', dplyr::last(preds)), '\n')
+      }
+
 
     } else {
 
@@ -215,7 +226,12 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     cat('\n\n')
     cat('Variables Entered:', '\n\n')
     for (i in seq_len(length(preds))) {
-      cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), '\n')
+      if (interactive()) {
+        cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), '\n')
+      } else {
+        cat(paste('-', preds[i]), '\n')
+      }
+
     }
 
     cat('\n\n')

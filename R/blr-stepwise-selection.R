@@ -153,8 +153,12 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
       lbic       <- c(lbic, mbic)
       ldev       <- c(ldev, mdev)
 
+      if (interactive()) {
+        cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
+      } else {
+        cat(paste('-', dplyr::last(preds), 'added'), '\n')
+      }
 
-      cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), '\n')
 
       if (details == TRUE) {
         cat('\n\n', 'Step', all_step, ': AIC =', maic, '\n', paste(response, '~', paste(preds, collapse = ' + ')), '\n\n')
@@ -224,7 +228,12 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
           var_index <- c(var_index, preds[minc2])
           method    <- c(method, tech[2])
           all_step  <- all_step + 1
-          cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), '\n')
+          if (interactive()) {
+            cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), '\n')
+          } else {
+            cat(paste('-', preds[minc2], 'removed'), '\n')
+          }
+
           preds     <- preds[-minc2]
           lpreds    <- length(preds)
 
