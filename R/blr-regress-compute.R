@@ -25,7 +25,7 @@ blr_reg_comp <- function(formula, data) {
   # odds ratio estimates
   blr_effects <- odds_effect(model)
   blr_odds_point <- odds_point(model)
-  blr_conf <- odds_conf_limit(model)
+  blr_conf <- suppressMessages(odds_conf_limit(model))
 
   # concordant and discordant
   blr_cord <- blr_pairs(model)
