@@ -22,17 +22,18 @@ print_blr_reg <- function(x) {
       fc(x$converge, w6), '\n')
   cat(rep("-", w7), sep = "", '\n\n')
 
-  w8 <- nchar('Binary Outcome')
+  w8 <- nchar('Outcome')
   w9 <- c('Frequency', x$resp_prof[[1]], x$resp_prof[[2]]) %>%
     map_int(nchar) %>% max
-  w10 <- sum(w8, w9, 4)
+  w10 <- sum(w8, w9, w8, w9, 24)
 
   cat(fc('Response Summary', w10), '\n')
   cat(rep("-", w10), sep = "", '\n')
-  cat(fc('Binary Outcome', w8), fs(), fc('Frequency', w9), '\n')
+  cat(fc('Outcome', w8), fs3(), fc('Frequency', w9), fs3(),
+      fc('Outcome', w8), fs3(), fc('Frequency', w9),'\n')
   cat(rep("-", w10), sep = "", '\n')
-  cat(fc(0, w8), fs(), fc(x$resp_prof[[1]], w9), '\n')
-  cat(fc(1, w8), fs(), fc(x$resp_prof[[2]], w9), '\n')
+  cat(fc(0, w8), fs3(), fc(x$resp_prof[[1]], w9), fs3(),
+      fc(1, w8), fs3(), fc(x$resp_prof[[2]], w9), '\n')
   cat(rep("-", w10), sep = "", '\n\n')
 
   w11 <- c('Parameter', x$parameter) %>%
@@ -656,9 +657,9 @@ print_forward_selection <- function(data) {
          fc('BIC', w4), fs(), fc('Deviance', w5), '\n')
         cat(rep("-", w), sep = "", '\n')
         for (i in seq_len(ln)) {
-            cat(fl(seq_len(data$steps)[i], w3), fs(), fl(data$predictors[i], w1), fs(), 
-              fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(), 
-              fg(format(round(data$bics[i], 3), nsmall = 3), w4), fs(), 
+            cat(fl(seq_len(data$steps)[i], w3), fs(), fl(data$predictors[i], w1), fs(),
+              fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(),
+              fg(format(round(data$bics[i], 3), nsmall = 3), w4), fs(),
               fg(format(round(data$devs[i], 3), nsmall = 3), w5), '\n')
         }
         cat(rep("-", w), sep = "", '\n')
@@ -690,7 +691,7 @@ print_backward_elimination <- function(data) {
     cat(rep("-", w), sep = "", '\n')
     for (i in seq_len(ln)) {
         cat(fl(predictors[i], w1), fs(), fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(),
-            fg(format(round(data$bics[i], 3), nsmall = 3), w3), fs(), 
+            fg(format(round(data$bics[i], 3), nsmall = 3), w3), fs(),
             fg(format(round(data$devs[i], 3), nsmall = 3), w4), '\n')
     }
     cat(rep("-", w), sep = "", '\n\n')
@@ -722,7 +723,7 @@ print_stepwise_selection <- function(data) {
     for (i in seq_len(ln)) {
         cat(fl(data$predictors[i], w1), fs(), fl(data$method[i], w5), fs(),
             fg(format(round(data$aic[i], 3), nsmall = 3), w2), fs(),
-            fg(format(round(data$bic[i], 3), nsmall = 3), w3), fs(), 
+            fg(format(round(data$bic[i], 3), nsmall = 3), w3), fs(),
             fg(format(round(data$dev[i], 3), nsmall = 3), w4), '\n')
     }
     cat(rep("-", w), sep = "", '\n\n')

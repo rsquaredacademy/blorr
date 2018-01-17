@@ -230,6 +230,11 @@ fs <- function() {
     return(x)
 }
 
+fs1 <- function() {
+    x <- rep("    ")
+    return(x)
+}
+
 fs2 <- function() {
     x <- rep("     ")
     return(x)
