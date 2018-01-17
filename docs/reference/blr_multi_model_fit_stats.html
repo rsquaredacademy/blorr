@@ -62,7 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Intro</a>
+      <a href="../articles/intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
+    </li>
+    <li>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+    </li>
+    <li>
+      <a href="../articles/variable_selection.html">Variable Selection</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
   </ul>
 </li>
@@ -138,7 +150,22 @@
 <span class='no'>model2</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>math</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>blorr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/blorr/topics/hsb2'>hsb2</a></span>,
 <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_multi_model_fit_stats</span>(<span class='no'>model</span>, <span class='no'>model2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(lhs, parent, parent): object 'y' not found</span></div><div class='input'>
+<span class='fu'>blr_multi_model_fit_stats</span>(<span class='no'>model</span>, <span class='no'>model2</span>)</div><div class='output co'>#&gt;                       Measures  Model 1  Model 2
+#&gt; 1       Log-Lik Intercept Only -115.644 -115.644
+#&gt; 2          Log-Lik Full Model:  -80.118  -75.210
+#&gt; 3                     Deviance  160.236  150.420
+#&gt; 4                           LR   71.052   80.869
+#&gt; 5                   Prob &gt; LR:    0.000    0.000
+#&gt; 6                MCFadden's R2    0.307    0.350
+#&gt; 7           McFadden's Adj R2:    0.273    0.315
+#&gt; 8           ML (Cox-Snell) R2:    0.299    0.333
+#&gt; 9  Cragg-Uhler(Nagelkerke) R2:    0.436    0.485
+#&gt; 10    McKelvey &amp; Zavoina's R2:    0.518    0.523
+#&gt; 11                 Efron's R2:    0.330    0.379
+#&gt; 12                   Count R2:    0.810    0.830
+#&gt; 13               Adj Count R2:    0.283    0.358
+#&gt; 14                        AIC:  168.236  158.420
+#&gt; 15                        BIC:  181.430  171.613</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -59,7 +59,6 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 
 ``` r
 blr_regress(model)
-#> Waiting for profiling to be done...
 #>                              Model Overview                              
 #> ------------------------------------------------------------------------
 #> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
@@ -67,13 +66,12 @@ blr_regress(model)
 #>   data      honcomp     200        199           196            TRUE     
 #> ------------------------------------------------------------------------
 #> 
-#>      Response Summary       
-#> ---------------------------
-#> Binary Outcome    Frequency 
-#> ---------------------------
-#>       0              147    
-#>       1              53     
-#> ---------------------------
+#>                     Response Summary                     
+#> --------------------------------------------------------
+#> Outcome        Frequency        Outcome        Frequency 
+#> --------------------------------------------------------
+#>    0              147              1              53     
+#> --------------------------------------------------------
 #> 
 #>                   Maximum Likelihood Estimates                    
 #> -----------------------------------------------------------------

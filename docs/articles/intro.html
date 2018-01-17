@@ -39,7 +39,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro.html">Intro</a>
+      <a href="../articles/intro.html">Introduction</a>
+    </li>
+    <li>
+      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
+    </li>
+    <li>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+    </li>
+    <li>
+      <a href="../articles/variable_selection.html">Variable Selection</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
   </ul>
 </li>
@@ -81,7 +93,7 @@
       <h1>Introduction</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-12</h4>
+            <h4 class="date">2018-01-17</h4>
           </div>
 
     
@@ -89,277 +101,126 @@
 <div class="contents">
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(blorr)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a></code></pre></div>
-<div id="bivariate-analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h1>
-<div id="introduction" class="section level3">
+<div id="model" class="section level3">
 <h3 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;                          Bivariate Analysis                           </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   prog            0.44              16.1450         2        3e-04    </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; ---------------------------------------------------------------------</span></a></code></pre></div>
+<a href="#model" class="anchor"></a>Model</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a></code></pre></div>
 </div>
-<div id="response-distribution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#response-distribution" class="anchor"></a>Response Distribution</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment.html">blr_segment</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Event By Attributes </span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; -------------------</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; prog           1s%  </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; -------------------</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  1             0.04 </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  2             0.20 </span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  3             0.03 </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; -------------------</span></a></code></pre></div>
-</div>
-<div id="response-distribution-by-multiple-segments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#response-distribution-by-multiple-segments" class="anchor"></a>Response Distribution by Multiple Segments</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, female)</a></code></pre></div>
-</div>
-<div id="response-distribution-by-segments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#response-distribution-by-segments" class="anchor"></a>Response Distribution by Segments</h2>
-<div id="introduction-1" class="section level4">
+<div id="regression-output" class="section level3">
+<h3 class="hasAnchor">
+<a href="#regression-output" class="anchor"></a>Regression Output</h3>
+<div id="using-model" class="section level4">
 <h4 class="hasAnchor">
-<a href="#introduction-1" class="anchor"></a>Introduction</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;          Event Segmentation           </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; -------------------------------------</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   prog       n     1s     n%     1s%  </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; -------------------------------------</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;    1        45     7     0.22    0.04 </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;    2        105    40    0.52    0.20 </span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;    3        50     6     0.25    0.03 </span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; -------------------------------------</span></a></code></pre></div>
+<a href="#using-model" class="anchor"></a>Using Model</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/blr_regress.html">blr_regress</a></span>(model)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;                              Model Overview                              </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;                     Response Summary                     </span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;                   Odds Ratio Estimates                    </span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  Effects          Estimate          95% Wald Conf. Limit </span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt;  female1           4.4039          1.8955         11.0521 </span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt;    read            1.1091          1.0569          1.1699 </span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt;  science           1.0994          1.0377          1.1702 </span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
+<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
 </div>
-<div id="plot" class="section level4">
+<div id="using-formula" class="section level4">
 <h4 class="hasAnchor">
-<a href="#plot" class="anchor"></a>Plot</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>plot</a></code></pre></div>
-<p><img src="intro_files/figure-html/bivar5-1.png" width="480" style="display: block; margin: auto;"></p>
+<a href="#using-formula" class="anchor"></a>Using Formula</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_regress.html">blr_regress</a></span>(<span class="dt">object =</span> honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;                              Model Overview                              </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;                     Response Summary                     </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt;                   Odds Ratio Estimates                    </span></a>
+<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;  Effects          Estimate          95% Wald Conf. Limit </span></a>
+<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt;  female1           4.4039          1.8955         11.0521 </span></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt;    read            1.1091          1.0569          1.1699 </span></a>
+<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt;  science           1.0994          1.0377          1.1702 </span></a>
+<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt; ---------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
+<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
+<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
+<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
+<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
 </div>
 </div>
-<div id="weight-of-evidemce-information-value" class="section level2">
-<h2 class="hasAnchor">
-<a href="#weight-of-evidemce-information-value" class="anchor"></a>Weight of Evidemce &amp; Information Value</h2>
-<div id="introduction-2" class="section level4">
-<h4 class="hasAnchor">
-<a href="#introduction-2" class="anchor"></a>Introduction</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, female, honcomp)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist     woe      iv  </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   0          73          18         0.5       0.34      -0.39    0.06 </span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;   1          74          35         0.5       0.66      0.28     0.04 </span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;       Information Value       </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Variable    Information Value </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  female            0.1        </span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
-</div>
-<div id="plot-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#plot-1" class="anchor"></a>Plot</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, female, honcomp) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span>plot</a></code></pre></div>
-<p><img src="intro_files/figure-html/woe2-1.png" width="480" style="display: block; margin: auto;"></p>
-</div>
-</div>
-<div id="regression" class="section level2">
-<h2 class="hasAnchor">
-<a href="#regression" class="anchor"></a>Regression</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/blr_regress.html">blr_regress</a></span>(<span class="dt">object =</span> honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Waiting for profiling to be done...</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt;                              Model Overview                              </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;      Response Summary       </span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; ---------------------------</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; Binary Outcome    Frequency </span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; ---------------------------</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;       0              147    </span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;       1              53     </span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; ---------------------------</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt;                   Odds Ratio Estimates                    </span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt;  Effects          Estimate          95% Wald Conf. Limit </span></a>
-<a class="sourceLine" id="cb9-31" data-line-number="31"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-32" data-line-number="32"><span class="co">#&gt;  female1           4.4039          1.8955         11.0521 </span></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt;    read            1.1091          1.0569          1.1699 </span></a>
-<a class="sourceLine" id="cb9-34" data-line-number="34"><span class="co">#&gt;  science           1.0994          1.0377          1.1702 </span></a>
-<a class="sourceLine" id="cb9-35" data-line-number="35"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-37" data-line-number="37"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
-<a class="sourceLine" id="cb9-38" data-line-number="38"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb9-39" data-line-number="39"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
-<a class="sourceLine" id="cb9-40" data-line-number="40"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
-<a class="sourceLine" id="cb9-41" data-line-number="41"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
-<a class="sourceLine" id="cb9-42" data-line-number="42"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
-<a class="sourceLine" id="cb9-43" data-line-number="43"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
-</div>
-<div id="model-fit-statistics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="../reference/blr_model_fit_stats.html">blr_model_fit_stats</a></span>(model)</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;                               Model Fit Statistics                                </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118 </span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; Deviance(196):                160.236    LR(3):                            71.052 </span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;                                          Prob &gt; LR:                         0.000 </span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273 </span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436 </span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; McKelvey &amp; Zavoina's R2:        0.518    Efron's R2:                        0.330 </span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt; Count R2:                       0.810    Adj Count R2:                      0.283 </span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; BIC:                          181.430    AIC:                             168.236 </span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a></code></pre></div>
-</div>
-<div id="model-validation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-validation" class="anchor"></a>Model Validation</h2>
-<div id="gains-table" class="section level3">
+<div id="model-fit-statistics" class="section level3">
 <h3 class="hasAnchor">
-<a href="#gains-table" class="anchor"></a>Gains Table</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 10     10    20  0    20.0    0    53.0   0   147     0      100       0  </span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: accuracy &lt;dbl&gt;</span></a></code></pre></div>
-</div>
-<div id="roc-curve" class="section level3">
-<h3 class="hasAnchor">
-<a href="#roc-curve" class="anchor"></a>ROC Curve</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
-<p><img src="intro_files/figure-html/val2-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div id="ks-chart" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ks-chart" class="anchor"></a>KS Chart</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
-<p><img src="intro_files/figure-html/val3-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div id="lorenz-curve" class="section level3">
-<h3 class="hasAnchor">
-<a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
-<p><img src="intro_files/figure-html/val4-1.png" width="672" style="display: block; margin: auto;"></p>
-</div>
-<div id="confusion-matrix" class="section level3">
-<h3 class="hasAnchor">
-<a href="#confusion-matrix" class="anchor"></a>Confusion Matrix</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span>(model, <span class="dt">cutoff =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt;                    Predicted   </span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; Observed          0         1 </span></a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;    0            135        12 </span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt;    1             26        27 </span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="co">#&gt;   Model Performance Measures   </span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co">#&gt; ------------------------------</span></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; Accuracy                0.8100 </span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; Precision               0.6923 </span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; Sensitivity             0.5094 </span></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; Specificity             0.9184 </span></a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt; Recall                  0.5094 </span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; Prevalence              0.2650 </span></a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt; Detection Rate          0.1350 </span></a>
-<a class="sourceLine" id="cb15-19" data-line-number="19"><span class="co">#&gt; Detection Prevalence    0.1950 </span></a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co">#&gt; Balanced Accuracy       0.7139 </span></a>
-<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="co">#&gt; Pos Predicted Value     0.6923 </span></a>
-<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="co">#&gt; Neg Predicted Value     0.8385</span></a></code></pre></div>
-</div>
-<div id="hosmer-lemeshow-test" class="section level3">
-<h3 class="hasAnchor">
-<a href="#hosmer-lemeshow-test" class="anchor"></a>Hosmer Lemeshow Test</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="../reference/blr_hosmer_lemeshow_test.html">blr_hosmer_lemeshow_test</a></span>(model)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt;            Partition for the Hosmer &amp; Lemeshow Test            </span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; --------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt;                         def = 1                 def = 0        </span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; Group    Total    Observed    Expected    Observed    Expected </span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; --------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;   1       20         0          0.16         20        19.84   </span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;   2       20         0          0.53         20        19.47   </span></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt;   3       20         2          0.99         18        19.01   </span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;   4       20         1          1.64         19        18.36   </span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt;   5       21         3          2.72         18        18.28   </span></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt;   6       19         3          4.05         16        14.95   </span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt;   7       20         7          6.50         13        13.50   </span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt;   8       20         10         8.90         10        11.10   </span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt;   9       20         13        11.49         7          8.51   </span></a>
-<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt;  10       20         14        16.02         6          3.98   </span></a>
-<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="co">#&gt; --------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co">#&gt;      Goodness of Fit Test      </span></a>
-<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="co">#&gt; ------------------------------</span></a>
-<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="co">#&gt; Chi-Square    DF    Pr &gt; ChiSq </span></a>
-<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co">#&gt; ------------------------------</span></a>
-<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="co">#&gt;   4.4998      8       0.8095   </span></a>
-<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="co">#&gt; ------------------------------</span></a></code></pre></div>
-</div>
-</div>
+<a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_model_fit_stats.html">blr_model_fit_stats</a></span>(model)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;                               Model Fit Statistics                                </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118 </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; Deviance(196):                160.236    LR(3):                            71.052 </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;                                          Prob &gt; LR:                         0.000 </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273 </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436 </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; McKelvey &amp; Zavoina's R2:        0.518    Efron's R2:                        0.330 </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; Count R2:                       0.810    Adj Count R2:                      0.283 </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; BIC:                          181.430    AIC:                             168.236 </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a></code></pre></div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#bivariate-analysis">Bivariate Analysis</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#response-distribution">Response Distribution</a></li>
-      <li><a href="#response-distribution-by-multiple-segments">Response Distribution by Multiple Segments</a></li>
-      <li><a href="#response-distribution-by-segments">Response Distribution by Segments</a></li>
-      <li><a href="#weight-of-evidemce-information-value">Weight of Evidemce &amp; Information Value</a></li>
-      <li><a href="#regression">Regression</a></li>
-      <li><a href="#model-fit-statistics">Model Fit Statistics</a></li>
-      <li><a href="#model-validation">Model Validation</a></li>
-      </ul>
-</li>
-      </ul>
-</div>
       </div>
 
 </div>

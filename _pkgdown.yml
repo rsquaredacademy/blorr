@@ -10,8 +10,16 @@ navbar:
       href: index.html
     - text: "Guides"
       menu:
-        - text: "Intro"
+        - text: "Introduction"
           href: articles/intro.html
+        - text: "Bivariate Analysis"
+          href: articles/bivariate_analysis.html
+        - text: "Residual Diagnostics"
+          href: articles/residual_diagnostics.html
+        - text: "Variable Selection"
+          href: articles/variable_selection.html
+        - text: "Model Validation"
+          href: articles/model_validation.html
     - text: "Reference"
       menu:
         - text: "Functions"
@@ -74,7 +82,10 @@ reference:
   - blr_plot_diag_cbar
   - blr_plot_diag_difchisq
   - blr_plot_diag_difdev
-  - blr_dfbetas_panel
+  - blr_plot_dfbetas_panel
+  - blr_plot_diag_influence
+  - blr_plot_diag_fit
+  - blr_plot_diag_leverage
   - blr_plot_c_fitted
   - blr_plot_difchisq_fitted
   - blr_plot_difdev_fitted
@@ -105,6 +116,13 @@ reference:
   - blr_confusion_matrix
   - blr_pairs
   - blr_roc_curve
+
+- title: Variable Selection
+
+  contents:
+  - blr_forward_selection
+  - blr_backward_elimination
+  - blr_stepwise_selection
 
 - title: Data
 
