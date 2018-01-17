@@ -30,7 +30,7 @@ blr_plot_diag_influence <- function(model) {
 #' @title Fitted Values Diagnostics Plot
 #' @description Diagnostic plots for fitted values
 #' @param model an object of class \code{glm}
-#' @return a panel of fitted values diagnostic plots
+#' @return a panel of diagnostic plots for fitted values
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #' family = binomial(link = 'logit'))
@@ -44,6 +44,33 @@ blr_plot_diag_fit <- function(model) {
   p2 <- blr_plot_difchisq_fitted(model)
   p3 <- blr_plot_leverage_fitted(model)
   p4 <- blr_plot_c_fitted(model)
+
+  myplots <- list(p1, p2, p3, p4)
+  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+
+  result <- list(plots = myplots)
+  invisible(result)
+
+}
+
+
+#' @title Leverage Diagnostics Plot
+#' @description Diagnostic plots for leverage
+#' @param model an object of class \code{glm}
+#' @return a panel of diagnostic plots for leverage
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' family = binomial(link = 'logit'))
+#'
+#' blr_plot_diag_leverage(model)
+#' @export
+#'
+blr_plot_diag_leverage <- function(model) {
+
+  p1 <- blr_plot_difdev_leverage(model)
+  p2 <- blr_plot_difchisq_leverage(model)
+  p3 <- blr_plot_c_leverage(model)
+  p4 <- blr_plot_fitted_leverage(model)
 
   myplots <- list(p1, p2, p3, p4)
   do.call(grid.arrange, c(myplots, list(ncol = 2)))
