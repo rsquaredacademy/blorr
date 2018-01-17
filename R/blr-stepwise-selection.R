@@ -100,6 +100,38 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
 
     }
 
+    da  <- data.frame(predictors = predictors, aics = aics, bics = bics,
+                      devs = devs)
+    da2 <- arrange(da, aics)
+
+    if(details == TRUE) {
+
+      w1  <- max(nchar('Predictor'), nchar(as.character(da2$predictors)))
+      w2  <- 2
+      w3  <- max(nchar('AIC'), nchar(format(round(aics, 3), nsmall = 3)))
+      w4  <- max(nchar('BIC'), nchar(format(round(bics, 3), nsmall = 3)))
+      w5  <- max(nchar('Deviance'), nchar(format(round(devs, 3), nsmall = 3)))
+      w   <- sum(w1, w2, w3, w4, w5, 16)
+      ln  <- length(aics)
+
+
+      cat(fc(crayon::bold$green('  Enter New Variables'), w), sep = "", '\n')
+      cat(rep("-", w), sep = "", '\n')
+      cat(fl('Variable', w1), fs(), fc('DF', w2), fs(), fc('AIC', w3), fs(),
+          fc('BIC', w4), fs(),  fc('Deviance', w5), '\n')
+      cat(rep("-", w), sep = "", '\n')
+
+      for (i in seq_len(ln)) {
+        cat(fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+            fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
+            fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
+            fg(format(round(da2[i, 4], 3), nsmall = 3), w5), '\n')
+      }
+
+      cat(rep("-", w), sep = "", '\n\n')
+
+    }
+
 
     minc <- which(aics == min(aics))
 
@@ -145,6 +177,37 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
 
         }
 
+        da  <- data.frame(predictors = preds, aics = aics, bics = bics,
+                          devs = devs)
+        da2 <- arrange(da, aics)
+
+        if(details == TRUE) {
+
+          w1  <- max(nchar('Predictor'), nchar(as.character(da2$predictors)))
+          w2  <- 2
+          w3  <- max(nchar('AIC'), nchar(format(round(aics, 3), nsmall = 3)))
+          w4  <- max(nchar('BIC'), nchar(format(round(bics, 3), nsmall = 3)))
+          w5  <- max(nchar('Deviance'), nchar(format(round(devs, 3), nsmall = 3)))
+          w   <- sum(w1, w2, w3, w4, w5, 16)
+          ln  <- length(aics)
+
+          cat(fc(crayon::bold$red('Remove Existing Variables'), w), sep = "", '\n')
+          cat(rep("-", w), sep = "", '\n')
+          cat(fl('Variable', w1), fs(), fc('DF', w2), fs(), fc('AIC', w3), fs(),
+              fc('BIC', w4), fs(),  fc('Deviance', w5), '\n')
+          cat(rep("-", w), sep = "", '\n')
+
+          for (i in seq_len(ln)) {
+            cat(fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+                fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
+                fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
+                fg(format(round(da2[i, 4], 3), nsmall = 3), w5), '\n')
+          }
+
+          cat(rep("-", w), sep = "", '\n\n')
+
+        }
+
 
         minc2 <- which(aics == min(aics))
 
@@ -182,7 +245,7 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
 
     } else {
 
-      cat('\n\n')
+      cat('\n')
       cat(crayon::bold$red("No more variables to be added or removed."))
       break
 
