@@ -24,7 +24,7 @@ library(magrittr)
 ### Introduction
 
 ```{r bivar1}
-blr_bivariate_analysis(hsb2, honcomp, prog)
+blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 ```
 
 ### Weight of Evidemce & Information Value
@@ -32,14 +32,13 @@ blr_bivariate_analysis(hsb2, honcomp, prog)
 #### Introduction
 
 ```{r woe1}
-blr_woe_iv(hsb2, female, honcomp)
+blr_woe_iv(hsb2, prog, honcomp)
 ```
 
-#### Plot
+#### Multiple Variables
 
-```{r woe2, fig.align='center', fig.width=5, fig.height=5}
-blr_woe_iv(hsb2, female, honcomp) %>%
-  plot
+```{r woe2}
+blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 ```
 
 ### Response Distribution by Segments

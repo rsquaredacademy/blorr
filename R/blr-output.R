@@ -582,18 +582,26 @@ print_blr_woe_iv <- function(x) {
 
   c4 <- woe_iv %>%
     pull(rnames[4]) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
     prepend(rnames[4])
 
   c5 <- woe_iv %>%
     pull(rnames[5]) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
     prepend(rnames[5])
 
   c6 <- woe_iv %>%
     pull(rnames[6]) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
     prepend(rnames[6])
 
   c7 <- woe_iv %>%
     pull(rnames[7]) %>%
+    round(2) %>%
+    format(nsmall = 2) %>%
     prepend(rnames[7])
 
   clen <- length(c1)
@@ -602,9 +610,9 @@ print_blr_woe_iv <- function(x) {
   cat(rep("-", wsum), sep = "", '\n')
   for (i in seq_len(clen)) {
     cat(fc(c1[i], w[1]), fs(), fc(c2[i], w[2]), fs(),
-        fc(c3[i], w[3]), fs(), fc(c4[i], w[4]), fs(),
-        fc(c5[i], w[5]), fs(), fc(c6[i], w[6]), fs(),
-        fc(c7[i], w[7]), '\n')
+        fc(c3[i], w[3]), fs(), fg(format(c4[i], nsmall = 2), w[4]), fs(),
+        fg(format(c5[i], nsmall = 2), w[5]), fs(), fg(format(c6[i], nsmall = 2), w[6]), fs(),
+        fc(format(c7[i], nsmall = 2), w[7]), '\n')
     if (i == 1) {
       cat(rep("-", wsum), sep = "", '\n')
     }

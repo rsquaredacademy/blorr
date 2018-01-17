@@ -47,6 +47,7 @@ reference:
   - blr_twoway_segment
   - blr_segment_dist
   - blr_woe_iv
+  - blr_woe_iv_stats
 
 - title: Regression
 

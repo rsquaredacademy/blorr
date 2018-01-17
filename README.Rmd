@@ -55,6 +55,12 @@ library(magrittr)
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 ```
 
+#### Weight of Evidence & Information Value
+
+```{r woeiv}
+blr_woe_iv(hsb2, prog, honcomp)
+```
+
 #### Model
 
 ```{r model}

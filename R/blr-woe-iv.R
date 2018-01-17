@@ -97,3 +97,38 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
     ggtitle(plot_title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
+
+
+#' @title Multi Variable WOE & IV
+#' @description Prints WOE & IV for multiple variables
+#' @param data a data.frame or a tibble
+#' @param response response variables
+#' @param ... predictor variables
+#' @examples
+#' blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
+#' @export
+#'
+blr_woe_iv_stats <- function(data, response, ...) {
+
+  resp <- enquo(response)
+  predictors <- quos(...)
+
+  dat <- data %>%
+    select(!!resp, !!!predictors)
+
+  varnames <- dat %>%
+    names
+
+  resp_name <- varnames[1]
+  pred_name <- varnames[-1]
+  l_pred_name <- length(pred_name)
+
+  for (i in seq_len(l_pred_name)) {
+    cat(crayon::bold$red$underline(paste('Variable:', pred_name[i])))
+    cat('\n\n')
+    k <-  blr_woe_iv(data, pred_name[i], resp_name )
+    print(k)
+    cat('\n\n')
+  }
+
+}
