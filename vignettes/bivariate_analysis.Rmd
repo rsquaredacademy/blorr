@@ -1,0 +1,72 @@
+---
+title: "Bivariate Analysis"
+author: "Aravind Hebbali"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bivariate Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r libs}
+library(blorr)
+library(magrittr)
+```
+
+### Introduction
+
+```{r bivar1}
+blr_bivariate_analysis(hsb2, honcomp, prog)
+```
+
+### Weight of Evidemce & Information Value
+
+#### Introduction
+
+```{r woe1}
+blr_woe_iv(hsb2, female, honcomp)
+```
+
+#### Plot
+
+```{r woe2, fig.align='center', fig.width=5, fig.height=5}
+blr_woe_iv(hsb2, female, honcomp) %>%
+  plot
+```
+
+### Response Distribution by Segments
+
+#### Introduction
+
+```{r bivar4}
+blr_segment_dist(hsb2, honcomp, prog)
+```
+
+#### Plot
+
+```{r bivar5, fig.align='center', fig.width=5, fig.height=5}
+blr_segment_dist(hsb2, honcomp, prog) %>%
+  plot
+```
+
+### Response Distribution by Multiple Segments
+
+```{r bivar3}
+blr_twoway_segment(hsb2, honcomp, prog, female)
+```
+
+### Response Distribution
+
+```{r bivar2}
+blr_segment(hsb2, honcomp, prog)
+```
+
+

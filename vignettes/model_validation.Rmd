@@ -1,0 +1,69 @@
+---
+title: "Model Validation"
+author: "Aravind Hebbali"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Validation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r libs}
+library(blorr)
+library(magrittr)
+```
+
+### Regression Model
+
+```{r model}
+model <- glm(honcomp ~ female + read + science, data = hsb2,
+             family = binomial(link = 'logit'))
+```
+
+### Confusion Matrix
+
+```{r val5}
+blr_confusion_matrix(model, cutoff = 0.5)
+```
+
+### Hosmer Lemeshow Test
+
+```{r val6}
+blr_hosmer_lemeshow_test(model)
+```
+
+
+### Gains Table
+
+```{r val1}
+blr_gains_table(model)
+```
+
+### ROC Curve
+
+```{r val2, fig.align='center', fig.width=7, fig.height=5}
+blr_gains_table(model) %>%
+  blr_roc_curve
+```
+
+### KS Chart
+
+```{r val3, fig.align='center', fig.width=7, fig.height=5}
+blr_gains_table(model) %>%
+  blr_ks_chart
+```
+
+### Lorenz Curve
+
+```{r val4, fig.align='center', fig.width=7, fig.height=5}
+blr_lorenz_curve(model)
+```
+

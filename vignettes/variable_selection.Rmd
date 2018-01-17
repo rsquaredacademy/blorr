@@ -1,0 +1,83 @@
+---
+title: "Variable Selection"
+author: "Aravind Hebbali"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Variable Selection}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r libs}
+library(blorr)
+```
+
+### Forward Selection
+
+#### Model
+
+```{r mod1}
+model <- glm(honcomp ~ female + read + science, data = hsb2,
+  family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r forward1}
+blr_forward_selection(model)
+```
+
+#### Detailed Output
+
+```{r forward2}
+blr_forward_selection(model, details = TRUE)
+```
+
+### Backward Elimination
+
+#### Model
+
+```{r mod2}
+model <- glm(honcomp ~ female + read + science + math + prog + socst, data = hsb2, family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r backward1}
+blr_backward_elimination(model)
+```
+
+#### Detailed Output
+
+```{r backward2}
+blr_backward_elimination(model, details = TRUE)
+```
+
+### Stepwise Selection
+
+#### Model
+
+```{r mod3}
+model <- glm(y ~ ., data = stepwise)
+```
+
+#### Selection Summary
+
+```{r stepwise1}
+blr_stepwise_selection(model)
+```
+
+#### Detailed Output
+
+```{r stepwise2}
+blr_stepwise_selection(model, details = TRUE)
+```
+
