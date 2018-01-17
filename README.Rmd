@@ -44,12 +44,18 @@ blorr uses consistent prefix `blr_*` for easy tab completion.
 
 ### Quick Overview
 
-#### Introduction
-
 ```{r libs}
 library(blorr)
 library(magrittr)
 ```
+
+#### Bivariate Analysis 
+
+```{r bivar}
+blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
+```
+
+#### Model
 
 ```{r model}
 # create model using glm

@@ -240,10 +240,13 @@ print_bivariate_analysis <- function(x) {
       fc('LR Chi Square', w3),fs(), fc('LR DF', w4), fs(),
       fc('LR p-value', w5), '\n')
   cat(rep("-", w), sep = "", '\n')
-  cat(fc(x$variable, w1), fs(), fc(x$iv, w2), fs(),
-      fc(format(round(x$likelihood_ratio, 4), nsmall = 4), w3), fs(),
-      fc(x$df, w4), fs(),
-      fc(format(round(x$pval, 4), nsmall = 4), w5), '\n')
+  n <- length(x[[1]])
+  for (i in seq_len(n)) {
+    cat(fc(x$variable[i], w1), fs(), fc(format(round(x$iv[i], 2), nsmall = 2), w2), fs(),
+        fc(format(round(x$likelihood_ratio[i], 4), nsmall = 4), w3), fs(),
+        fc(x$df[i], w4), fs(),
+        fc(format(round(x$pval[i], 4), nsmall = 4), w5), '\n')
+  } 
   cat(rep("-", w), sep = "", '\n')
 
 }

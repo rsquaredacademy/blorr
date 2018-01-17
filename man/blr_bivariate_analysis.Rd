@@ -5,16 +5,16 @@
 \alias{blr_bivariate_analysis.default}
 \title{Bivariate Analysis}
 \usage{
-blr_bivariate_analysis(data, response, predictor)
+blr_bivariate_analysis(data, response, ...)
 
-\method{blr_bivariate_analysis}{default}(data, response, predictor)
+\method{blr_bivariate_analysis}{default}(data, response, ...)
 }
 \arguments{
 \item{data}{a tibble}
 
 \item{response}{response variable}
 
-\item{predictor}{predictor variable}
+\item{...}{predictor variables}
 }
 \value{
 a tibble
@@ -23,6 +23,6 @@ a tibble
 Bivariate analysis
 }
 \examples{
-blr_bivariate_analysis(hsb2, honcomp, prog)
+blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 
 }

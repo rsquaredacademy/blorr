@@ -40,12 +40,27 @@ blorr uses consistent prefix `blr_*` for easy tab completion.
 
 ### Quick Overview
 
-#### Introduction
-
 ``` r
 library(blorr)
 library(magrittr)
 ```
+
+#### Bivariate Analysis
+
+``` r
+blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
+#>                          Bivariate Analysis                           
+#> ---------------------------------------------------------------------
+#> Variable    Information Value    LR Chi Square    LR DF    LR p-value 
+#> ---------------------------------------------------------------------
+#>  female           0.10              3.9350          1        0.0473   
+#>   prog            0.44              16.1450         2        3e-04    
+#>   race            0.31              11.3694         3        0.0099   
+#>  schtyp           0.00              0.0445          1        0.8330   
+#> ---------------------------------------------------------------------
+```
+
+#### Model
 
 ``` r
 # create model using glm

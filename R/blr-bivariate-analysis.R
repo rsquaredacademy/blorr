@@ -1,62 +1,76 @@
-#' @importFrom rlang enquo !!
+#' @importFrom rlang enquo !! quos !!!
+#' @importFrom purrr map_dbl
 #' @title Bivariate Analysis
 #' @description Bivariate analysis
 #' @param data a tibble
 #' @param response response variable
-#' @param predictor predictor variable
+#' @param ... predictor variables
 #' @return a tibble
 #' @examples
-#' blr_bivariate_analysis(hsb2, honcomp, prog)
+#' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #'
 #' @export
 #'
-blr_bivariate_analysis <- function(data, response, predictor)
+blr_bivariate_analysis <- function(data, response, ...)
   UseMethod('blr_bivariate_analysis')
 
 #' @rdname blr_bivariate_analysis
 #' @export
 #'
-blr_bivariate_analysis.default <- function(data, response, predictor) {
+blr_bivariate_analysis.default <- function(data, response, ...) {
 
   resp <- enquo(response)
-  pred <- enquo(predictor)
+  predictors <- quos(...)
+
   mdata <- data %>%
-    select(!!resp, !!pred)
-  varname <- mdata %>%
-    names %>%
-    extract(2)
-  names(mdata) <- c('response', 'predictor')
+    select(!!resp, !!!predictors)
 
-  # information value
-  iv <- blr_woe_iv(mdata, predictor, response) %>%
-    use_series(woe_iv_table) %>%
-    pull(iv) %>%
-    sum
+  varnames <- mdata %>%
+    names
 
-  # likelihood ratio test
-  model <- glm(response ~ predictor, data = mdata,
-               family = binomial(link = 'logit'))
-  model1 <- glm(response ~ 1, data = mdata,
-                family = binomial(link = 'logit'))
+  resp_name <- varnames[1]
+  pred_name <- varnames[-1]
+  len_pred_name <- length(pred_name)
 
-  lr <- blr_lr_test(model, model1)
-  lr_ratio <- lr %>%
-    use_series(test_result) %>%
-    pull(lr_ratio)
-  lr_df <- lr %>%
-    use_series(test_result) %>%
-    pull(d_f)
-  lr_pval <- lr %>%
-    use_series(test_result) %>%
-    pull(p_value)
+  ivs <- list()
+  lr_ratios <- list()
+  lr_dfs <- list()
+  lr_pvals <- list()
 
-  # result
-  result <- tibble(variable = varname,
-                   iv = iv,
-                   likelihood_ratio = lr_ratio,
-                   df = lr_df,
-                   pval = lr_pval)
+  for (i in seq_len(len_pred_name)) {
 
+    # information value
+    ivs[i] <- blr_woe_iv(mdata, pred_name[i], resp_name) %>%
+      use_series(woe_iv_table) %>%
+      pull(iv) %>%
+      sum
+
+    # likelihood ratio test
+    model <- glm(as.formula(paste(resp_name, '~', pred_name[i])), data = mdata,
+                 family = binomial(link = 'logit'))
+    model1 <- glm(as.formula(paste(resp_name, '~', 1)), data = mdata,
+                  family = binomial(link = 'logit'))
+
+    lr <- blr_lr_test(model, model1)
+
+    lr_ratios[i] <- lr %>%
+      use_series(test_result) %>%
+      pull(lr_ratio)
+
+    lr_dfs[i] <- lr %>%
+      use_series(test_result) %>%
+      pull(d_f)
+
+    lr_pvals[i] <- lr %>%
+      use_series(test_result) %>%
+      pull(p_value)
+
+  }
+
+  result <- tibble(variable = pred_name, iv = map_dbl(ivs, 1),
+                   likelihood_ratio = map_dbl(lr_ratios, 1),
+                   df = map_dbl(lr_dfs, 1) ,
+                   pval = map_dbl(lr_pvals, 1))
   class(result) <- 'blr_bivariate_analysis'
   return(result)
 
@@ -67,7 +81,7 @@ blr_bivariate_analysis.default <- function(data, response, predictor) {
 print.blr_bivariate_analysis <- function(x, ...) {
 
   print_bivariate_analysis(x)
-  
+
 }
 
 #' @title Response by Segments
