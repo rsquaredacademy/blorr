@@ -427,7 +427,7 @@ blr_plot_diag_difdev <- function(model, point_color = 'blue',
 #' }
 #' @export
 #'
-blr_dfbetas_panel <- function(model) {
+blr_plot_dfbetas_panel <- function(model) {
 
   if (!any(class(model) == 'glm')) {
     stop('Please specify a binary logistic regression model.', call. = FALSE)
