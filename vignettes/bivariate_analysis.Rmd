@@ -27,7 +27,7 @@ library(magrittr)
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 ```
 
-### Weight of Evidemce & Information Value
+### Weight of Evidence & Information Value
 
 #### Introduction
 

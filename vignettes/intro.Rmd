@@ -44,7 +44,20 @@ blr_regress(object = honcomp ~ female + read + science, data = hsb2)
 
 ### Model Fit Statistics
 
+#### Single Model
+
 ```{r mfs}
 blr_model_fit_stats(model)
 ```
 
+#### Multiple Models 
+
+```{r mmfs}
+model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+  family = binomial(link = 'logit'))
+
+model2 <- glm(honcomp ~ female + read + math, data = blorr::hsb2,
+  family = binomial(link = 'logit'))
+
+blr_multi_model_fit_stats(model, model2)
+```
