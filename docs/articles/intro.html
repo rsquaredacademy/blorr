@@ -39,10 +39,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro.html">Introduction</a>
+      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
     </li>
     <li>
       <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
@@ -93,7 +93,7 @@
       <h1>Introduction</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-17</h4>
+            <h4 class="date">2018-01-18</h4>
           </div>
 
     
@@ -204,6 +204,9 @@
 <div id="model-fit-statistics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h3>
+<div id="single-model" class="section level4">
+<h4 class="hasAnchor">
+<a href="#single-model" class="anchor"></a>Single Model</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_model_fit_stats.html">blr_model_fit_stats</a></span>(model)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;                               Model Fit Statistics                                </span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a>
@@ -216,6 +219,34 @@
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; Count R2:                       0.810    Adj Count R2:                      0.283 </span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; BIC:                          181.430    AIC:                             168.236 </span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a></code></pre></div>
+</div>
+<div id="multiple-models" class="section level4">
+<h4 class="hasAnchor">
+<a href="#multiple-models" class="anchor"></a>Multiple Models</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> blorr<span class="op">::</span>hsb2,</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">model2 &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>math, <span class="dt">data =</span> blorr<span class="op">::</span>hsb2,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw"><a href="../reference/blr_multi_model_fit_stats.html">blr_multi_model_fit_stats</a></span>(model, model2)</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;                       Measures  Model 1  Model 2</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 1       Log-Lik Intercept Only -115.644 -115.644</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; 2          Log-Lik Full Model:  -80.118  -75.210</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; 3                     Deviance  160.236  150.420</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; 4                           LR   71.052   80.869</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; 5                   Prob &gt; LR:    0.000    0.000</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; 6                MCFadden's R2    0.307    0.350</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; 7           McFadden's Adj R2:    0.273    0.315</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; 8           ML (Cox-Snell) R2:    0.299    0.333</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; 9  Cragg-Uhler(Nagelkerke) R2:    0.436    0.485</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; 10    McKelvey &amp; Zavoina's R2:    0.518    0.523</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; 11                 Efron's R2:    0.330    0.379</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; 12                   Count R2:    0.810    0.830</span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; 13               Adj Count R2:    0.283    0.358</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; 14                        AIC:  168.236  158.420</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; 15                        BIC:  181.430  171.613</span></a></code></pre></div>
+</div>
 </div>
 </div>
   </div>

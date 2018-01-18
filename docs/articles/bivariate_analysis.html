@@ -39,10 +39,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/intro.html">Introduction</a>
+      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
     </li>
     <li>
       <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
@@ -93,7 +93,7 @@
       <h1>Bivariate Analysis</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-17</h4>
+            <h4 class="date">2018-01-18</h4>
           </div>
 
     
@@ -115,9 +115,9 @@
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  schtyp           0.00              0.0445          1        0.8330   </span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; ---------------------------------------------------------------------</span></a></code></pre></div>
 </div>
-<div id="weight-of-evidemce-information-value" class="section level3">
+<div id="weight-of-evidence-information-value" class="section level3">
 <h3 class="hasAnchor">
-<a href="#weight-of-evidemce-information-value" class="anchor"></a>Weight of Evidemce &amp; Information Value</h3>
+<a href="#weight-of-evidence-information-value" class="anchor"></a>Weight of Evidence &amp; Information Value</h3>
 <div id="introduction-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#introduction-1" class="anchor"></a>Introduction</h4>
@@ -244,7 +244,17 @@
 <div id="response-distribution-by-multiple-segments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#response-distribution-by-multiple-segments" class="anchor"></a>Response Distribution by Multiple Segments</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, female)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, female)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;                female    </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; -----------------------</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; prog      0       1     </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; -----------------------</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   1     0.010   0.025   </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; -----------------------</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   2     0.075   0.125   </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; -----------------------</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   3     0.005   0.025   </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; -----------------------</span></a></code></pre></div>
 </div>
 <div id="response-distribution" class="section level3">
 <h3 class="hasAnchor">

@@ -10,10 +10,10 @@ navbar:
       href: index.html
     - text: "Guides"
       menu:
-        - text: "Introduction"
-          href: articles/intro.html
         - text: "Bivariate Analysis"
           href: articles/bivariate_analysis.html
+        - text: "Model Fit Statistics"
+          href: articles/intro.html
         - text: "Residual Diagnostics"
           href: articles/residual_diagnostics.html
         - text: "Variable Selection"
