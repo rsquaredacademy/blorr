@@ -246,7 +246,7 @@ print_bivariate_analysis <- function(x) {
         fc(format(round(x$likelihood_ratio[i], 4), nsmall = 4), w3), fs(),
         fc(x$df[i], w4), fs(),
         fc(format(round(x$pval[i], 4), nsmall = 4), w5), '\n')
-  } 
+  }
   cat(rep("-", w), sep = "", '\n')
 
 }
@@ -738,5 +738,54 @@ print_stepwise_selection <- function(data) {
             fg(format(round(data$dev[i], 3), nsmall = 3), w4), '\n')
     }
     cat(rep("-", w), sep = "", '\n\n')
+
+}
+
+
+print_blr_twoway_segment <- function(x) {
+
+  cnames <- x %>%
+    use_series(twoway_segment) %>%
+    colnames %>%
+    prepend(x %>%
+      use_series(varnames) %>%
+      extract(1))
+
+  k <- x %>%
+    use_series(twoway_segment) %>%
+    rownames %>%
+    cbind(x %>%
+            use_series(twoway_segment) %>%
+            round(3) %>%
+            format(nsmall = 3))
+
+  nc <- ncol(k)
+  nr <- nrow(k)
+
+  wc <- k %>%
+    nchar %>%
+    max
+
+  vname <- x %>%
+    use_series(varnames) %>%
+    extract(2)
+
+  w <- (nc * wc) + (4 * (nc - 1))
+  w2 <- w - wc - 4 - 3
+  cat(paste0(rep(' ', wc)), fs(), fc(vname, w2), '\n')
+  cat(rep("-", w), sep = "", '\n')
+  for (i in seq_len(nc)) {
+    cat(fc(cnames[i], wc), fs())
+  }
+  cat('\n')
+  cat(rep("-", w), sep = "", '\n')
+  for (i in seq_len(nr)) {
+    for (j in seq_len(nc)) {
+      cat(fc(k[i, j], wc), fs())
+    }
+    cat('\n')
+    cat(rep("-", w), sep = "", '\n')
+  }
+
 
 }

@@ -152,13 +152,18 @@ blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
   n <- data %>%
     nrow
 
-  twoway <- data %>%
+  dat <- data %>%
     filter(!!resp == 1) %>%
-    select(!!var_1, !!var_2) %>%
+    select(!!var_1, !!var_2)
+
+  var_names <- dat %>%
+    names
+
+  twoway <- dat %>%
     table %>%
     divide_by(n)
 
-  result <- list(twoway_segment = twoway)
+  result <- list(twoway_segment = twoway, varnames = var_names)
   class(result) <- 'blr_twoway_segment'
   return(result)
 }
@@ -168,7 +173,7 @@ blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
 #'
 print.blr_twoway_segment <- function(x, ...) {
 
-
+  print_blr_twoway_segment(x)
 
 }
 
