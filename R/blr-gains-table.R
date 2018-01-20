@@ -14,6 +14,7 @@
 #' @param lift_curve_col color of the lift curve
 #' @param diag_line_col diagonal line color
 #' @param plot_title_justify horizontal justification on the plot title
+#' @param ... other inputs
 #' @return a tibble
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,

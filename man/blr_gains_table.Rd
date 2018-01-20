@@ -30,6 +30,8 @@ blr_gains_table(model, data = NULL)
 \item{lift_curve_col}{color of the lift curve}
 
 \item{plot_title_justify}{horizontal justification on the plot title}
+
+\item{...}{other inputs}
 }
 \value{
 a tibble
