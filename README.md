@@ -19,8 +19,6 @@ status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.sv
 blorr is designed to make it easier for users, particularly
 beginner/intermediate R users to build logistic regression models.
 
-<br>
-
 ### Installation
 
 You can install blorr from github with:
@@ -30,13 +28,26 @@ You can install blorr from github with:
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-<br>
+### Shiny App
+
+Use `blr_launch_app()` to explore the package using a shiny app.
+
+## Vignettes
+
+  - [Bivariate
+    Analysis](https://rsquaredacademy.github.io/blorr/bivariate_analysis.html)
+  - [Model Fit
+    Statistics](https://rsquaredacademy.github.io/blorr/intro.html)
+  - [Model
+    Validation](https://rsquaredacademy.github.io/blorr/model_validation.html)
+  - [Variable
+    Seelction](https://rsquaredacademy.github.io/blorr/variable_selection.html)
+  - [Residual
+    Diagnostics](https://rsquaredacademy.github.io/blorr/residual_diagnostics.html)
 
 ### Consistent Prefix
 
 blorr uses consistent prefix `blr_*` for easy tab completion.
-
-<br>
 
 ### Quick Overview
 
@@ -89,8 +100,6 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 ```
 
-<br>
-
 #### Regression Output
 
 ``` r
@@ -137,8 +146,6 @@ blr_regress(model)
 #> ---------------------------------------------------------------
 ```
 
-<br>
-
 #### Model Fit Statistics
 
 ``` r
@@ -155,8 +162,6 @@ blr_model_fit_stats(model)
 #> BIC:                          181.430    AIC:                             168.236 
 #> ---------------------------------------------------------------------------------
 ```
-
-<br>
 
 #### Confusion Matrix
 
@@ -184,8 +189,6 @@ blr_confusion_matrix(model)
 #> Pos Predicted Value     0.6923 
 #> Neg Predicted Value     0.8385
 ```
-
-<br>
 
 #### Hosmer Lemeshow Test
 
@@ -216,29 +219,34 @@ blr_hosmer_lemeshow_test(model)
 #> ------------------------------
 ```
 
-<br>
-
 #### Gains Table
 
 ``` r
 blr_gains_table(model)
 #> # A tibble: 10 x 12
-#>    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~
-#>     <int> <int> <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl> <dbl>   <dbl>   <dbl>
-#>  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9
-#>  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2
-#>  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4
-#>  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5
-#>  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9
-#>  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4
-#>  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5
-#>  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2
-#>  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6
-#> 10     10    20  0    20.0    0    53.0   0   147     0      100       0  
-#> # ... with 1 more variable: accuracy <dbl>
+#>    deci~ total   `1`   `0`    ks    tp    tn    fp    fn sens~ spec~ accu~
+#>    <int> <int> <int> <int> <dbl> <int> <int> <int> <int> <dbl> <dbl> <dbl>
+#>  1     1    20    14     6  22.3    14   141     6    39  26.4  95.9  77.5
+#>  2     2    20    13     7  42.1    27   134    13    26  50.9  91.2  80.5
+#>  3     3    20    10    10  54.2    37   124    23    16  69.8  84.4  80.5
+#>  4     4    20     7    13  58.5    44   111    36     9  83.0  75.5  77.5
+#>  5     5    20     3    17  52.6    47    94    53     6  88.7  63.9  70.5
+#>  6     6    20     3    17  46.7    50    77    70     3  94.3  52.4  63.5
+#>  7     7    20     1    19  35.7    51    58    89     2  96.2  39.5  54.5
+#>  8     8    20     2    18  27.2    53    40   107     0 100    27.2  46.5
+#>  9     9    20     0    20  13.6    53    20   127     0 100    13.6  36.5
+#> 10    10    20     0    20   0      53     0   147     0 100     0    26.5
 ```
 
-<br>
+#### Lift Chart
+
+``` r
+model %>%
+  blr_gains_table %>%
+  plot
+```
+
+![](README-lift-1.png)<!-- -->
 
 #### ROC Curve
 
@@ -250,8 +258,6 @@ model %>%
 
 ![](README-roc-1.png)<!-- -->
 
-<br>
-
 #### KS Chart
 
 ``` r
@@ -261,8 +267,6 @@ model %>%
 ```
 
 ![](README-kschart-1.png)<!-- -->
-
-<br>
 
 #### Lorenz Curve
 

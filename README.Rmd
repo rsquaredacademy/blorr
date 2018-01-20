@@ -23,8 +23,6 @@ blorr: Tools for building binary logistic regression models <img src="hex_blorr.
 
 blorr is designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models.
 
-<br>
-
 ### Installation
 
 You can install blorr from github with:
@@ -34,13 +32,22 @@ You can install blorr from github with:
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-<br>
+### Shiny App
+
+Use `blr_launch_app()` to explore the package using a shiny app.
+
+## Vignettes
+
+- [Bivariate Analysis](https://rsquaredacademy.github.io/blorr/bivariate_analysis.html)
+- [Model Fit Statistics](https://rsquaredacademy.github.io/blorr/intro.html)
+- [Model Validation](https://rsquaredacademy.github.io/blorr/model_validation.html)
+- [Variable Seelction](https://rsquaredacademy.github.io/blorr/variable_selection.html)
+- [Residual Diagnostics](https://rsquaredacademy.github.io/blorr/residual_diagnostics.html)
+
 
 ### Consistent Prefix
 
 blorr uses consistent prefix `blr_*` for easy tab completion.
-
-<br>
 
 ### Quick Overview
 
@@ -69,15 +76,11 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 ```
 
-<br>
-
 #### Regression Output
 
 ```{r regress}
 blr_regress(model)
 ```
-
-<br>
 
 #### Model Fit Statistics
 
@@ -85,15 +88,11 @@ blr_regress(model)
 blr_model_fit_stats(model)
 ```
 
-<br>
-
 #### Confusion Matrix
 
 ```{r conf}
 blr_confusion_matrix(model)
 ```
-
-<br>
 
 #### Hosmer Lemeshow Test
 
@@ -101,15 +100,19 @@ blr_confusion_matrix(model)
 blr_hosmer_lemeshow_test(model)
 ```
 
-<br>
-
 #### Gains Table
 
 ```{r gains}
 blr_gains_table(model)
 ```
 
-<br>
+#### Lift Chart
+
+```{r lift}
+model %>%
+  blr_gains_table %>%
+  plot
+```
 
 #### ROC Curve
 
@@ -119,8 +122,6 @@ model %>%
   blr_roc_curve
 ```
 
-<br>
-
 #### KS Chart
 
 ```{r kschart}
@@ -128,8 +129,6 @@ model %>%
   blr_gains_table %>%
   blr_ks_chart
 ```
-
-<br>
 
 #### Lorenz Curve
 
