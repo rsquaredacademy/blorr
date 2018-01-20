@@ -107,7 +107,7 @@ blr_segment.default <- function(data, response, predictor) {
   segment_data <- data %>%
     select(!!pred, !!resp) %>%
     group_by(!!pred) %>%
-    summarise(n = n(), `1s` = sum(!!resp)) %>%
+    summarise(n = n(), `1s` = table(!!resp)[[2]]) %>%
     mutate(
       `1s%` = round((`1s` / sum(n)), 2)
     ) %>%
@@ -211,7 +211,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
   dist_table <- data %>%
     select(!!pred, !!resp) %>%
     group_by(!!pred) %>%
-    summarise(n = n(), `1s` = sum(!!resp)) %>%
+    summarise(n = n(), `1s` = table(!!resp)[[2]]) %>%
     mutate(
       `n%` = round((n / sum(n)), 2),
       `1s%` = round((`1s` / sum(n)), 2)

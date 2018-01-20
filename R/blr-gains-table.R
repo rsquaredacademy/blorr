@@ -44,7 +44,7 @@ blr_gains_table.default <- function(model, data = NULL) {
       arrange(desc(prob)) %>%
       add_column(decile = rep(1:10, each = decile_count)) %>%
       group_by(decile) %>%
-      summarise(total = n(), `1` = sum(response)) %>%
+      summarise(total = n(), `1` = table(response)[[2]]) %>%
       mutate(
         `0` = total - `1`,
         cum_1s = cumsum(`1`),
