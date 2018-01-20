@@ -2,9 +2,15 @@
 % Please edit documentation in R/blr-gains-table.R
 \name{blr_gains_table}
 \alias{blr_gains_table}
+\alias{plot.blr_gains_table}
 \title{Gains Table & Lift Curve}
 \usage{
 blr_gains_table(model, data = NULL)
+
+\method{plot}{blr_gains_table}(x, title = "Lift Chart",
+  xaxis_title = "\% Population", yaxis_title = "\% Cumulative 1s",
+  diag_line_col = "red", lift_curve_col = "blue",
+  plot_title_justify = 0.5, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
@@ -20,5 +26,10 @@ Gains table
 \examples{
 model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
              family = binomial(link = 'logit'))
+# gains table
 blr_gains_table(model)
+
+# lift chart
+k <- blr_gains_table(model)
+plot(k)
 }

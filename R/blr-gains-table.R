@@ -11,7 +11,12 @@
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #'              family = binomial(link = 'logit'))
+#' # gains table
 #' blr_gains_table(model)
+#'
+#' # lift chart
+#' k <- blr_gains_table(model)
+#' plot(k)
 #' @export
 #'
 blr_gains_table <- function(model, data = NULL) UseMethod('blr_gains_table')
@@ -74,6 +79,7 @@ print.blr_gains_table <- function(x, ...) {
     print
 }
 
+#' @rdname blr_gains_table
 #' @export
 #'
 plot.blr_gains_table <- function(x, title = 'Lift Chart', xaxis_title = '% Population',
