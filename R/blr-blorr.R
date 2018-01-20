@@ -22,4 +22,5 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c(".", "n", "data",
   'group', 'honcomp', 'ks', 'lr_ratio', 'n%', 'negative', 'p_value', 'positive', 'predict',
   'predicted', 'prob_n', 'sec', 'test_result', 'variable', 'woe_iv_table', 'chisq_stat', 
   'confusion_matrix', 'partition_table', 'segment_data', 'var_name', 'fit', 'resid',
-  'cbar', 'dev_df', 'difchisq', 'difdev', 'fitted', 'hat', 'lr_df', 'mfit'))
+  'cbar', 'dev_df', 'difchisq', 'difdev', 'fitted', 'hat', 'lr_df', 'mfit',
+  'twoway_segment', 'varnames'))

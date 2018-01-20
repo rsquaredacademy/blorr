@@ -7,6 +7,13 @@
 #' @description Gains table
 #' @param model an object of class \code{glm}
 #' @param data a tibble
+#' @param x an object of class \code{blr_gains_table}
+#' @param title plot title
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param lift_curve_col color of the lift curve
+#' @param diag_line_col diagonal line color
+#' @param plot_title_justify horizontal justification on the plot title
 #' @return a tibble
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,

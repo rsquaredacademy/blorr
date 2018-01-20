@@ -16,6 +16,20 @@ blr_gains_table(model, data = NULL)
 \item{model}{an object of class \code{glm}}
 
 \item{data}{a tibble}
+
+\item{x}{an object of class \code{blr_gains_table}}
+
+\item{title}{plot title}
+
+\item{xaxis_title}{x axis title}
+
+\item{yaxis_title}{y axis title}
+
+\item{diag_line_col}{diagonal line color}
+
+\item{lift_curve_col}{color of the lift curve}
+
+\item{plot_title_justify}{horizontal justification on the plot title}
 }
 \value{
 a tibble
