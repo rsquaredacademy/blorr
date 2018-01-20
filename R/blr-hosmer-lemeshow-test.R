@@ -22,9 +22,13 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
     data <- eval(model$call$data)
   }
 
+  resp <- model %>%
+    use_series(y) 
+
   data$prob <- predict.glm(model, newdata = data, type = 'response')
 
   data %<>%
+    add_column(resp) %>%
     arrange(prob)
 
   int_limits <- data %>%
@@ -50,7 +54,7 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
 
   hoslem_table <- data %>%
     group_by(group) %>%
-    summarise(n = n(), `1s_observed` = sum(honcomp),
+    summarise(n = n(), `1s_observed` = sum(resp),
               `0s_observed` = n - `1s_observed`,
               avg_prob = mean(prob),
               `1s_expected` = n * avg_prob,
