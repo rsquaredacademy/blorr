@@ -47,17 +47,28 @@ blr_hosmer_lemeshow_test(model)
 blr_gains_table(model)
 ```
 
+### Lift Chart
+
+```{r val7}
+model %>%
+	blr_gains_table %>%
+	plot
+```
+
+
 ### ROC Curve
 
 ```{r val2, fig.align='center', fig.width=7, fig.height=5}
-blr_gains_table(model) %>%
+model %>%
+	blr_gains_table %>%
   blr_roc_curve
 ```
 
 ### KS Chart
 
 ```{r val3, fig.align='center', fig.width=7, fig.height=5}
-blr_gains_table(model) %>%
+model %>%
+	blr_gains_table %>%
   blr_ks_chart
 ```
 

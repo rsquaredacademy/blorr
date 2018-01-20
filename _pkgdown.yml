@@ -14,12 +14,13 @@ navbar:
           href: articles/bivariate_analysis.html
         - text: "Model Fit Statistics"
           href: articles/intro.html
-        - text: "Residual Diagnostics"
-          href: articles/residual_diagnostics.html
-        - text: "Variable Selection"
-          href: articles/variable_selection.html
         - text: "Model Validation"
           href: articles/model_validation.html
+        - text: "Variable Selection"
+          href: articles/variable_selection.html
+        - text: "Residual Diagnostics"
+          href: articles/residual_diagnostics.html
+        
     - text: "Reference"
       menu:
         - text: "Functions"

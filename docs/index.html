@@ -39,19 +39,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="articles/model_validation.html">Model Validation</a>
+      <a href="articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -102,20 +102,33 @@
 <p><strong>Author:</strong> <a href="">Aravind Hebbali</a><br><strong>License:</strong> <a href="https://opensource.org/licenses/MIT">MIT</a></p>
 <p><a href="https://cran.r-project.org/package=blorr"><img src="http://www.r-pkg.org/badges/version/blorr" alt="CRAN status"></a> <a href="https://travis-ci.org/rsquaredacademy/blorr"><img src="https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/rsquaredacademy/blorr"><img src="https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://codecov.io/github/rsquaredacademy/blorr?branch=master"><img src="https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg" alt="Coverage status"></a> <img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg"></p>
 <p>blorr is designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models.</p>
-<p><br></p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
 <p>You can install blorr from github with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"rsquaredacademy/blorr"</span>)</a></code></pre></div>
-<p><br></p>
 </div>
+<div id="shiny-app" class="section level3">
+<h3 class="hasAnchor">
+<a href="#shiny-app" class="anchor"></a>Shiny App</h3>
+<p>Use <code><a href="reference/blr_launch_app.html">blr_launch_app()</a></code> to explore the package using a shiny app.</p>
+</div>
+</div>
+<div id="vignettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#vignettes" class="anchor"></a>Vignettes</h2>
+<ul>
+<li><a href="https://rsquaredacademy.github.io/blorr/bivariate_analysis.html">Bivariate Analysis</a></li>
+<li><a href="https://rsquaredacademy.github.io/blorr/intro.html">Model Fit Statistics</a></li>
+<li><a href="https://rsquaredacademy.github.io/blorr/model_validation.html">Model Validation</a></li>
+<li><a href="https://rsquaredacademy.github.io/blorr/variable_selection.html">Variable Seelction</a></li>
+<li><a href="https://rsquaredacademy.github.io/blorr/residual_diagnostics.html">Residual Diagnostics</a></li>
+</ul>
 <div id="consistent-prefix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#consistent-prefix" class="anchor"></a>Consistent Prefix</h3>
 <p>blorr uses consistent prefix <code>blr_*</code> for easy tab completion.</p>
-<p><br></p>
 </div>
 <div id="quick-overview" class="section level3">
 <h3 class="hasAnchor">
@@ -162,7 +175,6 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># create model using glm</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a></code></pre></div>
-<p><br></p>
 </div>
 <div id="regression-output" class="section level4">
 <h4 class="hasAnchor">
@@ -208,7 +220,6 @@
 <a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
 <a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
 <a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
-<p><br></p>
 </div>
 <div id="model-fit-statistics" class="section level4">
 <h4 class="hasAnchor">
@@ -225,7 +236,6 @@
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; Count R2:                       0.810    Adj Count R2:                      0.283 </span></a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; BIC:                          181.430    AIC:                             168.236 </span></a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; ---------------------------------------------------------------------------------</span></a></code></pre></div>
-<p><br></p>
 </div>
 <div id="confusion-matrix" class="section level4">
 <h4 class="hasAnchor">
@@ -252,7 +262,6 @@
 <a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; Balanced Accuracy       0.7139 </span></a>
 <a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; Pos Predicted Value     0.6923 </span></a>
 <a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; Neg Predicted Value     0.8385</span></a></code></pre></div>
-<p><br></p>
 </div>
 <div id="hosmer-lemeshow-test" class="section level4">
 <h4 class="hasAnchor">
@@ -281,50 +290,53 @@
 <a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; ------------------------------</span></a>
 <a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt;   4.4998      8       0.8095   </span></a>
 <a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; ------------------------------</span></a></code></pre></div>
-<p><br></p>
 </div>
 <div id="gains-table" class="section level4">
 <h4 class="hasAnchor">
 <a href="#gains-table" class="anchor"></a>Gains Table</h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10     10    20  0    20.0    0    53.0   0   147     0      100       0  </span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: accuracy &lt;dbl&gt;</span></a></code></pre></div>
-<p><br></p>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    deci~ total   `1`   `0`    ks    tp    tn    fp    fn sens~ spec~ accu~</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1     1    20    14     6  22.3    14   141     6    39  26.4  95.9  77.5</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2     2    20    13     7  42.1    27   134    13    26  50.9  91.2  80.5</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3     3    20    10    10  54.2    37   124    23    16  69.8  84.4  80.5</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4     4    20     7    13  58.5    44   111    36     9  83.0  75.5  77.5</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5     5    20     3    17  52.6    47    94    53     6  88.7  63.9  70.5</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6     6    20     3    17  46.7    50    77    70     3  94.3  52.4  63.5</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7     7    20     1    19  35.7    51    58    89     2  96.2  39.5  54.5</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8     8    20     2    18  27.2    53    40   107     0 100    27.2  46.5</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9     9    20     0    20  13.6    53    20   127     0 100    13.6  36.5</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10    10    20     0    20   0      53     0   147     0 100     0    26.5</span></a></code></pre></div>
+</div>
+<div id="lift-chart" class="section level4">
+<h4 class="hasAnchor">
+<a href="#lift-chart" class="anchor"></a>Lift Chart</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span>plot</a></code></pre></div>
+<p><img src="README-lift-1.png" width="672"></p>
 </div>
 <div id="roc-curve" class="section level4">
 <h4 class="hasAnchor">
 <a href="#roc-curve" class="anchor"></a>ROC Curve</h4>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
 <p><img src="README-roc-1.png" width="672"></p>
-<p><br></p>
 </div>
 <div id="ks-chart" class="section level4">
 <h4 class="hasAnchor">
 <a href="#ks-chart" class="anchor"></a>KS Chart</h4>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
 <p><img src="README-kschart-1.png" width="672"></p>
-<p><br></p>
 </div>
 <div id="lorenz-curve" class="section level4">
 <h4 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h4>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
 <p><img src="README-unnamed-chunk-2-1.png" width="672"></p>
 <p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>

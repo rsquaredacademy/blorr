@@ -45,13 +45,13 @@
       <a href="../articles/intro.html">Model Fit Statistics</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -93,7 +93,7 @@
       <h1>Model Validation</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-18</h4>
+            <h4 class="date">2018-01-20</h4>
           </div>
 
     
@@ -166,38 +166,47 @@
 <a href="#gains-table" class="anchor"></a>Gains Table</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn     fp    fn sensit~ specif~</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;     &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;  1      1    20 14.0   6.00  22.3  14.0 141     6.00 39.0     26.4    95.9</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;  2      2    20 13.0   7.00  42.1  27.0 134    13.0  26.0     50.9    91.2</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  3      3    20 10.0  10.0   54.2  37.0 124    23.0  16.0     69.8    84.4</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  4      4    20  7.00 13.0   58.5  44.0 111    36.0   9.00    83.0    75.5</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  5      5    20  3.00 17.0   52.6  47.0  94.0  53.0   6.00    88.7    63.9</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  6      6    20  3.00 17.0   46.7  50.0  77.0  70.0   3.00    94.3    52.4</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;  7      7    20  1.00 19.0   35.7  51.0  58.0  89.0   2.00    96.2    39.5</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  8      8    20  2.00 18.0   27.2  53.0  40.0 107     0      100      27.2</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  9      9    20  0    20.0   13.6  53.0  20.0 127     0      100      13.6</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; 10     10    20  0    20.0    0    53.0   0   147     0      100       0  </span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: accuracy &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;    deci~ total   `1`   `0`    ks    tp    tn    fp    fn sens~ spec~ accu~</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;  1     1    20    14     6  22.3    14   141     6    39  26.4  95.9  77.5</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;  2     2    20    13     7  42.1    27   134    13    26  50.9  91.2  80.5</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  3     3    20    10    10  54.2    37   124    23    16  69.8  84.4  80.5</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  4     4    20     7    13  58.5    44   111    36     9  83.0  75.5  77.5</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  5     5    20     3    17  52.6    47    94    53     6  88.7  63.9  70.5</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  6     6    20     3    17  46.7    50    77    70     3  94.3  52.4  63.5</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;  7     7    20     1    19  35.7    51    58    89     2  96.2  39.5  54.5</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  8     8    20     2    18  27.2    53    40   107     0 100    27.2  46.5</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  9     9    20     0    20  13.6    53    20   127     0 100    13.6  36.5</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; 10    10    20     0    20   0      53     0   147     0 100     0    26.5</span></a></code></pre></div>
+</div>
+<div id="lift-chart" class="section level3">
+<h3 class="hasAnchor">
+<a href="#lift-chart" class="anchor"></a>Lift Chart</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">    </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">    </span>plot</a></code></pre></div>
+<p><img src="model_validation_files/figure-html/val7-1.png" width="672"></p>
 </div>
 <div id="roc-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#roc-curve" class="anchor"></a>ROC Curve</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">    </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span>blr_roc_curve</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="ks-chart" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ks-chart" class="anchor"></a>KS Chart</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(model) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">    </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="lorenz-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>

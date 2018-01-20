@@ -59,7 +59,7 @@ blr_segment_dist(hsb2, honcomp, prog) %>%
 ### Response Distribution by Multiple Segments
 
 ```{r bivar3}
-blr_twoway_segment(hsb2, honcomp, prog, female)
+blr_twoway_segment(hsb2, honcomp, prog, race)
 ```
 
 ### Response Distribution
