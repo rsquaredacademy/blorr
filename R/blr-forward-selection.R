@@ -210,10 +210,8 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
 
     } else {
 
-      if (details == TRUE) {
-        message("No more variables to be added.\n\n")
-      }
-
+      cat('\n')
+      cat(crayon::bold$red("No more variables to be added."))
       break
 
     }
