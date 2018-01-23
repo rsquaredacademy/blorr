@@ -1,10 +1,3 @@
-#' @importFrom magrittr %>% %<>% use_series extract2 extract
-#' @importFrom dplyr mutate if_else pull slice
-#' @importFrom tibble tibble as_tibble
-#' @importFrom rlang sym eval_tidy !!
-#' @importFrom glue glue
-#' @importFrom stats coef confint binomial df.residual glm terms
-#' @importFrom utils data
 response_var <- function(model) {
 
   model %>%
