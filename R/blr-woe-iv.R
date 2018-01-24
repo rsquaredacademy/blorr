@@ -1,5 +1,4 @@
 #' @importFrom rlang enquo !!
-#' @importFrom ggplot2 coord_flip
 #' @importFrom dplyr select rename
 #' @importFrom tibble add_column
 #' @title Weight of Evidence & Information Value
@@ -12,19 +11,25 @@
 #' @param title plot title
 #' @param xaxis_title x axis title
 #' @param yaxis_title y axis title
-#' @param bar_color color of the bar
+#' @param line_color color of the bar
+#' @param point_color color for the point
 #' @param ... other inputs
 #' @return a tibble
 #' @examples
-#' blr_woe_iv(hsb2, female, honcomp)
+#' # woe and iv
+#' k <- blr_woe_iv(hsb2, female, honcomp)
+#' k
+#'
+#' # plot woe
+#' plot(k)
 #' @export
 #'
-blr_woe_iv <- function(data, predictor, response, digits = 2, ...)
+blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
   UseMethod('blr_woe_iv')
 
 #' @export
 #'
-blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
+blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
 
   pred <- enquo(predictor)
   resp <- enquo(response)
@@ -49,8 +54,8 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
       approval = round(((yes / total) * 100), digits = digits),
       dist_yes = round(yes / sum(yes), digits = digits),
       dist_no = round(no / sum(no), digits = digits),
-      woe = round(log(dist_yes / dist_no), digits = digits),
-      dist_diff = dist_yes - dist_no,
+      woe = round(log(dist_no / dist_yes), digits = digits),
+      dist_diff = dist_no - dist_yes,
       iv = round((dist_diff * woe), digits = digits)
     ) %>%
     add_column(levels = lev, .before = 1) %>%
@@ -81,7 +86,7 @@ print.blr_woe_iv <- function(x, ...) {
 #'
 plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
                             yaxis_title = 'WoE',
-                            bar_color = 'blue', ...) {
+                            line_color = 'blue', point_color = 'blue', ...) {
 
   if (is.na(title)) {
     plot_title <- x$var_name
@@ -92,8 +97,8 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
   x %>%
     use_series(woe_iv_table) %>%
     ggplot() +
-    geom_col(aes(x = levels, y = woe), fill = bar_color) +
-    coord_flip() +
+    geom_line(aes(x = as.numeric(levels), y = woe), color = line_color) +
+    geom_point(aes(x = as.numeric(levels), y = woe), color = point_color) +
     ggtitle(plot_title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }

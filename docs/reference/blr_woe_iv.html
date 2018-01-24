@@ -62,19 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -120,11 +120,11 @@
     <p>Weight of evidence and information value</p>
     
 
-    <pre class="usage"><span class='fu'>blr_woe_iv</span>(<span class='no'>data</span>, <span class='no'>predictor</span>, <span class='no'>response</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>blr_woe_iv</span>(<span class='no'>data</span>, <span class='no'>predictor</span>, <span class='no'>response</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for blr_woe_iv</span>
 <span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"Levels"</span>,
-  <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>"WoE"</span>, <span class='kw'>bar_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>"WoE"</span>, <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -166,8 +166,12 @@
       <td><p>y axis title</p></td>
     </tr>
     <tr>
-      <th>bar_color</th>
+      <th>line_color</th>
       <td><p>color of the bar</p></td>
+    </tr>
+    <tr>
+      <th>point_color</th>
+      <td><p>color for the point</p></td>
     </tr>
     </table>
     
@@ -177,20 +181,24 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_woe_iv</span>(<span class='no'>hsb2</span>, <span class='no'>female</span>, <span class='no'>honcomp</span>)</div><div class='output co'>#&gt;                          Weight of Evidence                           
-#&gt; ---------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist     woe      iv  
-#&gt; ---------------------------------------------------------------------
-#&gt;   0          73          18         0.5       0.34      -0.39    0.06 
-#&gt;   1          74          35         0.5       0.66      0.28     0.04 
-#&gt; ---------------------------------------------------------------------
+    <pre class="examples"><div class='input'><span class='co'># woe and iv</span>
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_woe_iv</span>(<span class='no'>hsb2</span>, <span class='no'>female</span>, <span class='no'>honcomp</span>)
+<span class='no'>k</span></div><div class='output co'>#&gt;                            Weight of Evidence                             
+#&gt; -------------------------------------------------------------------------
+#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#&gt; -------------------------------------------------------------------------
+#&gt;   0          73          18          0.50       0.34       0.38     0.06  
+#&gt;   1          74          35          0.50       0.66      -0.27     0.04  
+#&gt; -------------------------------------------------------------------------
 #&gt; 
 #&gt;       Information Value       
 #&gt; -----------------------------
 #&gt; Variable    Information Value 
 #&gt; -----------------------------
-#&gt;  female            0.1        
-#&gt; -----------------------------</div></pre>
+#&gt;  female          0.1023       
+#&gt; -----------------------------</div><div class='input'>
+<span class='co'># plot woe</span>
+<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_woe_iv-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

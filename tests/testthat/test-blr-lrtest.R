@@ -7,7 +7,7 @@ test_that('blr_lr_test throws an error when the model is not an object of
                           family = binomial(link = 'logit'))
 
 
-            model2 <- lm(honcomp ~ 1, data = hsb2)
+            model2 <- lm(write ~ 1, data = hsb2)
             expect_error(blr_lr_test(model1, model2))
             expect_error(blr_lr_test(model2, model1))
 

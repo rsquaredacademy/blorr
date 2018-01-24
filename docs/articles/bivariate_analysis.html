@@ -93,7 +93,6 @@
       <h1>Bivariate Analysis</h1>
                         <h4 class="author">Aravind Hebbali</h4>
             
-            <h4 class="date">2018-01-20</h4>
           </div>
 
     
@@ -110,8 +109,8 @@
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value </span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  female           0.10              3.9350          1        0.0473   </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   prog            0.44              16.1450         2        3e-04    </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   race            0.31              11.3694         3        0.0099   </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   prog            0.43              16.1450         2        3e-04    </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   race            0.33              11.3694         3        0.0099   </span></a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  schtyp           0.00              0.0445          1        0.8330   </span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; ---------------------------------------------------------------------</span></a></code></pre></div>
 </div>
@@ -122,99 +121,106 @@
 <h4 class="hasAnchor">
 <a href="#introduction-1" class="anchor"></a>Introduction</h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, prog, honcomp)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;   1          38          7           0.26       0.13    -0.69    0.09 </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;   2          65          40          0.44       0.75     0.53    0.16 </span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;   3          44          6           0.30       0.11    -1.00    0.19 </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;                            Weight of Evidence                             </span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;   1          38          7           0.26       0.13       0.67     0.08  </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;   2          65          40          0.44       0.75      -0.53     0.17  </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;   3          44          6           0.30       0.11       0.97     0.18  </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;       Information Value       </span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; -----------------------------</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; Variable    Information Value </span></a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;   prog            0.44        </span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;   prog           0.4329       </span></a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
+</div>
+<div id="plot" class="section level4">
+<h4 class="hasAnchor">
+<a href="#plot" class="anchor"></a>Plot</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">k &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, prog, honcomp)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">plot</span>(k)</a></code></pre></div>
+<p><img src="bivariate_analysis_files/figure-html/woeplot-1.png" width="672"></p>
 </div>
 <div id="multiple-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#multiple-variables" class="anchor"></a>Multiple Variables</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span>(hsb2, honcomp, prog, race, female, schtyp)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; Variable: prog</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   1          38          7           0.26       0.13    -0.69    0.09 </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   2          65          40          0.44       0.75     0.53    0.16 </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   3          44          6           0.30       0.11    -1.00    0.19 </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;       Information Value       </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; Variable    Information Value </span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   prog            0.44        </span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; Variable: race</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  </span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt;   1          22          2           0.15       0.04    -1.32    0.15 </span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt;   2          6           5           0.04       0.09     0.81    0.04 </span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="co">#&gt;   3          18          2           0.12       0.04    -1.10    0.09 </span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="co">#&gt;   4         101          44          0.69       0.83     0.18    0.03 </span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co">#&gt;       Information Value       </span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co">#&gt; Variable    Information Value </span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt;   race            0.31        </span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co">#&gt; Variable: female</span></a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  </span></a>
-<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="co">#&gt;   0          73          18          0.50       0.34    -0.39    0.06 </span></a>
-<a class="sourceLine" id="cb4-48" data-line-number="48"><span class="co">#&gt;   1          74          35          0.50       0.66     0.28    0.04 </span></a>
-<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co">#&gt;       Information Value       </span></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="co">#&gt; Variable    Information Value </span></a>
-<a class="sourceLine" id="cb4-54" data-line-number="54"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-55" data-line-number="55"><span class="co">#&gt;  female            0.1        </span></a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-57" data-line-number="57"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-58" data-line-number="58"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-59" data-line-number="59"><span class="co">#&gt; Variable: schtyp</span></a>
-<a class="sourceLine" id="cb4-60" data-line-number="60"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt;                         Weight of Evidence                          </span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="co">#&gt; -------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe    iv </span></a>
-<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="co">#&gt; -------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt;   1         123          45          0.84       0.85     0.01    0.00 </span></a>
-<a class="sourceLine" id="cb4-66" data-line-number="66"><span class="co">#&gt;   2          24          8           0.16       0.15    -0.06    0.00 </span></a>
-<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt; -------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt;       Information Value       </span></a>
-<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt; Variable    Information Value </span></a>
-<a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt;  schtyp             0         </span></a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span>(hsb2, honcomp, prog, race, female, schtyp)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; Variable: prog</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;                            Weight of Evidence                             </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;   1          38          7           0.26       0.13       0.67     0.08  </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   2          65          40          0.44       0.75      -0.53     0.17  </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;   3          44          6           0.30       0.11       0.97     0.18  </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;       Information Value       </span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; Variable    Information Value </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;   prog           0.4329       </span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; Variable: race</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt;                            Weight of Evidence                             </span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt;   1          22          2           0.15       0.04       1.38     0.15  </span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt;   2          6           5           0.04       0.09      -0.84     0.04  </span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt;   3          18          2           0.12       0.04       1.18     0.10  </span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt;   4         101          44          0.69       0.83      -0.19     0.03  </span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt;       Information Value       </span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt; Variable    Information Value </span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt;   race            0.326       </span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; Variable: female</span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt;                            Weight of Evidence                             </span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span></a>
+<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt;   0          73          18          0.50       0.34       0.38     0.06  </span></a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt;   1          74          35          0.50       0.66      -0.27     0.04  </span></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt;       Information Value       </span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="co">#&gt; Variable    Information Value </span></a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-55" data-line-number="55"><span class="co">#&gt;  female          0.1023       </span></a>
+<a class="sourceLine" id="cb5-56" data-line-number="56"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-57" data-line-number="57"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-58" data-line-number="58"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-59" data-line-number="59"><span class="co">#&gt; Variable: schtyp</span></a>
+<a class="sourceLine" id="cb5-60" data-line-number="60"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-61" data-line-number="61"><span class="co">#&gt;                            Weight of Evidence                            </span></a>
+<a class="sourceLine" id="cb5-62" data-line-number="62"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-63" data-line-number="63"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe     iv   </span></a>
+<a class="sourceLine" id="cb5-64" data-line-number="64"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-65" data-line-number="65"><span class="co">#&gt;   1         123          45          0.84       0.85      -0.01    0.00  </span></a>
+<a class="sourceLine" id="cb5-66" data-line-number="66"><span class="co">#&gt;   2          24          8           0.16       0.15       0.08    0.00  </span></a>
+<a class="sourceLine" id="cb5-67" data-line-number="67"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb5-68" data-line-number="68"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-69" data-line-number="69"><span class="co">#&gt;       Information Value       </span></a>
+<a class="sourceLine" id="cb5-70" data-line-number="70"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-71" data-line-number="71"><span class="co">#&gt; Variable    Information Value </span></a>
+<a class="sourceLine" id="cb5-72" data-line-number="72"><span class="co">#&gt; -----------------------------</span></a>
+<a class="sourceLine" id="cb5-73" data-line-number="73"><span class="co">#&gt;  schtyp          0.0012       </span></a>
+<a class="sourceLine" id="cb5-74" data-line-number="74"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
 </div>
 </div>
 <div id="response-distribution-by-segments" class="section level3">
@@ -223,51 +229,51 @@
 <div id="introduction-2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#introduction-2" class="anchor"></a>Introduction</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;          Event Segmentation           </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; -------------------------------------</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   prog       n     1s     n%     1s%  </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; -------------------------------------</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;    1        45     7     0.22    0.04 </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;    2        105    40    0.52    0.20 </span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;    3        50     6     0.25    0.03 </span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; -------------------------------------</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt;          Event Segmentation           </span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; -------------------------------------</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   prog       n     1s     n%     1s%  </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; -------------------------------------</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;    1        45     7     0.22    0.04 </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;    2        105    40    0.52    0.20 </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;    3        50     6     0.25    0.03 </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; -------------------------------------</span></a></code></pre></div>
 </div>
-<div id="plot" class="section level4">
+<div id="plot-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#plot" class="anchor"></a>Plot</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span>plot</a></code></pre></div>
+<a href="#plot-1" class="anchor"></a>Plot</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>plot</a></code></pre></div>
 <p><img src="bivariate_analysis_files/figure-html/bivar5-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="response-distribution-by-multiple-segments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#response-distribution-by-multiple-segments" class="anchor"></a>Response Distribution by Multiple Segments</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, race)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;                          race              </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; -----------------------------------------</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; prog      1       2       3       4     </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; -----------------------------------------</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   1     0.000   0.000   0.000   0.035   </span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; -----------------------------------------</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   2     0.010   0.020   0.005   0.165   </span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; -----------------------------------------</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   3     0.000   0.005   0.005   0.020   </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; -----------------------------------------</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/blr_twoway_segment.html">blr_twoway_segment</a></span>(hsb2, honcomp, prog, race)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;                          race              </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; -----------------------------------------</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; prog      1       2       3       4     </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; -----------------------------------------</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;   1     0.000   0.000   0.000   0.035   </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; -----------------------------------------</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;   2     0.010   0.020   0.005   0.165   </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; -----------------------------------------</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;   3     0.000   0.005   0.005   0.020   </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; -----------------------------------------</span></a></code></pre></div>
 </div>
 <div id="response-distribution" class="section level3">
 <h3 class="hasAnchor">
 <a href="#response-distribution" class="anchor"></a>Response Distribution</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment.html">blr_segment</a></span>(hsb2, honcomp, prog)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; Event By Attributes </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; -------------------</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; prog           1s%  </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; -------------------</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  1             0.04 </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  2             0.20 </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  3             0.03 </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; -------------------</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/blr_segment.html">blr_segment</a></span>(hsb2, honcomp, prog)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Event By Attributes </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; -------------------</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; prog           1s%  </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; -------------------</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;  1             0.04 </span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;  2             0.20 </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;  3             0.03 </span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; -------------------</span></a></code></pre></div>
 </div>
 </div>
   </div>

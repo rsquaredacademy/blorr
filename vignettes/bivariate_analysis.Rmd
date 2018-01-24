@@ -1,7 +1,6 @@
 ---
 title: "Bivariate Analysis"
 author: "Aravind Hebbali"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Bivariate Analysis}
@@ -33,6 +32,13 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 
 ```{r woe1}
 blr_woe_iv(hsb2, prog, honcomp)
+```
+
+#### Plot
+
+```{r woeplot}
+k <- blr_woe_iv(hsb2, prog, honcomp)
+plot(k)
 ```
 
 #### Multiple Variables

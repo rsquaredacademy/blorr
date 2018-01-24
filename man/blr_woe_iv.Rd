@@ -5,10 +5,10 @@
 \alias{plot.blr_woe_iv}
 \title{Weight of Evidence & Information Value}
 \usage{
-blr_woe_iv(data, predictor, response, digits = 2, ...)
+blr_woe_iv(data, predictor, response, digits = 4, ...)
 
 \method{plot}{blr_woe_iv}(x, title = NA, xaxis_title = "Levels",
-  yaxis_title = "WoE", bar_color = "blue", ...)
+  yaxis_title = "WoE", line_color = "blue", point_color = "blue", ...)
 }
 \arguments{
 \item{data}{a tibble}
@@ -29,7 +29,9 @@ blr_woe_iv(data, predictor, response, digits = 2, ...)
 
 \item{yaxis_title}{y axis title}
 
-\item{bar_color}{color of the bar}
+\item{line_color}{color of the bar}
+
+\item{point_color}{color for the point}
 }
 \value{
 a tibble
@@ -38,5 +40,10 @@ a tibble
 Weight of evidence and information value
 }
 \examples{
-blr_woe_iv(hsb2, female, honcomp)
+# woe and iv
+k <- blr_woe_iv(hsb2, female, honcomp)
+k
+
+# plot woe
+plot(k)
 }
