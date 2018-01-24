@@ -1,7 +1,6 @@
 ---
 title: "Residual Diagnostics"
 author: "Aravind Hebbali"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Residual Diagnostics}

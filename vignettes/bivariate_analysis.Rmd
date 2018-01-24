@@ -1,7 +1,6 @@
 ---
 title: "Bivariate Analysis"
 author: "Aravind Hebbali"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Bivariate Analysis}
