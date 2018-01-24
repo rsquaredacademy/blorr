@@ -27,6 +27,7 @@ test_that("output from blr_twoway_segment is as expected", {
     k %>%
     use_series(twoway_segment) %>%
     `[`(, 1) %>%
+    round(2) %>%
     unname
   expected <- c(0.00, 0.01, 0.00)
   expect_equivalent(actual, expected)
