@@ -35,6 +35,13 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 blr_woe_iv(hsb2, prog, honcomp)
 ```
 
+#### Plot
+
+```{r woeplot}
+k <- blr_woe_iv(hsb2, prog, honcomp)
+plot(k)
+```
+
 #### Multiple Variables
 
 ```{r woe2}
