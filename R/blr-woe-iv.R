@@ -19,12 +19,12 @@
 #' blr_woe_iv(hsb2, female, honcomp)
 #' @export
 #'
-blr_woe_iv <- function(data, predictor, response, digits = 2, ...)
+blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
   UseMethod('blr_woe_iv')
 
 #' @export
 #'
-blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
+blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
 
   pred <- enquo(predictor)
   resp <- enquo(response)
@@ -49,8 +49,8 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 2, ...) {
       approval = round(((yes / total) * 100), digits = digits),
       dist_yes = round(yes / sum(yes), digits = digits),
       dist_no = round(no / sum(no), digits = digits),
-      woe = round(log(dist_yes / dist_no), digits = digits),
-      dist_diff = dist_yes - dist_no,
+      woe = round(log(dist_no / dist_yes), digits = digits),
+      dist_diff = dist_no - dist_yes,
       iv = round((dist_diff * woe), digits = digits)
     ) %>%
     add_column(levels = lev, .before = 1) %>%
