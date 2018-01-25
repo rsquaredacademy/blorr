@@ -15,6 +15,7 @@ Imports:
     crayon,
     descriptr,
     dplyr,
+    e1071,
     ggplot2,
     glue,
     gridExtra,

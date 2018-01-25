@@ -1,4 +1,5 @@
 #' @importFrom caret confusionMatrix
+#' @importFrom e1071 classAgreement
 #' @title Confusion Matrix
 #' @description Confusion matrix
 #' @param model an object of class \code{glm}
