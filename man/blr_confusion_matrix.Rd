@@ -14,7 +14,7 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL)
 \item{data}{a tibble}
 }
 \value{
-table
+Confusion Matrix
 }
 \description{
 Confusion matrix

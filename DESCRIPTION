@@ -9,6 +9,7 @@ Description: blorr is designed to make it easier for users, particularly beginne
 Depends:
     R(>= 3.2.4)
 Imports: 
+    caret,
     cli,
     clisymbols,
     crayon,
@@ -27,7 +28,6 @@ Imports:
     utils,
     Rcpp
 Suggests: 
-    caret,
     covr,
     grid,
     jsonlite,

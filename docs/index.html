@@ -144,8 +144,8 @@
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  female           0.10              3.9350          1        0.0473   </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;   prog            0.44              16.1450         2        3e-04    </span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;   race            0.31              11.3694         3        0.0099   </span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;   prog            0.43              16.1450         2        3e-04    </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;   race            0.33              11.3694         3        0.0099   </span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  schtyp           0.00              0.0445          1        0.8330   </span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ---------------------------------------------------------------------</span></a></code></pre></div>
 </div>
@@ -153,20 +153,20 @@
 <h4 class="hasAnchor">
 <a href="#weight-of-evidence-information-value" class="anchor"></a>Weight of Evidence &amp; Information Value</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, prog, honcomp)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;                          Weight of Evidence                           </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   1          38          7           0.26       0.13    -0.69    0.09 </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   2          65          40          0.44       0.75     0.53    0.16 </span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   3          44          6           0.30       0.11    -1.00    0.19 </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; ---------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;                            Weight of Evidence                             </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   1          38          7           0.26       0.13       0.67     0.08  </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;   2          65          40          0.44       0.75      -0.53     0.17  </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   3          44          6           0.30       0.11       0.97     0.18  </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;       Information Value       </span></a>
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; -----------------------------</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; Variable    Information Value </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;   prog            0.44        </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;   prog           0.4329       </span></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; -----------------------------</span></a></code></pre></div>
 </div>
 <div id="model" class="section level4">
@@ -241,27 +241,32 @@
 <h4 class="hasAnchor">
 <a href="#confusion-matrix" class="anchor"></a>Confusion Matrix</h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span>(model)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;                    Predicted   </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Observed          0         1 </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;    0            135        12 </span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;    1             26        27 </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; -----------------------------</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;   Model Performance Measures   </span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; ------------------------------</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; Accuracy                0.8100 </span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; Precision               0.6923 </span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; Sensitivity             0.5094 </span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; Specificity             0.9184 </span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; Recall                  0.5094 </span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; Prevalence              0.2650 </span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; Detection Rate          0.1350 </span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; Detection Prevalence    0.1950 </span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; Balanced Accuracy       0.7139 </span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; Pos Predicted Value     0.6923 </span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt; Neg Predicted Value     0.8385</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; Confusion Matrix and Statistics</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;           Reference</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; Prediction   0   1</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;          0 135  26</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;          1  12  27</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;                Accuracy : 0.81            </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;                  95% CI : (0.7487, 0.8619)</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;     No Information Rate : 0.735           </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;     P-Value [Acc &gt; NIR] : 0.008453        </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;                   Kappa : 0.4673          </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  Mcnemar's Test P-Value : 0.034955        </span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;             Sensitivity : 0.9184          </span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;             Specificity : 0.5094          </span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;          Pos Pred Value : 0.8385          </span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;          Neg Pred Value : 0.6923          </span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;              Prevalence : 0.7350          </span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;          Detection Rate : 0.6750          </span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;    Detection Prevalence : 0.8050          </span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;       Balanced Accuracy : 0.7139          </span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;                                           </span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt;        'Positive' Class : 0               </span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; </span></a></code></pre></div>
 </div>
 <div id="hosmer-lemeshow-test" class="section level4">
 <h4 class="hasAnchor">
