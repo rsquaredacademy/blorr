@@ -65,8 +65,8 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #> Variable    Information Value    LR Chi Square    LR DF    LR p-value 
 #> ---------------------------------------------------------------------
 #>  female           0.10              3.9350          1        0.0473   
-#>   prog            0.44              16.1450         2        3e-04    
-#>   race            0.31              11.3694         3        0.0099   
+#>   prog            0.43              16.1450         2        3e-04    
+#>   race            0.33              11.3694         3        0.0099   
 #>  schtyp           0.00              0.0445          1        0.8330   
 #> ---------------------------------------------------------------------
 ```
@@ -75,20 +75,20 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 
 ``` r
 blr_woe_iv(hsb2, prog, honcomp)
-#>                          Weight of Evidence                           
-#> ---------------------------------------------------------------------
-#> levels    0s_count    1s_count    0s_dist    1s_dist      woe     iv  
-#> ---------------------------------------------------------------------
-#>   1          38          7           0.26       0.13    -0.69    0.09 
-#>   2          65          40          0.44       0.75     0.53    0.16 
-#>   3          44          6           0.30       0.11    -1.00    0.19 
-#> ---------------------------------------------------------------------
+#>                            Weight of Evidence                             
+#> -------------------------------------------------------------------------
+#> levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#> -------------------------------------------------------------------------
+#>   1          38          7           0.26       0.13       0.67     0.08  
+#>   2          65          40          0.44       0.75      -0.53     0.17  
+#>   3          44          6           0.30       0.11       0.97     0.18  
+#> -------------------------------------------------------------------------
 #> 
 #>       Information Value       
 #> -----------------------------
 #> Variable    Information Value 
 #> -----------------------------
-#>   prog            0.44        
+#>   prog           0.4329       
 #> -----------------------------
 ```
 
@@ -167,27 +167,32 @@ blr_model_fit_stats(model)
 
 ``` r
 blr_confusion_matrix(model)
-#>                    Predicted   
-#> -----------------------------
-#> Observed          0         1 
-#> -----------------------------
-#>    0            135        12 
-#>    1             26        27 
-#> -----------------------------
+#> Confusion Matrix and Statistics
 #> 
-#>   Model Performance Measures   
-#> ------------------------------
-#> Accuracy                0.8100 
-#> Precision               0.6923 
-#> Sensitivity             0.5094 
-#> Specificity             0.9184 
-#> Recall                  0.5094 
-#> Prevalence              0.2650 
-#> Detection Rate          0.1350 
-#> Detection Prevalence    0.1950 
-#> Balanced Accuracy       0.7139 
-#> Pos Predicted Value     0.6923 
-#> Neg Predicted Value     0.8385
+#>           Reference
+#> Prediction   0   1
+#>          0 135  26
+#>          1  12  27
+#>                                           
+#>                Accuracy : 0.81            
+#>                  95% CI : (0.7487, 0.8619)
+#>     No Information Rate : 0.735           
+#>     P-Value [Acc > NIR] : 0.008453        
+#>                                           
+#>                   Kappa : 0.4673          
+#>  Mcnemar's Test P-Value : 0.034955        
+#>                                           
+#>             Sensitivity : 0.9184          
+#>             Specificity : 0.5094          
+#>          Pos Pred Value : 0.8385          
+#>          Neg Pred Value : 0.6923          
+#>              Prevalence : 0.7350          
+#>          Detection Rate : 0.6750          
+#>    Detection Prevalence : 0.8050          
+#>       Balanced Accuracy : 0.7139          
+#>                                           
+#>        'Positive' Class : 0               
+#> 
 ```
 
 #### Hosmer Lemeshow Test
