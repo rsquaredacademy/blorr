@@ -87,3 +87,41 @@ test_that('output from blr_nagelkerke_rsq is as expected', {
   expect_equal(actual, expected)
 
 })
+
+test_that('output from blr_mckelvey_zavoina_rsq is as expected', {
+
+  actual <- blr_mckelvey_zavoina_rsq(model) %>%
+    round(4)
+  expected <- 0.5178
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from blr_count_rsq is as expected', {
+
+  actual <- blr_count_rsq(model) %>%
+    round(4)
+  expected <- 0.81
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from blr_adj_count_rsq is as expected', {
+
+  actual <- blr_adj_count_rsq(model) %>%
+    round(4)
+  expected <- 0.283
+  expect_equal(actual, expected)
+
+})
+
+test_that('output from blr_effron_rsq is as expected', {
+
+  actual <- blr_effron_rsq(model) %>%
+    round(4)
+  expected <- 0.3305
+  expect_equal(actual, expected)
+
+})
+
+
