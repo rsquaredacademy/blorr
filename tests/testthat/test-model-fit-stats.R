@@ -125,6 +125,7 @@ test_that('output from blr_effron_rsq is as expected', {
 })
 
 
+
 test_that('blr_model_fit_stats prints the correct output', {
 
   k <- blr_model_fit_stats(model)

@@ -13,6 +13,7 @@ test_that("output from blr_hosmer_lemeshow_test is as expected", {
 
 })
 
+
 test_that("hosmer lemeshow test prints the correct output", {
 
   model <- glm(honcomp ~ race + read + science, data = hsb2,
