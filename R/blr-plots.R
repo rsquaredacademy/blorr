@@ -246,7 +246,7 @@ blr_residual_diagnostics <- function(model) {
   difdev <- model %>%
     rstandard %>%
     raise_to_power(2) %>%
-    divide_by(cbar)
+    add(cbar)
 
   difchisq <- cbar %>%
     divide_by(hat_val)
