@@ -8,15 +8,53 @@ test_that("output from blr_bivariate_analysis is as expected", {
 
 })
 
+
+test_that("blr_bivariate_analysis prints the correct output", {
+
+  k <- blr_bivariate_analysis(hsb2, honcomp, female, prog)
+
+  x <- cat("                         Bivariate Analysis
+---------------------------------------------------------------------
+           Variable    Information Value    LR Chi Square    LR DF    LR p-value
+           ---------------------------------------------------------------------
+           female           0.10              3.9350          1        0.0473
+           prog            0.43              16.1450         2        3e-04
+           ---------------------------------------------------------------------")
+
+  expect_output(print(k), x)
+
+})
+
 test_that("output from blr_segment is as expected", {
 
   k <- blr_segment(hsb2, honcomp, race)
+
   actual <-
     k %>%
     use_series(segment_data) %>%
     pull(`1s%`)
+
   expected <- c(0.01, 0.02, 0.01, 0.22)
+
   expect_equivalent(actual, expected)
+
+})
+
+test_that("blr_segment prints the correct output", {
+
+  k <- blr_segment(hsb2, honcomp, race)
+
+  x <- cat("Event By Attributes
+-------------------
+           race           1s%
+           -------------------
+           1             0.01
+           2             0.02
+           3             0.01
+           4             0.22
+           -------------------")
+
+  expect_output(print(k), x)
 
 })
 
@@ -38,6 +76,26 @@ test_that("output from blr_twoway_segment is as expected", {
 
 })
 
+test_that("blr_twoway_segment prints the correct output", {
+
+  k <- blr_twoway_segment(hsb2, honcomp, prog, race)
+
+  x <- cat(
+    "                         race
+-----------------------------------------
+    prog      1       2       3       4
+    -----------------------------------------
+    1     0.000   0.000   0.000   0.035
+    -----------------------------------------
+    2     0.010   0.020   0.005   0.165
+    -----------------------------------------
+    3     0.000   0.005   0.005   0.020
+    -----------------------------------------")
+
+  expect_output(print(k), x)
+
+})
+
 test_that("output from blr_segment_dist is as expected", {
 
   k <- blr_segment_dist(hsb2, honcomp, race)
@@ -47,6 +105,25 @@ test_that("output from blr_segment_dist is as expected", {
     pull(`1s%`)
   expected <- c(0.01, 0.02, 0.01, 0.22)
   expect_equivalent(actual, expected)
+
+})
+
+test_that("blr_twoway_segment prints the correct output", {
+
+  k <- blr_segment_dist(hsb2, honcomp, race)
+
+  x <- cat(
+    "         Event Segmentation
+-------------------------------------
+    race       n     1s     n%     1s%
+    -------------------------------------
+    1        24     2     0.12    0.01
+    2        11     5     0.06    0.02
+    3        20     2     0.10    0.01
+    4        145    44    0.72    0.22
+    -------------------------------------")
+
+  expect_output(print(k), x)
 
 })
 
@@ -61,5 +138,30 @@ test_that("output from blr_woe_iv is as expected", {
     sum
   expected <- 0.4329
   expect_equal(actual, expected)
+
+})
+
+test_that("blr_woe_iv prints the correct output", {
+
+  k <- blr_woe_iv(hsb2, prog, honcomp)
+
+  x <- cat(
+    "                           Weight of Evidence
+-------------------------------------------------------------------------
+    levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv
+    -------------------------------------------------------------------------
+    1          38          7           0.26       0.13       0.67     0.08
+    2          65          40          0.44       0.75      -0.53     0.17
+    3          44          6           0.30       0.11       0.97     0.18
+    -------------------------------------------------------------------------
+
+    Information Value
+    -----------------------------
+    Variable    Information Value
+    -----------------------------
+    prog           0.4329
+    -----------------------------")
+
+  expect_output(print(k), x)
 
 })
