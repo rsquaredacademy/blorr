@@ -174,3 +174,21 @@ test_that('blr_multi_model_fit_stats prints the correct output', {
   expect_output(print(k), x)
 
 })
+
+
+test_that('blr_lr_test prints the correct output', {
+
+  k <- blr_lr_test(model)
+
+  x <- cat(
+    "    Likelihood Ratio Test
+------------------------------
+    Chi-Square    DF    Pr > ChiSq
+    ------------------------------
+    71.0525      3       0.0000
+    ------------------------------"
+  )
+
+  expect_output(print(k), x)
+
+})
