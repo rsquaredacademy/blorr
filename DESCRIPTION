@@ -15,7 +15,7 @@ Imports:
     crayon,
     descriptr,
     dplyr,
-    e1071,
+    e1071,  
     ggplot2,
     glue,
     gridExtra,
@@ -42,7 +42,8 @@ Suggests:
     tools,
     testthat,
     tidyr,
-    rmarkdown
+    rmarkdown,
+    ineq
 License: MIT + file LICENSE
 URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
