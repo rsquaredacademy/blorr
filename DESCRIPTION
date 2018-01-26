@@ -21,29 +21,30 @@ Imports:
     gridExtra,
     magrittr,
     purrr,
+    Rcpp,
     rlang,
     scales,
     shiny,
     stats,
     tibble,
-    utils,
-    Rcpp
+    utils
 Suggests: 
     covr,
     grid,
+    ineq,
     jsonlite,
     lubridate,
     knitr,
     readr,
     readxl,
+    rmarkdown,
     shinyBS,
     shinythemes,
     stringr,
     tools,
     testthat,
     tidyr,
-    rmarkdown,
-    ineq
+    vdiffr
 License: MIT + file LICENSE
 URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
