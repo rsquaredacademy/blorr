@@ -207,18 +207,26 @@
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>blr_ks_chart</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
+<div id="decile-lift-chart" class="section level3">
+<h3 class="hasAnchor">
+<a href="#decile-lift-chart" class="anchor"></a>Decile Lift Chart</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>blr_decile_lift_chart</a></code></pre></div>
+<p><img src="model_validation_files/figure-html/val9-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
 <div id="capture-rate-by-decile" class="section level3">
 <h3 class="hasAnchor">
 <a href="#capture-rate-by-decile" class="anchor"></a>Capture Rate by Decile</h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>blr_decile_capture_rate</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span>blr_gains_table <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span>blr_decile_capture_rate</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val8-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="lorenz-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
 <p><img src="model_validation_files/figure-html/val4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
