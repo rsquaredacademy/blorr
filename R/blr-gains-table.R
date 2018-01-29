@@ -17,7 +17,7 @@
 #' @param ... other inputs
 #' @return a tibble
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' # gains table
 #' blr_gains_table(model)
@@ -126,7 +126,7 @@ plot.blr_gains_table <- function(x, title = 'Lift Chart', xaxis_title = '% Popul
 #' @param yaxis_title y axis title
 #' @param ks_line_color color of the line indicating maximum ks
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
@@ -199,7 +199,7 @@ blr_ks_chart <- function(gains_table, title = 'KS Chart', yaxis_title = ' ',
 #' @param text_size size of the bar labels
 #' @param text_vjust vertical justification of the bar labels
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_decile_capture_rate(gt)
@@ -213,8 +213,7 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
                                     text_vjust = -0.3) {
 
   decile_rate <-
-    model %>%
-    blr_gains_table %>%
+    gains_table %>%
     use_series(gains_table) %>%
     select(decile, total, `1`) %>%
     mutate(
@@ -229,7 +228,62 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
   print(p)
-  result <- list(decile_rate = decile_rate, plot = p)
+  result <- list(plot = p, decile_rate = decile_rate)
+  invisible(result)
+
+}
+
+#' @title Decile Lift Chart
+#' @description Decile wise lift chart
+#' @param gains_table an object of class \code{blr_gains_table}
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param title plot title
+#' @param bar_color color of the bars
+#' @param text_size size of the bar labels
+#' @param text_vjust vertical justification of the bar labels
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model)
+#' blr_decile_lift_chart(gt)
+#'
+#' @export
+#'
+blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
+                                  yaxis_title = "Decile Mean / Global Mean",
+                                  title = "Decile Lift Chart",
+                                  bar_color = "blue", text_size = 3.5,
+                                  text_vjust = -0.3) {
+
+  global_mean <-
+    gains_table %>%
+    use_series(gains_table) %>%
+    select(total, `1`) %>%
+    summarise_all(sum) %>%
+    mutate(
+      gmean =  `1` / total
+    ) %>%
+    pull(gmean)
+
+  lift_data <-
+    gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total,
+      d_by_g_mean = decile_mean / global_mean
+    )
+
+  p <-
+    ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
+    geom_col(fill = bar_color) +
+    geom_text(aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
+              size = text_size) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+  print(p)
+  result <- list(plot = p, decile_lift = lift_data, global_mean = global_mean)
   invisible(result)
 
 }
