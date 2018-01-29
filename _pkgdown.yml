@@ -20,7 +20,7 @@ navbar:
           href: articles/variable_selection.html
         - text: "Residual Diagnostics"
           href: articles/residual_diagnostics.html
-        
+
     - text: "Reference"
       menu:
         - text: "Functions"
@@ -74,6 +74,27 @@ reference:
   - blr_count_rsq
   - blr_adj_count_rsq
 
+- title: Model Validation
+
+  contents:
+  - blr_gains_table
+  - blr_ks_chart
+  - blr_hosmer_lemeshow_test
+  - blr_gini_index
+  - blr_lorenz_curve
+  - blr_confusion_matrix
+  - blr_pairs
+  - blr_roc_curve
+  - blr_decile_lift_chart
+  - blr_decile_capture_rate
+
+- title: Variable Selection
+
+  contents:
+  - blr_forward_selection
+  - blr_backward_elimination
+  - blr_stepwise_selection
+
 - title: Residual Diagnostics
 
   contents:
@@ -110,25 +131,6 @@ reference:
   contents:
   - blr_linktest
 
-
-- title: Model Validation
-
-  contents:
-  - blr_gains_table
-  - blr_ks_chart
-  - blr_hosmer_lemeshow_test
-  - blr_gini_index
-  - blr_lorenz_curve
-  - blr_confusion_matrix
-  - blr_pairs
-  - blr_roc_curve
-
-- title: Variable Selection
-
-  contents:
-  - blr_forward_selection
-  - blr_backward_elimination
-  - blr_stepwise_selection
 
 - title: Data
 
