@@ -5,7 +5,7 @@
 \title{Capture Rate by Decile}
 \usage{
 blr_decile_capture_rate(gains_table, xaxis_title = "Decile",
-  yaxis_title = "Event Rate", title = "Capture Rate by Decile",
+  yaxis_title = "Capture Rate", title = "Capture Rate by Decile",
   bar_color = "blue", text_size = 3.5, text_vjust = -0.3)
 }
 \arguments{
@@ -27,7 +27,7 @@ blr_decile_capture_rate(gains_table, xaxis_title = "Decile",
 Visualize the decile wise capture rate
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 gt <- blr_gains_table(model)
 blr_decile_capture_rate(gt)

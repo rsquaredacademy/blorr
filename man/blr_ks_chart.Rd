@@ -22,7 +22,7 @@ blr_ks_chart(gains_table, title = "KS Chart", yaxis_title = " ",
 Kolmogorov Smirnov statisitcs graph
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 gt <- blr_gains_table(model)
 blr_ks_chart(gt)

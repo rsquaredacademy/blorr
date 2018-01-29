@@ -40,7 +40,7 @@ a tibble
 Gains table
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 # gains table
 blr_gains_table(model)
