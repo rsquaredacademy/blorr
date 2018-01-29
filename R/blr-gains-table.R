@@ -128,7 +128,7 @@ plot.blr_gains_table <- function(x, title = 'Lift Chart', xaxis_title = '% Popul
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #'              family = binomial(link = 'logit'))
-#' gt <- blr_gains_table(model, hsb2)
+#' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
 #'
 #' @export
@@ -185,5 +185,51 @@ blr_ks_chart <- function(gains_table, title = 'KS Chart', yaxis_title = ' ',
       legend.title=element_blank()
     )
 
+
+}
+
+
+#' @title Capture Rate by Decile
+#' @description Visualize the decile wise capture rate
+#' @param gains_table an object of class \code{blr_gains_table}
+#' @param xaxis_title x axis title
+#' @param yaxis_title y axis title
+#' @param title plot title
+#' @param bar_color color of the bars
+#' @param text_size size of the bar labels
+#' @param text_vjust vertical justification of the bar labels
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model)
+#' blr_decile_capture_rate(gt)
+#'
+#' @export
+#'
+blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
+                                    yaxis_title = "Capture Rate",
+                                    title = "Capture Rate by Decile",
+                                    bar_color = "blue", text_size = 3.5,
+                                    text_vjust = -0.3) {
+
+  decile_rate <-
+    model %>%
+    blr_gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total
+    )
+
+  p <-
+    ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
+    geom_col(fill = bar_color) +
+    geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
+              size = text_size) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+
+  print(p)
+  result <- list(decile_rate = decile_rate, plot = p)
+  invisible(result)
 
 }
