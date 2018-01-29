@@ -24,7 +24,7 @@ Kolmogorov Smirnov statisitcs graph
 \examples{
 model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
              family = binomial(link = 'logit'))
-gt <- blr_gains_table(model, hsb2)
+gt <- blr_gains_table(model)
 blr_ks_chart(gt)
 
 }
