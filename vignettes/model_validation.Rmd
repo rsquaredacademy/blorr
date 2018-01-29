@@ -54,7 +54,6 @@ model %>%
 	plot
 ```
 
-
 ### ROC Curve
 
 ```{r val2, fig.align='center', fig.width=7, fig.height=5}
@@ -70,6 +69,15 @@ model %>%
 	blr_gains_table %>%
   blr_ks_chart
 ```
+
+### Capture Rate by Decile
+
+```{r val8, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+  blr_gains_table %>%
+  blr_decile_capture_rate
+```
+
 
 ### Lorenz Curve
 
