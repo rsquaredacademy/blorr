@@ -12,11 +12,10 @@
 #' @export
 #'
 blr_linktest <- function(model) {
-
   dat <- model %>%
     use_series(call) %>%
     use_series(data) %>%
-    eval_tidy
+    eval_tidy()
 
   fit <- model %>%
     predict.glm(newdata = dat)
@@ -27,10 +26,11 @@ blr_linktest <- function(model) {
   resp <- model %>%
     use_series(y)
 
-   newdat <- tibble(fit = fit, fit2 = fit2, resp = resp)
+  newdat <- tibble(fit = fit, fit2 = fit2, resp = resp)
 
-  glm(resp ~ fit + fit2, data = newdat,
-                  family = binomial(link = 'logit')) %>%
-    summary
-
+  glm(
+    resp ~ fit + fit2, data = newdat,
+    family = binomial(link = "logit")
+  ) %>%
+    summary()
 }

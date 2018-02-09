@@ -1,23 +1,24 @@
 context("test-hosmer-lemeshow.R")
 
 test_that("output from blr_hosmer_lemeshow_test is as expected", {
-
-  model <- glm(honcomp ~ race + read + science, data = hsb2,
-               family = binomial(link = 'logit'))
+  model <- glm(
+    honcomp ~ race + read + science, data = hsb2,
+    family = binomial(link = "logit")
+  )
   actual <- model %>%
-    blr_hosmer_lemeshow_test %>%
+    blr_hosmer_lemeshow_test() %>%
     use_series(pvalue) %>%
     round(2)
   expected <- 0.66
   expect_equal(actual, expected)
-
 })
 
 
 test_that("hosmer lemeshow test prints the correct output", {
-
-  model <- glm(honcomp ~ race + read + science, data = hsb2,
-               family = binomial(link = 'logit'))
+  model <- glm(
+    honcomp ~ race + read + science, data = hsb2,
+    family = binomial(link = "logit")
+  )
 
   k <- blr_hosmer_lemeshow_test(model)
 
@@ -48,5 +49,4 @@ test_that("hosmer lemeshow test prints the correct output", {
   )
 
   expect_output(print(k), x)
-
 })

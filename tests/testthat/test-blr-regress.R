@@ -1,9 +1,10 @@
 context("test-blr-regress.R")
 
 test_that("output from blr_regress is as expected", {
-
-  model <- glm(honcomp ~ female + read + science, data = hsb2,
-               family = binomial(link = 'logit'))
+  model <- glm(
+    honcomp ~ female + read + science, data = hsb2,
+    family = binomial(link = "logit")
+  )
 
   k <- blr_regress(model)
 
@@ -51,5 +52,4 @@ test_that("output from blr_regress is as expected", {
   )
 
   expect_output(print(k), x)
-
 })
