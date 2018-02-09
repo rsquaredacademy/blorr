@@ -11,18 +11,17 @@
 #' @export
 #'
 blr_gini_index <- function(model, data = NULL) {
-
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  data$prob <- predict.glm(model, newdata = data, type = 'response')
+  data$prob <- predict.glm(model, newdata = data, type = "response")
 
   prob <- data %>%
     use_series(prob)
 
   n <- prob %>%
-    length
+    length()
 
   data %>%
     arrange(prob) %>%
@@ -31,14 +30,13 @@ blr_gini_index <- function(model, data = NULL) {
       prob_n = prob * n
     ) %>%
     pull(prob_n) %>%
-    sum %>%
+    sum() %>%
     divide_by(prob %>%
-                sum) %>%
+      sum()) %>%
     multiply_by(2) %>%
     subtract(n %>%
-               add(1)) %>%
+      add(1)) %>%
     divide_by(n)
-
 }
 
 #' @title Lorenz Curve
@@ -58,17 +56,16 @@ blr_gini_index <- function(model, data = NULL) {
 #' blr_lorenz_curve(model)
 #' @export
 #'
-blr_lorenz_curve <- function(model, data = NULL, title = 'Lorenz Curve',
-                             xaxis_title = 'Cumulative Population %',
-                             yaxis_title = 'Cumulative Events %',
-                             diag_line_col = 'red',
-                             lorenz_curve_col = 'blue') {
-
+blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
+                             xaxis_title = "Cumulative Population %",
+                             yaxis_title = "Cumulative Events %",
+                             diag_line_col = "red",
+                             lorenz_curve_col = "blue") {
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  data$prob <- predict.glm(model, newdata = data, type = 'response')
+  data$prob <- predict.glm(model, newdata = data, type = "response")
 
   prob <- data %>%
     arrange(prob) %>%
@@ -76,7 +73,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = 'Lorenz Curve',
 
 
   n <- prob %>%
-    length %>%
+    length() %>%
     rep(x = 1)
 
   p <- cumsum(n) %>%
@@ -97,7 +94,9 @@ blr_lorenz_curve <- function(model, data = NULL, title = 'Lorenz Curve',
     ggplot() +
     geom_line(aes(x = p, y = l), color = lorenz_curve_col) +
     geom_line(aes(x = p, y = p), color = diag_line_col) +
-    ggtitle(label = title, subtitle = glue('Gini Index = ', {g_index})) +
+    ggtitle(label = title, subtitle = glue("Gini Index = ", {
+      g_index
+    })) +
     xlab(xaxis_title) + ylab(yaxis_title) +
     scale_x_continuous(labels = scales::percent) +
     scale_y_continuous(labels = scales::percent) +
@@ -105,5 +104,4 @@ blr_lorenz_curve <- function(model, data = NULL, title = 'Lorenz Curve',
       plot.title = element_text(hjust = 0.5),
       plot.subtitle = element_text(hjust = 0.5)
     )
-
 }

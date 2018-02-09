@@ -2,6 +2,5 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 blr_pairs_cpp <- function(x, y) {
-    .Call('_blorr_blr_pairs_cpp', PACKAGE = 'blorr', x, y)
+  .Call("_blorr_blr_pairs_cpp", PACKAGE = "blorr", x, y)
 }
-

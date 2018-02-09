@@ -1,7 +1,8 @@
 blr_reg_comp <- function(formula, data) {
-
-  model <- glm(formula = formula, data = data,
-               family = binomial(link = 'logit'))
+  model <- glm(
+    formula = formula, data = data,
+    family = binomial(link = "logit")
+  )
 
   # model overview
   dataname <- data_name(model)
@@ -29,17 +30,15 @@ blr_reg_comp <- function(formula, data) {
 
   # concordant and discordant
   blr_cord <- blr_pairs(model)
-  
+
   result <- list(
     dataname = dataname, resp_name = resp_name, n_obs = n_obs,
     converge = converge, resid_df = resid_df, mod_df = mod_df,
     resp_prof = resp_prof, parameter = parameter, df = df,
-    est = est, se = se, zval = zval, pval = pval, blr_effects= blr_effects,
+    est = est, se = se, zval = zval, pval = pval, blr_effects = blr_effects,
     blr_odds_point = blr_odds_point, blr_conf = blr_conf,
     blr_cord = blr_cord
   )
 
   return(result)
-
 }
-

@@ -23,7 +23,7 @@
 #' @seealso \code{\link[lmtest]{lrtest}}
 #' @export
 #'
-blr_lr_test <- function(full_model, reduced_model) UseMethod('blr_lr_test')
+blr_lr_test <- function(full_model, reduced_model) UseMethod("blr_lr_test")
 
 #' @rdname blr_lr_test
 #' @export
@@ -32,7 +32,6 @@ blr_lr_test.default <- function(full_model, reduced_model) {
 
   # create intercept only model
   if (missing(reduced_model)) {
-
     dep <- response_var(full_model)
 
     dat <- full_model %>%
@@ -40,23 +39,28 @@ blr_lr_test.default <- function(full_model, reduced_model) {
       use_series(data) %>%
       eval_tidy()
 
-    reduced_model <- glm(glue(dep, ' ~ 1'), data = dat,
-        family = binomial(link = 'logit'))
-
+    reduced_model <- glm(
+      glue(dep, " ~ 1"), data = dat,
+      family = binomial(link = "logit")
+    )
   }
 
   # error handling
   fm_class <- model_class(full_model)
   rm_class <- model_class(reduced_model)
 
-  if (fm_class != 'glm') {
-    stop(crayon::red('full_model must be an object of class glm.'),
-         call. = FALSE)
+  if (fm_class != "glm") {
+    stop(
+      crayon::red("full_model must be an object of class glm."),
+      call. = FALSE
+    )
   }
 
-  if (rm_class != 'glm') {
-    stop(crayon::red('reduced_model must be an object of class glm.'),
-         call. = FALSE)
+  if (rm_class != "glm") {
+    stop(
+      crayon::red("reduced_model must be an object of class glm."),
+      call. = FALSE
+    )
   }
 
   # -2 log likelihood
@@ -67,8 +71,8 @@ blr_lr_test.default <- function(full_model, reduced_model) {
   lr <- reduced_model_ll - full_model_ll
 
   df <- full_model %>%
-    coefficients %>%
-    length %>%
+    coefficients() %>%
+    length() %>%
     subtract(1)
 
   pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
@@ -85,9 +89,11 @@ blr_lr_test.default <- function(full_model, reduced_model) {
 
   # output
   model_info <- tibble(
-    model = c('full model', 'reduced model'),
-    formulas = c(full_model = full_model_formula,
-                 reduced_model = reduced_model_formula),
+    model = c("full model", "reduced model"),
+    formulas = c(
+      full_model = full_model_formula,
+      reduced_model = reduced_model_formula
+    ),
     log_lik = c(full_model_ll, reduced_model_ll),
     d_f = c(full_model_df, reduced_model_df)
   )
@@ -99,15 +105,12 @@ blr_lr_test.default <- function(full_model, reduced_model) {
   )
 
   result <- list(model_info = model_info, test_result = test_info)
-  class(result) <- 'blr_lr_test'
+  class(result) <- "blr_lr_test"
   return(result)
-
 }
 
 #' @export
 #'
 print.blr_lr_test <- function(x, ...) {
-
   print_blr_lr_test(x)
-
 }

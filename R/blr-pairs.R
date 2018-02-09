@@ -13,7 +13,6 @@
 #' @export
 #'
 blr_pairs <- function(model) {
-
   resp <- model %>%
     use_series(y)
 

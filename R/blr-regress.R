@@ -15,15 +15,14 @@
 #' blr_regress(model)
 #' @export
 #'
-blr_regress <- function(object, ...) UseMethod('blr_regress')
+blr_regress <- function(object, ...) UseMethod("blr_regress")
 
 
 #' @export
 #'
 blr_regress.default <- function(object, data, ...) {
-
-  result        <- blr_reg_comp(object, data)
-  class(result) <- 'blr_regress'
+  result <- blr_reg_comp(object, data)
+  class(result) <- "blr_regress"
   return(result)
 }
 

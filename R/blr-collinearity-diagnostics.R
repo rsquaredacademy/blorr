@@ -59,20 +59,19 @@
 #'
 #' @export
 #'
-blr_coll_diag <- function(model) UseMethod('blr_coll_diag')
+blr_coll_diag <- function(model) UseMethod("blr_coll_diag")
 
 #' @export
 #'
 blr_coll_diag.default <- function(model) {
-
-  if (!any(class(model) == 'glm')) {
-    stop('Please specify a binary logistic regression model.', call. = FALSE)
+  if (!any(class(model) == "glm")) {
+    stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
 
-  vift          <- blr_vif_tol(model)
-  eig_ind       <- blr_eigen_cindex(model)
-  result        <- list(vif_t = vift, eig_cindex = eig_ind)
-  class(result) <- 'blr_coll_diag'
+  vift <- blr_vif_tol(model)
+  eig_ind <- blr_eigen_cindex(model)
+  result <- list(vif_t = vift, eig_cindex = eig_ind)
+  class(result) <- "blr_coll_diag"
 
   return(result)
 }
@@ -80,42 +79,39 @@ blr_coll_diag.default <- function(model) {
 #' @export
 #'
 print.blr_coll_diag <- function(x, ...) {
-
-  cat('Tolerance and Variance Inflation Factor\n')
-  cat('---------------------------------------\n')
+  cat("Tolerance and Variance Inflation Factor\n")
+  cat("---------------------------------------\n")
   print(x$vif_t)
-  cat('\n\n')
-  cat('Eigenvalue and Condition Index\n')
-  cat('------------------------------\n')
+  cat("\n\n")
+  cat("Eigenvalue and Condition Index\n")
+  cat("------------------------------\n")
   print(x$eig_cindex)
-
 }
 
 #' @rdname blr_coll_diag
 #' @export
 #'
 blr_vif_tol <- function(model) {
-
-  if (!any(class(model) == 'glm')) {
-    stop('Please specify a binary logistic regression model.', call. = FALSE)
+  if (!any(class(model) == "glm")) {
+    stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
 
   vt <- viftol(model)
-  result <- tibble(Variable = vt$nam,
-                   Tolerance = vt$tol,
-                   VIF = vt$vifs)
+  result <- tibble(
+    Variable = vt$nam,
+    Tolerance = vt$tol,
+    VIF = vt$vifs
+  )
 
   return(result)
-
 }
 
 #' @rdname blr_coll_diag
 #' @export
 #'
 blr_eigen_cindex <- function(model) {
-
-  if (!any(class(model) == 'glm')) {
-    stop('Please specify a binary logistic regression model.', call. = FALSE)
+  if (!any(class(model) == "glm")) {
+    stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
 
   x <- tibble::as_data_frame(model.matrix(model))
@@ -125,5 +121,4 @@ blr_eigen_cindex <- function(model) {
   out <- data.frame(Eigenvalue = cbind(e, cindex, pv))
   colnames(out) <- c("Eigenvalue", "Condition Index", colnames(evalue(x)$pvdata))
   return(out)
-
 }

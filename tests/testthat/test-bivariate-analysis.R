@@ -1,16 +1,13 @@
 context("test-bivariate-analysis.R")
 
 test_that("output from blr_bivariate_analysis is as expected", {
-
   k <- blr_bivariate_analysis(hsb2, honcomp, female, prog)
   expect_equivalent(k$iv, c(0.1023, 0.4329))
   expect_equivalent(round(k$likelihood_ratio, 2), c(3.94, 16.15))
-
 })
 
 
 test_that("blr_bivariate_analysis prints the correct output", {
-
   k <- blr_bivariate_analysis(hsb2, honcomp, female, prog)
 
   x <- cat("                         Bivariate Analysis
@@ -22,11 +19,9 @@ test_that("blr_bivariate_analysis prints the correct output", {
            ---------------------------------------------------------------------")
 
   expect_output(print(k), x)
-
 })
 
 test_that("output from blr_segment is as expected", {
-
   k <- blr_segment(hsb2, honcomp, race)
 
   actual <-
@@ -37,11 +32,9 @@ test_that("output from blr_segment is as expected", {
   expected <- c(0.01, 0.02, 0.01, 0.22)
 
   expect_equivalent(actual, expected)
-
 })
 
 test_that("blr_segment prints the correct output", {
-
   k <- blr_segment(hsb2, honcomp, race)
 
   x <- cat("Event By Attributes
@@ -55,11 +48,9 @@ test_that("blr_segment prints the correct output", {
            -------------------")
 
   expect_output(print(k), x)
-
 })
 
 test_that("output from blr_twoway_segment is as expected", {
-
   skip_on_appveyor()
   skip_on_travis()
   skip_on_cran()
@@ -70,14 +61,12 @@ test_that("output from blr_twoway_segment is as expected", {
     use_series(twoway_segment) %>%
     `[`(, 4) %>%
     round(2) %>%
-    unname
+    unname()
   expected <- c(0.04, 0.16, 0.02)
   expect_equivalent(actual, expected)
-
 })
 
 test_that("blr_twoway_segment prints the correct output", {
-
   k <- blr_twoway_segment(hsb2, honcomp, prog, race)
 
   x <- cat(
@@ -90,14 +79,13 @@ test_that("blr_twoway_segment prints the correct output", {
     2     0.010   0.020   0.005   0.165
     -----------------------------------------
     3     0.000   0.005   0.005   0.020
-    -----------------------------------------")
+    -----------------------------------------"
+  )
 
   expect_output(print(k), x)
-
 })
 
 test_that("output from blr_segment_dist is as expected", {
-
   k <- blr_segment_dist(hsb2, honcomp, race)
   actual <-
     k %>%
@@ -105,11 +93,9 @@ test_that("output from blr_segment_dist is as expected", {
     pull(`1s%`)
   expected <- c(0.01, 0.02, 0.01, 0.22)
   expect_equivalent(actual, expected)
-
 })
 
 test_that("blr_twoway_segment prints the correct output", {
-
   k <- blr_segment_dist(hsb2, honcomp, race)
 
   x <- cat(
@@ -121,28 +107,25 @@ test_that("blr_twoway_segment prints the correct output", {
     2        11     5     0.06    0.02
     3        20     2     0.10    0.01
     4        145    44    0.72    0.22
-    -------------------------------------")
+    -------------------------------------"
+  )
 
   expect_output(print(k), x)
-
 })
 
 
 test_that("output from blr_woe_iv is as expected", {
-
   k <- blr_woe_iv(hsb2, prog, honcomp)
   actual <-
     k %>%
     use_series(woe_iv_table) %>%
     pull(iv) %>%
-    sum
+    sum()
   expected <- 0.4329
   expect_equal(actual, expected)
-
 })
 
 test_that("blr_woe_iv prints the correct output", {
-
   k <- blr_woe_iv(hsb2, prog, honcomp)
 
   x <- cat(
@@ -160,8 +143,8 @@ test_that("blr_woe_iv prints the correct output", {
     Variable    Information Value
     -----------------------------
     prog           0.4329
-    -----------------------------")
+    -----------------------------"
+  )
 
   expect_output(print(k), x)
-
 })

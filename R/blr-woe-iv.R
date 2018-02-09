@@ -25,20 +25,19 @@
 #' @export
 #'
 blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
-  UseMethod('blr_woe_iv')
+  UseMethod("blr_woe_iv")
 
 #' @export
 #'
 blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
-
   pred <- enquo(predictor)
   resp <- enquo(response)
 
   dat <- data %>%
-    select(!!pred, !!resp)
+    select(!! pred, !! resp)
 
   lev <- dat %>%
-    pull(!!pred) %>%
+    pull(!! pred) %>%
     levels()
 
   f <- table(dat)
@@ -60,34 +59,32 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
     ) %>%
     add_column(levels = lev, .before = 1) %>%
     select(-distribution, -approval) %>%
-    select(levels, `0s_count` = no, `1s_count` = yes, `0s_dist` = dist_no,
-           `1s_dist` = dist_yes, woe = woe, iv = iv)
+    select(
+      levels, `0s_count` = no, `1s_count` = yes, `0s_dist` = dist_no,
+      `1s_dist` = dist_yes, woe = woe, iv = iv
+    )
 
   var_name <- dat %>%
-    names %>%
+    names() %>%
     extract(1)
 
   result <- list(woe_iv_table = woe_iv, var_name = var_name)
-  class(result) <- 'blr_woe_iv'
+  class(result) <- "blr_woe_iv"
   return(result)
-
 }
 
 #' @export
 #'
 print.blr_woe_iv <- function(x, ...) {
-
   print_blr_woe_iv(x)
-
 }
 
 #' @rdname blr_woe_iv
 #' @export
 #'
-plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
-                            yaxis_title = 'WoE',
-                            line_color = 'blue', point_color = 'blue', ...) {
-
+plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
+                            yaxis_title = "WoE",
+                            line_color = "blue", point_color = "blue", ...) {
   if (is.na(title)) {
     plot_title <- x$var_name
   } else {
@@ -100,7 +97,6 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
     geom_line(aes(x = as.numeric(levels), y = woe), color = line_color) +
     geom_point(aes(x = as.numeric(levels), y = woe), color = point_color) +
     ggtitle(plot_title) + xlab(xaxis_title) + ylab(yaxis_title)
-
 }
 
 
@@ -114,26 +110,24 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = 'Levels',
 #' @export
 #'
 blr_woe_iv_stats <- function(data, response, ...) {
-
   resp <- enquo(response)
   predictors <- quos(...)
 
   dat <- data %>%
-    select(!!resp, !!!predictors)
+    select(!! resp, !!! predictors)
 
   varnames <- dat %>%
-    names
+    names()
 
   resp_name <- varnames[1]
   pred_name <- varnames[-1]
   l_pred_name <- length(pred_name)
 
   for (i in seq_len(l_pred_name)) {
-    cat(crayon::bold$red$underline(paste('Variable:', pred_name[i])))
-    cat('\n\n')
-    k <-  blr_woe_iv(data, pred_name[i], resp_name )
+    cat(crayon::bold$red$underline(paste("Variable:", pred_name[i])))
+    cat("\n\n")
+    k <- blr_woe_iv(data, pred_name[i], resp_name)
     print(k)
-    cat('\n\n')
+    cat("\n\n")
   }
-
 }

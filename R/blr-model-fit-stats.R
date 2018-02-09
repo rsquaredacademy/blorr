@@ -11,16 +11,15 @@
 #' blr_model_fit_stats(model)
 #' @export
 #'
-blr_model_fit_stats <- function(model, ...) UseMethod('blr_model_fit_stats')
+blr_model_fit_stats <- function(model, ...) UseMethod("blr_model_fit_stats")
 
 #' @export
 #'
 blr_model_fit_stats.default <- function(model, ...) {
-
   lr <- blr_lr_test(model)
   n <- model %>%
     use_series(y) %>%
-    length
+    length()
 
   result <- list(
     loglik_null = null_ll(model),
@@ -47,13 +46,12 @@ blr_model_fit_stats.default <- function(model, ...) {
     m_bic = model_bic(model),
     dev_df = n %>%
       subtract(model %>%
-                 coefficients %>%
-                 length)
+        coefficients() %>%
+        length())
   )
 
-  class(result) <- 'blr_model_fit_stats'
+  class(result) <- "blr_model_fit_stats"
   return(result)
-
 }
 
 #' @export
@@ -63,44 +61,34 @@ print.blr_model_fit_stats <- function(x, ...) {
 }
 
 model_deviance <- function(model) {
-
   model %>%
     use_series(deviance)
-
 }
 
 # log likelihood intercept only model
 null_ll <- function(model) {
-
   i_model(model) %>%
-    logLik %>%
+    logLik() %>%
     extract2(1)
-
 }
 
 # log likelihood full model
 model_ll <- function(model) {
-
   model %>%
-    logLik %>%
+    logLik() %>%
     extract(1)
-
 }
 
 
 model_aic <- function(model) {
-
   model %>%
-    AIC
-
+    AIC()
 }
 
 
 model_bic <- function(model) {
-
   model %>%
-    BIC
-
+    BIC()
 }
 
 #' @title McFadden's R2
@@ -115,18 +103,16 @@ model_bic <- function(model) {
 #' @export
 #'
 blr_mcfadden_rsq <- function(model) {
-
   f_model_ll <- model %>%
-    model_ll
+    model_ll()
 
   i_model_ll <- model %>%
-    i_model %>%
-    model_ll
+    i_model() %>%
+    model_ll()
 
   1 %>%
     subtract(f_model_ll %>%
-               divide_by(i_model_ll))
-
+      divide_by(i_model_ll))
 }
 
 #' @title McFadden's Adjusted R2
@@ -141,21 +127,19 @@ blr_mcfadden_rsq <- function(model) {
 #' @export
 #'
 blr_mcfadden_adj_rsq <- function(model) {
-
   f_model_ll <- model %>%
-    model_ll
+    model_ll()
 
   i_model_ll <- model %>%
-    i_model %>%
-    model_ll
+    i_model() %>%
+    model_ll()
 
   k <- model %>%
-    model_d_f
+    model_d_f()
 
   1 %>%
     subtract((f_model_ll - k) %>%
-               divide_by(i_model_ll))
-
+      divide_by(i_model_ll))
 }
 
 #' @title Cox Snell R2
@@ -170,19 +154,18 @@ blr_mcfadden_adj_rsq <- function(model) {
 #' @export
 #'
 blr_cox_snell_rsq <- function(model) {
-
   f_model_ll <- model %>%
-    model_ll %>%
-    exp
+    model_ll() %>%
+    exp()
 
   i_model_ll <- model %>%
-    i_model %>%
-    model_ll %>%
-    exp
+    i_model() %>%
+    model_ll() %>%
+    exp()
 
   n <- model %>%
     use_series(data) %>%
-    nrow
+    nrow()
 
   ratio <- i_model_ll %>%
     divide_by(f_model_ll)
@@ -195,7 +178,6 @@ blr_cox_snell_rsq <- function(model) {
 
   1 %>%
     subtract(ratio_pow)
-
 }
 
 
@@ -211,28 +193,26 @@ blr_cox_snell_rsq <- function(model) {
 #' @export
 #'
 blr_nagelkerke_rsq <- function(model) {
-
   cox_snell <- blr_cox_snell_rsq(model)
 
   i_model_ll <- model %>%
-    i_model %>%
-    model_ll %>%
-    exp
+    i_model() %>%
+    model_ll() %>%
+    exp()
 
   n <- model %>%
     use_series(data) %>%
-    nrow
+    nrow()
 
   pow <- 2 %>%
     divide_by(n)
 
   den <- 1 %>%
     subtract(i_model_ll %>%
-    raise_to_power(pow))
+      raise_to_power(pow))
 
   cox_snell %>%
     divide_by(den)
-
 }
 
 #' @title McKelvey Zavoina R2
@@ -247,17 +227,16 @@ blr_nagelkerke_rsq <- function(model) {
 #' @export
 #'
 blr_mckelvey_zavoina_rsq <- function(model) {
-
   predicted <- model %>%
-    predict
+    predict()
 
   mean_predicted <- predicted %>%
-    mean
+    mean()
 
   ess <- predicted %>%
     subtract(mean_predicted) %>%
     raise_to_power(2) %>%
-    sum
+    sum()
 
   pi_val <- pi %>%
     raise_to_power(2) %>%
@@ -265,13 +244,12 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 
   n <- model %>%
     use_series(y) %>%
-    length
+    length()
 
   ess %>%
     divide_by((n %>%
-                multiply_by(pi_val)) %>%
-                add(ess))
-
+      multiply_by(pi_val)) %>%
+      add(ess))
 }
 
 
@@ -287,9 +265,8 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 #' @export
 #'
 blr_effron_rsq <- function(model) {
-
   predicted <- model %>%
-    predict(type = 'response')
+    predict(type = "response")
 
   resp <- model %>%
     use_series(y)
@@ -297,20 +274,19 @@ blr_effron_rsq <- function(model) {
   num <- resp %>%
     subtract(predicted) %>%
     raise_to_power(2) %>%
-    sum
+    sum()
 
   mean_resp <- resp %>%
-    mean
+    mean()
 
   den <- resp %>%
     subtract(mean_resp) %>%
     raise_to_power(2) %>%
-    sum
+    sum()
 
   1 %>%
     subtract(num %>%
-               divide_by(den))
-
+      divide_by(den))
 }
 
 
@@ -326,9 +302,8 @@ blr_effron_rsq <- function(model) {
 #' @export
 #'
 blr_count_rsq <- function(model) {
-
   predicted <- model %>%
-    predict(type = 'response')
+    predict(type = "response")
 
   zero_one <- if_else(predicted >= 0.5, 1, 0)
 
@@ -336,14 +311,13 @@ blr_count_rsq <- function(model) {
     use_series(y)
 
   n <- resp %>%
-    length
+    length()
 
   correct <- if_else(zero_one == resp, 1, 0)
 
   correct %>%
-    sum %>%
+    sum() %>%
     divide_by(n)
-
 }
 
 #' @title Adjusted Count R2
@@ -358,14 +332,13 @@ blr_count_rsq <- function(model) {
 #' @export
 #'
 blr_adj_count_rsq <- function(model) {
-
   n2 <- model %>%
     use_series(y) %>%
-    table %>%
-    max
+    table() %>%
+    max()
 
   predicted <- model %>%
-    predict(type = 'response')
+    predict(type = "response")
 
   zero_one <- if_else(predicted >= 0.5, 1, 0)
 
@@ -373,12 +346,12 @@ blr_adj_count_rsq <- function(model) {
     use_series(y)
 
   n <- resp %>%
-    length
+    length()
 
   correct <- if_else(zero_one == resp, 1, 0)
 
   num <- correct %>%
-    sum %>%
+    sum() %>%
     subtract(n2)
 
   den <- n %>%
@@ -386,5 +359,3 @@ blr_adj_count_rsq <- function(model) {
 
   num / den
 }
-
-
