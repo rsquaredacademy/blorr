@@ -189,33 +189,15 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
                                   title = "Decile Lift Chart",
                                   bar_color = "blue", text_size = 3.5,
                                   text_vjust = -0.3) {
-  global_mean <-
-    gains_table %>%
-    use_series(gains_table) %>%
-    select(total, `1`) %>%
-    summarise_all(sum) %>%
-    mutate(
-      gmean = `1` / total
-    ) %>%
-    pull(gmean)
 
-  lift_data <-
-    gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
-      decile_mean = `1` / total,
-      d_by_g_mean = decile_mean / global_mean
-    )
+  global_mean <- lift_chart_global_mean(gains_table)
+  lift_data <- lift_chart_data(gains_table, global_mean)
 
-  p <-
-    ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
+  p <- ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
     geom_col(fill = bar_color) +
-    geom_text(
-      aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
-      size = text_size
-    ) +
-    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+    geom_text(aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
+      size = text_size) + ggtitle(title) + xlab(xaxis_title) +
+    ylab(yaxis_title)
 
   print(p)
 
@@ -357,6 +339,31 @@ decile_capture_rate <- function(gains_table) {
     select(decile, total, `1`) %>%
     mutate(
       decile_mean = `1` / total
+    )
+
+}
+
+lift_chart_global_mean <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(total, `1`) %>%
+    summarise_all(sum) %>%
+    mutate(
+      gmean = `1` / total
+    ) %>%
+    pull(gmean)
+
+}
+
+lift_chart_data <- function(gains_table, global_mean) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total,
+      d_by_g_mean = decile_mean / global_mean
     )
 
 }
