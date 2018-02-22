@@ -17,25 +17,61 @@ blr_hosmer_lemeshow_test <- function(model, data = NULL)
 #' @export
 #'
 blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
+
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  resp <- model %>%
-    use_series(y)
+  resp <- model$y
+  hoslem_data <- hoslem_data_prep(model, data, resp)
+  int_limits <- hoslem_int_limits(hoslem_data)
 
-  data$prob <- predict.glm(model, newdata = data, type = "response")
+  hoslem_table <-
+    hoslem_data %>%
+    hoslem_data_mutate(int_limits = int_limits) %>%
+    hoslem_table_data(resp = resp)
 
-  data %<>%
+  chisq_stat <- hoslem_chisq_stat(hoslem_table)
+  hoslem_df <- 8
+  hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
+
+  result <- list(
+    partition_table = hoslem_table, chisq_stat = chisq_stat, df = hoslem_df,
+    pvalue = hoslem_pval
+  )
+
+  class(result) <- "blr_hosmer_lemeshow_test"
+  return(result)
+}
+
+#' @export
+#'
+print.blr_hosmer_lemeshow_test <- function(x, ...) {
+  print_blr_hosmer_lemeshow_test(x)
+}
+
+hoslem_data_prep <- function(model, data, resp) {
+
+  data %>%
+    mutate(
+      prob = predict.glm(model, newdata = data, type = "response")
+    ) %>%
     add_column(resp) %>%
     arrange(prob)
 
-  int_limits <- data %>%
+}
+
+hoslem_int_limits <- function(hoslem_data) {
+
+  hoslem_data %>%
     use_series(prob) %>%
     quantile(probs = seq(0, 1, 0.1)) %>%
     unname()
+}
 
-  data %<>%
+hoslem_data_mutate <- function(hoslem_data, int_limits) {
+
+  hoslem_data %>%
     mutate(
       group = case_when(
         prob <= int_limits[2] ~ 1,
@@ -51,7 +87,11 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
       )
     )
 
-  hoslem_table <- data %>%
+}
+
+hoslem_table_data <- function(data,resp) {
+
+  data %>%
     group_by(group) %>%
     summarise(
       n = n(), `1s_observed` = sum(resp),
@@ -63,28 +103,12 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
       negative = ((`0s_observed` - `0s_expected`) ^ 2 / `0s_expected`)
     )
 
+}
 
-  chisq_stat <- hoslem_table %>%
+hoslem_chisq_stat <- function(hoslem_table) {
+
+  hoslem_table %>%
     select(positive, negative) %>%
     summarise_all(sum) %>%
     sum()
-
-  hoslem_df <- 8
-
-  hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
-
-  result <- list(
-    partition_table = hoslem_table,
-    chisq_stat = chisq_stat, df = hoslem_df,
-    pvalue = hoslem_pval
-  )
-
-  class(result) <- "blr_hosmer_lemeshow_test"
-  return(result)
-}
-
-#' @export
-#'
-print.blr_hosmer_lemeshow_test <- function(x, ...) {
-  print_blr_hosmer_lemeshow_test(x)
 }
