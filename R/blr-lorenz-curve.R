@@ -11,19 +11,18 @@
 #' @export
 #'
 blr_gini_index <- function(model, data = NULL) {
+
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  data$prob <- predict.glm(model, newdata = data, type = "response")
-
-  prob <- data %>%
-    use_series(prob)
-
-  n <- prob %>%
-    length()
+  prob <- predict.glm(model, newdata = data, type = "response")
+  n <- length(prob)
 
   data %>%
+    mutate(
+      prob = predict.glm(model, newdata = ., type = "response")
+    ) %>%
     arrange(prob) %>%
     mutate(
       n = seq_len(n()),
@@ -37,6 +36,7 @@ blr_gini_index <- function(model, data = NULL) {
     subtract(n %>%
       add(1)) %>%
     divide_by(n)
+
 }
 
 #' @title Lorenz Curve
@@ -61,47 +61,64 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
                              yaxis_title = "Cumulative Events %",
                              diag_line_col = "red",
                              lorenz_curve_col = "blue") {
+
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  data$prob <- predict.glm(model, newdata = data, type = "response")
+  prob <- lorenz_curve_prob(data, model)
+  n <- lorenz_curve_n(prob)
+  p <- lorenz_curve_p(n)
+  l <- lorenz_curve_l(prob, n)
 
-  prob <- data %>%
-    arrange(prob) %>%
-    pull(prob)
-
-
-  n <- prob %>%
-    length() %>%
-    rep(x = 1)
-
-  p <- cumsum(n) %>%
-    divide_by(sum(n)) %>%
-    prepend(0)
-
-  prob_cum <- prob %>%
-    multiply_by(n)
-
-  l <- cumsum(prob_cum) %>%
-    divide_by(sum(prob_cum)) %>%
-    prepend(0)
-
-  g_index <- blr_gini_index(model = model, data = data) %>%
+  g_index <-
+    blr_gini_index(model = model, data = data) %>%
     round(2)
 
   tibble(p = p, l = l) %>%
-    ggplot() +
-    geom_line(aes(x = p, y = l), color = lorenz_curve_col) +
+    ggplot() + geom_line(aes(x = p, y = l), color = lorenz_curve_col) +
     geom_line(aes(x = p, y = p), color = diag_line_col) +
-    ggtitle(label = title, subtitle = glue("Gini Index = ", {
-      g_index
-    })) +
-    xlab(xaxis_title) + ylab(yaxis_title) +
-    scale_x_continuous(labels = scales::percent) +
-    scale_y_continuous(labels = scales::percent) +
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      plot.subtitle = element_text(hjust = 0.5)
-    )
+    ggtitle(label = title, subtitle = glue("Gini Index = ", {g_index})) +
+    scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
+    scale_y_continuous(labels = scales::percent) + ylab(yaxis_title) +
+    theme(plot.title = element_text(hjust = 0.5),
+      plot.subtitle = element_text(hjust = 0.5))
+
+}
+
+
+lorenz_curve_prob <- function(data, model) {
+
+  data %>%
+    mutate(
+      prob = predict.glm(model, newdata = ., type = "response")
+    ) %>%
+    arrange(prob) %>%
+    pull(prob)
+
+}
+
+
+lorenz_curve_n <- function(prob) {
+
+  prob %>%
+    length() %>%
+    rep(x = 1)
+}
+
+lorenz_curve_p <- function(n) {
+
+  cumsum(n) %>%
+    divide_by(sum(n)) %>%
+    prepend(0)
+
+}
+
+lorenz_curve_l <- function(prob, n) {
+
+  prob_cum <- prob * n
+  cumsum(prob_cum) %>%
+    divide_by(sum(prob_cum)) %>%
+    prepend(0)
+
 }
