@@ -105,59 +105,26 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
                          xaxis_title = "Cumulative Population %",
                          ks_line_color = "black") {
 
-  ks_line <-
-    gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
-    filter(ks == max(ks)) %>%
-    divide_by(100)
+  ks_line <- ks_chart_line(gains_table)
+  annotate_y <- ks_chart_annotate_y(ks_line)
+  ks_stat <- ks_chart_stat(ks_line)
+  annotate_x <- ks_chart_annotate_x(ks_line)
 
-  annotate_y <-
-    ks_line %>%
-    mutate(
-      ann_loc = (`cum_1s_%` - `cum_0s_%`) / 2,
-      ann_locate = `cum_0s_%` + ann_loc
-    ) %>%
-    pull(ann_locate)
-
-  ks_stat <-
-    ks_line %>%
-    pull(4) %>%
-    round(2) %>%
-    multiply_by(100)
-
-  annotate_x <-
-    ks_line %>%
-    pull(1) +
-    0.1
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
-    mutate(
-      cum_total_per = `cum_total_%` / 100,
-      cum_1s_per = `cum_1s_%` / 100,
-      cum_0s_per = `cum_0s_%` / 100
-    ) %>%
-    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1) %>%
+  ks_chart_data(gains_table) %>%
     ggplot(aes(x = cum_total_per)) +
     geom_line(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     geom_line(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
     geom_point(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     geom_point(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
-    geom_segment(
-      x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
-      yend = ks_line[[2]], color = ks_line_color
-    ) +
-    annotate("text", x = annotate_x, y = annotate_y, label = paste0("KS: ", ks_stat, "%")) +
+    geom_segment(x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
+      yend = ks_line[[2]], color = ks_line_color) +
+    annotate("text", x = annotate_x, y = annotate_y,
+             label = paste0("KS: ", ks_stat, "%")) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
     scale_x_continuous(labels = scales::percent) +
     scale_y_continuous(labels = scales::percent) +
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      legend.title = element_blank()
-    )
+    theme(plot.title = element_text(hjust = 0.5),
+          legend.title = element_blank())
 
 }
 
@@ -332,5 +299,60 @@ gains_plot_data <- function(x) {
     ) %>%
     select(cum_total_per, cum_1s_per, cum_total_y) %>%
     add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
+
+}
+
+
+ks_chart_line <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
+    filter(ks == max(ks)) %>%
+    divide_by(100)
+
+}
+
+ks_chart_annotate_y <- function(ks_line) {
+
+  ks_line %>%
+    mutate(
+      ann_loc = (`cum_1s_%` - `cum_0s_%`) / 2,
+      ann_locate = `cum_0s_%` + ann_loc
+    ) %>%
+    pull(ann_locate)
+
+}
+
+ks_chart_stat <- function(ks_line) {
+
+  ks_line %>%
+    pull(4) %>%
+    round(2) %>%
+    multiply_by(100)
+
+}
+
+
+ks_chart_annotate_x <- function(ks_line) {
+
+  ks_line %>%
+    pull(1) +
+    0.1
+
+}
+
+ks_chart_data <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
+    mutate(
+      cum_total_per = `cum_total_%` / 100,
+      cum_1s_per = `cum_1s_%` / 100,
+      cum_0s_per = `cum_0s_%` / 100
+    ) %>%
+    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
+    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
 
 }
