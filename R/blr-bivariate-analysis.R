@@ -235,15 +235,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
   resp <- enquo(response)
   pred <- enquo(predictor)
 
-  dist_table <-
-    data %>%
-    select(!! pred, !! resp) %>%
-    group_by(!! pred) %>%
-    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
-    mutate(
-      `n%` = round((n / sum(n)), 2),
-      `1s%` = round((`1s` / sum(n)), 2)
-    )
+  dist_table <- segment_comp(data, pred, resp)
 
   var_name <-
     dist_table %>%
@@ -256,6 +248,19 @@ blr_segment_dist.default <- function(data, response, predictor) {
   class(result) <- "blr_segment_dist"
 
   return(result)
+
+}
+
+segment_comp <- function(data, pred, resp) {
+
+  data %>%
+    select(!! pred, !! resp) %>%
+    group_by(!! pred) %>%
+    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
+    mutate(
+      `n%` = round((n / sum(n)), 2),
+      `1s%` = round((`1s` / sum(n)), 2)
+    )
 
 }
 
@@ -273,14 +278,8 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
                                   sec_yaxis_title = "1s Distribution",
                                   bar_color = "blue", line_color = "red",
                                   ...) {
-  sec_axis_scale <-
-    x %>%
-    use_series(dist_table) %>%
-    mutate(
-      sec = `n%` / `1s%`
-    ) %>%
-    pull(sec) %>%
-    min()
+
+  sec_axis_scale <- secondary_axis_scale(x)
 
   if (is.na(title)) {
     plot_title <- x$var_name
@@ -298,12 +297,22 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
     geom_col(aes(y = `n%`), fill = bar_color) +
     geom_line(aes(y = `1s%`, group = 1), color = line_color) +
     xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
-    scale_y_continuous(
-      labels = scales::percent(),
-      sec.axis = sec_axis(
-        ~. / sec_axis_scale,
-        name = sec_yaxis_title,
+    scale_y_continuous(labels = scales::percent(),
+      sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
         labels = scales::percent()
       )
     )
+}
+
+
+secondary_axis_scale <- function(x) {
+
+  x %>%
+    use_series(dist_table) %>%
+    mutate(
+      sec = `n%` / `1s%`
+    ) %>%
+    pull(sec) %>%
+    min()
+
 }
