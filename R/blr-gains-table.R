@@ -151,22 +151,14 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
                                     title = "Capture Rate by Decile",
                                     bar_color = "blue", text_size = 3.5,
                                     text_vjust = -0.3) {
-  decile_rate <-
-    gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
-      decile_mean = `1` / total
-    )
 
-  p <-
-    ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
+  decile_rate <- decile_capture_rate(gains_table)
+
+  p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
     geom_col(fill = bar_color) +
-    geom_text(
-      aes(label = round(decile_mean, 2)), vjust = text_vjust,
-      size = text_size
-    ) +
-    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
+    geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
+      size = text_size) + ggtitle(title) + xlab(xaxis_title) +
+    ylab(yaxis_title)
 
   print(p)
 
@@ -354,5 +346,17 @@ ks_chart_data <- function(gains_table) {
     ) %>%
     select(cum_total_per, cum_1s_per, cum_0s_per) %>%
     add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
+
+}
+
+
+decile_capture_rate <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total
+    )
 
 }
