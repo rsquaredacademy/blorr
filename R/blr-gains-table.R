@@ -32,52 +32,29 @@ blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
 #' @export
 #'
 blr_gains_table.default <- function(model, data = NULL) {
+
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  decile_count <- data %>%
-    nrow() %>%
-    divide_by(10) %>%
-    ceiling()
+  decile_count <- gains_decile_count(data)
 
-  gains_table <- model %>%
-    model.frame() %>%
-    model.response() %>%
-    as_tibble() %>%
-    bind_cols(predict.glm(model, newdata = data, type = "response") %>%
-      as_tibble()) %>%
-    select(response = value, prob = value1) %>%
-    arrange(desc(prob)) %>%
-    add_column(decile = rep(1:10, each = decile_count)) %>%
-    group_by(decile) %>%
-    summarise(total = n(), `1` = table(response)[[2]]) %>%
-    mutate(
-      `0` = total - `1`,
-      cum_1s = cumsum(`1`),
-      cum_0s = cumsum(`0`),
-      cum_total = cumsum(total),
-      `cum_total_%` = (cum_total / sum(total)) * 100,
-      `cum_1s_%` = (cum_1s / sum(`1`)) * 100,
-      `cum_0s_%` = (cum_0s / sum(`0`)) * 100,
-      ks = `cum_1s_%` - `cum_0s_%`,
-      tp = cum_1s,
-      tn = cum_0s[10] - cum_0s,
-      fp = cum_0s,
-      fn = cum_1s[10] - cum_1s,
-      sensitivity = (tp / (tp + fn)) * 100,
-      specificity = (tn / (tn + fp)) * 100,
-      accuracy = ((tp + tn) / cum_total[10]) * 100
-    )
+  gains_table <-
+    gains_table_prep(model, data) %>%
+    gains_table_modify(decile_count = decile_count) %>%
+    gains_table_mutate()
 
   result <- list(gains_table = gains_table)
   class(result) <- c("blr_gains_table")
+
   return(result)
+
 }
 
 #' @export
 #'
 print.blr_gains_table <- function(x, ...) {
+
   x %>%
     use_series(gains_table) %>%
     select(
@@ -85,6 +62,7 @@ print.blr_gains_table <- function(x, ...) {
       -`cum_1s_%`, -`cum_0s_%`
     ) %>%
     print()
+
 }
 
 #' @rdname blr_gains_table
@@ -93,6 +71,7 @@ print.blr_gains_table <- function(x, ...) {
 plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Population",
                                  yaxis_title = "% Cumulative 1s", diag_line_col = "red",
                                  lift_curve_col = "blue", plot_title_justify = 0.5, ...) {
+
   x %>%
     use_series(gains_table) %>%
     select(`cum_total_%`, `cum_1s_%`) %>%
@@ -112,6 +91,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
     theme(
       plot.title = element_text(hjust = plot_title_justify)
     )
+
 }
 
 #' @importFrom ggplot2 element_blank annotate geom_segment
@@ -133,25 +113,30 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
                          xaxis_title = "Cumulative Population %",
                          ks_line_color = "black") {
-  ks_line <- gains_table %>%
+
+  ks_line <-
+    gains_table %>%
     use_series(gains_table) %>%
     select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
     filter(ks == max(ks)) %>%
     divide_by(100)
 
-  annotate_y <- ks_line %>%
+  annotate_y <-
+    ks_line %>%
     mutate(
       ann_loc = (`cum_1s_%` - `cum_0s_%`) / 2,
       ann_locate = `cum_0s_%` + ann_loc
     ) %>%
     pull(ann_locate)
 
-  ks_stat <- ks_line %>%
+  ks_stat <-
+    ks_line %>%
     pull(4) %>%
     round(2) %>%
     multiply_by(100)
 
-  annotate_x <- ks_line %>%
+  annotate_x <-
+    ks_line %>%
     pull(1) +
     0.1
 
@@ -182,6 +167,7 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
       plot.title = element_text(hjust = 0.5),
       legend.title = element_blank()
     )
+
 }
 
 
@@ -225,8 +211,10 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
   print(p)
+
   result <- list(plot = p, decile_rate = decile_rate)
   invisible(result)
+
 }
 
 #' @title Decile Lift Chart
@@ -280,6 +268,63 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
   print(p)
+
   result <- list(plot = p, decile_lift = lift_data, global_mean = global_mean)
   invisible(result)
+
+}
+
+
+gains_decile_count <- function(data) {
+
+  data %>%
+    nrow() %>%
+    divide_by(10) %>%
+    ceiling()
+
+}
+
+
+gains_table_prep <- function(model, data) {
+
+  model %>%
+    model.frame() %>%
+    model.response() %>%
+    as_tibble() %>%
+    bind_cols(predict.glm(model, newdata = data, type = "response") %>%
+                as_tibble())
+
+}
+
+gains_table_modify <- function(data, decile_count) {
+
+  data %>%
+    select(response = value, prob = value1) %>%
+    arrange(desc(prob)) %>%
+    add_column(decile = rep(1:10, each = decile_count)) %>%
+    group_by(decile) %>%
+    summarise(total = n(), `1` = table(response)[[2]])
+}
+
+gains_table_mutate <- function(data) {
+
+  data %>%
+    mutate(
+      `0` = total - `1`,
+      cum_1s = cumsum(`1`),
+      cum_0s = cumsum(`0`),
+      cum_total = cumsum(total),
+      `cum_total_%` = (cum_total / sum(total)) * 100,
+      `cum_1s_%` = (cum_1s / sum(`1`)) * 100,
+      `cum_0s_%` = (cum_0s / sum(`0`)) * 100,
+      ks = `cum_1s_%` - `cum_0s_%`,
+      tp = cum_1s,
+      tn = cum_0s[10] - cum_0s,
+      fp = cum_0s,
+      fn = cum_1s[10] - cum_1s,
+      sensitivity = (tp / (tp + fn)) * 100,
+      specificity = (tn / (tn + fp)) * 100,
+      accuracy = ((tp + tn) / cum_total[10]) * 100
+    )
+
 }
