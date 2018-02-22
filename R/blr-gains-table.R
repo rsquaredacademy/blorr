@@ -72,16 +72,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
                                  yaxis_title = "% Cumulative 1s", diag_line_col = "red",
                                  lift_curve_col = "blue", plot_title_justify = 0.5, ...) {
 
-  x %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`) %>%
-    mutate(
-      cum_total_per = `cum_total_%` / 100,
-      cum_1s_per = `cum_1s_%` / 100,
-      cum_total_y = cum_total_per
-    ) %>%
-    select(cum_total_per, cum_1s_per, cum_total_y) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1) %>%
+  gains_plot_data(x) %>%
     ggplot() +
     geom_line(aes(x = cum_total_per, y = cum_1s_per), color = lift_curve_col) +
     geom_line(aes(x = cum_total_per, y = cum_total_y), color = diag_line_col) +
@@ -326,5 +317,20 @@ gains_table_mutate <- function(data) {
       specificity = (tn / (tn + fp)) * 100,
       accuracy = ((tp + tn) / cum_total[10]) * 100
     )
+
+}
+
+gains_plot_data <- function(x) {
+
+  x %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`) %>%
+    mutate(
+      cum_total_per = `cum_total_%` / 100,
+      cum_1s_per = `cum_1s_%` / 100,
+      cum_total_y = cum_total_per
+    ) %>%
+    select(cum_total_per, cum_1s_per, cum_total_y) %>%
+    add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
 
 }
