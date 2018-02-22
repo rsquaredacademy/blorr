@@ -51,9 +51,6 @@ test_that("blr_segment prints the correct output", {
 })
 
 test_that("output from blr_twoway_segment is as expected", {
-  skip_on_appveyor()
-  skip_on_travis()
-  skip_on_cran()
 
   k <- blr_twoway_segment(hsb2, honcomp, prog, race)
   actual <-
