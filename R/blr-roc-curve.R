@@ -25,6 +25,20 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
                           point_shape = 18, point_fill = "blue",
                           point_color = "blue",
                           plot_title_justify = 0.5) {
+
+  roc_data_prep(gains_table) %>%
+    ggplot(aes(x = `1 - specificity`, y = sensitivity_per)) +
+    geom_point(shape = point_shape, fill = point_fill, color = point_color) +
+    geom_line(color = roc_curve_col) + ggtitle(title) +
+    scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
+    scale_y_continuous(labels = scales::percent) + ylab(yaxis_title) +
+    theme(plot.title = element_text(hjust = plot_title_justify)) +
+    geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
+              color = diag_line_col)
+}
+
+roc_data_prep <- function(gains_table) {
+
   gains_table %>%
     use_series(gains_table) %>%
     select(sensitivity, specificity) %>%
@@ -32,18 +46,7 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
       sensitivity_per = sensitivity / 100,
       `1 - specificity` = 1 - (specificity / 100)
     ) %>%
-    add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1) %>%
-    ggplot() +
-    geom_line(aes(x = `1 - specificity`, y = sensitivity_per), color = roc_curve_col) +
-    geom_point(
-      aes(x = `1 - specificity`, y = sensitivity_per), shape = point_shape,
-      fill = point_fill, color = point_color
-    ) +
-    geom_line(aes(x = `1 - specificity`, y = `1 - specificity`), color = diag_line_col) +
-    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
-    scale_x_continuous(labels = scales::percent) +
-    scale_y_continuous(labels = scales::percent) +
-    theme(
-      plot.title = element_text(hjust = plot_title_justify)
-    )
+    add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1)
+
 }
+
