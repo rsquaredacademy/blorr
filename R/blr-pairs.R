@@ -1,4 +1,4 @@
-#' @useDynLib blorr
+#' @useDynLib blorr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom dplyr filter
 #' @title Concordant & Discordant Pairs
