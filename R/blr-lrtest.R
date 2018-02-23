@@ -30,22 +30,10 @@ blr_lr_test <- function(full_model, reduced_model) UseMethod("blr_lr_test")
 #'
 blr_lr_test.default <- function(full_model, reduced_model) {
 
-  # create intercept only model
   if (missing(reduced_model)) {
-    dep <- response_var(full_model)
-
-    dat <- full_model %>%
-      use_series(call) %>%
-      use_series(data) %>%
-      eval_tidy()
-
-    reduced_model <- glm(
-      glue(dep, " ~ 1"), data = dat,
-      family = binomial(link = "logit")
-    )
+    reduced_model <- lr_reduced_model(full_model)
   }
 
-  # error handling
   fm_class <- model_class(full_model)
   rm_class <- model_class(reduced_model)
 
@@ -63,32 +51,78 @@ blr_lr_test.default <- function(full_model, reduced_model) {
     )
   }
 
-  # -2 log likelihood
+  model_info <- lr_model_info(full_model, reduced_model)
+  test_info <- lr_test_result(full_model, reduced_model)
+
+  result <- list(model_info = model_info, test_result = test_info)
+  class(result) <- "blr_lr_test"
+
+  return(result)
+
+}
+
+#' @export
+#'
+print.blr_lr_test <- function(x, ...) {
+  print_blr_lr_test(x)
+}
+
+lr_reduced_model <- function(full_model) {
+
+  dep <- response_var(full_model)
+
+  dat <-
+    full_model %>%
+    use_series(call) %>%
+    use_series(data) %>%
+    eval_tidy()
+
+  glm(
+    glue(dep, " ~ 1"), data = dat,
+    family = binomial(link = "logit")
+  )
+
+}
+
+lr_test_result <- function(full_model, reduced_model) {
+
   full_model_ll <- mll(full_model)
   reduced_model_ll <- mll(reduced_model)
-
-  # likelihood ratio, df and p value
   lr <- reduced_model_ll - full_model_ll
 
-  df <- full_model %>%
+  df <-
+    full_model %>%
     coefficients() %>%
     length() %>%
     subtract(1)
 
   pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
 
-  # model formula
-  full_model_formula <- full_model %>%
-    use_series(formula)
-  reduced_model_formula <- reduced_model %>%
+  tibble(
+    lr_ratio = lr,
+    d_f = df,
+    p_value = pval
+  )
+
+}
+
+
+lr_model_info <- function(full_model, reduced_model) {
+
+  full_model_formula <-
+    full_model %>%
     use_series(formula)
 
-  # dfs
+  reduced_model_formula <-
+    reduced_model %>%
+    use_series(formula)
+
   full_model_df <- model_d_f(full_model)
   reduced_model_df <- model_d_f(reduced_model)
+  full_model_ll <- mll(full_model)
+  reduced_model_ll <- mll(reduced_model)
 
-  # output
-  model_info <- tibble(
+  tibble(
     model = c("full model", "reduced model"),
     formulas = c(
       full_model = full_model_formula,
@@ -98,19 +132,4 @@ blr_lr_test.default <- function(full_model, reduced_model) {
     d_f = c(full_model_df, reduced_model_df)
   )
 
-  test_info <- tibble(
-    lr_ratio = lr,
-    d_f = df,
-    p_value = pval
-  )
-
-  result <- list(model_info = model_info, test_result = test_info)
-  class(result) <- "blr_lr_test"
-  return(result)
-}
-
-#' @export
-#'
-print.blr_lr_test <- function(x, ...) {
-  print_blr_lr_test(x)
 }
