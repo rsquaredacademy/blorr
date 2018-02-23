@@ -9,7 +9,7 @@
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_residual_fitted(model)
@@ -280,7 +280,7 @@ blr_plot_diag_difchisq <- function(model, point_color = "blue",
                                    xaxis_title = "id",
                                    yaxis_title = "Delta Chisquare") {
 
-  res_val <- extract_diag(difchisq)
+  res_val <- extract_diag(model,difchisq)
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -307,7 +307,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
                                  xaxis_title = "id",
                                  yaxis_title = "Delta Deviance") {
 
-  res_val <- extract_diag(difdev)
+  res_val <- extract_diag(model, difdev)
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -338,7 +338,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
 #' family = binomial(link = 'logit'))
 #'
-#' blr_dfbetas_panel(model)
+#' blr_plot_dfbetas_panel(model)
 #' }
 #' @export
 #'
@@ -420,7 +420,7 @@ blr_plot_difchisq_fitted <- function(model, point_color = "blue",
                                      xaxis_title = "Fitted Values",
                                      yaxis_title = "Delta Chi Square") {
 
-  res_val <- extract_diag(difchisq)
+  res_val <- extract_diag(model, difchisq)
   fit_val <- fitted(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -559,7 +559,7 @@ blr_plot_fitted_leverage <- function(model, point_color = "blue",
   fit_val <- fitted(model)
   hat_val <- hatvalues(model)
 
-  create_plot(hat_val, res_val, point_color, title, xaxis_title, yaxis_title)
+  create_plot(hat_val, fit_val, point_color, title, xaxis_title, yaxis_title)
 
 
 }

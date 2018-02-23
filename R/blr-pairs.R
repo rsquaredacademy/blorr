@@ -22,7 +22,7 @@ blr_pairs <- function(model) {
   p_zeros <- pairs_one_zero(pairs, 0, fit_val)
 
   blr_pairs_cpp(p_ones, p_zeros) %>%
-    compute_pairs(n = n)
+    pairs_compute(n = n)
 
 }
 
@@ -45,7 +45,7 @@ pairs_compute <- function(compute_pairs, n) {
       somers_d    = (concordant - discordant) / (concordant + discordant),
       gamma       = (concordant - discordant) / (pairs),
       tau         = (2 * (concordant - discordant)) / (n * (n - 1)),
-      c           = concordance + (0.5 * pairs_tied)
+      c           = concordance + (0.5 * tied)
     ) %>%
     as_tibble() %>%
     select(-concordant, -discordant, -ties)

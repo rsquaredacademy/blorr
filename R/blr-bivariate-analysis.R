@@ -279,7 +279,7 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
                                   bar_color = "blue", line_color = "red",
                                   ...) {
 
-  sec_axis_scale <- secondary_axis_scale(x)
+  sec_axis_scale <- secondary_axis_scale_comp(x)
 
   if (is.na(title)) {
     plot_title <- x$var_name
@@ -297,15 +297,18 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
     geom_col(aes(y = `n%`), fill = bar_color) +
     geom_line(aes(y = `1s%`, group = 1), color = line_color) +
     xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
-    scale_y_continuous(labels = scales::percent(),
-      sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
-        labels = scales::percent()
+    scale_y_continuous(
+      labels = scales::percent,
+      sec.axis = sec_axis(
+        ~. / sec_axis_scale,
+        name = sec_yaxis_title,
+        labels = scales::percent
       )
     )
 }
 
 
-secondary_axis_scale <- function(x) {
+secondary_axis_scale_comp <- function(x) {
 
   x %>%
     use_series(dist_table) %>%

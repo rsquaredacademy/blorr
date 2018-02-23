@@ -106,7 +106,7 @@ blr_mcfadden_rsq <- function(model) {
 blr_mcfadden_adj_rsq <- function(model) {
 
   i_model_ll <- imodel(model)
-  f_model_ll <- model_ll(model) - model_df(model)
+  f_model_ll <- model_ll(model) - model_d_f(model)
   1 - (f_model_ll / i_model_ll)
 
 }
