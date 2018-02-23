@@ -46,16 +46,15 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
     stop("Please specify a model with at least 2 predictors.", call. = FALSE)
   }
 
-  l <- mod_sel_data(model)
-  nam <- colnames(attr(model$terms, "factors"))
-  response <- names(model$model)[1]
+  l          <- mod_sel_data(model)
+  nam        <- colnames(attr(model$terms, "factors"))
+  response   <- names(model$model)[1]
   predictors <- nam
-  mlen_p <- length(predictors)
-  tech <- c("addition", "removal")
-  mo <- glm(
-    paste(response, "~", 1), data = l,
-    family = binomial(link = "logit")
-  )
+  mlen_p     <- length(predictors)
+  tech       <- c("addition", "removal")
+
+  mo <- glm(paste(response, "~", 1), data = l,
+            family = binomial(link = "logit"))
   aic_c <- model_aic(mo)
 
   cat(format("Stepwise Selection Method", justify = "left", width = 25), "\n")
@@ -70,14 +69,14 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
     cat(" Step 0: AIC =", aic_c, "\n", paste(response, "~", 1, "\n\n"))
   }
 
-  step <- 0
-  all_step <- 0
-  preds <- c()
+  step      <- 0
+  all_step  <- 0
+  preds     <- c()
   var_index <- c()
-  method <- c()
-  laic <- c()
-  lbic <- c()
-  ldev <- c()
+  method    <- c()
+  laic      <- c()
+  lbic      <- c()
+  ldev      <- c()
 
   cat("\n")
   if (!details) {
@@ -113,7 +112,7 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
       w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
       w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
       w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-      w <- sum(w1, w2, w3, w4, w5, 16)
+      w  <- sum(w1, w2, w3, w4, w5, 16)
       ln <- length(aics)
 
 
@@ -141,21 +140,22 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
     minc <- which(aics == min(aics))
 
     if (aics[minc] < aic_c) {
-      aic_c <- aics[minc]
-      preds <- c(preds, predictors[minc])
+
+      aic_c      <- aics[minc]
+      preds      <- c(preds, predictors[minc])
       predictors <- predictors[-minc]
-      lpds <- length(predictors)
-      method <- c(method, tech[1])
-      lpreds <- length(preds)
-      var_index <- c(var_index, preds[lpreds])
-      step <- step + 1
-      all_step <- all_step + 1
-      maic <- aics[minc]
-      mbic <- bics[minc]
-      mdev <- devs[minc]
-      laic <- c(laic, maic)
-      lbic <- c(lbic, mbic)
-      ldev <- c(ldev, mdev)
+      lpds       <- length(predictors)
+      method     <- c(method, tech[1])
+      lpreds     <- length(preds)
+      var_index  <- c(var_index, preds[lpreds])
+      step       <- step + 1
+      all_step   <- all_step + 1
+      maic       <- aics[minc]
+      mbic       <- bics[minc]
+      mdev       <- devs[minc]
+      laic       <- c(laic, maic)
+      lbic       <- c(lbic, mbic)
+      ldev       <- c(ldev, mdev)
 
       if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -196,7 +196,7 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
           w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
           w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
           w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-          w <- sum(w1, w2, w3, w4, w5, 16)
+          w  <- sum(w1, w2, w3, w4, w5, 16)
           ln <- length(aics)
 
           cat(fc(crayon::bold$red("Remove Existing Variables"), w), sep = "", "\n")
@@ -224,16 +224,18 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
 
 
         if (aics[minc2] < laic[all_step]) {
-          aic_c <- aics[minc2]
-          maic <- aics[minc2]
-          mbic <- bics[minc2]
-          mdev <- devs[minc2]
-          laic <- c(laic, maic)
-          lbic <- c(lbic, mbic)
-          ldev <- c(ldev, mdev)
+
+          aic_c     <- aics[minc2]
+          maic      <- aics[minc2]
+          mbic      <- bics[minc2]
+          mdev      <- devs[minc2]
+          laic      <- c(laic, maic)
+          lbic      <- c(lbic, mbic)
+          ldev      <- c(ldev, mdev)
           var_index <- c(var_index, preds[minc2])
-          method <- c(method, tech[2])
-          all_step <- all_step + 1
+          method    <- c(method, tech[2])
+          all_step  <- all_step + 1
+
           if (interactive()) {
             cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), "\n")
           } else {
@@ -274,11 +276,11 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
   out <- list(
     candidates = nam,
     predictors = var_index,
-    method = method,
-    aic = laic,
-    bic = lbic,
-    dev = ldev,
-    steps = all_step
+    method     = method,
+    aic        = laic,
+    bic        = lbic,
+    dev        = ldev,
+    steps      = all_step
   )
 
   class(out) <- "blr_stepwise_selection"
