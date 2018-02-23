@@ -48,16 +48,22 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     stop("Please specify a model with at least 2 predictors.", call. = FALSE)
   }
 
-  l <- mod_sel_data(model)
-  nam <- colnames(attr(model$terms, "factors"))
-  response <- names(model$model)[1]
+  response <-
+    model %>%
+    use_series(model) %>%
+    names() %>%
+    extract(1)
+
+  l        <- mod_sel_data(model)
+  nam      <- coeff_names(model)
   all_pred <- nam
-  mlen_p <- length(all_pred)
-  preds <- c()
-  step <- 1
-  aics <- c()
-  bics <- c()
-  devs <- c()
+  mlen_p   <- length(all_pred)
+  preds    <- c()
+  step     <- 1
+  aics     <- c()
+  bics     <- c()
+  devs     <- c()
+
   mo <- glm(
     paste(response, "~", 1), data = l,
     family = binomial(link = "logit")
@@ -99,7 +105,7 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
     w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
     w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-    w <- sum(w1, w2, w3, w4, w5, 16)
+    w  <- sum(w1, w2, w3, w4, w5, 16)
     ln <- length(aics)
 
     cat(rep("-", w), sep = "", "\n")
@@ -121,15 +127,15 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     cat(rep("-", w), sep = "", "\n\n")
   }
 
-  minc <- which(aics == min(aics))
-  laic <- aics[minc]
-  lbic <- bics[minc]
-  ldev <- devs[minc]
-  preds <- all_pred[minc]
-  lpreds <- length(preds)
+  minc     <- which(aics == min(aics))
+  laic     <- aics[minc]
+  lbic     <- bics[minc]
+  ldev     <- devs[minc]
+  preds    <- all_pred[minc]
+  lpreds   <- length(preds)
   all_pred <- all_pred[-minc]
-  len_p <- length(all_pred)
-  step <- 1
+  len_p    <- length(all_pred)
+  step     <- 1
 
   cat("\n")
   if (!details) {
@@ -173,14 +179,15 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
         predictors = all_pred, aics = aics, bics = bics,
         devs = devs
       )
+
       da2 <- arrange(da, aics)
-      w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
-      w2 <- 2
-      w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
-      w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
-      w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-      w <- sum(w1, w2, w3, w4, w5, 16)
-      ln <- length(aics)
+      w1  <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
+      w2  <- 2
+      w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
+      w4  <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
+      w5  <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
+      w   <- sum(w1, w2, w3, w4, w5, 16)
+      ln  <- length(aics)
 
       cat(rep("-", w), sep = "", "\n")
       cat(
@@ -204,15 +211,15 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     minaic <- which(aics == min(aics))
 
     if (aics[minaic] < laic[lpreds]) {
-      preds <- c(preds, all_pred[minaic])
-      minc <- aics[minaic]
-      laic <- c(laic, minc)
-      lbic <- c(lbic, minc)
-      ldev <- c(ldev, minc)
-      lpreds <- length(preds)
+      preds    <- c(preds, all_pred[minaic])
+      minc     <- aics[minaic]
+      laic     <- c(laic, minc)
+      lbic     <- c(lbic, minc)
+      ldev     <- c(ldev, minc)
+      lpreds   <- length(preds)
       all_pred <- all_pred[-minaic]
-      len_p <- length(all_pred)
-      step <- step + 1
+      len_p    <- length(all_pred)
+      step     <- step + 1
 
       if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -250,11 +257,11 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
 
   out <- list(
     candidates = nam,
-    steps = step,
+    steps      = step,
     predictors = preds,
-    aics = laic,
-    bics = lbic,
-    devs = ldev
+    aics       = laic,
+    bics       = lbic,
+    devs       = ldev
   )
 
   class(out) <- "blr_forward_selection"

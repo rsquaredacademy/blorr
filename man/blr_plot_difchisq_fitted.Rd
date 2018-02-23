@@ -23,7 +23,7 @@ blr_plot_difchisq_fitted(model, point_color = "blue",
 Delta Chi Square vs fitted values plot for detecting ill fitted observations
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_difchisq_fitted(model)

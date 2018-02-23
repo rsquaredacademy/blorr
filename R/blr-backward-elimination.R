@@ -49,15 +49,22 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
     stop("Please specify a model with at least 2 predictors.", call. = FALSE)
   }
 
-  l <- mod_sel_data(model)
-  nam <- colnames(attr(model$terms, "factors"))
-  response <- names(model$model)[1]
+  response <-
+    model %>%
+    use_series(model) %>%
+    names() %>%
+    extract(1)
+
+  l     <- mod_sel_data(model)
+  nam   <- coeff_names(model)
   preds <- nam
   aic_f <- model_aic(model)
-  mi <- glm(
+
+    mi <- glm(
     paste(response, "~", paste(preds, collapse = " + ")),
     data = l, family = binomial(link = "logit")
   )
+
   laic <- aic_f
   lbic <- model_bic(mi)
   ldev <- model_deviance(mi)
@@ -74,13 +81,13 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
     cat(" Step 0: AIC =", aic_f, "\n", paste(response, "~", paste(preds, collapse = " + "), "\n\n"))
   }
 
-  ilp <- length(preds)
-  end <- FALSE
-  step <- 0
+  ilp   <- length(preds)
+  end   <- FALSE
+  step  <- 0
   rpred <- c()
-  aics <- c()
-  bics <- c()
-  devs <- c()
+  aics  <- c()
+  bics  <- c()
+  devs  <- c()
 
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
@@ -102,7 +109,7 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
     w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
     w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
     w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-    w <- sum(w1, w2, w3, w4, w5, 16)
+    w  <- sum(w1, w2, w3, w4, w5, 16)
     ln <- length(aics)
 
     cat(rep("-", w), sep = "", "\n")
@@ -135,13 +142,15 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
     if (aics[minc] < aic_f) {
       rpred <- c(rpred, preds[minc])
       preds <- preds[-minc]
-      ilp <- length(preds)
-      step <- step + 1
+      ilp   <- length(preds)
+      step  <- step + 1
       aic_f <- aics[minc]
+
       mi <- glm(
         paste(response, "~", paste(preds, collapse = " + ")),
         data = l, family = binomial(link = "logit")
       )
+
       laic <- c(laic, aic_f)
       lbic <- c(lbic, model_bic(mi))
       ldev <- c(ldev, model_deviance(mi))
@@ -177,13 +186,13 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
           devs = devs
         )
         da2 <- arrange(da, aics)
-        w1 <- max(nchar("Predictor"), nchar(predictors))
-        w2 <- 2
-        w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
-        w4 <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
-        w5 <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
-        w <- sum(w1, w2, w3, w4, w5, 16)
-        ln <- length(aics)
+        w1  <- max(nchar("Predictor"), nchar(predictors))
+        w2  <- 2
+        w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
+        w4  <- max(nchar("BIC"), nchar(format(round(bics, 3), nsmall = 3)))
+        w5  <- max(nchar("Deviance"), nchar(format(round(devs, 3), nsmall = 3)))
+        w   <- sum(w1, w2, w3, w4, w5, 16)
+        ln  <- length(aics)
 
         cat(rep("-", w), sep = "", "\n")
         cat(
@@ -236,11 +245,11 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
 
   out <- list(
     candidates = nam,
-    steps = step,
+    steps      = step,
     predictors = rpred,
-    aics = laic,
-    bics = lbic,
-    devs = ldev
+    aics       = laic,
+    bics       = lbic,
+    devs       = ldev
   )
 
   class(out) <- "blr_backward_elimination"
@@ -257,4 +266,22 @@ print.blr_backward_elimination <- function(x, ...) {
   } else {
     print("No variables have been removed from the model.")
   }
+}
+
+#' Coefficient names
+#'
+#' Returns the names of the coefficients including
+#'   interaction variables.
+#'
+#' @param model An object of class \code{lm}.
+#'
+#' @noRd
+#'
+coeff_names <- function(model) {
+
+  model %>%
+    use_series(terms) %>%
+    attr(which = "factors") %>%
+    colnames()
+
 }

@@ -14,14 +14,14 @@
 #' @export
 #'
 blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
+
   if (is.null(data)) {
     data <- eval(model$call$data)
   }
 
-  response <- model %>%
-    use_series(y)
-
-  p_data <- predict(model, newdata = data, type = "response")
+  response <- model$y
+  p_data   <- predict(model, newdata = data, type = "response")
 
   confusionMatrix(data = as.numeric(p_data > cutoff), reference = response)
+
 }

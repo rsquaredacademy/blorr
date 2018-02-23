@@ -23,7 +23,7 @@ blr_plot_difdev_fitted(model, point_color = "blue",
 Delta deviance vs fitted values plot for detecting ill fitted observations
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_difdev_fitted(model)

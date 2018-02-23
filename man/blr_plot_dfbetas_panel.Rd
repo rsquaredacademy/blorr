@@ -26,10 +26,10 @@ observations that are influential in estimating a given parameter. Belsley, Kuh,
 }
 \examples{
 \dontrun{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
-blr_dfbetas_panel(model)
+blr_plot_dfbetas_panel(model)
 }
 }
 \references{

@@ -23,7 +23,7 @@ blr_plot_fitted_leverage(model, point_color = "blue",
 Fitted values vs leverage plot
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_fitted_leverage(model)

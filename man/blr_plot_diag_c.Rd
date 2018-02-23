@@ -23,7 +23,7 @@ blr_plot_diag_c(model, point_color = "blue",
 Confidence interval displacement diagnostics C plot
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_diag_c(model)
