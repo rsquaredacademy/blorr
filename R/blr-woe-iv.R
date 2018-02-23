@@ -99,7 +99,7 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #'
 blr_woe_iv_stats <- function(data, response, ...) {
 
-  resp <- enquo(response)
+  resp       <- enquo(response)
   predictors <- quos(...)
 
   dat <-

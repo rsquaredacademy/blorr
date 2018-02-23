@@ -38,21 +38,17 @@ blr_lr_test.default <- function(full_model, reduced_model) {
   rm_class <- model_class(reduced_model)
 
   if (fm_class != "glm") {
-    stop(
-      crayon::red("full_model must be an object of class glm."),
-      call. = FALSE
-    )
+    stop(crayon::red("full_model must be an object of class glm."),
+         call. = FALSE)
   }
 
   if (rm_class != "glm") {
-    stop(
-      crayon::red("reduced_model must be an object of class glm."),
-      call. = FALSE
-    )
+    stop(crayon::red("reduced_model must be an object of class glm."),
+      call. = FALSE)
   }
 
   model_info <- lr_model_info(full_model, reduced_model)
-  test_info <- lr_test_result(full_model, reduced_model)
+  test_info  <- lr_test_result(full_model, reduced_model)
 
   result <- list(model_info = model_info, test_result = test_info)
   class(result) <- "blr_lr_test"
@@ -77,18 +73,15 @@ lr_reduced_model <- function(full_model) {
     use_series(data) %>%
     eval_tidy()
 
-  glm(
-    glue(dep, " ~ 1"), data = dat,
-    family = binomial(link = "logit")
-  )
+  glm(glue(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
 
 }
 
 lr_test_result <- function(full_model, reduced_model) {
 
-  full_model_ll <- mll(full_model)
+  full_model_ll    <- mll(full_model)
   reduced_model_ll <- mll(reduced_model)
-  lr <- reduced_model_ll - full_model_ll
+  lr               <- reduced_model_ll - full_model_ll
 
   df <-
     full_model %>%
@@ -98,11 +91,9 @@ lr_test_result <- function(full_model, reduced_model) {
 
   pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
 
-  tibble(
-    lr_ratio = lr,
-    d_f = df,
-    p_value = pval
-  )
+  tibble(lr_ratio = lr,
+         d_f      = df,
+         p_value  = pval)
 
 }
 
@@ -117,19 +108,16 @@ lr_model_info <- function(full_model, reduced_model) {
     reduced_model %>%
     use_series(formula)
 
-  full_model_df <- model_d_f(full_model)
+  full_model_df    <- model_d_f(full_model)
   reduced_model_df <- model_d_f(reduced_model)
-  full_model_ll <- mll(full_model)
+  full_model_ll    <- mll(full_model)
   reduced_model_ll <- mll(reduced_model)
 
-  tibble(
-    model = c("full model", "reduced model"),
-    formulas = c(
-      full_model = full_model_formula,
-      reduced_model = reduced_model_formula
-    ),
-    log_lik = c(full_model_ll, reduced_model_ll),
-    d_f = c(full_model_df, reduced_model_df)
+  tibble(model = c("full model", "reduced model"),
+    formulas   = c(full_model    = full_model_formula,
+                   reduced_model = reduced_model_formula),
+    log_lik    = c(full_model_ll, reduced_model_ll),
+    d_f        = c(full_model_df, reduced_model_df)
   )
 
 }

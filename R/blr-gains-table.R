@@ -79,9 +79,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
     scale_x_continuous(labels = scales::percent) +
     scale_y_continuous(labels = scales::percent) +
-    theme(
-      plot.title = element_text(hjust = plot_title_justify)
-    )
+    theme(plot.title = element_text(hjust = plot_title_justify))
 
 }
 
@@ -105,9 +103,9 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
                          xaxis_title = "Cumulative Population %",
                          ks_line_color = "black") {
 
-  ks_line <- ks_chart_line(gains_table)
+  ks_line    <- ks_chart_line(gains_table)
   annotate_y <- ks_chart_annotate_y(ks_line)
-  ks_stat <- ks_chart_stat(ks_line)
+  ks_stat    <- ks_chart_stat(ks_line)
   annotate_x <- ks_chart_annotate_x(ks_line)
 
   ks_chart_data(gains_table) %>%
@@ -155,10 +153,9 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
   decile_rate <- decile_capture_rate(gains_table)
 
   p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
-    geom_col(fill = bar_color) +
+    geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
     geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
-      size = text_size) + ggtitle(title) + xlab(xaxis_title) +
-    ylab(yaxis_title)
+      size = text_size) + ylab(yaxis_title)
 
   print(p)
 
@@ -191,13 +188,12 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
                                   text_vjust = -0.3) {
 
   global_mean <- lift_chart_global_mean(gains_table)
-  lift_data <- lift_chart_data(gains_table, global_mean)
+  lift_data   <- lift_chart_data(gains_table, global_mean)
 
   p <- ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
-    geom_col(fill = bar_color) +
+    geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
     geom_text(aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
-      size = text_size) + ggtitle(title) + xlab(xaxis_title) +
-    ylab(yaxis_title)
+      size = text_size) + ylab(yaxis_title)
 
   print(p)
 
@@ -242,21 +238,21 @@ gains_table_mutate <- function(data) {
 
   data %>%
     mutate(
-      `0` = total - `1`,
-      cum_1s = cumsum(`1`),
-      cum_0s = cumsum(`0`),
-      cum_total = cumsum(total),
+      `0`           = total - `1`,
+      cum_1s        = cumsum(`1`),
+      cum_0s        = cumsum(`0`),
+      cum_total     = cumsum(total),
       `cum_total_%` = (cum_total / sum(total)) * 100,
-      `cum_1s_%` = (cum_1s / sum(`1`)) * 100,
-      `cum_0s_%` = (cum_0s / sum(`0`)) * 100,
-      ks = `cum_1s_%` - `cum_0s_%`,
-      tp = cum_1s,
-      tn = cum_0s[10] - cum_0s,
-      fp = cum_0s,
-      fn = cum_1s[10] - cum_1s,
-      sensitivity = (tp / (tp + fn)) * 100,
-      specificity = (tn / (tn + fp)) * 100,
-      accuracy = ((tp + tn) / cum_total[10]) * 100
+      `cum_1s_%`    = (cum_1s / sum(`1`)) * 100,
+      `cum_0s_%`    = (cum_0s / sum(`0`)) * 100,
+      ks            = `cum_1s_%` - `cum_0s_%`,
+      tp            = cum_1s,
+      tn            = cum_0s[10] - cum_0s,
+      fp            = cum_0s,
+      fn            = cum_1s[10] - cum_1s,
+      sensitivity   = (tp / (tp + fn)) * 100,
+      specificity   = (tn / (tn + fp)) * 100,
+      accuracy      = ((tp + tn) / cum_total[10]) * 100
     )
 
 }
@@ -268,8 +264,8 @@ gains_plot_data <- function(x) {
     select(`cum_total_%`, `cum_1s_%`) %>%
     mutate(
       cum_total_per = `cum_total_%` / 100,
-      cum_1s_per = `cum_1s_%` / 100,
-      cum_total_y = cum_total_per
+      cum_1s_per    = `cum_1s_%` / 100,
+      cum_total_y   = cum_total_per
     ) %>%
     select(cum_total_per, cum_1s_per, cum_total_y) %>%
     add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
@@ -291,7 +287,7 @@ ks_chart_annotate_y <- function(ks_line) {
 
   ks_line %>%
     mutate(
-      ann_loc = (`cum_1s_%` - `cum_0s_%`) / 2,
+      ann_loc    = (`cum_1s_%` - `cum_0s_%`) / 2,
       ann_locate = `cum_0s_%` + ann_loc
     ) %>%
     pull(ann_locate)
@@ -323,8 +319,8 @@ ks_chart_data <- function(gains_table) {
     select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
     mutate(
       cum_total_per = `cum_total_%` / 100,
-      cum_1s_per = `cum_1s_%` / 100,
-      cum_0s_per = `cum_0s_%` / 100
+      cum_1s_per    = `cum_1s_%` / 100,
+      cum_0s_per    = `cum_0s_%` / 100
     ) %>%
     select(cum_total_per, cum_1s_per, cum_0s_per) %>%
     add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)

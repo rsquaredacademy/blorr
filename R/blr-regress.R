@@ -30,9 +30,9 @@ blr_regress.default <- function(object, data, ...) {
 #' @export
 #'
 blr_regress.glm <- function(object, ...) {
+
   formula <- formula(object)
-  # data    <- model.frame(object)
-  data <- eval(object$call$data)
+  data    <- eval(object$call$data)
   blr_regress.default(object = formula, data = data)
 }
 

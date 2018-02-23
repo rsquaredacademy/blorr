@@ -43,7 +43,7 @@ roc_data_prep <- function(gains_table) {
     use_series(gains_table) %>%
     select(sensitivity, specificity) %>%
     mutate(
-      sensitivity_per = sensitivity / 100,
+      sensitivity_per   = sensitivity / 100,
       `1 - specificity` = 1 - (specificity / 100)
     ) %>%
     add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1)

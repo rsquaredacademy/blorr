@@ -19,14 +19,24 @@ blr_model_fit_stats.default <- function(model, ...) {
 
   lr <- fit_stat(model)
 
-  result <- list(loglik_null = null_ll(model), loglik_model = model_ll(model),
-    m_deviance = model_deviance(model), lr_ratio = lr$lr_ratio,
-    lr_pval = lr$lr_pval, mcfadden = blr_mcfadden_rsq(model),dev_df = lr$dev_df,
-    adj_mcfadden = blr_mcfadden_adj_rsq(model), m_aic = model_aic(model),
-    cox_snell = blr_cox_snell_rsq(model), m_bic = model_bic(model),
-    mckelvey = blr_mckelvey_zavoina_rsq(model), lr_df = lr$lr_df,
-    effron = blr_effron_rsq(model), nagelkerke = blr_nagelkerke_rsq(model),
-    count_r2 = blr_count_rsq(model), count_adj = blr_adj_count_rsq(model))
+  result <- list(
+    loglik_null  = null_ll(model),
+    loglik_model = model_ll(model),
+    m_deviance   = model_deviance(model),
+    lr_ratio     = lr$lr_ratio,
+    lr_pval      = lr$lr_pval,
+    mcfadden     = blr_mcfadden_rsq(model),
+    dev_df       = lr$dev_df,
+    adj_mcfadden = blr_mcfadden_adj_rsq(model),
+    m_aic        = model_aic(model),
+    cox_snell    = blr_cox_snell_rsq(model),
+    m_bic        = model_bic(model),
+    mckelvey     = blr_mckelvey_zavoina_rsq(model),
+    lr_df        = lr$lr_df,
+    effron       = blr_effron_rsq(model),
+    nagelkerke   = blr_nagelkerke_rsq(model),
+    count_r2     = blr_count_rsq(model),
+    count_adj    = blr_adj_count_rsq(model))
 
   class(result) <- "blr_model_fit_stats"
   return(result)
@@ -171,7 +181,7 @@ blr_nagelkerke_rsq <- function(model) {
 #'
 blr_mckelvey_zavoina_rsq <- function(model) {
 
-  predicted <- predict(model)
+  predicted      <- predict(model)
   mean_predicted <- mean(predicted)
 
   ess <-
@@ -211,7 +221,7 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 blr_effron_rsq <- function(model) {
 
   predicted <- predict(model, type = "response")
-  resp <-model$y
+  resp      <-model$y
   mean_resp <- mean(resp)
 
   den <-
@@ -246,9 +256,9 @@ blr_effron_rsq <- function(model) {
 blr_count_rsq <- function(model) {
 
   predicted <- predict(model, type = "response")
-  zero_one <- if_else(predicted >= 0.5, 1, 0)
-  resp <- model$y
-  n <- length(resp)
+  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  resp      <- model$y
+  n         <- length(resp)
 
   if_else(zero_one == resp, 1, 0) %>%
     sum() %>%
@@ -276,10 +286,10 @@ blr_adj_count_rsq <- function(model) {
     max()
 
   predicted <- predict(model, type = "response")
-  zero_one <- if_else(predicted >= 0.5, 1, 0)
-  resp <- model$y
-  n <- length(resp)
-  den <- n - n2
+  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  resp      <- model$y
+  n         <- length(resp)
+  den       <- n - n2
 
   if_else(zero_one == resp, 1, 0) %>%
     sum() %>%
@@ -304,10 +314,13 @@ fit_stat <- function(model) {
     subtract(pred_n)
 
   lr_ratio <- extract_lr(lr, lr_ratio)
-  lr_df <- extract_lr(lr, d_f)
-  lr_pval <- extract_lr(lr, p_value)
+  lr_df    <- extract_lr(lr, d_f)
+  lr_pval  <- extract_lr(lr, p_value)
 
-  list(lr_ratio = lr_ratio, lr_df = lr_df, lr_pval = lr_pval, dev_df = dev_df)
+  list(lr_ratio = lr_ratio,
+       lr_df    = lr_df,
+       lr_pval  = lr_pval,
+       dev_df   = dev_df)
 
 }
 

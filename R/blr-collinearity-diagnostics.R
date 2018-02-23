@@ -69,11 +69,11 @@ blr_coll_diag.default <- function(model) {
     stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
 
-  vift <- blr_vif_tol(model)
+  vift    <- blr_vif_tol(model)
   eig_ind <- blr_eigen_cindex(model)
-  result <- list(vif_t = vift, eig_cindex = eig_ind)
-  class(result) <- "blr_coll_diag"
+  result  <- list(vif_t = vift, eig_cindex = eig_ind)
 
+  class(result) <- "blr_coll_diag"
   return(result)
 
 }
@@ -100,11 +100,9 @@ blr_vif_tol <- function(model) {
   }
 
   vt <- viftol(model)
-  tibble(
-    Variable = vt$nam,
-    Tolerance = vt$tol,
-    VIF = vt$vifs
-  )
+  tibble(Variable  = vt$nam,
+         Tolerance = vt$tol,
+         VIF       = vt$vifs)
 
 }
 
@@ -129,10 +127,7 @@ blr_eigen_cindex <- function(model) {
     evalue() %>%
     use_series(e)
 
-
-  cindex <-
-    e %>%
-    cindx()
+  cindex <- cindx(e)
 
   pv <-
     x %>%
@@ -141,7 +136,8 @@ blr_eigen_cindex <- function(model) {
     pveindex()
 
   out <- data.frame(Eigenvalue = cbind(e, cindex, pv))
-  colnames(out) <- c("Eigenvalue", "Condition Index", colnames(evalue(x)$pvdata))
+  colnames(out) <- c("Eigenvalue", "Condition Index",
+                     colnames(evalue(x)$pvdata))
   return(out)
 
 }
@@ -149,9 +145,13 @@ blr_eigen_cindex <- function(model) {
 
 fmrsq <- function(nam, data, i) {
 
-  fm <- as.formula(paste0("`", nam[i], "` ", "~ ."))
-  m1 <- lm(fm, data = data)
-  1 - (summary(m1)$r.squared)
+  fm <-
+    as.formula(paste0("`", nam[i], "` ", "~ .")) %>%
+    lm(data = data) %>%
+    summary() %>%
+    use_series(r.squared)
+
+  1 - fm
 
 }
 
@@ -186,12 +186,11 @@ viftol <- function(model) {
 
 evalue <- function(x) {
 
-  values <- NULL
-
-  y <- x
+  values         <- NULL
+  y              <- x
   colnames(y)[1] <- "intercept"
-  z <- scale(y, scale = T, center = F)
-  tu <- t(z) %*% z
+  z              <- scale(y, scale = T, center = F)
+  tu             <- t(z) %*% z
 
   e <-
     tu %>%
@@ -200,7 +199,6 @@ evalue <- function(x) {
     use_series(values)
 
   list(e = e, pvdata = z)
-
 
 }
 
