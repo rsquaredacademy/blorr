@@ -239,3 +239,26 @@ test_that("fitted vs leverage plot is as expected", {
 
   vdiffr::expect_doppelganger("fitted leverage plot", p)
 })
+
+
+test_that("decile lift chart is as expected", {
+  skip_on_cran()
+
+  p <-
+    model %>%
+    blr_gains_table() %>%
+    blr_decile_lift_chart()
+
+  vdiffr::expect_doppelganger("decile lift chart", p$plot)
+})
+
+test_that("decile wise capture rate chart is as expected", {
+  skip_on_cran()
+
+  p <-
+    model %>%
+    blr_gains_table() %>%
+    blr_decile_capture_rate()
+
+  vdiffr::expect_doppelganger("decile capture rate chart", p$plot)
+})
