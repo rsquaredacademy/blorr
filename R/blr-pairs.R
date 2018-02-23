@@ -13,48 +13,41 @@
 #' @export
 #'
 blr_pairs <- function(model) {
-  resp <- model %>%
-    use_series(y)
 
-  fit <- model %>%
-    use_series(fitted.values)
+  resp    <- model$y
+  fit     <- fitted(model)
+  pairs   <- tibble(response = resp, fit_val = fit)
+  n       <- nrow(pairs)
+  p_ones  <- pairs_one_zero(pairs, 1, fit_val)
+  p_zeros <- pairs_one_zero(pairs, 0, fit_val)
 
-  pairs <- tibble(response = resp, fit_val = fit)
-  n <- nrow(pairs)
+  blr_pairs_cpp(p_ones, p_zeros) %>%
+    compute_pairs(n = n)
 
-  p_ones <- pairs %>%
-    filter(response == 1) %>%
-    pull(fit_val)
+}
 
-  p_zeros <- pairs %>%
-    filter(response == 0) %>%
-    pull(fit_val)
+pairs_one_zero <- function(pairs, resp, column) {
 
-  compute_pairs <- blr_pairs_cpp(p_ones, p_zeros)
+  cols <- enquo(column)
 
-  pairs_count <- compute_pairs[["pairs"]]
-  concordant <- compute_pairs[["concordant"]]
-  discordant <- compute_pairs[["discordant"]]
-  ties <- compute_pairs[["ties"]]
+  pairs %>%
+    filter(response == resp) %>%
+    pull(!! cols)
+}
 
-  concordance <- concordant / pairs_count
-  discordance <- discordant / pairs_count
-  pairs_tied <- ties / pairs_count
-  somers_d <- (concordant - discordant) / (concordant + discordant)
-  gamma <- (concordant - discordant) / (pairs_count)
-  tau <- (2 * (concordant - discordant)) / (n * (n - 1))
-  c <- concordance + (0.5 * pairs_tied)
+pairs_compute <- function(compute_pairs, n) {
 
-  result <- tibble(
-    pairs = pairs_count,
-    concordant = concordance,
-    discordant = discordance,
-    tied = pairs_tied,
-    somers_d = somers_d,
-    gamma = gamma,
-    tau_a = tau,
-    c = c
-  )
+  compute_pairs %>%
+    mutate(
+      concordance = concordant / pairs,
+      discordance = discordant / pairs,
+      tied        = ties / pairs,
+      somers_d    = (concordant - discordant) / (concordant + discordant),
+      gamma       = (concordant - discordant) / (pairs),
+      tau         = (2 * (concordant - discordant)) / (n * (n - 1)),
+      c           = concordance + (0.5 * pairs_tied)
+    ) %>%
+    as_tibble() %>%
+    select(-concordant, -discordant, -ties)
 
-  return(result)
 }
