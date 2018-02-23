@@ -22,22 +22,23 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
     data <- eval(model$call$data)
   }
 
-  resp <- model$y
+  resp        <- model$y
   hoslem_data <- hoslem_data_prep(model, data, resp)
-  int_limits <- hoslem_int_limits(hoslem_data)
+  int_limits  <- hoslem_int_limits(hoslem_data)
 
   hoslem_table <-
     hoslem_data %>%
     hoslem_data_mutate(int_limits = int_limits) %>%
     hoslem_table_data(resp = resp)
 
-  chisq_stat <- hoslem_chisq_stat(hoslem_table)
-  hoslem_df <- 8
+  chisq_stat  <- hoslem_chisq_stat(hoslem_table)
+  hoslem_df   <- 8
   hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
 
-  result <- list(
-    partition_table = hoslem_table, chisq_stat = chisq_stat, df = hoslem_df,
-    pvalue = hoslem_pval
+  result <- list(partition_table = hoslem_table,
+                 chisq_stat      = chisq_stat,
+                 df              = hoslem_df,
+                 pvalue          = hoslem_pval
   )
 
   class(result) <- "blr_hosmer_lemeshow_test"
@@ -94,13 +95,14 @@ hoslem_table_data <- function(data,resp) {
   data %>%
     group_by(group) %>%
     summarise(
-      n = n(), `1s_observed` = sum(resp),
+      n             = n(),
+      `1s_observed` = sum(resp),
       `0s_observed` = n - `1s_observed`,
-      avg_prob = mean(prob),
+      avg_prob      = mean(prob),
       `1s_expected` = n * avg_prob,
       `0s_expected` = n - `1s_expected`,
-      positive = ((`1s_observed` - `1s_expected`) ^ 2 / `1s_expected`),
-      negative = ((`0s_observed` - `0s_expected`) ^ 2 / `0s_expected`)
+      positive      = ((`1s_observed` - `1s_expected`) ^ 2 / `1s_expected`),
+      negative      = ((`0s_observed` - `0s_expected`) ^ 2 / `0s_expected`)
     )
 
 }

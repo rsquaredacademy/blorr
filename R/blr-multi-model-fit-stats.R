@@ -22,10 +22,9 @@ blr_multi_model_fit_stats <- function(model, ...) UseMethod("blr_multi_model_fit
 #'
 blr_multi_model_fit_stats.default <- function(model, ...) {
 
-  k <- list(model, ...)
-  j <- map(k, blr_model_fit_stats)
-
-  n <- length(j)
+  k        <- list(model, ...)
+  j        <- map(k, blr_model_fit_stats)
+  n        <- length(j)
   names(j) <- letters[seq_len(n)]
 
   for (i in seq_len(n)) {

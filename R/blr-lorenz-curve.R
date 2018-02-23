@@ -17,7 +17,7 @@ blr_gini_index <- function(model, data = NULL) {
   }
 
   prob <- predict.glm(model, newdata = data, type = "response")
-  n <- length(prob)
+  n    <- length(prob)
 
   data %>%
     mutate(
@@ -25,7 +25,7 @@ blr_gini_index <- function(model, data = NULL) {
     ) %>%
     arrange(prob) %>%
     mutate(
-      n = seq_len(n()),
+      n      = seq_len(n()),
       prob_n = prob * n
     ) %>%
     pull(prob_n) %>%
@@ -67,9 +67,9 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
   }
 
   prob <- lorenz_curve_prob(data, model)
-  n <- lorenz_curve_n(prob)
-  p <- lorenz_curve_p(n)
-  l <- lorenz_curve_l(prob, n)
+  n    <- lorenz_curve_n(prob)
+  p    <- lorenz_curve_p(n)
+  l    <- lorenz_curve_l(prob, n)
 
   g_index <-
     blr_gini_index(model = model, data = data) %>%

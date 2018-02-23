@@ -26,17 +26,17 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
     data %>%
     select(!! resp, !!! predictors)
 
-  varnames <- names(mdata)
-  resp_name <- varnames[1]
-  pred_name <- varnames[-1]
+  varnames      <- names(mdata)
+  resp_name     <- varnames[1]
+  pred_name     <- varnames[-1]
   len_pred_name <- x_length(pred_name)
-  result <- bivar_comp(len_pred_name, mdata, pred_name, resp_name)
+  result        <- bivar_comp(len_pred_name, mdata, pred_name, resp_name)
 
-  result <- tibble(
-    variable = pred_name, iv = result$iv,
-    likelihood_ratio = result$likelihood_ratio, df = result$df,
-    pval = result$pval
-  )
+  result <- tibble(variable         = pred_name,
+                   iv               = result$iv,
+                   likelihood_ratio = result$likelihood_ratio,
+                   df               = result$df,
+                   pval             = result$pval)
 
   class(result) <- "blr_bivariate_analysis"
   return(result)
@@ -58,10 +58,10 @@ x_length <- function(x) {
 
 bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
 
-  ivs <- list()
+  ivs       <- list()
   lr_ratios <- list()
-  lr_dfs <- list()
-  lr_pvals <- list()
+  lr_dfs    <- list()
+  lr_pvals  <- list()
 
   for (i in len_pred_name) {
 
@@ -77,17 +77,17 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
       family = binomial(link = "logit")
     )
 
-    lr <- blr_lr_test(model, model1)
+    lr           <- blr_lr_test(model, model1)
     lr_ratios[i] <- lr_extract(lr, lr_ratio)
-    lr_dfs[i] <- lr_extract(lr, d_f)
-    lr_pvals[i] <- lr_extract(lr, p_value)
+    lr_dfs[i]    <- lr_extract(lr, d_f)
+    lr_pvals[i]  <- lr_extract(lr, p_value)
 
   }
 
-  list(iv = map_dbl(ivs, 1),
-       likelihood_ratio = map_dbl(lr_ratios, 1),
-       df = map_dbl(lr_dfs, 1),
-       pval = map_dbl(lr_pvals, 1))
+  list(likelihood_ratio = map_dbl(lr_ratios, 1),
+       iv               = map_dbl(ivs, 1),
+       df               = map_dbl(lr_dfs, 1),
+       pval             = map_dbl(lr_pvals, 1))
 
 }
 
@@ -169,24 +169,20 @@ blr_twoway_segment <- function(data, response, variable_1, variable_2) UseMethod
 #'
 blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
 
-  resp <- enquo(response)
+  resp  <- enquo(response)
   var_1 <- enquo(variable_1)
   var_2 <- enquo(variable_2)
-
-  n <-
-    data %>%
-    nrow()
+  n     <- nrow(data)
 
   dat <-
     data %>%
     filter((!! resp) == 1) %>%
     select(!! var_1, !! var_2)
 
-  var_names <-
-    dat %>%
-    names()
+  var_names <- names(dat)
 
-  twoway <- dat %>%
+  twoway <-
+    dat %>%
     table() %>%
     divide_by(n)
 
@@ -293,18 +289,12 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
 
   x %>%
     use_series(dist_table) %>%
-    ggplot(aes(variable)) +
-    geom_col(aes(y = `n%`), fill = bar_color) +
+    ggplot(aes(variable)) + geom_col(aes(y = `n%`), fill = bar_color) +
     geom_line(aes(y = `1s%`, group = 1), color = line_color) +
     xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
-    scale_y_continuous(
-      labels = scales::percent,
-      sec.axis = sec_axis(
-        ~. / sec_axis_scale,
-        name = sec_yaxis_title,
-        labels = scales::percent
-      )
-    )
+    scale_y_continuous(labels = scales::percent,
+      sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
+        labels = scales::percent))
 }
 
 
