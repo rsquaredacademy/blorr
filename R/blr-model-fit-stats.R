@@ -16,42 +16,21 @@ blr_model_fit_stats <- function(model, ...) UseMethod("blr_model_fit_stats")
 #' @export
 #'
 blr_model_fit_stats.default <- function(model, ...) {
-  lr <- blr_lr_test(model)
-  n <- model %>%
-    use_series(y) %>%
-    length()
 
-  result <- list(
-    loglik_null = null_ll(model),
-    loglik_model = model_ll(model),
-    m_deviance = model_deviance(model),
-    lr_ratio = lr %>%
-      use_series(test_result) %>%
-      pull(lr_ratio),
-    lr_df = lr %>%
-      use_series(test_result) %>%
-      pull(d_f),
-    lr_pval = lr %>%
-      use_series(test_result) %>%
-      pull(p_value),
-    mcfadden = blr_mcfadden_rsq(model),
-    adj_mcfadden = blr_mcfadden_adj_rsq(model),
-    cox_snell = blr_cox_snell_rsq(model),
-    nagelkerke = blr_nagelkerke_rsq(model),
-    mckelvey = blr_mckelvey_zavoina_rsq(model),
-    effron = blr_effron_rsq(model),
-    count_r2 = blr_count_rsq(model),
-    count_adj = blr_adj_count_rsq(model),
-    m_aic = model_aic(model),
-    m_bic = model_bic(model),
-    dev_df = n %>%
-      subtract(model %>%
-        coefficients() %>%
-        length())
-  )
+  lr <- fit_stat(model)
+
+  result <- list(loglik_null = null_ll(model), loglik_model = model_ll(model),
+    m_deviance = model_deviance(model), lr_ratio = lr$lr_ratio,
+    lr_pval = lr$lr_pval, mcfadden = blr_mcfadden_rsq(model),dev_df = lr$dev_df,
+    adj_mcfadden = blr_mcfadden_adj_rsq(model), m_aic = model_aic(model),
+    cox_snell = blr_cox_snell_rsq(model), m_bic = model_bic(model),
+    mckelvey = blr_mckelvey_zavoina_rsq(model), lr_df = lr$lr_df,
+    effron = blr_effron_rsq(model), nagelkerke = blr_nagelkerke_rsq(model),
+    count_r2 = blr_count_rsq(model), count_adj = blr_adj_count_rsq(model))
 
   class(result) <- "blr_model_fit_stats"
   return(result)
+
 }
 
 #' @export
@@ -61,34 +40,37 @@ print.blr_model_fit_stats <- function(x, ...) {
 }
 
 model_deviance <- function(model) {
+
   model %>%
     use_series(deviance)
+
 }
 
-# log likelihood intercept only model
 null_ll <- function(model) {
+
   i_model(model) %>%
     logLik() %>%
     extract2(1)
+
 }
 
-# log likelihood full model
+
 model_ll <- function(model) {
+
   model %>%
     logLik() %>%
     extract(1)
+
 }
 
 
 model_aic <- function(model) {
-  model %>%
-    AIC()
+  AIC(model)
 }
 
 
 model_bic <- function(model) {
-  model %>%
-    BIC()
+  BIC(model)
 }
 
 #' @title McFadden's R2
@@ -103,16 +85,11 @@ model_bic <- function(model) {
 #' @export
 #'
 blr_mcfadden_rsq <- function(model) {
-  f_model_ll <- model %>%
-    model_ll()
 
-  i_model_ll <- model %>%
-    i_model() %>%
-    model_ll()
+  i_model_ll <- imodel(model)
+  f_model_ll <- model_ll(model)
+  1 - (f_model_ll/ i_model_ll)
 
-  1 %>%
-    subtract(f_model_ll %>%
-      divide_by(i_model_ll))
 }
 
 #' @title McFadden's Adjusted R2
@@ -127,19 +104,11 @@ blr_mcfadden_rsq <- function(model) {
 #' @export
 #'
 blr_mcfadden_adj_rsq <- function(model) {
-  f_model_ll <- model %>%
-    model_ll()
 
-  i_model_ll <- model %>%
-    i_model() %>%
-    model_ll()
+  i_model_ll <- imodel(model)
+  f_model_ll <- model_ll(model) - model_df(model)
+  1 - (f_model_ll / i_model_ll)
 
-  k <- model %>%
-    model_d_f()
-
-  1 %>%
-    subtract((f_model_ll - k) %>%
-      divide_by(i_model_ll))
 }
 
 #' @title Cox Snell R2
@@ -154,30 +123,9 @@ blr_mcfadden_adj_rsq <- function(model) {
 #' @export
 #'
 blr_cox_snell_rsq <- function(model) {
-  f_model_ll <- model %>%
-    model_ll() %>%
-    exp()
 
-  i_model_ll <- model %>%
-    i_model() %>%
-    model_ll() %>%
-    exp()
+  1 - cox_snell_comp(model)
 
-  n <- model %>%
-    use_series(data) %>%
-    nrow()
-
-  ratio <- i_model_ll %>%
-    divide_by(f_model_ll)
-
-  pow <- 2 %>%
-    divide_by(n)
-
-  ratio_pow <- ratio %>%
-    raise_to_power(pow)
-
-  1 %>%
-    subtract(ratio_pow)
 }
 
 
@@ -193,26 +141,21 @@ blr_cox_snell_rsq <- function(model) {
 #' @export
 #'
 blr_nagelkerke_rsq <- function(model) {
-  cox_snell <- blr_cox_snell_rsq(model)
 
-  i_model_ll <- model %>%
-    i_model() %>%
-    model_ll() %>%
-    exp()
-
-  n <- model %>%
+  n <-
+    model %>%
     use_series(data) %>%
     nrow()
 
-  pow <- 2 %>%
-    divide_by(n)
+  pow <- 2 / n
 
-  den <- 1 %>%
-    subtract(i_model_ll %>%
-      raise_to_power(pow))
+  i_model_ll <-
+    imodel(model) %>%
+    exp() %>%
+    raise_to_power(pow)
 
-  cox_snell %>%
-    divide_by(den)
+  blr_cox_snell_rsq(model) / (1 - i_model_ll)
+
 }
 
 #' @title McKelvey Zavoina R2
@@ -227,29 +170,30 @@ blr_nagelkerke_rsq <- function(model) {
 #' @export
 #'
 blr_mckelvey_zavoina_rsq <- function(model) {
-  predicted <- model %>%
-    predict()
 
-  mean_predicted <- predicted %>%
-    mean()
+  predicted <- predict(model)
+  mean_predicted <- mean(predicted)
 
-  ess <- predicted %>%
+  ess <-
+    predicted %>%
     subtract(mean_predicted) %>%
     raise_to_power(2) %>%
     sum()
 
-  pi_val <- pi %>%
+  pi_val <-
+    pi %>%
     raise_to_power(2) %>%
     divide_by(3)
 
-  n <- model %>%
+  n <-
+    model %>%
     use_series(y) %>%
-    length()
+    length() %>%
+    multiply_by(pi_val) %>%
+    add(ess)
 
-  ess %>%
-    divide_by((n %>%
-      multiply_by(pi_val)) %>%
-      add(ess))
+  ess / n
+
 }
 
 
@@ -265,28 +209,26 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 #' @export
 #'
 blr_effron_rsq <- function(model) {
-  predicted <- model %>%
-    predict(type = "response")
 
-  resp <- model %>%
-    use_series(y)
+  predicted <- predict(model, type = "response")
+  resp <-model$y
+  mean_resp <- mean(resp)
 
-  num <- resp %>%
-    subtract(predicted) %>%
-    raise_to_power(2) %>%
-    sum()
-
-  mean_resp <- resp %>%
-    mean()
-
-  den <- resp %>%
+  den <-
+    resp %>%
     subtract(mean_resp) %>%
     raise_to_power(2) %>%
     sum()
 
-  1 %>%
-    subtract(num %>%
-      divide_by(den))
+  num <-
+    resp %>%
+    subtract(predicted) %>%
+    raise_to_power(2) %>%
+    sum() %>%
+    divide_by(den)
+
+  1 - num
+
 }
 
 
@@ -302,22 +244,16 @@ blr_effron_rsq <- function(model) {
 #' @export
 #'
 blr_count_rsq <- function(model) {
-  predicted <- model %>%
-    predict(type = "response")
 
+  predicted <- predict(model, type = "response")
   zero_one <- if_else(predicted >= 0.5, 1, 0)
+  resp <- model$y
+  n <- length(resp)
 
-  resp <- model %>%
-    use_series(y)
-
-  n <- resp %>%
-    length()
-
-  correct <- if_else(zero_one == resp, 1, 0)
-
-  correct %>%
+  if_else(zero_one == resp, 1, 0) %>%
     sum() %>%
     divide_by(n)
+
 }
 
 #' @title Adjusted Count R2
@@ -332,30 +268,84 @@ blr_count_rsq <- function(model) {
 #' @export
 #'
 blr_adj_count_rsq <- function(model) {
-  n2 <- model %>%
+
+  n2 <-
+    model %>%
     use_series(y) %>%
     table() %>%
     max()
 
-  predicted <- model %>%
-    predict(type = "response")
-
+  predicted <- predict(model, type = "response")
   zero_one <- if_else(predicted >= 0.5, 1, 0)
+  resp <- model$y
+  n <- length(resp)
+  den <- n - n2
 
-  resp <- model %>%
-    use_series(y)
+  if_else(zero_one == resp, 1, 0) %>%
+    sum() %>%
+    subtract(n2) %>%
+    divide_by(den)
 
-  n <- resp %>%
+}
+
+fit_stat <- function(model) {
+
+  lr <- blr_lr_test(model)
+
+  pred_n <-
+    model %>%
+    coefficients() %>%
     length()
 
-  correct <- if_else(zero_one == resp, 1, 0)
+  dev_df <-
+    model %>%
+    use_series(y) %>%
+    length() %>%
+    subtract(pred_n)
 
-  num <- correct %>%
-    sum() %>%
-    subtract(n2)
+  lr_ratio <- extract_lr(lr, lr_ratio)
+  lr_df <- extract_lr(lr, d_f)
+  lr_pval <- extract_lr(lr, p_value)
 
-  den <- n %>%
-    subtract(n2)
+  list(lr_ratio = lr_ratio, lr_df = lr_df, lr_pval = lr_pval, dev_df = dev_df)
 
-  num / den
+}
+
+extract_lr <- function(lr, value) {
+
+  vals <- enquo(value)
+
+  lr %>%
+    use_series(test_result) %>%
+    pull(!! vals)
+
+}
+
+cox_snell_comp <- function(model) {
+
+  f_model_ll <-
+    model %>%
+    model_ll() %>%
+    exp()
+
+  n <-
+    model %>%
+    use_series(data) %>%
+    nrow()
+
+  pow <- 2 / n
+
+  imodel(model) %>%
+    exp() %>%
+    divide_by(f_model_ll) %>%
+    raise_to_power(pow)
+
+}
+
+imodel <- function(model) {
+
+  model %>%
+    i_model() %>%
+    model_ll()
+
 }
