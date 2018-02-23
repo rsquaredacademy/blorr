@@ -36,7 +36,7 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_pearson_residual(model)
@@ -64,7 +64,7 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_deviance_fitted(model)
@@ -91,7 +91,7 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_deviance_residual(model)
@@ -118,7 +118,7 @@ blr_plot_deviance_residual <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_leverage_fitted(model)
@@ -146,7 +146,7 @@ blr_plot_leverage_fitted <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_leverage(model)
@@ -172,7 +172,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
 #' @param model an object of class \code{glm}
 #' @return C, CBAR, DIFDEV and DIFCHISQ
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_residual_diagnostics(model)
@@ -212,7 +212,7 @@ blr_residual_diagnostics <- function(model) {
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_c(model)
@@ -240,7 +240,7 @@ blr_plot_diag_c <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_cbar(model)
@@ -268,7 +268,7 @@ blr_plot_diag_cbar <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_difchisq(model)
@@ -295,7 +295,7 @@ blr_plot_diag_difchisq <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_difdev(model)
@@ -335,7 +335,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' New York: John Wiley & Sons. pp. ISBN 0-471-05856-4.
 #' @examples
 #' \dontrun{
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_dfbetas_panel(model)
@@ -357,7 +357,7 @@ blr_plot_dfbetas_panel <- function(model) {
 
   for (i in seq_len(np)) {
 
-    d <- dfbetas_data_prep(dfb, n, i)
+    d <- dfbetas_data_prep(dfb, n, threshold, i)
     f <- dfbetas_outlier_data(d)
     p <- eval(substitute(dfbetas_plot(d, threshold, dfb, i),list(i = i)))
 
@@ -381,7 +381,7 @@ blr_plot_dfbetas_panel <- function(model) {
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_c_fitted(model)
@@ -408,7 +408,7 @@ blr_plot_c_fitted <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_difchisq_fitted(model)
@@ -435,7 +435,7 @@ blr_plot_difchisq_fitted <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_difdev_fitted(model)
@@ -462,7 +462,7 @@ blr_plot_difdev_fitted <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_difdev_leverage(model)
@@ -489,7 +489,7 @@ blr_plot_difdev_leverage <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_difchisq_leverage(model)
@@ -516,7 +516,7 @@ blr_plot_difchisq_leverage <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_c_leverage(model)
@@ -544,7 +544,7 @@ blr_plot_c_leverage <- function(model, point_color = "blue",
 #' @param xaxis_title x axis label
 #' @param yaxis_title y axis label
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_fitted_leverage(model)
@@ -584,7 +584,7 @@ extract_diag <- function(model, value) {
 }
 
 
-dfbetas_data_prep <- function(dfb, n, i) {
+dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
   dbetas <- dfb[, i]
   tibble(obs = seq_len(n), dbetas = dbetas) %>%

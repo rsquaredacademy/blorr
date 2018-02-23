@@ -22,7 +22,7 @@ blr_plot_leverage(model, point_color = "blue", title = "Leverage Plot",
 Leverage plot
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_leverage(model)
