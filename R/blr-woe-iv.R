@@ -30,47 +30,34 @@ blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
 #' @export
 #'
 blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
+
   pred <- enquo(predictor)
   resp <- enquo(response)
 
-  dat <- data %>%
+  dat <-
+    data %>%
     select(!! pred, !! resp)
 
-  lev <- dat %>%
+  lev <-
+    dat %>%
     pull(!! pred) %>%
     levels()
 
-  f <- table(dat)
+  f  <- table(dat)
   f1 <- table(dat)
 
-  woe_iv <- rbind(f, f1) %>%
-    unique() %>%
-    as_tibble() %>%
-    select(no = `0`, yes = `1`) %>%
-    mutate(
-      total = no + yes,
-      distribution = round((total / sum(total) * 100), digits = digits),
-      approval = round(((yes / total) * 100), digits = digits),
-      dist_yes = round(yes / sum(yes), digits = digits),
-      dist_no = round(no / sum(no), digits = digits),
-      woe = round(log(dist_no / dist_yes), digits = digits),
-      dist_diff = dist_no - dist_yes,
-      iv = round((dist_diff * woe), digits = digits)
-    ) %>%
-    add_column(levels = lev, .before = 1) %>%
-    select(-distribution, -approval) %>%
-    select(
-      levels, `0s_count` = no, `1s_count` = yes, `0s_dist` = dist_no,
-      `1s_dist` = dist_yes, woe = woe, iv = iv
-    )
+  woe_iv <-
+    woe_data_prep(f, f1) %>%
+    woe_data_modify(lev = lev, digits = digits) %>%
+    woe_data_select()
 
-  var_name <- dat %>%
-    names() %>%
-    extract(1)
+  var_name <- names(dat)[1]
 
   result <- list(woe_iv_table = woe_iv, var_name = var_name)
   class(result) <- "blr_woe_iv"
+
   return(result)
+
 }
 
 #' @export
@@ -85,6 +72,7 @@ print.blr_woe_iv <- function(x, ...) {
 plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
                             yaxis_title = "WoE",
                             line_color = "blue", point_color = "blue", ...) {
+
   if (is.na(title)) {
     plot_title <- x$var_name
   } else {
@@ -110,17 +98,17 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' @export
 #'
 blr_woe_iv_stats <- function(data, response, ...) {
+
   resp <- enquo(response)
   predictors <- quos(...)
 
-  dat <- data %>%
+  dat <-
+    data %>%
     select(!! resp, !!! predictors)
 
-  varnames <- dat %>%
-    names()
-
-  resp_name <- varnames[1]
-  pred_name <- varnames[-1]
+  varnames    <- names(dat)
+  resp_name   <- varnames[1]
+  pred_name   <- varnames[-1]
   l_pred_name <- length(pred_name)
 
   for (i in seq_len(l_pred_name)) {
@@ -130,4 +118,41 @@ blr_woe_iv_stats <- function(data, response, ...) {
     print(k)
     cat("\n\n")
   }
+}
+
+woe_data_prep <- function(f, f1) {
+
+  rbind(f, f1) %>%
+    unique() %>%
+    as_tibble() %>%
+    select(no = `0`, yes = `1`)
+
+}
+
+woe_data_modify <- function(data, lev, digits) {
+
+  data %>%
+    mutate(
+      total        = no + yes,
+      distribution = round((total / sum(total) * 100), digits = digits),
+      approval     = round(((yes / total) * 100), digits = digits),
+      dist_yes     = round(yes / sum(yes), digits = digits),
+      dist_no      = round(no / sum(no), digits = digits),
+      woe          = round(log(dist_no / dist_yes), digits = digits),
+      dist_diff    = dist_no - dist_yes,
+      iv           = round((dist_diff * woe), digits = digits)
+    ) %>%
+    add_column(levels = lev, .before = 1)
+
+}
+
+woe_data_select <- function(data) {
+
+  data %>%
+    select(-distribution, -approval) %>%
+    select(
+      levels, `0s_count` = no, `1s_count` = yes, `0s_dist` = dist_no,
+      `1s_dist` = dist_yes, woe = woe, iv = iv
+    )
+
 }
