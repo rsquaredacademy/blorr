@@ -3,11 +3,14 @@
 \name{blr_forward_selection}
 \alias{blr_forward_selection}
 \alias{blr_forward_selection.default}
+\alias{plot.blr_forward_selection}
 \title{Forward Selection}
 \usage{
 blr_forward_selection(model, details = FALSE, ...)
 
 \method{blr_forward_selection}{default}(model, details = FALSE, ...)
+
+\method{plot}{blr_forward_selection}(x, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}}
@@ -15,6 +18,8 @@ blr_forward_selection(model, details = FALSE, ...)
 \item{details}{logical; if \code{TRUE}, will print the regression result at each step}
 
 \item{...}{other arguments}
+
+\item{x}{An object of class \code{blr_forward_selection}.}
 }
 \value{
 \code{blr_forward_selection} returns an object of class
@@ -34,7 +39,7 @@ Chi Square statistic, in a stepwise manner until there is no variable left to en
 }
 \examples{
 \dontrun{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 # selection summary
@@ -42,6 +47,9 @@ blr_forward_selection(model)
 
 # print details of each step
 blr_forward_selection(model, details = TRUE)
+
+# plot
+plot(blr_forward_selection(model))
 }
 }
 \references{
