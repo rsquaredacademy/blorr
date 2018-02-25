@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 ```{r libs}
 library(blorr)
+library(ggplot2)
 ```
 
 ### Forward Selection
@@ -41,6 +42,12 @@ blr_forward_selection(model)
 blr_forward_selection(model, details = TRUE)
 ```
 
+#### Plot
+
+```{r forward3}
+plot(model)
+```
+
 ### Backward Elimination
 
 #### Model
@@ -61,6 +68,12 @@ blr_backward_elimination(model)
 blr_backward_elimination(model, details = TRUE)
 ```
 
+#### Plot
+
+```{r backward3}
+plot(model)
+```
+
 ### Stepwise Selection
 
 #### Model
@@ -79,5 +92,11 @@ blr_stepwise_selection(model)
 
 ```{r stepwise2}
 blr_stepwise_selection(model, details = TRUE)
+```
+
+#### Plot
+
+```{r stepwise3}
+plot(model)
 ```
 
