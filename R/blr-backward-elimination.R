@@ -4,6 +4,7 @@
 #' @param model an object of class \code{glm}; the model should include all candidate predictor variables
 #' @param details logical; if \code{TRUE}, will print the regression result at each step
 #' @param ... other arguments
+#' @param x An object of class \code{blr_backward_elimination}.
 #' @return \code{blr_backward_elimination} returns an object of class
 #' \code{"blr_backward_elimination"}. An object of class
 #' \code{"blr_backward_elimination"} is a list containing the following components:
@@ -26,6 +27,9 @@
 #'
 #' # print details of each step
 #' blr_backward_elimination(model, details = TRUE)
+#'
+#' # plot
+#' plot(blr_backward_elimination(model))
 #' }
 #'
 #' @export
@@ -267,6 +271,69 @@ print.blr_backward_elimination <- function(x, ...) {
     print("No variables have been removed from the model.")
   }
 }
+
+#' @rdname blr_backward_elimination
+#' @export
+#'
+plot.blr_backward_elimination <- function(x, ...) {
+
+  steps <- NULL
+  aics  <- NULL
+  tx    <- NULL
+  a     <- NULL
+  b     <- NULL
+
+  y <-
+    x %>%
+    use_series(steps) %>%
+    seq_len() %>%
+    prepend(0)
+
+  xloc <- y - 0.1
+
+  yloc <-
+    x %>%
+    use_series(aics) %>%
+    subtract(0.2)
+
+  xmin <-
+    y %>%
+    min() %>%
+    subtract(0.4)
+
+  xmax <-
+    y %>%
+    max() %>%
+    add(1)
+
+  ymin <-
+    x %>%
+    use_series(aics) %>%
+    min() %>%
+    add(1)
+
+  ymax <-
+    x %>%
+    use_series(aics) %>%
+    max() %>%
+    add(1)
+
+  predictors <- c("Full Model", x$predictors)
+
+  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble(a = y, b = x$aics)
+
+  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
+    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
+    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
+    ggtitle("Stepwise AIC Backward Elimination") +
+    geom_text(data = d2, aes(x = x, y = y, label = tx),
+              hjust = 0, nudge_x = 0.1)
+
+  print(p)
+
+}
+
 
 #' Coefficient names
 #'
