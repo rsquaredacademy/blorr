@@ -3,7 +3,7 @@
 #' @param model an object of class \code{glm}
 #' @return a panel of residual diagnostic plots
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_influence(model)
@@ -31,7 +31,7 @@ blr_plot_diag_influence <- function(model) {
 #' @param model an object of class \code{glm}
 #' @return a panel of diagnostic plots for fitted values
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_fit(model)
@@ -57,7 +57,7 @@ blr_plot_diag_fit <- function(model) {
 #' @param model an object of class \code{glm}
 #' @return a panel of diagnostic plots for leverage
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_leverage(model)

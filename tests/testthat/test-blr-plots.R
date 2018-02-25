@@ -262,3 +262,25 @@ test_that("decile wise capture rate chart is as expected", {
 
   vdiffr::expect_doppelganger("decile capture rate chart", p$plot)
 })
+
+test_that("forward selection plot is as expected", {
+  skip_on_cran()
+
+  p <-
+    model %>%
+    blr_forward_selection() %>%
+    plot()
+
+  vdiffr::expect_doppelganger("forward selection plot", p$plot)
+})
+
+test_that("stepwise selection plot is as expected", {
+  skip_on_cran()
+
+  p <-
+    model %>%
+    blr_stepwise_selection() %>%
+    plot()
+
+  vdiffr::expect_doppelganger("stepwise selection plot", p$plot)
+})

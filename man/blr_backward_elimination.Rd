@@ -3,11 +3,14 @@
 \name{blr_backward_elimination}
 \alias{blr_backward_elimination}
 \alias{blr_backward_elimination.default}
+\alias{plot.blr_backward_elimination}
 \title{Backward Elimination}
 \usage{
 blr_backward_elimination(model, details = FALSE, ...)
 
 \method{blr_backward_elimination}{default}(model, details = FALSE, ...)
+
+\method{plot}{blr_backward_elimination}(x, ...)
 }
 \arguments{
 \item{model}{an object of class \code{glm}; the model should include all candidate predictor variables}
@@ -15,6 +18,8 @@ blr_backward_elimination(model, details = FALSE, ...)
 \item{details}{logical; if \code{TRUE}, will print the regression result at each step}
 
 \item{...}{other arguments}
+
+\item{x}{An object of class \code{blr_backward_elimination}.}
 }
 \value{
 \code{blr_backward_elimination} returns an object of class
@@ -35,13 +40,16 @@ Akaike Information Criteria, in a stepwise manner until there is no variable lef
 \examples{
 \dontrun{
 model <- glm(honcomp ~ female + read + science + math + prog + socst,
-data = blorr::hsb2, family = binomial(link = 'logit'))
+data = hsb2, family = binomial(link = 'logit'))
 
 # elimination summary
 blr_backward_elimination(model)
 
 # print details of each step
 blr_backward_elimination(model, details = TRUE)
+
+# plot
+plot(blr_backward_elimination(model))
 }
 
 }

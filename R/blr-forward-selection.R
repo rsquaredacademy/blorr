@@ -4,6 +4,7 @@
 #' @param model an object of class \code{glm}
 #' @param details logical; if \code{TRUE}, will print the regression result at each step
 #' @param ... other arguments
+#' @param x An object of class \code{blr_forward_selection}.
 #' @return \code{blr_forward_selection} returns an object of class
 #' \code{"blr_forward_selection"}. An object of class
 #' \code{"blr_forward_selection"} is a list containing the following components:
@@ -18,7 +19,7 @@
 #' @references Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #' @examples
 #' \dontrun{
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' # selection summary
@@ -26,6 +27,9 @@
 #'
 #' # print details of each step
 #' blr_forward_selection(model, details = TRUE)
+#'
+#' # plot
+#' plot(blr_forward_selection(model))
 #' }
 #' @export
 #'
@@ -278,4 +282,47 @@ print.blr_forward_selection <- function(x, ...) {
   } else {
     print("No variables have been added to the model.")
   }
+}
+
+
+#' @importFrom ggplot2 xlim ylim
+#' @rdname blr_forward_selection
+#' @export
+#'
+plot.blr_forward_selection <- function(x, ...) {
+
+  a  <- NULL
+  b  <- NULL
+  tx <- NULL
+
+  y    <- seq_len(x$steps)
+  xloc <- y - 0.1
+  yloc <- x$aics - 0.2
+  xmin <- min(y) - 1
+  xmax <- max(y) + 1
+
+  ymin <-
+    x %>%
+    use_series(aic) %>%
+    min() %>%
+    subtract(1)
+
+  ymax <-
+    x %>%
+    use_series(aic) %>%
+    max() %>%
+    add(1)
+
+  predictors <- x$predictors
+
+  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble(a = y, b = x$aics)
+
+  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
+    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
+    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
+    ggtitle("Stepwise AIC Forward Selection") +
+    geom_text(data = d2, aes(x = x, y = y, label = tx), hjust = 0, nudge_x = 0.1)
+
+  print(p)
 }

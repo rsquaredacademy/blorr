@@ -62,19 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -121,7 +121,10 @@
 Akaike Information Criteria, in a stepwise manner until there is no variable left to enter or remove any more.</p>
     
 
-    <pre class="usage"><span class='fu'>blr_stepwise_selection</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_stepwise_selection</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for blr_stepwise_selection</span>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +140,10 @@ Akaike Information Criteria, in a stepwise manner until there is no variable lef
     <tr>
       <th>...</th>
       <td><p>other arguments</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An object of class <code>blr_stepwise_selection</code>.</p></td>
     </tr>
     </table>
     
@@ -168,6 +175,9 @@ following components:</p>
 
 <span class='co'># print details at each step</span>
 <span class='fu'>blr_stepwise_selection</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># plot</span>
+<span class='fu'>plot</span>(<span class='fu'>blr_stepwise_selection</span>(<span class='no'>model</span>))
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

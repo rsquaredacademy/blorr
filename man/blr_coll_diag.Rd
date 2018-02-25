@@ -58,7 +58,7 @@ indices. A rule of thumb is to label as large those condition indices in the ran
 }
 \examples{
 # model
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 # vif and tolerance
