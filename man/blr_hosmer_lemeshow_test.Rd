@@ -15,7 +15,7 @@ blr_hosmer_lemeshow_test(model, data = NULL)
 Hosmer lemeshow test
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 
 blr_hosmer_lemeshow_test(model)

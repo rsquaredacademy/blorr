@@ -4,7 +4,7 @@
 #' @param data a tibble or a data.frame
 #' @return Gini Index
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_gini_index(model)
@@ -50,7 +50,7 @@ blr_gini_index <- function(model, data = NULL) {
 #' @param diag_line_col diagonal line color
 #' @return Lorenz Curve
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_lorenz_curve(model)

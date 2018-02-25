@@ -16,7 +16,7 @@ a tibble
 Association of predicted probabilities and observed responses
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_pairs(model)

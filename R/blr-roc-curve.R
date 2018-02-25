@@ -12,7 +12,7 @@
 #' @param point_color color of the points on the roc curve
 #' @param plot_title_justify horizontal justification on the plot title
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' k <- blr_gains_table(model)
 #' blr_roc_curve(k)

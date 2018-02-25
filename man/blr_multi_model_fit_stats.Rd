@@ -21,10 +21,10 @@ a tibble
 Measures of model fit statistics for multiple models
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
-model2 <- glm(honcomp ~ female + read + math, data = blorr::hsb2,
+model2 <- glm(honcomp ~ female + read + math, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_multi_model_fit_stats(model, model2)

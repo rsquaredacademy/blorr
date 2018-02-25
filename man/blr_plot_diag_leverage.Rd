@@ -16,7 +16,7 @@ a panel of diagnostic plots for leverage
 Diagnostic plots for leverage
 }
 \examples{
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_diag_leverage(model)

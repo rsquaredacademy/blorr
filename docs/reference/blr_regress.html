@@ -62,19 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -185,7 +185,7 @@ that class): a symbolic description of the model to be fitted or class
 #&gt; ---------------------------------------------------------------
 #&gt; </div><div class='input'>
 <span class='co'># using a model built with glm</span>
-<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw pkg'>blorr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/blorr/topics/hsb2'>hsb2</a></span>,
+<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
              <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
 <span class='fu'>blr_regress</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;                              Model Overview                              

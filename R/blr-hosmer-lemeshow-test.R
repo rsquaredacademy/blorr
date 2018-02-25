@@ -5,7 +5,7 @@
 #' @param model an object of class \code{glm}
 #' @param data a tibble or a data.frame
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #'
 #' blr_hosmer_lemeshow_test(model)

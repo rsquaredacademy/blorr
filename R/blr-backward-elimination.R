@@ -20,7 +20,7 @@
 #' @examples
 #' \dontrun{
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
-#' data = blorr::hsb2, family = binomial(link = 'logit'))
+#' data = hsb2, family = binomial(link = 'logit'))
 #'
 #' # elimination summary
 #' blr_backward_elimination(model)
