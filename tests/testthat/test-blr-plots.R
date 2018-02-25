@@ -285,3 +285,14 @@ test_that("backward elimination plot is as expected", {
 
   vdiffr::expect_doppelganger("backward elimination plot", p$plot)
 })
+
+test_that("stepwise selection plot is as expected", {
+  skip_on_cran()
+
+  p <-
+    model %>%
+    blr_stepwise_selection() %>%
+    plot()
+
+  vdiffr::expect_doppelganger("stepwise selection plot", p$plot)
+})

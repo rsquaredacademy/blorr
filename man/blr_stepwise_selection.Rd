@@ -2,9 +2,12 @@
 % Please edit documentation in R/blr-stepwise-selection.R
 \name{blr_stepwise_selection}
 \alias{blr_stepwise_selection}
+\alias{plot.blr_stepwise_selection}
 \title{Stepwise Selection}
 \usage{
 blr_stepwise_selection(model, details = FALSE, ...)
+
+\method{plot}{blr_stepwise_selection}(x, ...)
 }
 \arguments{
 \item{model}{an object of class \code{lm}}
@@ -12,6 +15,8 @@ blr_stepwise_selection(model, details = FALSE, ...)
 \item{details}{logical; if \code{TRUE}, details of variable selection will be printed on screen}
 
 \item{...}{other arguments}
+
+\item{x}{An object of class \code{blr_stepwise_selection}.}
 }
 \value{
 \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.
@@ -39,6 +44,9 @@ blr_stepwise_selection(model)
 
 # print details at each step
 blr_stepwise_selection(model, details = TRUE)
+
+# plot
+plot(blr_stepwise_selection(model))
 }
 
 }

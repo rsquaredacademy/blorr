@@ -4,6 +4,7 @@
 #' @param model an object of class \code{lm}
 #' @param details logical; if \code{TRUE}, details of variable selection will be printed on screen
 #' @param ... other arguments
+#' @param x An object of class \code{blr_stepwise_selection}.
 #' @return \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.
 #' An object of class \code{"blr_stepwise_selection"} is a list containing the
 #' following components:
@@ -25,6 +26,9 @@
 #'
 #' # print details at each step
 #' blr_stepwise_selection(model, details = TRUE)
+#'
+#' # plot
+#' plot(blr_stepwise_selection(model))
 #' }
 #'
 #' @export
@@ -297,4 +301,52 @@ print.blr_stepwise_selection <- function(x, ...) {
   } else {
     print("No variables have been added to or removed from the model.")
   }
+}
+
+
+#' @rdname blr_stepwise_selection
+#' @export
+#'
+plot.blr_stepwise_selection <- function(x, ...) {
+
+  a  <- NULL
+  b  <- NULL
+  tx <- NULL
+
+  predictors <- x$predictors
+
+  y <-
+    x %>%
+    use_series(aic) %>%
+    length() %>%
+    seq_len()
+
+  xloc  <- y - 0.1
+  yloc  <- x$aic - 0.2
+  xmin  <- min(y) - 0.4
+  xmax  <- max(y) + 1
+
+  ymin <-
+    x %>%
+    use_series(aic) %>%
+    min() %>%
+    subtract(1)
+
+  ymax <-
+    x %>%
+    use_series(aic) %>%
+    max() %>%
+    add(1)
+
+  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble(a = y, b = x$aic)
+
+  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
+    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
+    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
+    ggtitle("Stepwise AIC Both Direction Selection") +
+    geom_text(data = d2, aes(x = x, y = y, label = tx), hjust = 0, nudge_x = 0.1)
+
+  print(p)
+
 }
