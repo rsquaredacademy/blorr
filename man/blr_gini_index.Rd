@@ -2,24 +2,35 @@
 % Please edit documentation in R/blr-lorenz-curve.R
 \name{blr_gini_index}
 \alias{blr_gini_index}
-\title{Gini Index}
+\title{Gini index}
 \usage{
 blr_gini_index(model, data = NULL)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{data}{a tibble or a data.frame}
+\item{data}{A \code{tibble} or \code{data.frame}.}
 }
 \value{
-Gini Index
+Gini index.
 }
 \description{
-Gini Index
+Gini index.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_gini_index(model)
+
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_confusion_matrix}},
+  \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gains_table}},
+  \code{\link{blr_hosmer_lemeshow_test}},
+  \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_roc_curve}}
 }

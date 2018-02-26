@@ -2,19 +2,19 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_residual_diagnostics}
 \alias{blr_residual_diagnostics}
-\title{Residual Diagnostics}
+\title{Residual diagnostics}
 \usage{
 blr_residual_diagnostics(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-C, CBAR, DIFDEV and DIFCHISQ
+C, CBAR, DIFDEV and DIFCHISQ.
 }
 \description{
-Diagnostics for confidence interval displacement and
-detecting ill fitted observations
+Diagnostics for confidence interval displacement and detecting ill fitted
+observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

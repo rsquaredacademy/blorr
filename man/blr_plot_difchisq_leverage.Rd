@@ -2,25 +2,25 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_difchisq_leverage}
 \alias{blr_plot_difchisq_leverage}
-\title{Delta Chi Square vs Leverage Plot}
+\title{Delta chi square vs leverage plot}
 \usage{
 blr_plot_difchisq_leverage(model, point_color = "blue",
   title = "Delta Chi Square vs Leverage Plot", xaxis_title = "Leverage",
   yaxis_title = "Delta Chi Square")
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{point_color}{color of the points}
+\item{point_color}{Color of the points.}
 
-\item{title}{title of the plot}
+\item{title}{Title of the plot.}
 
-\item{xaxis_title}{x axis label}
+\item{xaxis_title}{X axis label.}
 
-\item{yaxis_title}{y axis label}
+\item{yaxis_title}{Y axis label.}
 }
 \description{
-Delta chi square vs leverage plot
+Delta chi square vs leverage plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

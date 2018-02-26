@@ -1,13 +1,20 @@
-#' @title Gini Index
-#' @description Gini Index
-#' @param model an object of class \code{glm}
-#' @param data a tibble or a data.frame
-#' @return Gini Index
+#' Gini index
+#'
+#' Gini index.
+#'
+#' @param model An object of class \code{glm}.
+#' @param data A \code{tibble} or \code{data.frame}.
+#'
+#' @return Gini index.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_gini_index(model)
+#'
+#' @family model validation techniques
+#'
 #' @export
 #'
 blr_gini_index <- function(model, data = NULL) {
@@ -39,21 +46,26 @@ blr_gini_index <- function(model, data = NULL) {
 
 }
 
-#' @title Lorenz Curve
-#' @description Lorenz curve
-#' @param model an object of class \code{glm}
-#' @param data a tibble or a data.frame
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param lorenz_curve_col color of the lorenz curve
-#' @param diag_line_col diagonal line color
-#' @return Lorenz Curve
+#' Lorenz curve
+#'
+#' @description Lorenz curve.
+#'
+#' @param model An object of class \code{glm}.
+#' @param data A \code{tibble} or \code{data.frame}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param lorenz_curve_col Color of the lorenz curve.
+#' @param diag_line_col Diagonal line color.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_lorenz_curve(model)
+#'
+#' @family model validation techniques
+#'
 #' @export
 #'
 blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",

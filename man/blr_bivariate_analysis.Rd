@@ -3,26 +3,36 @@
 \name{blr_bivariate_analysis}
 \alias{blr_bivariate_analysis}
 \alias{blr_bivariate_analysis.default}
-\title{Bivariate Analysis}
+\title{Bivariate analysis}
 \usage{
 blr_bivariate_analysis(data, response, ...)
 
 \method{blr_bivariate_analysis}{default}(data, response, ...)
 }
 \arguments{
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or a \code{data.frame}.}
 
-\item{response}{response variable}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{...}{predictor variables}
+\item{...}{Predictor variables; columns in \code{data}.}
 }
 \value{
-a tibble
+A tibble with the following columns:
+* Variable name.
+* Information value.
+* Likelihood ratio statisitc.
+* Likelihood ratio degrees of freedom.
+* Likelihood ratio p value.
 }
 \description{
-Bivariate analysis
+Information value and likelihood ratio test.
 }
 \examples{
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 
+}
+\seealso{
+Other bivariate analysis procedures: \code{\link{blr_segment_dist}},
+  \code{\link{blr_segment}},
+  \code{\link{blr_twoway_segment}}
 }

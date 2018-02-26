@@ -2,20 +2,24 @@
 % Please edit documentation in R/blr-woe-iv.R
 \name{blr_woe_iv_stats}
 \alias{blr_woe_iv_stats}
-\title{Multi Variable WOE & IV}
+\title{Multi variable WOE & IV}
 \usage{
 blr_woe_iv_stats(data, response, ...)
 }
 \arguments{
-\item{data}{a data.frame or a tibble}
+\item{data}{A \code{data.frame} or \code{tibble}.}
 
-\item{response}{response variables}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{...}{predictor variables}
+\item{...}{Predictor variables; column in \code{data}.}
 }
 \description{
-Prints WOE & IV for multiple variables
+Prints weight of evidence and information value for multiple variables.
 }
 \examples{
 blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
+
+}
+\seealso{
+Other bivariate analysis: \code{\link{blr_woe_iv}}
 }

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gains Table &amp; Lift Curve — blr_gains_table â€¢ blorr</title>
+<title>Gains table &amp; lift chart — blr_gains_table â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Gains Table &amp; Lift Curve</h1>
+    <h1>Gains table &amp; lift chart</h1>
     </div>
 
     
-    <p>Gains table</p>
+    <p>Gains table.</p>
     
 
     <pre class="usage"><span class='fu'>blr_gains_table</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -133,49 +133,60 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>an object of class <code>glm</code></p></td>
+      <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>a tibble</p></td>
+      <td><p>A <code>tibble</code> or a <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>an object of class <code>blr_gains_table</code></p></td>
+      <td><p>An object of class <code>blr_gains_table</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot title</p></td>
+      <td><p>Plot title.</p></td>
     </tr>
     <tr>
       <th>xaxis_title</th>
-      <td><p>x axis title</p></td>
+      <td><p>X axis title.</p></td>
     </tr>
     <tr>
       <th>yaxis_title</th>
-      <td><p>y axis title</p></td>
+      <td><p>Y axis title.</p></td>
     </tr>
     <tr>
       <th>diag_line_col</th>
-      <td><p>diagonal line color</p></td>
+      <td><p>Diagonal line color.</p></td>
     </tr>
     <tr>
       <th>lift_curve_col</th>
-      <td><p>color of the lift curve</p></td>
+      <td><p>Color of the lift curve.</p></td>
     </tr>
     <tr>
       <th>plot_title_justify</th>
-      <td><p>horizontal justification on the plot title</p></td>
+      <td><p>Horizontal justification on the plot title.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other inputs</p></td>
+      <td><p>Other inputs.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a tibble</p>
+    <p>A tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
+  <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
+  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
+  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>,
+  <code><a href='blr_hosmer_lemeshow_test.html'>blr_hosmer_lemeshow_test</a></code>,
+  <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>,
+  <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
+  <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -198,7 +209,8 @@
 #&gt; # ... with 2 more variables: specificity &lt;dbl&gt;, accuracy &lt;dbl&gt;</div><div class='input'>
 <span class='co'># lift chart</span>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)
-<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_gains_table-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_gains_table-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -206,6 +218,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lorenz Curve — blr_lorenz_curve â€¢ blorr</title>
+<title>Lorenz curve — blr_lorenz_curve â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lorenz Curve</h1>
+    <h1>Lorenz curve</h1>
     </div>
 
     
-    <p>Lorenz curve</p>
+    <p>Lorenz curve.</p>
     
 
     <pre class="usage"><span class='fu'>blr_lorenz_curve</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Lorenz Curve"</span>,
@@ -130,51 +130,58 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>an object of class <code>glm</code></p></td>
+      <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>a tibble or a data.frame</p></td>
+      <td><p>A <code>tibble</code> or <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot title</p></td>
+      <td><p>Plot title.</p></td>
     </tr>
     <tr>
       <th>xaxis_title</th>
-      <td><p>x axis title</p></td>
+      <td><p>X axis title.</p></td>
     </tr>
     <tr>
       <th>yaxis_title</th>
-      <td><p>y axis title</p></td>
+      <td><p>Y axis title.</p></td>
     </tr>
     <tr>
       <th>diag_line_col</th>
-      <td><p>diagonal line color</p></td>
+      <td><p>Diagonal line color.</p></td>
     </tr>
     <tr>
       <th>lorenz_curve_col</th>
-      <td><p>color of the lorenz curve</p></td>
+      <td><p>Color of the lorenz curve.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Lorenz Curve</p>
+    <p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
+  <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
+  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
+  <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
+  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>,
+  <code><a href='blr_hosmer_lemeshow_test.html'>blr_hosmer_lemeshow_test</a></code>,
+  <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>, <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
 <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_lorenz_curve</span>(<span class='no'>model</span>)</div><div class='img'><img src='blr_lorenz_curve-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>blr_lorenz_curve</span>(<span class='no'>model</span>)</div><div class='img'><img src='blr_lorenz_curve-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -1,14 +1,21 @@
-#' @importFrom stats AIC BIC logLik deviance
-#' @importFrom magrittr divide_by raise_to_power add
-#' @title Model Fit Statistics
-#' @description Model Fit Statistics
-#' @param model an object of class \code{glm}
-#' @param ... other inputs
+#' Model fit statistics
+#'
+#' Model fit statistics.
+#'
+#' @param model An object of class \code{glm}.
+#' @param ... Other inputs.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_model_fit_stats(model)
+#'
+#' @importFrom stats AIC BIC logLik deviance
+#' @importFrom magrittr divide_by raise_to_power add
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_model_fit_stats <- function(model, ...) UseMethod("blr_model_fit_stats")
@@ -83,15 +90,22 @@ model_bic <- function(model) {
   BIC(model)
 }
 
-#' @title McFadden's R2
-#' @description McFadden's pseudo r-squared for the model.
-#' @param model an object of class \code{glm}
-#' @return McFadden's r-squared
+#' McFadden's R2
+#'
+#' McFadden's pseudo r-squared for the model.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return McFadden's r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_mcfadden_rsq(model)
+#'
+#' @family model fit statisitcs
+#'
 #' @export
 #'
 blr_mcfadden_rsq <- function(model) {
@@ -102,15 +116,22 @@ blr_mcfadden_rsq <- function(model) {
 
 }
 
-#' @title McFadden's Adjusted R2
-#' @description McFadden's adjusted pseudo r-squared for the model.
-#' @param model an object of class \code{glm}
-#' @return McFadden's adjusted r-squared
+#' McFadden's adjusted R2
+#'
+#' McFadden's adjusted pseudo r-squared for the model.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return McFadden's adjusted r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_mcfadden_adj_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_mcfadden_adj_rsq <- function(model) {
@@ -121,15 +142,21 @@ blr_mcfadden_adj_rsq <- function(model) {
 
 }
 
-#' @title Cox Snell R2
-#' @description Cox Snell pseudo r-squared
-#' @param model an object of class \code{glm}
-#' @return Cox Snell pseudo r-squared
+#' Cox Snell R2
+#'
+#' Cox Snell pseudo r-squared.
+#' @param model An object of class \code{glm}.
+#'
+#' @return Cox Snell pseudo r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_cox_snell_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_cox_snell_rsq <- function(model) {
@@ -139,15 +166,22 @@ blr_cox_snell_rsq <- function(model) {
 }
 
 
-#' @title Cragg-Uhler (Nagelkerke) R2
-#' @description Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
-#' @param model an object of class \code{glm}
-#' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+#' Cragg-Uhler (Nagelkerke) R2
+#'
+#' Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_nagelkerke_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_nagelkerke_rsq <- function(model) {
@@ -168,15 +202,22 @@ blr_nagelkerke_rsq <- function(model) {
 
 }
 
-#' @title McKelvey Zavoina R2
-#' @description McKelvey Zavoina pseudo r-squared
-#' @param model an object of class \code{glm}
-#' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+#' McKelvey Zavoina R2
+#'
+#' McKelvey Zavoina pseudo r-squared.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_mckelvey_zavoina_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_mckelvey_zavoina_rsq <- function(model) {
@@ -207,15 +248,22 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 }
 
 
-#' @title  Effron R2
-#' @description  Effron pseudo r-squared
-#' @param model an object of class \code{glm}
-#' @return Effron pseudo r-squared
+#' Effron R2
+#'
+#' Effron pseudo r-squared.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return Effron pseudo r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_effron_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_effron_rsq <- function(model) {
@@ -242,15 +290,22 @@ blr_effron_rsq <- function(model) {
 }
 
 
-#' @title Count R2
-#' @description  Count r-squared
-#' @param model an object of class \code{glm}
-#' @return Count r-squared
+#' Count R2
+#'
+#' Count r-squared.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return Count r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_count_rsq(model)
+#'
+#' @family model fit statistcs
+#'
 #' @export
 #'
 blr_count_rsq <- function(model) {
@@ -266,15 +321,22 @@ blr_count_rsq <- function(model) {
 
 }
 
-#' @title Adjusted Count R2
-#' @description  Adjusted Count r-squared
-#' @param model an object of class \code{glm}
-#' @return Adjusted Count r-squared
+#' Adjusted count R2
+#'
+#' Adjusted count r-squared.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return Adjusted count r-squared.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_adj_count_rsq(model)
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_adj_count_rsq <- function(model) {

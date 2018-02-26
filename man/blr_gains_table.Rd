@@ -3,7 +3,7 @@
 \name{blr_gains_table}
 \alias{blr_gains_table}
 \alias{plot.blr_gains_table}
-\title{Gains Table & Lift Curve}
+\title{Gains table & lift chart}
 \usage{
 blr_gains_table(model, data = NULL)
 
@@ -13,31 +13,31 @@ blr_gains_table(model, data = NULL)
   plot_title_justify = 0.5, ...)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or a \code{data.frame}.}
 
-\item{x}{an object of class \code{blr_gains_table}}
+\item{x}{An object of class \code{blr_gains_table}.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{xaxis_title}{x axis title}
+\item{xaxis_title}{X axis title.}
 
-\item{yaxis_title}{y axis title}
+\item{yaxis_title}{Y axis title.}
 
-\item{diag_line_col}{diagonal line color}
+\item{diag_line_col}{Diagonal line color.}
 
-\item{lift_curve_col}{color of the lift curve}
+\item{lift_curve_col}{Color of the lift curve.}
 
-\item{plot_title_justify}{horizontal justification on the plot title}
+\item{plot_title_justify}{Horizontal justification on the plot title.}
 
-\item{...}{other inputs}
+\item{...}{Other inputs.}
 }
 \value{
-a tibble
+A tibble.
 }
 \description{
-Gains table
+Gains table.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -48,4 +48,15 @@ blr_gains_table(model)
 # lift chart
 k <- blr_gains_table(model)
 plot(k)
+
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_confusion_matrix}},
+  \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gini_index}},
+  \code{\link{blr_hosmer_lemeshow_test}},
+  \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_roc_curve}}
 }

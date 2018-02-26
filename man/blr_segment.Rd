@@ -3,25 +3,31 @@
 \name{blr_segment}
 \alias{blr_segment}
 \alias{blr_segment.default}
-\title{Response by Segments}
+\title{Event distribution}
 \usage{
 blr_segment(data, response, predictor)
 
 \method{blr_segment}{default}(data, response, predictor)
 }
 \arguments{
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{response}{response variable}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{predictor}{predictor variable}
+\item{predictor}{Predictor variable; column in \code{data}.}
 }
 \value{
-a tibble
+A tibble.
 }
 \description{
-Response by segements
+Event distribution by segements/levels of a qualitative variable.
 }
 \examples{
 blr_segment(hsb2, honcomp, prog)
+
+}
+\seealso{
+Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
+  \code{\link{blr_segment_dist}},
+  \code{\link{blr_twoway_segment}}
 }

@@ -1,14 +1,21 @@
-#' @importFrom stats quantile
-#' @importFrom dplyr case_when
-#' @title Hosmer Lemeshow Test
-#' @description Hosmer lemeshow test
-#' @param model an object of class \code{glm}
-#' @param data a tibble or a data.frame
+#' Hosmer lemeshow test
+#'
+#' Hosmer lemeshow test.
+#'
+#' @param model An object of class \code{glm}.
+#' @param data a \code{tibble} or \code{data.frame}.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #'
 #' blr_hosmer_lemeshow_test(model)
+#'
+#' @family model validation techniques
+#'
+#' @importFrom stats quantile
+#' @importFrom dplyr case_when
+#'
 #' @export
 #'
 blr_hosmer_lemeshow_test <- function(model, data = NULL)

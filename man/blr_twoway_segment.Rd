@@ -3,27 +3,32 @@
 \name{blr_twoway_segment}
 \alias{blr_twoway_segment}
 \alias{blr_twoway_segment.default}
-\title{Response Distribution by Multiple Segments}
+\title{Two way event distribution}
 \usage{
 blr_twoway_segment(data, response, variable_1, variable_2)
 
 \method{blr_twoway_segment}{default}(data, response, variable_1, variable_2)
 }
 \arguments{
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{response}{response variable}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{variable_1}{column in \code{data}}
+\item{variable_1}{Column in \code{data}.}
 
-\item{variable_2}{column in \code{data}}
+\item{variable_2}{Column in \code{data}.}
 }
 \value{
-a tibble
+A tibble.
 }
 \description{
-Response distribution by multiple segements
+Event distribution across two qualitative variables.
 }
 \examples{
 blr_twoway_segment(hsb2, honcomp, prog, female)
+
+}
+\seealso{
+Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
+  \code{\link{blr_segment_dist}}, \code{\link{blr_segment}}
 }

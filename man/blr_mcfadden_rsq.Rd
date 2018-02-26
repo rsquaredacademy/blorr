@@ -7,10 +7,10 @@
 blr_mcfadden_rsq(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-McFadden's r-squared
+McFadden's r-squared.
 }
 \description{
 McFadden's pseudo r-squared for the model.
@@ -20,4 +20,5 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_mcfadden_rsq(model)
+
 }

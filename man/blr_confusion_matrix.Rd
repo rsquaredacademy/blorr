@@ -2,26 +2,37 @@
 % Please edit documentation in R/blr-model-validation.R
 \name{blr_confusion_matrix}
 \alias{blr_confusion_matrix}
-\title{Confusion Matrix}
+\title{Confusion matrix}
 \usage{
 blr_confusion_matrix(model, cutoff = 0.5, data = NULL)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{cutoff}{cutoff for classification}
+\item{cutoff}{Cutoff for classification.}
 
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or a \code{data.frame}.}
 }
 \value{
-Confusion Matrix
+Confusion matix.
 }
 \description{
-Confusion matrix
+Wrapper for \code{confMatrix} from the caret package.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_confusion_matrix(model, cutoff = 0.4)
+
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gains_table}},
+  \code{\link{blr_gini_index}},
+  \code{\link{blr_hosmer_lemeshow_test}},
+  \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_roc_curve}}
 }

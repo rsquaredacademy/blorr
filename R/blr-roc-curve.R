@@ -1,21 +1,28 @@
-#' @importFrom ggplot2 geom_point
-#' @title ROC Curve
-#' @description ROC Curve
-#' @param gains_table an object of class \code{blr_gains_table}
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param roc_curve_col color of the roc curve
-#' @param diag_line_col diagonal line color
-#' @param point_shape shape of the points on the roc curve
-#' @param point_fill fill of the points on the roc curve
-#' @param point_color color of the points on the roc curve
-#' @param plot_title_justify horizontal justification on the plot title
+#' ROC curve
+#'
+#' Receiver operating characteristic curve.
+#'
+#' @param gains_table An object of class \code{blr_gains_table}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param roc_curve_col Color of the roc curve.
+#' @param diag_line_col Diagonal line color.
+#' @param point_shape Shape of the points on the roc curve.
+#' @param point_fill Fill of the points on the roc curve.
+#' @param point_color Color of the points on the roc curve.
+#' @param plot_title_justify Horizontal justification on the plot title.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' k <- blr_gains_table(model)
 #' blr_roc_curve(k)
+#'
+#' @importFrom ggplot2 geom_point
+#'
+#' @family model validation techniques
+#'
 #' @export
 #'
 blr_roc_curve <- function(gains_table, title = "ROC Curve",

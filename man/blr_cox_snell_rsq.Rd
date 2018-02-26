@@ -7,17 +7,27 @@
 blr_cox_snell_rsq(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-Cox Snell pseudo r-squared
+Cox Snell pseudo r-squared.
 }
 \description{
-Cox Snell pseudo r-squared
+Cox Snell pseudo r-squared.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_cox_snell_rsq(model)
+
+}
+\seealso{
+Other model fit statistics: \code{\link{blr_adj_count_rsq}},
+  \code{\link{blr_effron_rsq}}, \code{\link{blr_lr_test}},
+  \code{\link{blr_mcfadden_adj_rsq}},
+  \code{\link{blr_mckelvey_zavoina_rsq}},
+  \code{\link{blr_model_fit_stats}},
+  \code{\link{blr_multi_model_fit_stats}},
+  \code{\link{blr_nagelkerke_rsq}}, \code{\link{blr_pairs}}
 }

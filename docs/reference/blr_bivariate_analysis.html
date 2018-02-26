@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bivariate Analysis — blr_bivariate_analysis â€¢ blorr</title>
+<title>Bivariate analysis — blr_bivariate_analysis â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -62,19 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bivariate Analysis</h1>
+    <h1>Bivariate analysis</h1>
     </div>
 
     
-    <p>Bivariate analysis</p>
+    <p>Information value and likelihood ratio test.</p>
     
 
     <pre class="usage"><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>...</span>)
@@ -130,21 +130,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a tibble</p></td>
+      <td><p>A <code>tibble</code> or a <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>response</th>
-      <td><p>response variable</p></td>
+      <td><p>Response variable; column in <code>data</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>predictor variables</p></td>
+      <td><p>Predictor variables; columns in <code>data</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a tibble</p>
+    <p>A tibble with the following columns:
+* Variable name.
+* Information value.
+* Likelihood ratio statisitc.
+* Likelihood ratio degrees of freedom.
+* Likelihood ratio p value.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other bivariate analysis procedures: <code><a href='blr_segment_dist.html'>blr_segment_dist</a></code>,
+  <code><a href='blr_segment.html'>blr_segment</a></code>,
+  <code><a href='blr_twoway_segment.html'>blr_twoway_segment</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -153,8 +164,8 @@
 #&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value 
 #&gt; ---------------------------------------------------------------------
 #&gt;  female           0.10              3.9350          1        0.0473   
-#&gt;   prog            0.44              16.1450         2        3e-04    
-#&gt;   race            0.31              11.3694         3        0.0099   
+#&gt;   prog            0.43              16.1450         2        3e-04    
+#&gt;   race            0.33              11.3694         3        0.0099   
 #&gt;  schtyp           0.00              0.0445          1        0.8330   
 #&gt; ---------------------------------------------------------------------</div><div class='input'>
 </div></pre>
@@ -165,6 +176,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

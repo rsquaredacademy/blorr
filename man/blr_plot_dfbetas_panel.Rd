@@ -2,27 +2,30 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_dfbetas_panel}
 \alias{blr_plot_dfbetas_panel}
-\title{DFBETAs Panel}
+\title{DFBETAs panel}
 \usage{
 blr_plot_dfbetas_panel(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-list; \code{blr_dfbetas_panel} returns a list of tibbles (for intercept and each predictor)
-with the observation number and DFBETA of observations that exceed the threshold for classifying
-an observation as an outlier/influential observation.
+list; \code{blr_dfbetas_panel} returns a list of tibbles (for
+intercept and each predictor) with the observation number and DFBETA of
+observations that exceed the threshold for classifying an observation as an
+outlier/influential observation.
 }
 \description{
 Panel of plots to detect influential observations using DFBETAs.
 }
 \details{
-DFBETA measures the difference in each parameter estimate with and without the
-influential point. There is a DFBETA for each data point i.e if there are n observations
-and k variables, there will be \eqn{n * k} DFBETAs. In general, large values of DFBETAS indicate
-observations that are influential in estimating a given parameter. Belsley, Kuh, and Welsch recommend
-2 as a general cutoff value to indicate influential observations and \eqn{2/\sqrt(n)} as a size-adjusted cutoff.
+DFBETA measures the difference in each parameter estimate with and without
+the influential point. There is a DFBETA for each data point i.e if there
+are n observations and k variables, there will be \eqn{n * k} DFBETAs. In
+general, large values of DFBETAS indicate observations that are influential
+in estimating a given parameter. Belsley, Kuh, and Welsch recommend 2 as a
+general cutoff value to indicate influential observations and
+\eqn{2/\sqrt(n)} as a size-adjusted cutoff.
 }
 \examples{
 \dontrun{
@@ -31,6 +34,7 @@ family = binomial(link = 'logit'))
 
 blr_plot_dfbetas_panel(model)
 }
+
 }
 \references{
 Belsley, David A.; Kuh, Edwin; Welsh, Roy E. (1980). Regression

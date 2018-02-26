@@ -3,21 +3,21 @@
 \name{blr_regress}
 \alias{blr_regress}
 \alias{blr_regress.glm}
-\title{Binary Logistic Regression}
+\title{Binary logistic regression}
 \usage{
 blr_regress(object, ...)
 
 \method{blr_regress}{glm}(object, ...)
 }
 \arguments{
-\item{object}{an object of class "formula" (or one that can be coerced to
+\item{object}{An object of class "formula" (or one that can be coerced to
 that class): a symbolic description of the model to be fitted or class
-\code{glm}}
+\code{glm}.}
 
-\item{...}{other inputs}
+\item{...}{Other inputs.}
 }
 \description{
-Binary logistic regression
+Binary logistic regression.
 }
 \examples{
 # using formula
@@ -28,4 +28,5 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 
 blr_regress(model)
+
 }

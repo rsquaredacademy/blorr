@@ -3,18 +3,19 @@
 \name{blr_stepwise_selection}
 \alias{blr_stepwise_selection}
 \alias{plot.blr_stepwise_selection}
-\title{Stepwise Selection}
+\title{Stepwise AIC selection}
 \usage{
 blr_stepwise_selection(model, details = FALSE, ...)
 
 \method{plot}{blr_stepwise_selection}(x, ...)
 }
 \arguments{
-\item{model}{an object of class \code{lm}}
+\item{model}{An object of class \code{lm}.}
 
-\item{details}{logical; if \code{TRUE}, details of variable selection will be printed on screen}
+\item{details}{Logical; if \code{TRUE}, details of variable selection will be
+printed on screen.}
 
-\item{...}{other arguments}
+\item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_stepwise_selection}.}
 }
@@ -32,8 +33,9 @@ following components:
 \item{steps}{total number of steps}
 }
 \description{
-Build regression model from a set of candidate predictor variables by entering and removing predictors based on
-Akaike Information Criteria, in a stepwise manner until there is no variable left to enter or remove any more.
+Build regression model from a set of candidate predictor variables by
+entering and removing predictors based on akaike information criterion, in a
+stepwise manner until there is no variable left to enter or remove any more.
 }
 \examples{
 \dontrun{
@@ -52,4 +54,8 @@ plot(blr_stepwise_selection(model))
 }
 \references{
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+}
+\seealso{
+Other variable selection procedures: \code{\link{blr_backward_elimination}},
+  \code{\link{blr_forward_selection}}
 }

@@ -1,10 +1,12 @@
-#' @importFrom purrr map_df
-#' @importFrom magrittr set_colnames
-#' @title Multi Model Fit Statistics
-#' @description Measures of model fit statistics for multiple models
-#' @param model an object of class \code{glm}
-#' @param ... objects of class \code{glm}
-#' @return a tibble
+#' Multi model fit statistics
+#'
+#' Measures of model fit statistics for multiple models.
+#'
+#' @param model An object of class \code{glm}.
+#' @param ... Objects of class \code{glm}.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -13,6 +15,11 @@
 #' family = binomial(link = 'logit'))
 #'
 #' blr_multi_model_fit_stats(model, model2)
+#'
+#' @importFrom purrr map_df
+#' @importFrom magrittr set_colnames
+#'
+#' @family model fit statistics
 #'
 #' @export
 blr_multi_model_fit_stats <- function(model, ...) UseMethod("blr_multi_model_fit_stats")

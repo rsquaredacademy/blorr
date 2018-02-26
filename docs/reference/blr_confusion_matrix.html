@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Confusion Matrix — blr_confusion_matrix â€¢ blorr</title>
+<title>Confusion matrix — blr_confusion_matrix â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Confusion Matrix</h1>
+    <h1>Confusion matrix</h1>
     </div>
 
     
-    <p>Confusion matrix</p>
+    <p>Wrapper for <code>confMatrix</code> from the caret package.</p>
     
 
     <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -127,21 +127,32 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>an object of class <code>glm</code></p></td>
+      <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
       <th>cutoff</th>
-      <td><p>cutoff for classification</p></td>
+      <td><p>Cutoff for classification.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>a tibble</p></td>
+      <td><p>A <code>tibble</code> or a <code>data.frame</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Confusion Matrix</p>
+    <p>Confusion matix.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other model validation techniques: <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
+  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
+  <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
+  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>,
+  <code><a href='blr_hosmer_lemeshow_test.html'>blr_hosmer_lemeshow_test</a></code>,
+  <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>,
+  <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
+  <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -173,7 +184,8 @@
 #&gt;       Balanced Accuracy : 0.7742          
 #&gt;                                           
 #&gt;        'Positive' Class : 0               
-#&gt;                                           </div></pre>
+#&gt;                                           </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -181,6 +193,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

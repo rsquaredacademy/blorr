@@ -2,15 +2,15 @@
 % Please edit documentation in R/blr-model-fit-stats.R
 \name{blr_mcfadden_adj_rsq}
 \alias{blr_mcfadden_adj_rsq}
-\title{McFadden's Adjusted R2}
+\title{McFadden's adjusted R2}
 \usage{
 blr_mcfadden_adj_rsq(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-McFadden's adjusted r-squared
+McFadden's adjusted r-squared.
 }
 \description{
 McFadden's adjusted pseudo r-squared for the model.
@@ -20,4 +20,14 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_mcfadden_adj_rsq(model)
+
+}
+\seealso{
+Other model fit statistics: \code{\link{blr_adj_count_rsq}},
+  \code{\link{blr_cox_snell_rsq}},
+  \code{\link{blr_effron_rsq}}, \code{\link{blr_lr_test}},
+  \code{\link{blr_mckelvey_zavoina_rsq}},
+  \code{\link{blr_model_fit_stats}},
+  \code{\link{blr_multi_model_fit_stats}},
+  \code{\link{blr_nagelkerke_rsq}}, \code{\link{blr_pairs}}
 }

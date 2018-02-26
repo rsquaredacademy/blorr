@@ -1,12 +1,14 @@
-#' @importFrom stats lm as.formula model.matrix
-#' @importFrom tibble as_data_frame
-#' @title Collinearity Diagnostics
-#' @description Variance inflation factor, tolerance, eigenvalues and condition indices.
-#' @param model an object of class \code{glm}
+#' Collinearity diagnostics
 #'
-#' @details Collinearity implies two variables are near perfect linear combinations of one another.
-#' Multicollinearity involves more than two variables. In the presence of multicollinearity, regression
-#' estimates are unstable and have high standard errors.
+#' Variance inflation factor, tolerance, eigenvalues and condition indices.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @details
+#' Collinearity implies two variables are near perfect linear combinations of
+#' one another. Multicollinearity involves more than two variables. In the
+#' presence of multicollinearity, regression estimates are unstable and have
+#' high standard errors.
 #'
 #' \emph{Tolerance}
 #'
@@ -41,8 +43,10 @@
 #' \item{vif_t}{tolerance and variance inflation factors}
 #' \item{eig_cindex}{eigen values and condition index}
 #'
-#' @references Belsley, D. A., Kuh, E., and Welsch, R. E. (1980). Regression Diagnostics: Identifying Influential Data and
+#' @references
+#' Belsley, D. A., Kuh, E., and Welsch, R. E. (1980). Regression Diagnostics: Identifying Influential Data and
 #' Sources of Collinearity. New York: John Wiley & Sons.
+#'
 #' @examples
 #' # model
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -56,6 +60,9 @@
 #'
 #' # collinearity diagnostics
 #' blr_coll_diag(model)
+#'
+#' @importFrom stats lm as.formula model.matrix
+#' @importFrom tibble as_data_frame
 #'
 #' @export
 #'

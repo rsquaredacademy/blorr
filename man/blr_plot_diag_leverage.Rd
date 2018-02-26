@@ -2,22 +2,27 @@
 % Please edit documentation in R/blr-residual-diagnostics.R
 \name{blr_plot_diag_leverage}
 \alias{blr_plot_diag_leverage}
-\title{Leverage Diagnostics Plot}
+\title{Leverage diagnostics plot}
 \usage{
 blr_plot_diag_leverage(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-a panel of diagnostic plots for leverage
+A panel of diagnostic plots for leverage.
 }
 \description{
-Diagnostic plots for leverage
+Diagnostic plots for leverage.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_diag_leverage(model)
+
+}
+\seealso{
+Other diagnostic plots: \code{\link{blr_plot_diag_fit}},
+  \code{\link{blr_plot_diag_influence}}
 }
