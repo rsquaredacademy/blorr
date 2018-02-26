@@ -2,22 +2,27 @@
 % Please edit documentation in R/blr-residual-diagnostics.R
 \name{blr_plot_diag_fit}
 \alias{blr_plot_diag_fit}
-\title{Fitted Values Diagnostics Plot}
+\title{Fitted values diagnostics plot}
 \usage{
 blr_plot_diag_fit(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-a panel of diagnostic plots for fitted values
+A panel of diagnostic plots for fitted values.
 }
 \description{
-Diagnostic plots for fitted values
+Diagnostic plots for fitted values.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_diag_fit(model)
+
+}
+\seealso{
+Other diagnostic plots: \code{\link{blr_plot_diag_influence}},
+  \code{\link{blr_plot_diag_leverage}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_residual_fitted}
 \alias{blr_plot_residual_fitted}
-\title{Residual vs Fitted Values Plot}
+\title{Residual vs fitted values plot}
 \usage{
 blr_plot_residual_fitted(model, point_color = "blue", line_color = "red",
   title = "Standardized Pearson Residual vs Fitted Values",
@@ -10,20 +10,20 @@ blr_plot_residual_fitted(model, point_color = "blue", line_color = "red",
   yaxis_title = "Standardized Pearson Residual")
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{point_color}{color of the points}
+\item{point_color}{Color of the points.}
 
-\item{line_color}{color of the horizontal line}
+\item{line_color}{Color of the horizontal line.}
 
-\item{title}{title of the plot}
+\item{title}{Title of the plot.}
 
-\item{xaxis_title}{x axis label}
+\item{xaxis_title}{X axis label.}
 
-\item{yaxis_title}{y axis label}
+\item{yaxis_title}{Y axis label.}
 }
 \description{
-Residual vs fitted values plot
+Residual vs fitted values plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

@@ -7,17 +7,28 @@
 blr_nagelkerke_rsq(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 }
 \description{
-Cragg-Uhler (Nagelkerke) R2 pseudo r-squared
+Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_nagelkerke_rsq(model)
+
+}
+\seealso{
+Other model fit statistics: \code{\link{blr_adj_count_rsq}},
+  \code{\link{blr_cox_snell_rsq}},
+  \code{\link{blr_effron_rsq}}, \code{\link{blr_lr_test}},
+  \code{\link{blr_mcfadden_adj_rsq}},
+  \code{\link{blr_mckelvey_zavoina_rsq}},
+  \code{\link{blr_model_fit_stats}},
+  \code{\link{blr_multi_model_fit_stats}},
+  \code{\link{blr_pairs}}
 }

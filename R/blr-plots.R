@@ -1,18 +1,18 @@
-#' @importFrom ggplot2 geom_hline
-#' @importFrom stats residuals rstandard hatvalues
-#' @title Residual vs Fitted Values Plot
-#' @description Residual vs fitted values plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param line_color color of the horizontal line
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Residual vs fitted values plot
+#'
+#' Residual vs fitted values plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#' @param line_color Color of the horizontal line.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_residual_fitted(model)
+#'
+#' @importFrom ggplot2 geom_hline
+#' @importFrom stats residuals rstandard hatvalues
 #'
 #' @export
 #'
@@ -28,13 +28,16 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 
 }
 
-#' @title Residual Values Plot
-#' @description Standardised pearson residuals plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Residual values plot
+#'
+#' Standardised pearson residuals plot.
+#'
+#' @param model An object of class \code{glm}.
+#' @param point_color Color of the points.
+#' @param title Title of the plot.
+#' @param xaxis_title X axis label.
+#' @param yaxis_title Y axis label.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -55,14 +58,13 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 }
 
 
-#' @title Deviance vs Fitted Values Plot
-#' @description Deviance vs fitted values plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param line_color color of the horizontal line
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Deviance vs fitted values plot
+#'
+#' Deviance vs fitted values plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#' @param line_color Color of the horizontal line.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -83,13 +85,12 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
     geom_hline(yintercept = 0, color = line_color)
 }
 
-#' @title Deviance Residual Values
-#' @description Deviance residuals plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Deviance residual values
+#'
+#' Deviance residuals plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -110,13 +111,12 @@ blr_plot_deviance_residual <- function(model, point_color = "blue",
 }
 
 
-#' @title Leverage vs Fitted Values Plot
-#' @description Leverage vs fitted values plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Leverage vs fitted values plot
+#'
+#' Leverage vs fitted values plot
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -138,13 +138,12 @@ blr_plot_leverage_fitted <- function(model, point_color = "blue",
 }
 
 
-#' @title Leverage Plot
-#' @description Leverage plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Leverage plot
+#'
+#' Leverage plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -166,11 +165,16 @@ blr_plot_leverage <- function(model, point_color = "blue",
 }
 
 
-#' @title Residual Diagnostics
-#' @description Diagnostics for confidence interval displacement and
-#' detecting ill fitted observations
-#' @param model an object of class \code{glm}
-#' @return C, CBAR, DIFDEV and DIFCHISQ
+#' Residual diagnostics
+#'
+#' @description
+#' Diagnostics for confidence interval displacement and detecting ill fitted
+#' observations.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return C, CBAR, DIFDEV and DIFCHISQ.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -204,13 +208,12 @@ blr_residual_diagnostics <- function(model) {
 }
 
 
-#' @title CI Displacement C Plot
-#' @description Confidence interval displacement diagnostics C plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' CI Displacement C plot
+#'
+#' Confidence interval displacement diagnostics C plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -232,13 +235,12 @@ blr_plot_diag_c <- function(model, point_color = "blue",
 }
 
 
-#' @title CI Displacement CBAR Plot
-#' @description Confidence interval displacement diagnostics CBAR plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' CI Displacement CBAR plot
+#'
+#' Confidence interval displacement diagnostics CBAR plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -260,13 +262,12 @@ blr_plot_diag_cbar <- function(model, point_color = "blue",
 }
 
 
-#' @title Delta Chisquare Plot
-#' @description Diagnostics for detecting ill fitted observations
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta chisquare plot
+#'
+#' Diagnostics for detecting ill fitted observations.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -287,13 +288,12 @@ blr_plot_diag_difchisq <- function(model, point_color = "blue",
 
 }
 
-#' @title Delta Deviance Plot
-#' @description Diagnostics for detecting ill fitted observations
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta deviance plot
+#'
+#' Diagnostics for detecting ill fitted observations.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -315,24 +315,33 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 }
 
 
-#' @importFrom stats dfbetas
-#' @importFrom ggplot2 geom_linerange geom_text annotate
-#' @importFrom gridExtra grid.arrange
-#' @title DFBETAs Panel
-#' @description Panel of plots to detect influential observations using DFBETAs.
-#' @param model an object of class \code{glm}
-#' @details DFBETA measures the difference in each parameter estimate with and without the
-#' influential point. There is a DFBETA for each data point i.e if there are n observations
-#' and k variables, there will be \eqn{n * k} DFBETAs. In general, large values of DFBETAS indicate
-#' observations that are influential in estimating a given parameter. Belsley, Kuh, and Welsch recommend
-#' 2 as a general cutoff value to indicate influential observations and \eqn{2/\sqrt(n)} as a size-adjusted cutoff.
-#' @return list; \code{blr_dfbetas_panel} returns a list of tibbles (for intercept and each predictor)
-#' with the observation number and DFBETA of observations that exceed the threshold for classifying
-#' an observation as an outlier/influential observation.
-#' @references Belsley, David A.; Kuh, Edwin; Welsh, Roy E. (1980). Regression
+
+#' DFBETAs panel
+#'
+#' Panel of plots to detect influential observations using DFBETAs.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @details
+#' DFBETA measures the difference in each parameter estimate with and without
+#' the influential point. There is a DFBETA for each data point i.e if there
+#' are n observations and k variables, there will be \eqn{n * k} DFBETAs. In
+#' general, large values of DFBETAS indicate observations that are influential
+#' in estimating a given parameter. Belsley, Kuh, and Welsch recommend 2 as a
+#' general cutoff value to indicate influential observations and
+#' \eqn{2/\sqrt(n)} as a size-adjusted cutoff.
+#'
+#' @return list; \code{blr_dfbetas_panel} returns a list of tibbles (for
+#' intercept and each predictor) with the observation number and DFBETA of
+#' observations that exceed the threshold for classifying an observation as an
+#' outlier/influential observation.
+#'
+#' @references
+#' Belsley, David A.; Kuh, Edwin; Welsh, Roy E. (1980). Regression
 #' Diagnostics: Identifying Influential Data and Sources of Collinearity.
 #' Wiley Series in Probability and Mathematical Statistics.
 #' New York: John Wiley & Sons. pp. ISBN 0-471-05856-4.
+#'
 #' @examples
 #' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -340,6 +349,11 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' blr_plot_dfbetas_panel(model)
 #' }
+#'
+#' @importFrom stats dfbetas
+#' @importFrom ggplot2 geom_linerange geom_text annotate
+#' @importFrom gridExtra grid.arrange
+#'
 #' @export
 #'
 blr_plot_dfbetas_panel <- function(model) {
@@ -373,13 +387,12 @@ blr_plot_dfbetas_panel <- function(model) {
 
 }
 
-#' @title CI Displacement C vs Fitted Values Plot
-#' @description Confidence interval displacement diagnostics C vs fitted values plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' CI Displacement C vs fitted values plot
+#'
+#' Confidence interval displacement diagnostics C vs fitted values plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -400,13 +413,12 @@ blr_plot_c_fitted <- function(model, point_color = "blue",
 
 }
 
-#' @title Delta Chi Square vs Fitted Values Plot
-#' @description Delta Chi Square vs fitted values plot for detecting ill fitted observations
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta chi square vs fitted values plot
+#'
+#' Delta Chi Square vs fitted values plot for detecting ill fitted observations.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -427,13 +439,12 @@ blr_plot_difchisq_fitted <- function(model, point_color = "blue",
 
 }
 
-#' @title Delta Deviance vs Fitted Values Plot
-#' @description Delta deviance vs fitted values plot for detecting ill fitted observations
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta deviance vs fitted values plot
+#'
+#' Delta deviance vs fitted values plot for detecting ill fitted observations.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -454,13 +465,12 @@ blr_plot_difdev_fitted <- function(model, point_color = "blue",
 
 }
 
-#' @title Delta Deviance vs Leverage Plot
-#' @description Delta deviance vs leverage plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta deviance vs leverage plot
+#'
+#' Delta deviance vs leverage plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -481,13 +491,12 @@ blr_plot_difdev_leverage <- function(model, point_color = "blue",
 
 }
 
-#' @title Delta Chi Square vs Leverage Plot
-#' @description Delta chi square vs leverage plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Delta chi square vs leverage plot
+#'
+#' Delta chi square vs leverage plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -508,13 +517,12 @@ blr_plot_difchisq_leverage <- function(model, point_color = "blue",
 
 }
 
-#' @title CI Displacement C vs Leverage Plot
-#' @description Confidence interval displacement diagnostics C vs leverage plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' CI Displacement C vs leverage plot
+#'
+#' Confidence interval displacement diagnostics C vs leverage plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -536,13 +544,12 @@ blr_plot_c_leverage <- function(model, point_color = "blue",
 }
 
 
-#' @title Fitted Values vs Leverage Plot
-#' @description Fitted values vs leverage plot
-#' @param model an object of class \code{glm}
-#' @param point_color color of the points
-#' @param title title of the plot
-#' @param xaxis_title x axis label
-#' @param yaxis_title y axis label
+#' Fitted values vs leverage plot
+#'
+#' Fitted values vs leverage plot.
+#'
+#' @inheritParams blr_plot_pearson_residual
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))

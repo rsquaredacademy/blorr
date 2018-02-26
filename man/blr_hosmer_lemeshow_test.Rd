@@ -2,21 +2,31 @@
 % Please edit documentation in R/blr-hosmer-lemeshow-test.R
 \name{blr_hosmer_lemeshow_test}
 \alias{blr_hosmer_lemeshow_test}
-\title{Hosmer Lemeshow Test}
+\title{Hosmer lemeshow test}
 \usage{
 blr_hosmer_lemeshow_test(model, data = NULL)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{data}{a tibble or a data.frame}
+\item{data}{a \code{tibble} or \code{data.frame}.}
 }
 \description{
-Hosmer lemeshow test
+Hosmer lemeshow test.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 
 blr_hosmer_lemeshow_test(model)
+
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_confusion_matrix}},
+  \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gains_table}},
+  \code{\link{blr_gini_index}}, \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_roc_curve}}
 }

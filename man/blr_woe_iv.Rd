@@ -3,7 +3,7 @@
 \name{blr_woe_iv}
 \alias{blr_woe_iv}
 \alias{plot.blr_woe_iv}
-\title{Weight of Evidence & Information Value}
+\title{Weight of evidence & information value}
 \usage{
 blr_woe_iv(data, predictor, response, digits = 4, ...)
 
@@ -11,33 +11,33 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
   yaxis_title = "WoE", line_color = "blue", point_color = "blue", ...)
 }
 \arguments{
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{predictor}{name of the predictor}
+\item{predictor}{Predictor variable; column in \code{data}.}
 
-\item{response}{name of the response variable}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{digits}{number of decimal digits to round off}
+\item{digits}{Number of decimal digits to round off.}
 
-\item{...}{other inputs}
+\item{...}{Other inputs.}
 
-\item{x}{an object of class \code{blr_segment_dist}}
+\item{x}{An object of class \code{blr_segment_dist}.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{xaxis_title}{x axis title}
+\item{xaxis_title}{X axis title.}
 
-\item{yaxis_title}{y axis title}
+\item{yaxis_title}{Y axis title.}
 
-\item{line_color}{color of the bar}
+\item{line_color}{Color of the bar.}
 
-\item{point_color}{color for the point}
+\item{point_color}{Color for the point.}
 }
 \value{
-a tibble
+A tibble.
 }
 \description{
-Weight of evidence and information value
+Weight of evidence and information value.
 }
 \examples{
 # woe and iv
@@ -46,4 +46,8 @@ k
 
 # plot woe
 plot(k)
+
+}
+\seealso{
+Other bivariate analysis: \code{\link{blr_woe_iv_stats}}
 }

@@ -1,20 +1,21 @@
-#' @importFrom rlang enquo !!
-#' @importFrom dplyr select rename
-#' @importFrom tibble add_column
-#' @title Weight of Evidence & Information Value
-#' @description Weight of evidence and information value
-#' @param data a tibble
-#' @param predictor name of the predictor
-#' @param response name of the response variable
-#' @param digits number of decimal digits to round off
-#' @param x an object of class \code{blr_segment_dist}
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param line_color color of the bar
-#' @param point_color color for the point
-#' @param ... other inputs
-#' @return a tibble
+#' Weight of evidence & information value
+#'
+#' Weight of evidence and information value.
+#'
+#' @param data A \code{tibble} or \code{data.frame}.
+#' @param predictor Predictor variable; column in \code{data}.
+#' @param response Response variable; column in \code{data}.
+#' @param digits Number of decimal digits to round off.
+#' @param x An object of class \code{blr_segment_dist}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param line_color Color of the bar.
+#' @param point_color Color for the point.
+#' @param ... Other inputs.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' # woe and iv
 #' k <- blr_woe_iv(hsb2, female, honcomp)
@@ -22,6 +23,13 @@
 #'
 #' # plot woe
 #' plot(k)
+#'
+#' @importFrom rlang enquo !!
+#' @importFrom dplyr select rename
+#' @importFrom tibble add_column
+#'
+#' @family bivariate analysis
+#'
 #' @export
 #'
 blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
@@ -88,13 +96,19 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 }
 
 
-#' @title Multi Variable WOE & IV
-#' @description Prints WOE & IV for multiple variables
-#' @param data a data.frame or a tibble
-#' @param response response variables
-#' @param ... predictor variables
+#' Multi variable WOE & IV
+#'
+#' Prints weight of evidence and information value for multiple variables.
+#'
+#' @param data A \code{data.frame} or \code{tibble}.
+#' @param response Response variable; column in \code{data}.
+#' @param ... Predictor variables; column in \code{data}.
+#'
 #' @examples
 #' blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
+#'
+#' @family bivariate analysis
+#'
 #' @export
 #'
 blr_woe_iv_stats <- function(data, response, ...) {

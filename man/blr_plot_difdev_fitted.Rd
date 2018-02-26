@@ -2,25 +2,25 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_difdev_fitted}
 \alias{blr_plot_difdev_fitted}
-\title{Delta Deviance vs Fitted Values Plot}
+\title{Delta deviance vs fitted values plot}
 \usage{
 blr_plot_difdev_fitted(model, point_color = "blue",
   title = "Delta Deviance vs Fitted Values Plot",
   xaxis_title = "Fitted Values", yaxis_title = "Delta Deviance")
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{point_color}{color of the points}
+\item{point_color}{Color of the points.}
 
-\item{title}{title of the plot}
+\item{title}{Title of the plot.}
 
-\item{xaxis_title}{x axis label}
+\item{xaxis_title}{X axis label.}
 
-\item{yaxis_title}{y axis label}
+\item{yaxis_title}{Y axis label.}
 }
 \description{
-Delta deviance vs fitted values plot for detecting ill fitted observations
+Delta deviance vs fitted values plot for detecting ill fitted observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

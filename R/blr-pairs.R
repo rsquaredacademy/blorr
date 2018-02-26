@@ -1,15 +1,23 @@
-#' @useDynLib blorr, .registration = TRUE
-#' @importFrom Rcpp sourceCpp
-#' @importFrom dplyr filter
-#' @title Concordant & Discordant Pairs
-#' @description Association of predicted probabilities and observed responses
-#' @param model an object of class \code{glm}
-#' @return a tibble
+#' Concordant & discordant pairs
+#'
+#' Association of predicted probabilities and observed responses.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_pairs(model)
+#'
+#' @useDynLib blorr, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
+#' @importFrom dplyr filter
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_pairs <- function(model) {

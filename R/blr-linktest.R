@@ -1,7 +1,11 @@
-#' @title Model Specification Error
-#' @description Test for model specification error
-#' @param model an object of class \code{glm}
-#' @return an object of class \code{glm}
+#' Model specification error
+#'
+#' Test for model specification error.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return An object of class \code{glm}.
+#'
 #' @examples
 #'
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

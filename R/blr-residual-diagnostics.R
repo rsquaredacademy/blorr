@@ -1,12 +1,19 @@
-#' @title Influence Diagnostics Plot
-#' @description Reisudal diagnostic plots for detecting influential observations
-#' @param model an object of class \code{glm}
-#' @return a panel of residual diagnostic plots
+#' Influence diagnostics plot
+#'
+#' Reisudal diagnostic plots for detecting influential observations.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return A panel of influence diagnostic plots.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_influence(model)
+#'
+#' @family diagnostic plots
+#'
 #' @export
 #'
 blr_plot_diag_influence <- function(model) {
@@ -26,15 +33,22 @@ blr_plot_diag_influence <- function(model) {
   invisible(result)
 }
 
-#' @title Fitted Values Diagnostics Plot
-#' @description Diagnostic plots for fitted values
-#' @param model an object of class \code{glm}
-#' @return a panel of diagnostic plots for fitted values
+#' Fitted values diagnostics plot
+#'
+#' Diagnostic plots for fitted values.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return A panel of diagnostic plots for fitted values.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_fit(model)
+#'
+#' @family diagnostic plots
+#'
 #' @export
 #'
 blr_plot_diag_fit <- function(model) {
@@ -52,15 +66,22 @@ blr_plot_diag_fit <- function(model) {
 }
 
 
-#' @title Leverage Diagnostics Plot
-#' @description Diagnostic plots for leverage
-#' @param model an object of class \code{glm}
-#' @return a panel of diagnostic plots for leverage
+#' Leverage diagnostics plot
+#'
+#' Diagnostic plots for leverage.
+#'
+#' @param model An object of class \code{glm}.
+#'
+#' @return A panel of diagnostic plots for leverage.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_diag_leverage(model)
+#'
+#' @family diagnostic plots
+#'
 #' @export
 #'
 blr_plot_diag_leverage <- function(model) {

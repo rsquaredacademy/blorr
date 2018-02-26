@@ -1,11 +1,13 @@
-#' @importFrom magrittr multiply_by subtract %<>%
-#' @importFrom stats coefficients pchisq formula
-#' @title Likelihood Ratio Test
-#' @description Performs the likelihood ratio test for full and reduced model.
-#' @param full_model an object of class \code{glm}; model with all predictors
-#' @param reduced_model an object of class \code{glm}; nested model. Optional if
-#' you are comparing the \code{full_model} with an intercept only model.
-#' @return two tibbles with model information and test results
+#' Likelihood ratio test
+#'
+#' Performs the likelihood ratio test for full and reduced model.
+#'
+#' @param full_model An object of class \code{glm}; model with all predictors.
+#' @param reduced_model An object of class \code{glm}; nested model. Optional if
+#'   you are comparing the \code{full_model} with an intercept only model.
+#'
+#' @return Two tibbles with model information and test results.
+#'
 #' @examples
 #' # compare full model with intercept only model
 #' # full model
@@ -20,7 +22,14 @@
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_lr_test(model_1, model_2)
+#'
 #' @seealso \code{\link[lmtest]{lrtest}}
+#'
+#' @importFrom magrittr multiply_by subtract %<>%
+#' @importFrom stats coefficients pchisq formula
+#'
+#' @family model fit statistics
+#'
 #' @export
 #'
 blr_lr_test <- function(full_model, reduced_model) UseMethod("blr_lr_test")

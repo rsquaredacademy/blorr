@@ -3,7 +3,7 @@
 \name{blr_segment_dist}
 \alias{blr_segment_dist}
 \alias{plot.blr_segment_dist}
-\title{Response Distribution by Segments}
+\title{Response distribution}
 \usage{
 blr_segment_dist(data, response, predictor)
 
@@ -12,35 +12,41 @@ blr_segment_dist(data, response, predictor)
   bar_color = "blue", line_color = "red", ...)
 }
 \arguments{
-\item{data}{a tibble}
+\item{data}{A \code{tibble} or a \code{data.frame}.}
 
-\item{response}{response variable}
+\item{response}{Response variable; column in \code{data}.}
 
-\item{predictor}{predictor variable}
+\item{predictor}{Predictor variable; column in \code{data}.}
 
-\item{x}{an object of class \code{blr_segment_dist}}
+\item{x}{An object of class \code{blr_segment_dist}.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{xaxis_title}{x axis title}
+\item{xaxis_title}{X axis title.}
 
-\item{yaxis_title}{y axis title}
+\item{yaxis_title}{Y axis title.}
 
-\item{sec_yaxis_title}{secondary y axis title}
+\item{sec_yaxis_title}{Secondary y axis title.}
 
-\item{bar_color}{color of the bar}
+\item{bar_color}{Bar color.}
 
-\item{line_color}{line color}
+\item{line_color}{Line color.}
 
-\item{...}{other inputs}
+\item{...}{Other inputs.}
 }
 \value{
-a tibble
+A tibble.
 }
 \description{
-Distribution of response by segements
+Distribution of response by segements/levels of a qualitative variable.
 }
 \examples{
 k <- blr_segment_dist(hsb2, honcomp, prog)
 plot(k)
+
+}
+\seealso{
+Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
+  \code{\link{blr_segment}},
+  \code{\link{blr_twoway_segment}}
 }

@@ -4,7 +4,7 @@
 \alias{blr_forward_selection}
 \alias{blr_forward_selection.default}
 \alias{plot.blr_forward_selection}
-\title{Forward Selection}
+\title{Stepwise AIC forward selection}
 \usage{
 blr_forward_selection(model, details = FALSE, ...)
 
@@ -13,11 +13,12 @@ blr_forward_selection(model, details = FALSE, ...)
 \method{plot}{blr_forward_selection}(x, ...)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{details}{logical; if \code{TRUE}, will print the regression result at each step}
+\item{details}{Logical; if \code{TRUE}, will print the regression result at
+each step.}
 
-\item{...}{other arguments}
+\item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_forward_selection}.}
 }
@@ -34,8 +35,9 @@ blr_forward_selection(model, details = FALSE, ...)
 \item{devs}{deviances}
 }
 \description{
-Build regression model from a set of candidate predictor variables by entering predictors based on
-Chi Square statistic, in a stepwise manner until there is no variable left to enter any more.
+Build regression model from a set of candidate predictor variables by
+entering predictors based on chi square statistic, in a stepwise manner
+until there is no variable left to enter any more.
 }
 \examples{
 \dontrun{
@@ -51,7 +53,12 @@ blr_forward_selection(model, details = TRUE)
 # plot
 plot(blr_forward_selection(model))
 }
+
 }
 \references{
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+}
+\seealso{
+Other variable selection procedures: \code{\link{blr_backward_elimination}},
+  \code{\link{blr_stepwise_selection}}
 }

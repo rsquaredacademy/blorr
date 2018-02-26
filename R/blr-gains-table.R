@@ -1,21 +1,20 @@
-#' @importFrom stats model.frame model.response predict.glm
-#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all desc
-#' @importFrom tibble add_column add_row
-#' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
-#' scale_x_continuous scale_y_continuous theme element_text
-#' @title Gains Table & Lift Curve
-#' @description Gains table
-#' @param model an object of class \code{glm}
-#' @param data a tibble
-#' @param x an object of class \code{blr_gains_table}
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param lift_curve_col color of the lift curve
-#' @param diag_line_col diagonal line color
-#' @param plot_title_justify horizontal justification on the plot title
-#' @param ... other inputs
-#' @return a tibble
+#' Gains table & lift chart
+#'
+#' Gains table.
+#'
+#' @param model An object of class \code{glm}.
+#' @param data A \code{tibble} or a \code{data.frame}.
+#' @param x An object of class \code{blr_gains_table}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param lift_curve_col Color of the lift curve.
+#' @param diag_line_col Diagonal line color.
+#' @param plot_title_justify Horizontal justification on the plot title.
+#' @param ... Other inputs.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
@@ -25,6 +24,15 @@
 #' # lift chart
 #' k <- blr_gains_table(model)
 #' plot(k)
+#'
+#' @importFrom stats model.frame model.response predict.glm
+#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all desc
+#' @importFrom tibble add_column add_row
+#' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
+#' scale_x_continuous scale_y_continuous theme element_text
+#'
+#' @family model validation techniques
+#'
 #' @export
 #'
 blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
@@ -83,19 +91,26 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 
 }
 
-#' @importFrom ggplot2 element_blank annotate geom_segment
-#' @title KS Chart
-#' @description Kolmogorov Smirnov statisitcs graph
-#' @param gains_table an object of class \code{blr_gains_table}
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param ks_line_color color of the line indicating maximum ks
+
+#' KS chart
+#'
+#' Kolmogorov Smirnov statisitcs graph.
+#'
+#' @param gains_table An object of class \code{blr_gains_table}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param ks_line_color Color of the line indicating maximum KS statistic.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
+#'
+#' @importFrom ggplot2 element_blank annotate geom_segment
+#'
+#' @family model validation techniques
 #'
 #' @export
 #'
@@ -127,20 +142,25 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
 }
 
 
-#' @title Capture Rate by Decile
-#' @description Visualize the decile wise capture rate
-#' @param gains_table an object of class \code{blr_gains_table}
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param title plot title
-#' @param bar_color color of the bars
-#' @param text_size size of the bar labels
-#' @param text_vjust vertical justification of the bar labels
+#' Event rate by decile
+#'
+#' Visualize the decile wise event rate.
+#'
+#' @param gains_table An object of class \code{blr_gains_table}.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param title Plot title.
+#' @param bar_color Bar color.
+#' @param text_size Size of the bar labels.
+#' @param text_vjust Vertical justification of the bar labels.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_decile_capture_rate(gt)
+#'
+#' @family model validation techniques
 #'
 #' @export
 #'
@@ -164,20 +184,25 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
 
 }
 
-#' @title Decile Lift Chart
-#' @description Decile wise lift chart
-#' @param gains_table an object of class \code{blr_gains_table}
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param title plot title
-#' @param bar_color color of the bars
-#' @param text_size size of the bar labels
-#' @param text_vjust vertical justification of the bar labels
+#' Decile lift chart
+#'
+#' Decile wise lift chart.
+#'
+#' @param gains_table An object of class \code{blr_gains_table}.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param title Plot title.
+#' @param bar_color Color of the bars.
+#' @param text_size Size of the bar labels.
+#' @param text_vjust Vertical justification of the bar labels.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_decile_lift_chart(gt)
+#'
+#' @family model validation techniques
 #'
 #' @export
 #'

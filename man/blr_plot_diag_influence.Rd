@@ -2,22 +2,27 @@
 % Please edit documentation in R/blr-residual-diagnostics.R
 \name{blr_plot_diag_influence}
 \alias{blr_plot_diag_influence}
-\title{Influence Diagnostics Plot}
+\title{Influence diagnostics plot}
 \usage{
 blr_plot_diag_influence(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-a panel of residual diagnostic plots
+A panel of influence diagnostic plots.
 }
 \description{
-Reisudal diagnostic plots for detecting influential observations
+Reisudal diagnostic plots for detecting influential observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_diag_influence(model)
+
+}
+\seealso{
+Other diagnostic plots: \code{\link{blr_plot_diag_fit}},
+  \code{\link{blr_plot_diag_leverage}}
 }

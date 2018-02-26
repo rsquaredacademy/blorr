@@ -1,13 +1,25 @@
-#' @importFrom rlang enquo !! quos !!!
-#' @importFrom purrr map_dbl
-#' @title Bivariate Analysis
-#' @description Bivariate analysis
-#' @param data a tibble
-#' @param response response variable
-#' @param ... predictor variables
-#' @return a tibble
+#' Bivariate analysis
+#'
+#' Information value and likelihood ratio test.
+#'
+#' @param data A \code{tibble} or a \code{data.frame}.
+#' @param response Response variable; column in \code{data}.
+#' @param ... Predictor variables; columns in \code{data}.
+#'
+#' @return A tibble with the following columns:
+#' * Variable name.
+#' * Information value.
+#' * Likelihood ratio statisitc.
+#' * Likelihood ratio degrees of freedom.
+#' * Likelihood ratio p value.
+#'
 #' @examples
 #' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
+#'
+#' @importFrom rlang enquo !! quos !!!
+#' @importFrom purrr map_dbl
+#'
+#' @family bivariate analysis procedures
 #'
 #' @export
 #'
@@ -109,14 +121,21 @@ lr_extract <- function(lr, value) {
     pull(!! vals)
 
 }
-#' @title Response by Segments
-#' @description Response by segements
-#' @param data a tibble
-#' @param response response variable
-#' @param predictor predictor variable
-#' @return a tibble
+#' Event distribution
+#'
+#' Event distribution by segements/levels of a qualitative variable.
+#'
+#' @param data A \code{tibble} or \code{data.frame}.
+#' @param response Response variable; column in \code{data}.
+#' @param predictor Predictor variable; column in \code{data}.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' blr_segment(hsb2, honcomp, prog)
+#'
+#' @family bivariate analysis procedures
+#'
 #' @export
 #'
 blr_segment <- function(data, response, predictor) UseMethod("blr_segment")
@@ -151,15 +170,22 @@ print.blr_segment <- function(x, ...) {
   print_blr_segment(x)
 }
 
-#' @title Response Distribution by Multiple Segments
-#' @description Response distribution by multiple segements
-#' @param data a tibble
-#' @param response response variable
-#' @param variable_1 column in \code{data}
-#' @param variable_2 column in \code{data}
-#' @return a tibble
+#' Two way event distribution
+#'
+#' Event distribution across two qualitative variables.
+#'
+#' @param data A \code{tibble} or \code{data.frame}.
+#' @param response Response variable; column in \code{data}.
+#' @param variable_1 Column in \code{data}.
+#' @param variable_2 Column in \code{data}.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' blr_twoway_segment(hsb2, honcomp, prog, female)
+#'
+#' @family bivariate analysis procedures
+#'
 #' @export
 #'
 blr_twoway_segment <- function(data, response, variable_1, variable_2) UseMethod("blr_twoway_segment")
@@ -201,24 +227,33 @@ print.blr_twoway_segment <- function(x, ...) {
 }
 
 
-#' @importFrom ggplot2 geom_col sec_axis
-#' @title Response Distribution by Segments
-#' @description Distribution of response by segements
-#' @param data a tibble
-#' @param response response variable
-#' @param predictor predictor variable
-#' @param x an object of class \code{blr_segment_dist}
-#' @param title plot title
-#' @param xaxis_title x axis title
-#' @param yaxis_title y axis title
-#' @param sec_yaxis_title secondary y axis title
-#' @param bar_color color of the bar
-#' @param line_color line color
-#' @param ... other inputs
-#' @return a tibble
+
+#' Response distribution
+#'
+#' Distribution of response by segements/levels of a qualitative variable.
+#'
+#' @param data A \code{tibble} or a \code{data.frame}.
+#' @param response Response variable; column in \code{data}.
+#' @param predictor Predictor variable; column in \code{data}.
+#' @param x An object of class \code{blr_segment_dist}.
+#' @param title Plot title.
+#' @param xaxis_title X axis title.
+#' @param yaxis_title Y axis title.
+#' @param sec_yaxis_title Secondary y axis title.
+#' @param bar_color Bar color.
+#' @param line_color Line color.
+#' @param ... Other inputs.
+#'
+#' @return A tibble.
+#'
 #' @examples
 #' k <- blr_segment_dist(hsb2, honcomp, prog)
 #' plot(k)
+#'
+#' @importFrom ggplot2 geom_col sec_axis
+#'
+#' @family bivariate analysis procedures
+#'
 #' @export
 #'
 blr_segment_dist <- function(data, response, predictor) UseMethod("blr_segment_dist")

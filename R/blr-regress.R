@@ -1,9 +1,12 @@
-#' @title Binary Logistic Regression
-#' @description Binary logistic regression
-#' @param object an object of class "formula" (or one that can be coerced to
-#' that class): a symbolic description of the model to be fitted or class
-#' \code{glm}
-#' @param ... other inputs
+#' Binary logistic regression
+#'
+#' Binary logistic regression.
+#'
+#' @param object An object of class "formula" (or one that can be coerced to
+#'   that class): a symbolic description of the model to be fitted or class
+#'   \code{glm}.
+#' @param ... Other inputs.
+#'
 #' @examples
 #' # using formula
 #' blr_regress(object = honcomp ~ female + read + science, data = hsb2)
@@ -13,6 +16,7 @@
 #'              family = binomial(link = 'logit'))
 #'
 #' blr_regress(model)
+#'
 #' @export
 #'
 blr_regress <- function(object, ...) UseMethod("blr_regress")

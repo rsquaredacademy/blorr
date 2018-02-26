@@ -1,10 +1,16 @@
-#' @title Forward Selection
-#' @description Build regression model from a set of candidate predictor variables by entering predictors based on
-#' Chi Square statistic, in a stepwise manner until there is no variable left to enter any more.
-#' @param model an object of class \code{glm}
-#' @param details logical; if \code{TRUE}, will print the regression result at each step
-#' @param ... other arguments
+#' Stepwise AIC forward selection
+#'
+#' @description
+#' Build regression model from a set of candidate predictor variables by
+#' entering predictors based on chi square statistic, in a stepwise manner
+#' until there is no variable left to enter any more.
+#'
+#' @param model An object of class \code{glm}.
+#' @param details Logical; if \code{TRUE}, will print the regression result at
+#'   each step.
+#' @param ... Other arguments.
 #' @param x An object of class \code{blr_forward_selection}.
+#'
 #' @return \code{blr_forward_selection} returns an object of class
 #' \code{"blr_forward_selection"}. An object of class
 #' \code{"blr_forward_selection"} is a list containing the following components:
@@ -16,7 +22,9 @@
 #' \item{bics}{bayesian information criteria}
 #' \item{devs}{deviances}
 #'
-#' @references Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+#' @references
+#' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+#'
 #' @examples
 #' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -31,6 +39,9 @@
 #' # plot
 #' plot(blr_forward_selection(model))
 #' }
+#'
+#' @family variable selection procedures
+#'
 #' @export
 #'
 blr_forward_selection <- function(model, details = FALSE, ...)

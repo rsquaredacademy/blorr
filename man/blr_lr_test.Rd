@@ -3,20 +3,20 @@
 \name{blr_lr_test}
 \alias{blr_lr_test}
 \alias{blr_lr_test.default}
-\title{Likelihood Ratio Test}
+\title{Likelihood ratio test}
 \usage{
 blr_lr_test(full_model, reduced_model)
 
 \method{blr_lr_test}{default}(full_model, reduced_model)
 }
 \arguments{
-\item{full_model}{an object of class \code{glm}; model with all predictors}
+\item{full_model}{An object of class \code{glm}; model with all predictors.}
 
-\item{reduced_model}{an object of class \code{glm}; nested model. Optional if
+\item{reduced_model}{An object of class \code{glm}; nested model. Optional if
 you are comparing the \code{full_model} with an intercept only model.}
 }
 \value{
-two tibbles with model information and test results
+Two tibbles with model information and test results.
 }
 \description{
 Performs the likelihood ratio test for full and reduced model.
@@ -35,7 +35,17 @@ model_2 <- glm(honcomp ~ female + read, data = hsb2,
             family = binomial(link = 'logit'))
 
 blr_lr_test(model_1, model_2)
+
 }
 \seealso{
 \code{\link[lmtest]{lrtest}}
+
+Other model fit statistics: \code{\link{blr_adj_count_rsq}},
+  \code{\link{blr_cox_snell_rsq}},
+  \code{\link{blr_effron_rsq}},
+  \code{\link{blr_mcfadden_adj_rsq}},
+  \code{\link{blr_mckelvey_zavoina_rsq}},
+  \code{\link{blr_model_fit_stats}},
+  \code{\link{blr_multi_model_fit_stats}},
+  \code{\link{blr_nagelkerke_rsq}}, \code{\link{blr_pairs}}
 }

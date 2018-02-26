@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Model Fit Statistics — blr_model_fit_stats â€¢ blorr</title>
+<title>Model fit statistics — blr_model_fit_stats â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -62,19 +62,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/intro.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/intro.html">Model Fit Statistics</a>
+    </li>
+    <li>
+      <a href="../articles/model_validation.html">Model Validation</a>
     </li>
     <li>
       <a href="../articles/variable_selection.html">Variable Selection</a>
     </li>
     <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
+      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
     </li>
   </ul>
 </li>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Model Fit Statistics</h1>
+    <h1>Model fit statistics</h1>
     </div>
 
     
-    <p>Model Fit Statistics</p>
+    <p>Model fit statistics.</p>
     
 
     <pre class="usage"><span class='fu'>blr_model_fit_stats</span>(<span class='no'>model</span>, <span class='no'>...</span>)</pre>
@@ -127,13 +127,23 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>an object of class <code>glm</code></p></td>
+      <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other inputs</p></td>
+      <td><p>Other inputs.</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other model fit statistics: <code><a href='blr_adj_count_rsq.html'>blr_adj_count_rsq</a></code>,
+  <code><a href='blr_cox_snell_rsq.html'>blr_cox_snell_rsq</a></code>,
+  <code><a href='blr_effron_rsq.html'>blr_effron_rsq</a></code>, <code><a href='blr_lr_test.html'>blr_lr_test</a></code>,
+  <code><a href='blr_mcfadden_adj_rsq.html'>blr_mcfadden_adj_rsq</a></code>,
+  <code><a href='blr_mckelvey_zavoina_rsq.html'>blr_mckelvey_zavoina_rsq</a></code>,
+  <code><a href='blr_multi_model_fit_stats.html'>blr_multi_model_fit_stats</a></code>,
+  <code><a href='blr_nagelkerke_rsq.html'>blr_nagelkerke_rsq</a></code>, <code><a href='blr_pairs.html'>blr_pairs</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -151,13 +161,16 @@
 #&gt; Count R2:                       0.810    Adj Count R2:                      0.283 
 #&gt; BIC:                          181.430    AIC:                             168.236 
 #&gt; ---------------------------------------------------------------------------------
-#&gt; </div></pre>
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

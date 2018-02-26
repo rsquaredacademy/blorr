@@ -2,24 +2,24 @@
 % Please edit documentation in R/blr-gains-table.R
 \name{blr_ks_chart}
 \alias{blr_ks_chart}
-\title{KS Chart}
+\title{KS chart}
 \usage{
 blr_ks_chart(gains_table, title = "KS Chart", yaxis_title = " ",
   xaxis_title = "Cumulative Population \%", ks_line_color = "black")
 }
 \arguments{
-\item{gains_table}{an object of class \code{blr_gains_table}}
+\item{gains_table}{An object of class \code{blr_gains_table}.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{yaxis_title}{y axis title}
+\item{yaxis_title}{Y axis title.}
 
-\item{xaxis_title}{x axis title}
+\item{xaxis_title}{X axis title.}
 
-\item{ks_line_color}{color of the line indicating maximum ks}
+\item{ks_line_color}{Color of the line indicating maximum KS statistic.}
 }
 \description{
-Kolmogorov Smirnov statisitcs graph
+Kolmogorov Smirnov statisitcs graph.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -27,4 +27,14 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 gt <- blr_gains_table(model)
 blr_ks_chart(gt)
 
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_confusion_matrix}},
+  \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gains_table}},
+  \code{\link{blr_gini_index}},
+  \code{\link{blr_hosmer_lemeshow_test}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_roc_curve}}
 }

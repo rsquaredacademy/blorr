@@ -2,25 +2,25 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_diag_difchisq}
 \alias{blr_plot_diag_difchisq}
-\title{Delta Chisquare Plot}
+\title{Delta chisquare plot}
 \usage{
 blr_plot_diag_difchisq(model, point_color = "blue",
   title = "Delta Chisquare Plot", xaxis_title = "id",
   yaxis_title = "Delta Chisquare")
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 
-\item{point_color}{color of the points}
+\item{point_color}{Color of the points.}
 
-\item{title}{title of the plot}
+\item{title}{Title of the plot.}
 
-\item{xaxis_title}{x axis label}
+\item{xaxis_title}{X axis label.}
 
-\item{yaxis_title}{y axis label}
+\item{yaxis_title}{Y axis label.}
 }
 \description{
-Diagnostics for detecting ill fitted observations
+Diagnostics for detecting ill fitted observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

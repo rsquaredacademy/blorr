@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Weight of Evidence &amp; Information Value — blr_woe_iv â€¢ blorr</title>
+<title>Weight of evidence &amp; information value — blr_woe_iv â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -113,11 +113,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Weight of Evidence &amp; Information Value</h1>
+    <h1>Weight of evidence &amp; information value</h1>
     </div>
 
     
-    <p>Weight of evidence and information value</p>
+    <p>Weight of evidence and information value.</p>
     
 
     <pre class="usage"><span class='fu'>blr_woe_iv</span>(<span class='no'>data</span>, <span class='no'>predictor</span>, <span class='no'>response</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='no'>...</span>)
@@ -131,53 +131,57 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a tibble</p></td>
+      <td><p>A <code>tibble</code> or <code>data.frame</code>.</p></td>
     </tr>
     <tr>
       <th>predictor</th>
-      <td><p>name of the predictor</p></td>
+      <td><p>Predictor variable; column in <code>data</code>.</p></td>
     </tr>
     <tr>
       <th>response</th>
-      <td><p>name of the response variable</p></td>
+      <td><p>Response variable; column in <code>data</code>.</p></td>
     </tr>
     <tr>
       <th>digits</th>
-      <td><p>number of decimal digits to round off</p></td>
+      <td><p>Number of decimal digits to round off.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other inputs</p></td>
+      <td><p>Other inputs.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>an object of class <code>blr_segment_dist</code></p></td>
+      <td><p>An object of class <code>blr_segment_dist</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>plot title</p></td>
+      <td><p>Plot title.</p></td>
     </tr>
     <tr>
       <th>xaxis_title</th>
-      <td><p>x axis title</p></td>
+      <td><p>X axis title.</p></td>
     </tr>
     <tr>
       <th>yaxis_title</th>
-      <td><p>y axis title</p></td>
+      <td><p>Y axis title.</p></td>
     </tr>
     <tr>
       <th>line_color</th>
-      <td><p>color of the bar</p></td>
+      <td><p>Color of the bar.</p></td>
     </tr>
     <tr>
       <th>point_color</th>
-      <td><p>color for the point</p></td>
+      <td><p>Color for the point.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a tibble</p>
+    <p>A tibble.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other bivariate analysis: <code><a href='blr_woe_iv_stats.html'>blr_woe_iv_stats</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -198,7 +202,8 @@
 #&gt;  female          0.1023       
 #&gt; -----------------------------</div><div class='input'>
 <span class='co'># plot woe</span>
-<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_woe_iv-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_woe_iv-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -206,6 +211,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

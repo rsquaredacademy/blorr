@@ -2,18 +2,18 @@
 % Please edit documentation in R/blr-linktest.R
 \name{blr_linktest}
 \alias{blr_linktest}
-\title{Model Specification Error}
+\title{Model specification error}
 \usage{
 blr_linktest(model)
 }
 \arguments{
-\item{model}{an object of class \code{glm}}
+\item{model}{An object of class \code{glm}.}
 }
 \value{
-an object of class \code{glm}
+An object of class \code{glm}.
 }
 \description{
-Test for model specification error
+Test for model specification error.
 }
 \examples{
 

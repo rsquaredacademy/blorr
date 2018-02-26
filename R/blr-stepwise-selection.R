@@ -1,10 +1,16 @@
-#' @title Stepwise Selection
-#' @description Build regression model from a set of candidate predictor variables by entering and removing predictors based on
-#' Akaike Information Criteria, in a stepwise manner until there is no variable left to enter or remove any more.
-#' @param model an object of class \code{lm}
-#' @param details logical; if \code{TRUE}, details of variable selection will be printed on screen
-#' @param ... other arguments
+#' Stepwise AIC selection
+#'
+#' @description
+#' Build regression model from a set of candidate predictor variables by
+#' entering and removing predictors based on akaike information criterion, in a
+#' stepwise manner until there is no variable left to enter or remove any more.
+#'
+#' @param model An object of class \code{lm}.
+#' @param details Logical; if \code{TRUE}, details of variable selection will be
+#'   printed on screen.
+#' @param ... Other arguments.
 #' @param x An object of class \code{blr_stepwise_selection}.
+#'
 #' @return \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.
 #' An object of class \code{"blr_stepwise_selection"} is a list containing the
 #' following components:
@@ -16,7 +22,10 @@
 #' \item{bics}{bayesian information criteria}
 #' \item{devs}{deviances}
 #' \item{steps}{total number of steps}
-#' @references Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+#'
+#' @references
+#' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+#'
 #' @examples
 #' \dontrun{
 #' model <- glm(y ~ ., data = stepwise)
@@ -30,6 +39,8 @@
 #' # plot
 #' plot(blr_stepwise_selection(model))
 #' }
+#'
+#' @family variable selection procedures
 #'
 #' @export
 #'

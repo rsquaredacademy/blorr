@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forward Selection — blr_forward_selection â€¢ blorr</title>
+<title>Stepwise AIC forward selection — blr_forward_selection â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -113,12 +113,13 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forward Selection</h1>
+    <h1>Stepwise AIC forward selection</h1>
     </div>
 
     
-    <p>Build regression model from a set of candidate predictor variables by entering predictors based on
-Chi Square statistic, in a stepwise manner until there is no variable left to enter any more.</p>
+    <p>Build regression model from a set of candidate predictor variables by
+entering predictors based on chi square statistic, in a stepwise manner
+until there is no variable left to enter any more.</p>
     
 
     <pre class="usage"><span class='fu'>blr_forward_selection</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
@@ -134,15 +135,16 @@ Chi Square statistic, in a stepwise manner until there is no variable left to en
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>an object of class <code>glm</code></p></td>
+      <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
       <th>details</th>
-      <td><p>logical; if <code>TRUE</code>, will print the regression result at each step</p></td>
+      <td><p>Logical; if <code>TRUE</code>, will print the regression result at
+each step.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments</p></td>
+      <td><p>Other arguments.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -167,6 +169,11 @@ Chi Square statistic, in a stepwise manner until there is no variable left to en
 
     <p>Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p>Other variable selection procedures: <code><a href='blr_backward_elimination.html'>blr_backward_elimination</a></code>,
+  <code><a href='blr_stepwise_selection.html'>blr_stepwise_selection</a></code></p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
@@ -181,7 +188,8 @@ Chi Square statistic, in a stepwise manner until there is no variable left to en
 
 <span class='co'># plot</span>
 <span class='fu'>plot</span>(<span class='fu'>blr_forward_selection</span>(<span class='no'>model</span>))
-<span class='co'># }</span></pre>
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -191,6 +199,8 @@ Chi Square statistic, in a stepwise manner until there is no variable left to en
       <li><a href="#value">Value</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

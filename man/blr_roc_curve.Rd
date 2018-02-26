@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-roc-curve.R
 \name{blr_roc_curve}
 \alias{blr_roc_curve}
-\title{ROC Curve}
+\title{ROC curve}
 \usage{
 blr_roc_curve(gains_table, title = "ROC Curve",
   xaxis_title = "1 - Specificity", yaxis_title = "Sensitivity",
@@ -10,32 +10,43 @@ blr_roc_curve(gains_table, title = "ROC Curve",
   point_fill = "blue", point_color = "blue", plot_title_justify = 0.5)
 }
 \arguments{
-\item{gains_table}{an object of class \code{blr_gains_table}}
+\item{gains_table}{An object of class \code{blr_gains_table}.}
 
-\item{title}{plot title}
+\item{title}{Plot title.}
 
-\item{xaxis_title}{x axis title}
+\item{xaxis_title}{X axis title.}
 
-\item{yaxis_title}{y axis title}
+\item{yaxis_title}{Y axis title.}
 
-\item{roc_curve_col}{color of the roc curve}
+\item{roc_curve_col}{Color of the roc curve.}
 
-\item{diag_line_col}{diagonal line color}
+\item{diag_line_col}{Diagonal line color.}
 
-\item{point_shape}{shape of the points on the roc curve}
+\item{point_shape}{Shape of the points on the roc curve.}
 
-\item{point_fill}{fill of the points on the roc curve}
+\item{point_fill}{Fill of the points on the roc curve.}
 
-\item{point_color}{color of the points on the roc curve}
+\item{point_color}{Color of the points on the roc curve.}
 
-\item{plot_title_justify}{horizontal justification on the plot title}
+\item{plot_title_justify}{Horizontal justification on the plot title.}
 }
 \description{
-ROC Curve
+Receiver operating characteristic curve.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 k <- blr_gains_table(model)
 blr_roc_curve(k)
+
+}
+\seealso{
+Other model validation techniques: \code{\link{blr_confusion_matrix}},
+  \code{\link{blr_decile_capture_rate}},
+  \code{\link{blr_decile_lift_chart}},
+  \code{\link{blr_gains_table}},
+  \code{\link{blr_gini_index}},
+  \code{\link{blr_hosmer_lemeshow_test}},
+  \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}}
 }

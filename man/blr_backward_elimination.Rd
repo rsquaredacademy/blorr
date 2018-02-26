@@ -4,7 +4,7 @@
 \alias{blr_backward_elimination}
 \alias{blr_backward_elimination.default}
 \alias{plot.blr_backward_elimination}
-\title{Backward Elimination}
+\title{Stepwise AIC backward elimination}
 \usage{
 blr_backward_elimination(model, details = FALSE, ...)
 
@@ -13,11 +13,13 @@ blr_backward_elimination(model, details = FALSE, ...)
 \method{plot}{blr_backward_elimination}(x, ...)
 }
 \arguments{
-\item{model}{an object of class \code{glm}; the model should include all candidate predictor variables}
+\item{model}{An object of class \code{glm}; the model should include all
+candidate predictor variables.}
 
-\item{details}{logical; if \code{TRUE}, will print the regression result at each step}
+\item{details}{Logical; if \code{TRUE}, will print the regression result at
+each step.}
 
-\item{...}{other arguments}
+\item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_backward_elimination}.}
 }
@@ -34,8 +36,9 @@ blr_backward_elimination(model, details = FALSE, ...)
 \item{devs}{deviances}
 }
 \description{
-Build regression model from a set of candidate predictor variables by removing predictors based on
-Akaike Information Criteria, in a stepwise manner until there is no variable left to remove any more.
+Build regression model from a set of candidate predictor variables by
+removing predictors based on akaike information criterion, in a stepwise
+manner until there is no variable left to remove any more.
 }
 \examples{
 \dontrun{
@@ -55,4 +58,8 @@ plot(blr_backward_elimination(model))
 }
 \references{
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
+}
+\seealso{
+Other variable selection procedures: \code{\link{blr_forward_selection}},
+  \code{\link{blr_stepwise_selection}}
 }
