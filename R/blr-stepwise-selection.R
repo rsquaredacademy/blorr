@@ -320,9 +320,10 @@ print.blr_step_aic_both <- function(x, ...) {
 #'
 plot.blr_step_aic_both <- function(x, ...) {
 
-  a  <- NULL
-  b  <- NULL
-  tx <- NULL
+  aic <- NULL
+  tx  <- NULL
+  a   <- NULL
+  b   <- NULL
 
   predictors <- x$predictors
 

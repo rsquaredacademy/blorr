@@ -302,9 +302,10 @@ print.blr_step_aic_forward <- function(x, ...) {
 #'
 plot.blr_step_aic_forward <- function(x, ...) {
 
-  a  <- NULL
-  b  <- NULL
-  tx <- NULL
+  aic <- NULL
+  tx  <- NULL
+  a   <- NULL
+  b   <- NULL
 
   y    <- seq_len(x$steps)
   xloc <- y - 0.1

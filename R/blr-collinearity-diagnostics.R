@@ -152,6 +152,8 @@ blr_eigen_cindex <- function(model) {
 
 fmrsq <- function(nam, data, i) {
 
+  r.squared <- NULL
+
   fm <-
     as.formula(paste0("`", nam[i], "` ", "~ .")) %>%
     lm(data = data) %>%
