@@ -6,7 +6,7 @@ test_that("output from blr_hosmer_lemeshow_test is as expected", {
     family = binomial(link = "logit")
   )
   actual <- model %>%
-    blr_hosmer_lemeshow_test() %>%
+    blr_test_hosmer_lemeshow() %>%
     use_series(pvalue) %>%
     round(2)
   expected <- 0.66
@@ -20,7 +20,7 @@ test_that("hosmer lemeshow test prints the correct output", {
     family = binomial(link = "logit")
   )
 
-  k <- blr_hosmer_lemeshow_test(model)
+  k <- blr_test_hosmer_lemeshow(model)
 
   x <- cat(
     "           Partition for the Hosmer & Lemeshow Test

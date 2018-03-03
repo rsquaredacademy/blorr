@@ -10,11 +10,11 @@
 #' @param details Logical; if \code{TRUE}, will print the regression result at
 #'   each step.
 #' @param ... Other arguments.
-#' @param x An object of class \code{blr_backward_elimination}.
+#' @param x An object of class \code{blr_step_aic_backward}.
 #'
-#' @return \code{blr_backward_elimination} returns an object of class
-#' \code{"blr_backward_elimination"}. An object of class
-#' \code{"blr_backward_elimination"} is a list containing the following components:
+#' @return \code{blr_step_aic_backward} returns an object of class
+#' \code{"blr_step_aic_backward"}. An object of class
+#' \code{"blr_step_aic_backward"} is a list containing the following components:
 #'
 #' \item{candidates}{candidate predictor variables}
 #' \item{steps}{total number of steps}
@@ -32,26 +32,26 @@
 #' data = hsb2, family = binomial(link = 'logit'))
 #'
 #' # elimination summary
-#' blr_backward_elimination(model)
+#' blr_step_aic_backward(model)
 #'
 #' # print details of each step
-#' blr_backward_elimination(model, details = TRUE)
+#' blr_step_aic_backward(model, details = TRUE)
 #'
 #' # plot
-#' plot(blr_backward_elimination(model))
+#' plot(blr_step_aic_backward(model))
 #' }
 #'
 #' @family variable selection procedures
 #'
 #' @export
 #'
-blr_backward_elimination <- function(model, details = FALSE, ...) UseMethod("blr_backward_elimination")
+blr_step_aic_backward <- function(model, details = FALSE, ...) UseMethod("blr_step_aic_backward")
 
 
 #' @export
-#' @rdname blr_backward_elimination
+#' @rdname blr_step_aic_backward
 #'
-blr_backward_elimination.default <- function(model, details = FALSE, ...) {
+blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
   if (!any(class(model) == "glm")) {
     stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
@@ -267,7 +267,7 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
     devs       = ldev
   )
 
-  class(out) <- "blr_backward_elimination"
+  class(out) <- "blr_step_aic_backward"
 
   return(out)
 }
@@ -275,7 +275,7 @@ blr_backward_elimination.default <- function(model, details = FALSE, ...) {
 
 #' @export
 #'
-print.blr_backward_elimination <- function(x, ...) {
+print.blr_step_aic_backward <- function(x, ...) {
   if (x$steps > 0) {
     print_backward_elimination(x)
   } else {
@@ -283,10 +283,10 @@ print.blr_backward_elimination <- function(x, ...) {
   }
 }
 
-#' @rdname blr_backward_elimination
+#' @rdname blr_step_aic_backward
 #' @export
 #'
-plot.blr_backward_elimination <- function(x, ...) {
+plot.blr_step_aic_backward <- function(x, ...) {
 
   steps <- NULL
   aics  <- NULL

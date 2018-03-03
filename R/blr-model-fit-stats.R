@@ -32,18 +32,18 @@ blr_model_fit_stats.default <- function(model, ...) {
     m_deviance   = model_deviance(model),
     lr_ratio     = lr$lr_ratio,
     lr_pval      = lr$lr_pval,
-    mcfadden     = blr_mcfadden_rsq(model),
+    mcfadden     = blr_rsq_mcfadden(model),
     dev_df       = lr$dev_df,
-    adj_mcfadden = blr_mcfadden_adj_rsq(model),
+    adj_mcfadden = blr_rsq_mcfadden_adj(model),
     m_aic        = model_aic(model),
-    cox_snell    = blr_cox_snell_rsq(model),
+    cox_snell    = blr_rsq_cox_snell(model),
     m_bic        = model_bic(model),
-    mckelvey     = blr_mckelvey_zavoina_rsq(model),
+    mckelvey     = blr_rsq_mckelvey_zavoina(model),
     lr_df        = lr$lr_df,
-    effron       = blr_effron_rsq(model),
-    nagelkerke   = blr_nagelkerke_rsq(model),
-    count_r2     = blr_count_rsq(model),
-    count_adj    = blr_adj_count_rsq(model))
+    effron       = blr_rsq_effron(model),
+    nagelkerke   = blr_rsq_nagelkerke(model),
+    count_r2     = blr_rsq_count(model),
+    count_adj    = blr_rsq_adj_count(model))
 
   class(result) <- "blr_model_fit_stats"
   return(result)
@@ -102,13 +102,13 @@ model_bic <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_mcfadden_rsq(model)
+#' blr_rsq_mcfadden(model)
 #'
 #' @family model fit statisitcs
 #'
 #' @export
 #'
-blr_mcfadden_rsq <- function(model) {
+blr_rsq_mcfadden <- function(model) {
 
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model)
@@ -128,13 +128,13 @@ blr_mcfadden_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_mcfadden_adj_rsq(model)
+#' blr_rsq_mcfadden_adj(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_mcfadden_adj_rsq <- function(model) {
+blr_rsq_mcfadden_adj <- function(model) {
 
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model) - model_d_f(model)
@@ -153,13 +153,13 @@ blr_mcfadden_adj_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_cox_snell_rsq(model)
+#' blr_rsq_cox_snell(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_cox_snell_rsq <- function(model) {
+blr_rsq_cox_snell <- function(model) {
 
   1 - cox_snell_comp(model)
 
@@ -178,13 +178,13 @@ blr_cox_snell_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_nagelkerke_rsq(model)
+#' blr_rsq_nagelkerke(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_nagelkerke_rsq <- function(model) {
+blr_rsq_nagelkerke <- function(model) {
 
   n <-
     model %>%
@@ -198,7 +198,7 @@ blr_nagelkerke_rsq <- function(model) {
     exp() %>%
     raise_to_power(pow)
 
-  blr_cox_snell_rsq(model) / (1 - i_model_ll)
+  blr_rsq_cox_snell(model) / (1 - i_model_ll)
 
 }
 
@@ -214,13 +214,13 @@ blr_nagelkerke_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_mckelvey_zavoina_rsq(model)
+#' blr_rsq_mckelvey_zavoina(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_mckelvey_zavoina_rsq <- function(model) {
+blr_rsq_mckelvey_zavoina <- function(model) {
 
   predicted      <- predict(model)
   mean_predicted <- mean(predicted)
@@ -260,13 +260,13 @@ blr_mckelvey_zavoina_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_effron_rsq(model)
+#' blr_rsq_effron(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_effron_rsq <- function(model) {
+blr_rsq_effron <- function(model) {
 
   predicted <- predict(model, type = "response")
   resp      <-model$y
@@ -302,13 +302,13 @@ blr_effron_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_count_rsq(model)
+#' blr_rsq_count(model)
 #'
 #' @family model fit statistcs
 #'
 #' @export
 #'
-blr_count_rsq <- function(model) {
+blr_rsq_count <- function(model) {
 
   predicted <- predict(model, type = "response")
   zero_one  <- if_else(predicted >= 0.5, 1, 0)
@@ -333,13 +333,13 @@ blr_count_rsq <- function(model) {
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_adj_count_rsq(model)
+#' blr_rsq_adj_count(model)
 #'
 #' @family model fit statistics
 #'
 #' @export
 #'
-blr_adj_count_rsq <- function(model) {
+blr_rsq_adj_count <- function(model) {
 
   n2 <-
     model %>%
@@ -362,7 +362,7 @@ blr_adj_count_rsq <- function(model) {
 
 fit_stat <- function(model) {
 
-  lr <- blr_lr_test(model)
+  lr <- blr_test_lr(model)
 
   pred_n <-
     model %>%

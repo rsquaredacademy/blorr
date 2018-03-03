@@ -268,7 +268,7 @@ test_that("forward selection plot is as expected", {
 
   p <-
     model %>%
-    blr_forward_selection() %>%
+    blr_step_aic_forward() %>%
     plot()
 
   vdiffr::expect_doppelganger("forward selection plot", p$plot)
@@ -279,7 +279,7 @@ test_that("stepwise selection plot is as expected", {
 
   p <-
     model %>%
-    blr_stepwise_selection() %>%
+    blr_step_aic_both() %>%
     plot()
 
   vdiffr::expect_doppelganger("stepwise selection plot", p$plot)

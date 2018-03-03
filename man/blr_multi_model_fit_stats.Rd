@@ -31,11 +31,12 @@ blr_multi_model_fit_stats(model, model2)
 
 }
 \seealso{
-Other model fit statistics: \code{\link{blr_adj_count_rsq}},
-  \code{\link{blr_cox_snell_rsq}},
-  \code{\link{blr_effron_rsq}}, \code{\link{blr_lr_test}},
-  \code{\link{blr_mcfadden_adj_rsq}},
-  \code{\link{blr_mckelvey_zavoina_rsq}},
-  \code{\link{blr_model_fit_stats}},
-  \code{\link{blr_nagelkerke_rsq}}, \code{\link{blr_pairs}}
+Other model fit statistics: \code{\link{blr_model_fit_stats}},
+  \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
+  \code{\link{blr_rsq_cox_snell}},
+  \code{\link{blr_rsq_effron}},
+  \code{\link{blr_rsq_mcfadden_adj}},
+  \code{\link{blr_rsq_mckelvey_zavoina}},
+  \code{\link{blr_rsq_nagelkerke}},
+  \code{\link{blr_test_lr}}
 }

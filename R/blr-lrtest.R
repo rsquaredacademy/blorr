@@ -14,14 +14,14 @@
 #' model_1 <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_lr_test(model_1)
+#' blr_test_lr(model_1)
 #'
 #' # compare full model with nested model
 #' # nested model
 #' model_2 <- glm(honcomp ~ female + read, data = hsb2,
 #'             family = binomial(link = 'logit'))
 #'
-#' blr_lr_test(model_1, model_2)
+#' blr_test_lr(model_1, model_2)
 #'
 #' @seealso \code{\link[lmtest]{lrtest}}
 #'
@@ -32,12 +32,12 @@
 #'
 #' @export
 #'
-blr_lr_test <- function(full_model, reduced_model) UseMethod("blr_lr_test")
+blr_test_lr <- function(full_model, reduced_model) UseMethod("blr_test_lr")
 
-#' @rdname blr_lr_test
+#' @rdname blr_test_lr
 #' @export
 #'
-blr_lr_test.default <- function(full_model, reduced_model) {
+blr_test_lr.default <- function(full_model, reduced_model) {
 
   if (missing(reduced_model)) {
     reduced_model <- lr_reduced_model(full_model)
@@ -60,7 +60,7 @@ blr_lr_test.default <- function(full_model, reduced_model) {
   test_info  <- lr_test_result(full_model, reduced_model)
 
   result <- list(model_info = model_info, test_result = test_info)
-  class(result) <- "blr_lr_test"
+  class(result) <- "blr_test_lr"
 
   return(result)
 
@@ -68,7 +68,7 @@ blr_lr_test.default <- function(full_model, reduced_model) {
 
 #' @export
 #'
-print.blr_lr_test <- function(x, ...) {
+print.blr_test_lr <- function(x, ...) {
   print_blr_lr_test(x)
 }
 

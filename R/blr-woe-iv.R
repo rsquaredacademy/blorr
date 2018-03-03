@@ -28,7 +28,7 @@
 #' @importFrom dplyr select rename
 #' @importFrom tibble add_column
 #'
-#' @family bivariate analysis
+#' @family bivariate analysis procedures
 #'
 #' @export
 #'
@@ -107,7 +107,7 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' @examples
 #' blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 #'
-#' @family bivariate analysis
+#' @family bivariate analysis procedures
 #'
 #' @export
 #'

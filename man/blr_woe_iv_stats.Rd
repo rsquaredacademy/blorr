@@ -21,5 +21,8 @@ blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 
 }
 \seealso{
-Other bivariate analysis: \code{\link{blr_woe_iv}}
+Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
+  \code{\link{blr_segment_dist}},
+  \code{\link{blr_segment_twoway}},
+  \code{\link{blr_segment}}, \code{\link{blr_woe_iv}}
 }

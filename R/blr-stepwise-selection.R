@@ -9,10 +9,10 @@
 #' @param details Logical; if \code{TRUE}, details of variable selection will be
 #'   printed on screen.
 #' @param ... Other arguments.
-#' @param x An object of class \code{blr_stepwise_selection}.
+#' @param x An object of class \code{blr_step_aic_both}.
 #'
-#' @return \code{blr_stepwise_selection} returns an object of class \code{"blr_stepwise_selection"}.
-#' An object of class \code{"blr_stepwise_selection"} is a list containing the
+#' @return \code{blr_step_aic_both} returns an object of class \code{"blr_step_aic_both"}.
+#' An object of class \code{"blr_step_aic_both"} is a list containing the
 #' following components:
 #'
 #' \item{candidates}{candidate predictor variables}
@@ -31,24 +31,24 @@
 #' model <- glm(y ~ ., data = stepwise)
 #'
 #' # selection summary
-#' blr_stepwise_selection(model)
+#' blr_step_aic_both(model)
 #'
 #' # print details at each step
-#' blr_stepwise_selection(model, details = TRUE)
+#' blr_step_aic_both(model, details = TRUE)
 #'
 #' # plot
-#' plot(blr_stepwise_selection(model))
+#' plot(blr_step_aic_both(model))
 #' }
 #'
 #' @family variable selection procedures
 #'
 #' @export
 #'
-blr_stepwise_selection <- function(model, details = FALSE, ...) UseMethod("blr_stepwise_selection")
+blr_step_aic_both <- function(model, details = FALSE, ...) UseMethod("blr_step_aic_both")
 
 #' @export
 #'
-blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
+blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   if (!any(class(model) == "glm")) {
     stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
@@ -298,7 +298,7 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
     steps      = all_step
   )
 
-  class(out) <- "blr_stepwise_selection"
+  class(out) <- "blr_step_aic_both"
 
   return(out)
 }
@@ -306,7 +306,7 @@ blr_stepwise_selection.default <- function(model, details = FALSE, ...) {
 
 #' @export
 #'
-print.blr_stepwise_selection <- function(x, ...) {
+print.blr_step_aic_both <- function(x, ...) {
   if (x$steps > 0) {
     print_stepwise_selection(x)
   } else {
@@ -315,14 +315,15 @@ print.blr_stepwise_selection <- function(x, ...) {
 }
 
 
-#' @rdname blr_stepwise_selection
+#' @rdname blr_step_aic_both
 #' @export
 #'
-plot.blr_stepwise_selection <- function(x, ...) {
+plot.blr_step_aic_both <- function(x, ...) {
 
-  a  <- NULL
-  b  <- NULL
-  tx <- NULL
+  aic <- NULL
+  tx  <- NULL
+  a   <- NULL
+  b   <- NULL
 
   predictors <- x$predictors
 

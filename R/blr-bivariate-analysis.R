@@ -89,7 +89,7 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
       family = binomial(link = "logit")
     )
 
-    lr           <- blr_lr_test(model, model1)
+    lr           <- blr_test_lr(model, model1)
     lr_ratios[i] <- lr_extract(lr, lr_ratio)
     lr_dfs[i]    <- lr_extract(lr, d_f)
     lr_pvals[i]  <- lr_extract(lr, p_value)
@@ -182,18 +182,18 @@ print.blr_segment <- function(x, ...) {
 #' @return A tibble.
 #'
 #' @examples
-#' blr_twoway_segment(hsb2, honcomp, prog, female)
+#' blr_segment_twoway(hsb2, honcomp, prog, female)
 #'
 #' @family bivariate analysis procedures
 #'
 #' @export
 #'
-blr_twoway_segment <- function(data, response, variable_1, variable_2) UseMethod("blr_twoway_segment")
+blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod("blr_segment_twoway")
 
 #' @rdname blr_twoway_segment
 #' @export
 #'
-blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
+blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
 
   resp  <- enquo(response)
   var_1 <- enquo(variable_1)
@@ -213,7 +213,7 @@ blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
     divide_by(n)
 
   result <- list(twoway_segment = twoway, varnames = var_names)
-  class(result) <- "blr_twoway_segment"
+  class(result) <- "blr_segment_twoway"
 
   return(result)
 
@@ -222,7 +222,7 @@ blr_twoway_segment.default <- function(data, response, variable_1, variable_2) {
 
 #' @export
 #'
-print.blr_twoway_segment <- function(x, ...) {
+print.blr_segment_twoway <- function(x, ...) {
   print_blr_twoway_segment(x)
 }
 

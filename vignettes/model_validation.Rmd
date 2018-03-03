@@ -36,7 +36,7 @@ blr_confusion_matrix(model, cutoff = 0.5)
 ### Hosmer Lemeshow Test
 
 ```{r val6}
-blr_hosmer_lemeshow_test(model)
+blr_test_hosmer_lemeshow(model)
 ```
 
 
@@ -50,32 +50,32 @@ blr_gains_table(model)
 
 ```{r val7}
 model %>%
-	blr_gains_table %>%
-	plot
+	blr_gains_table() %>%
+	plot()
 ```
 
 ### ROC Curve
 
 ```{r val2, fig.align='center', fig.width=7, fig.height=5}
 model %>%
-	blr_gains_table %>%
-  blr_roc_curve
+	blr_gains_table() %>%
+  blr_roc_curve()
 ```
 
 ### KS Chart
 
 ```{r val3, fig.align='center', fig.width=7, fig.height=5}
 model %>%
-	blr_gains_table %>%
-  blr_ks_chart
+	blr_gains_table() %>%
+  blr_ks_chart()
 ```
 
 ### Decile Lift Chart
 
 ```{r val9, fig.align='center', fig.width=7, fig.height=5}
 model %>%
-  blr_gains_table %>%
-  blr_decile_lift_chart
+  blr_gains_table() %>%
+  blr_decile_lift_chart()
 ```
 
 
@@ -83,8 +83,8 @@ model %>%
 
 ```{r val8, fig.align='center', fig.width=7, fig.height=5}
 model %>%
-  blr_gains_table %>%
-  blr_decile_capture_rate
+  blr_gains_table() %>%
+  blr_decile_capture_rate()
 ```
 
 

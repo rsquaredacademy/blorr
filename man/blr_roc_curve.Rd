@@ -45,8 +45,7 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_decile_capture_rate}},
   \code{\link{blr_decile_lift_chart}},
   \code{\link{blr_gains_table}},
-  \code{\link{blr_gini_index}},
-  \code{\link{blr_hosmer_lemeshow_test}},
-  \code{\link{blr_ks_chart}},
-  \code{\link{blr_lorenz_curve}}
+  \code{\link{blr_gini_index}}, \code{\link{blr_ks_chart}},
+  \code{\link{blr_lorenz_curve}},
+  \code{\link{blr_test_hosmer_lemeshow}}
 }

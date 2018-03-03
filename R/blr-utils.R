@@ -209,7 +209,7 @@ model_d_f <- function(model) {
 # extract log likelihood from blr_lr_test
 extract_ll <- function(model, n = 1) {
 
-  blr_lr_test(model) %>%
+  blr_test_lr(model) %>%
     use_series(model_info) %>%
     pull(log_lik) %>%
     extract(n)

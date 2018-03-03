@@ -9,11 +9,11 @@
 #' @param details Logical; if \code{TRUE}, will print the regression result at
 #'   each step.
 #' @param ... Other arguments.
-#' @param x An object of class \code{blr_forward_selection}.
+#' @param x An object of class \code{blr_step_aic_forward}.
 #'
-#' @return \code{blr_forward_selection} returns an object of class
-#' \code{"blr_forward_selection"}. An object of class
-#' \code{"blr_forward_selection"} is a list containing the following components:
+#' @return \code{blr_step_aic_forward} returns an object of class
+#' \code{"blr_step_aic_forward"}. An object of class
+#' \code{"blr_step_aic_forward"} is a list containing the following components:
 #'
 #' \item{candidates}{candidate predictor variables}
 #' \item{steps}{total number of steps}
@@ -31,26 +31,26 @@
 #' family = binomial(link = 'logit'))
 #'
 #' # selection summary
-#' blr_forward_selection(model)
+#' blr_step_aic_forward(model)
 #'
 #' # print details of each step
-#' blr_forward_selection(model, details = TRUE)
+#' blr_step_aic_forward(model, details = TRUE)
 #'
 #' # plot
-#' plot(blr_forward_selection(model))
+#' plot(blr_step_aic_forward(model))
 #' }
 #'
 #' @family variable selection procedures
 #'
 #' @export
 #'
-blr_forward_selection <- function(model, details = FALSE, ...)
-  UseMethod("blr_forward_selection")
+blr_step_aic_forward <- function(model, details = FALSE, ...)
+  UseMethod("blr_step_aic_forward")
 
-#' @rdname blr_forward_selection
+#' @rdname blr_step_aic_forward
 #' @export
 #'
-blr_forward_selection.default <- function(model, details = FALSE, ...) {
+blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
   if (!any(class(model) == "glm")) {
     stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
@@ -279,7 +279,7 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
     devs       = ldev
   )
 
-  class(out) <- "blr_forward_selection"
+  class(out) <- "blr_step_aic_forward"
 
   return(out)
 }
@@ -287,7 +287,7 @@ blr_forward_selection.default <- function(model, details = FALSE, ...) {
 
 #' @export
 #'
-print.blr_forward_selection <- function(x, ...) {
+print.blr_step_aic_forward <- function(x, ...) {
   if (x$steps > 0) {
     print_forward_selection(x)
   } else {
@@ -297,14 +297,15 @@ print.blr_forward_selection <- function(x, ...) {
 
 
 #' @importFrom ggplot2 xlim ylim
-#' @rdname blr_forward_selection
+#' @rdname blr_step_aic_forward
 #' @export
 #'
-plot.blr_forward_selection <- function(x, ...) {
+plot.blr_step_aic_forward <- function(x, ...) {
 
-  a  <- NULL
-  b  <- NULL
-  tx <- NULL
+  aic <- NULL
+  tx  <- NULL
+  a   <- NULL
+  b   <- NULL
 
   y    <- seq_len(x$steps)
   xloc <- y - 0.1
