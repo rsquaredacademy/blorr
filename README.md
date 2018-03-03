@@ -198,7 +198,7 @@ blr_confusion_matrix(model)
 #### Hosmer Lemeshow Test
 
 ``` r
-blr_hosmer_lemeshow_test(model)
+blr_test_hosmer_lemeshow(model)
 #>            Partition for the Hosmer & Lemeshow Test            
 #> --------------------------------------------------------------
 #>                         def = 1                 def = 0        
@@ -259,8 +259,8 @@ blr_gains_table(model)
 
 ``` r
 model %>%
-  blr_gains_table %>%
-  plot
+  blr_gains_table() %>%
+  plot()
 ```
 
 ![](README-lift-1.png)<!-- -->
@@ -269,8 +269,8 @@ model %>%
 
 ``` r
 model %>%
-  blr_gains_table %>%
-  blr_roc_curve
+  blr_gains_table() %>%
+  blr_roc_curve()
 ```
 
 ![](README-roc-1.png)<!-- -->
@@ -279,8 +279,8 @@ model %>%
 
 ``` r
 model %>%
-  blr_gains_table %>%
-  blr_ks_chart
+  blr_gains_table() %>%
+  blr_ks_chart()
 ```
 
 ![](README-kschart-1.png)<!-- -->

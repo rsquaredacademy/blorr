@@ -407,7 +407,7 @@ print_blr_segment_dist <- function(x) {
   cat(rep("-", wsum), sep = "", "\n\n")
 }
 
-print_blr_hosmer_lemeshow_test <- function(x) {
+print_blr_test_hosmer_lemeshow <- function(x) {
   w1 <- nchar("group")
   w2 <- x %>%
     use_series(partition_table) %>%

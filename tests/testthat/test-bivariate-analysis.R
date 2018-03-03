@@ -52,7 +52,7 @@ test_that("blr_segment prints the correct output", {
 
 test_that("output from blr_twoway_segment is as expected", {
 
-  k <- blr_twoway_segment(hsb2, honcomp, prog, race)
+  k <- blr_segment_twoway(hsb2, honcomp, prog, race)
   actual <-
     k %>%
     use_series(twoway_segment) %>%
@@ -64,7 +64,7 @@ test_that("output from blr_twoway_segment is as expected", {
 })
 
 test_that("blr_twoway_segment prints the correct output", {
-  k <- blr_twoway_segment(hsb2, honcomp, prog, race)
+  k <- blr_segment_twoway(hsb2, honcomp, prog, race)
 
   x <- cat(
     "                         race

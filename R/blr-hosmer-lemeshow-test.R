@@ -9,7 +9,7 @@
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
 #'
-#' blr_hosmer_lemeshow_test(model)
+#' blr_test_hosmer_lemeshow(model)
 #'
 #' @family model validation techniques
 #'
@@ -18,12 +18,12 @@
 #'
 #' @export
 #'
-blr_hosmer_lemeshow_test <- function(model, data = NULL)
-  UseMethod("blr_hosmer_lemeshow_test")
+blr_test_hosmer_lemeshow <- function(model, data = NULL)
+  UseMethod("blr_test_hosmer_lemeshow")
 
 #' @export
 #'
-blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
+blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   if (is.null(data)) {
     data <- eval(model$call$data)
@@ -48,14 +48,14 @@ blr_hosmer_lemeshow_test.default <- function(model, data = NULL) {
                  pvalue          = hoslem_pval
   )
 
-  class(result) <- "blr_hosmer_lemeshow_test"
+  class(result) <- "blr_test_hosmer_lemeshow"
   return(result)
 }
 
 #' @export
 #'
-print.blr_hosmer_lemeshow_test <- function(x, ...) {
-  print_blr_hosmer_lemeshow_test(x)
+print.blr_test_hosmer_lemeshow <- function(x, ...) {
+  print_blr_test_hosmer_lemeshow(x)
 }
 
 hoslem_data_prep <- function(model, data, resp) {

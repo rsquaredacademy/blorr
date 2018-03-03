@@ -46,21 +46,21 @@ test_that("output from model_bic is as expected", {
 })
 
 test_that("output from blr_mcfadden_rsq is as expected", {
-  actual <- blr_mcfadden_rsq(model) %>%
+  actual <- blr_rsq_mcfadden(model) %>%
     round(4)
   expected <- 0.3072
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_mcfadden_adj_rsq is as expected", {
-  actual <- blr_mcfadden_adj_rsq(model) %>%
+  actual <- blr_rsq_mcfadden_adj(model) %>%
     round(4)
   expected <- 0.2726
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_cox_snell_rsq is as expected", {
-  actual <- blr_cox_snell_rsq(model) %>%
+  actual <- blr_rsq_cox_snell(model) %>%
     round(4)
   expected <- 0.299
   expect_equal(actual, expected)
@@ -68,35 +68,35 @@ test_that("output from blr_cox_snell_rsq is as expected", {
 
 
 test_that("output from blr_nagelkerke_rsq is as expected", {
-  actual <- blr_nagelkerke_rsq(model) %>%
+  actual <- blr_rsq_nagelkerke(model) %>%
     round(4)
   expected <- 0.4363
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_mckelvey_zavoina_rsq is as expected", {
-  actual <- blr_mckelvey_zavoina_rsq(model) %>%
+  actual <- blr_rsq_mckelvey_zavoina(model) %>%
     round(4)
   expected <- 0.5178
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_count_rsq is as expected", {
-  actual <- blr_count_rsq(model) %>%
+  actual <- blr_rsq_count(model) %>%
     round(4)
   expected <- 0.81
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_adj_count_rsq is as expected", {
-  actual <- blr_adj_count_rsq(model) %>%
+  actual <- blr_rsq_adj_count(model) %>%
     round(4)
   expected <- 0.283
   expect_equal(actual, expected)
 })
 
 test_that("output from blr_effron_rsq is as expected", {
-  actual <- blr_effron_rsq(model) %>%
+  actual <- blr_rsq_effron(model) %>%
     round(4)
   expected <- 0.3305
   expect_equal(actual, expected)
@@ -154,7 +154,7 @@ test_that("blr_multi_model_fit_stats prints the correct output", {
 
 
 test_that("blr_lr_test prints the correct output", {
-  k <- blr_lr_test(model)
+  k <- blr_test_lr(model)
 
   x <- cat(
     "    Likelihood Ratio Test

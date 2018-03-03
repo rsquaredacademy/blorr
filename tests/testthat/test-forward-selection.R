@@ -8,7 +8,7 @@ test_that("output from forward variable selection is as expected", {
 
   actual <-
     model %>%
-    blr_forward_selection() %>%
+    blr_step_aic_forward() %>%
     use_series(predictors)
 
   expected <- c("read", "female", "science")

@@ -97,7 +97,7 @@ blr_confusion_matrix(model)
 #### Hosmer Lemeshow Test
 
 ```{r hoslem}
-blr_hosmer_lemeshow_test(model)
+blr_test_hosmer_lemeshow(model)
 ```
 
 #### Gains Table
@@ -110,24 +110,24 @@ blr_gains_table(model)
 
 ```{r lift}
 model %>%
-  blr_gains_table %>%
-  plot
+  blr_gains_table() %>%
+  plot()
 ```
 
 #### ROC Curve
 
 ```{r roc}
 model %>%
-  blr_gains_table %>%
-  blr_roc_curve
+  blr_gains_table() %>%
+  blr_roc_curve()
 ```
 
 #### KS Chart
 
 ```{r kschart}
 model %>%
-  blr_gains_table %>%
-  blr_ks_chart
+  blr_gains_table() %>%
+  blr_ks_chart()
 ```
 
 #### Lorenz Curve

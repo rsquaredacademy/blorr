@@ -49,7 +49,7 @@ reference:
   contents:
   - blr_bivariate_analysis
   - blr_segment
-  - blr_twoway_segment
+  - blr_segment_twoway
   - blr_segment_dist
   - blr_woe_iv
   - blr_woe_iv_stats
@@ -64,22 +64,22 @@ reference:
   contents:
   - blr_model_fit_stats
   - blr_multi_model_fit_stats
-  - blr_lr_test
-  - blr_mcfadden_rsq
-  - blr_mcfadden_adj_rsq
-  - blr_cox_snell_rsq
-  - blr_nagelkerke_rsq
-  - blr_mckelvey_zavoina_rsq
-  - blr_effron_rsq
-  - blr_count_rsq
-  - blr_adj_count_rsq
+  - blr_test_lr
+  - blr_rsq_mcfadden
+  - blr_rsq_mcfadden_adj
+  - blr_rsq_cox_snell
+  - blr_rsq_nagelkerke
+  - blr_rsq_mckelvey_zavoina
+  - blr_rsq_effron
+  - blr_rsq_count
+  - blr_rsq_adj_count
 
 - title: Model Validation
 
   contents:
   - blr_gains_table
   - blr_ks_chart
-  - blr_hosmer_lemeshow_test
+  - blr_test_hosmer_lemeshow
   - blr_gini_index
   - blr_lorenz_curve
   - blr_confusion_matrix
@@ -91,9 +91,9 @@ reference:
 - title: Variable Selection
 
   contents:
-  - blr_forward_selection
-  - blr_backward_elimination
-  - blr_stepwise_selection
+  - blr_step_aic_forward
+  - blr_step_aic_backward
+  - blr_step_aic_both
 
 - title: Residual Diagnostics
 

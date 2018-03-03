@@ -1,7 +1,6 @@
 ---
 title: "Variable Selection"
 author: "Aravind Hebbali"
-
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Variable Selection}
@@ -19,6 +18,7 @@ knitr::opts_chunk$set(
 ```{r libs}
 library(blorr)
 library(ggplot2)
+library(magrittr)
 ```
 
 ### Forward Selection
@@ -33,19 +33,21 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 #### Selection Summary
 
 ```{r forward1}
-blr_forward_selection(model)
+blr_step_aic_forward(model)
 ```
 
 #### Detailed Output
 
 ```{r forward2}
-blr_forward_selection(model, details = TRUE)
+blr_step_aic_forward(model, details = TRUE)
 ```
 
 #### Plot
 
 ```{r forward3}
-plot(model)
+model %>%
+  blr_step_aic_forward() %>%
+  plot()
 ```
 
 ### Backward Elimination
@@ -59,19 +61,21 @@ model <- glm(honcomp ~ female + read + science + math + prog + socst, data = hsb
 #### Selection Summary
 
 ```{r backward1}
-blr_backward_elimination(model)
+blr_step_aic_backward(model)
 ```
 
 #### Detailed Output
 
 ```{r backward2}
-blr_backward_elimination(model, details = TRUE)
+blr_step_aic_backward(model, details = TRUE)
 ```
 
 #### Plot
 
 ```{r backward3}
-plot(model)
+model %>%
+  blr_step_aic_backward() %>%
+  plot()
 ```
 
 ### Stepwise Selection
@@ -85,18 +89,20 @@ model <- glm(y ~ ., data = stepwise)
 #### Selection Summary
 
 ```{r stepwise1}
-blr_stepwise_selection(model)
+blr_step_aic_both(model)
 ```
 
 #### Detailed Output
 
 ```{r stepwise2}
-blr_stepwise_selection(model, details = TRUE)
+blr_step_aic_both(model, details = TRUE)
 ```
 
 #### Plot
 
 ```{r stepwise3}
-plot(model)
+model %>%
+  blr_step_aic_both() %>%
+  plot()
 ```
 
