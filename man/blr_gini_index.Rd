@@ -15,7 +15,9 @@ blr_gini_index(model, data = NULL)
 Gini index.
 }
 \description{
-Gini index.
+Gini index is a measure of inequality and was developed to measure income
+  inequality in labour market. In the predictive model, Gini Index is used
+  for measuring inequality/discrimination.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

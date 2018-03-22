@@ -25,7 +25,7 @@ blr_lorenz_curve(model, data = NULL, title = "Lorenz Curve",
 \item{lorenz_curve_col}{Color of the lorenz curve.}
 }
 \description{
-Lorenz curve.
+Lorenz curve is a visual representation of inequality.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
