@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" align="right" />
+blorr: Tools for building binary logistic regression models 
 ------------
 
 **Author:** [Aravind Hebbali]()<br/>
@@ -38,11 +38,11 @@ Use `blr_launch_app()` to explore the package using a shiny app.
 
 ## Vignettes
 
-- [Bivariate Analysis](https://rsquaredacademy.github.io/blorr/bivariate_analysis.html)
-- [Model Fit Statistics](https://rsquaredacademy.github.io/blorr/intro.html)
-- [Model Validation](https://rsquaredacademy.github.io/blorr/model_validation.html)
-- [Variable Seelction](https://rsquaredacademy.github.io/blorr/variable_selection.html)
-- [Residual Diagnostics](https://rsquaredacademy.github.io/blorr/residual_diagnostics.html)
+- [Bivariate Analysis](https://blorr.rsquaredacademy.com/bivariate_analysis.html)
+- [Model Fit Statistics](https://blorr.rsquaredacademy.com/intro.html)
+- [Model Validation](https://blorr.rsquaredacademy.com/model_validation.html)
+- [Variable Seelction](https://blorr.rsquaredacademy.com/variable_selection.html)
+- [Residual Diagnostics](https://blorr.rsquaredacademy.com/residual_diagnostics.html)
 
 
 ### Consistent Prefix

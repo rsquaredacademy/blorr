@@ -2,12 +2,12 @@
 % Please edit documentation in R/blr-launch-app.R
 \name{blr_launch_app}
 \alias{blr_launch_app}
-\title{Launch Shiny App}
+\title{Launch shiny app}
 \usage{
 blr_launch_app()
 }
 \description{
-Launches shiny app
+Launches shiny app for interactive model building.
 }
 \examples{
 \dontrun{

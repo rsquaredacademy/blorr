@@ -3,7 +3,7 @@ Package: blorr
 Title: Tools for Developing Binary Logistic Regression Models
 Version: 0.0.9
 Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
-Description: blorr is designed to make it easier for users, particularly beginner/intermediate 
+Description: Tools designed to make it easier for users, particularly beginner/intermediate 
     R users to build logistic regression models. Includes comprehensive regression output, 
     variable selection procedure and model validation statistics.
 Depends:
@@ -46,7 +46,7 @@ Suggests:
     tidyr,
     vdiffr
 License: MIT + file LICENSE
-URL: URL: https://rsquaredacademy.github.io/blorr/, https://github.com/rsquaredacademy/blorr
+URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
 VignetteBuilder: knitr
 Encoding: UTF-8

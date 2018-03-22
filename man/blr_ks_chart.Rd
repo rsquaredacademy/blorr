@@ -19,7 +19,11 @@ blr_ks_chart(gains_table, title = "KS Chart", yaxis_title = " ",
 \item{ks_line_color}{Color of the line indicating maximum KS statistic.}
 }
 \description{
-Kolmogorov Smirnov statisitcs graph.
+Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
+marketing or credit risk models. It is the maximum difference between %
+cumulative event and non-event distribution across score/probability bands.
+The gains table typically has % cumulative event and % cumulative non-event
+across score bands and can be used to find the KS for a model.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

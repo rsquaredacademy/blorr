@@ -190,7 +190,7 @@ print.blr_segment <- function(x, ...) {
 #'
 blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod("blr_segment_twoway")
 
-#' @rdname blr_twoway_segment
+#' @rdname blr_segment_twoway
 #' @export
 #'
 blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {

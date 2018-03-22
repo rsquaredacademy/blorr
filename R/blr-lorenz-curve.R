@@ -1,6 +1,8 @@
 #' Gini index
 #'
-#' Gini index.
+#' Gini index is a measure of inequality and was developed to measure income
+#'   inequality in labour market. In the predictive model, Gini Index is used
+#'   for measuring inequality/discrimination.
 #'
 #' @param model An object of class \code{glm}.
 #' @param data A \code{tibble} or \code{data.frame}.
@@ -48,7 +50,7 @@ blr_gini_index <- function(model, data = NULL) {
 
 #' Lorenz curve
 #'
-#' @description Lorenz curve.
+#' @description Lorenz curve is a visual representation of inequality.
 #'
 #' @param model An object of class \code{glm}.
 #' @param data A \code{tibble} or \code{data.frame}.

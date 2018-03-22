@@ -31,7 +31,9 @@ blr_roc_curve(gains_table, title = "ROC Curve",
 \item{plot_title_justify}{Horizontal justification on the plot title.}
 }
 \description{
-Receiver operating characteristic curve.
+Receiver operating characteristic curve (ROC) curve is used for assessing
+  accuracy of the model classification. It depicts sensitivity on the Y axis
+  and 1 – specificity on the X axis.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

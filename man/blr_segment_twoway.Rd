@@ -2,9 +2,12 @@
 % Please edit documentation in R/blr-bivariate-analysis.R
 \name{blr_segment_twoway}
 \alias{blr_segment_twoway}
+\alias{blr_segment_twoway.default}
 \title{Two way event distribution}
 \usage{
 blr_segment_twoway(data, response, variable_1, variable_2)
+
+\method{blr_segment_twoway}{default}(data, response, variable_1, variable_2)
 }
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" align="right" />
+## blorr: Tools for building binary logistic regression models
 
 **Author:** [Aravind Hebbali]()<br/> **License:**
 [MIT](https://opensource.org/licenses/MIT)
@@ -35,15 +35,14 @@ Use `blr_launch_app()` to explore the package using a shiny app.
 ## Vignettes
 
   - [Bivariate
-    Analysis](https://rsquaredacademy.github.io/blorr/bivariate_analysis.html)
-  - [Model Fit
-    Statistics](https://rsquaredacademy.github.io/blorr/intro.html)
+    Analysis](https://blorr.rsquaredacademy.com/bivariate_analysis.html)
+  - [Model Fit Statistics](https://blorr.rsquaredacademy.com/intro.html)
   - [Model
-    Validation](https://rsquaredacademy.github.io/blorr/model_validation.html)
+    Validation](https://blorr.rsquaredacademy.com/model_validation.html)
   - [Variable
-    Seelction](https://rsquaredacademy.github.io/blorr/variable_selection.html)
+    Seelction](https://blorr.rsquaredacademy.com/variable_selection.html)
   - [Residual
-    Diagnostics](https://rsquaredacademy.github.io/blorr/residual_diagnostics.html)
+    Diagnostics](https://blorr.rsquaredacademy.com/residual_diagnostics.html)
 
 ### Consistent Prefix
 

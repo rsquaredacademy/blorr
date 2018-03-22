@@ -94,7 +94,11 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 
 #' KS chart
 #'
-#' Kolmogorov Smirnov statisitcs graph.
+#' Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
+#' marketing or credit risk models. It is the maximum difference between %
+#' cumulative event and non-event distribution across score/probability bands.
+#' The gains table typically has % cumulative event and % cumulative non-event
+#' across score bands and can be used to find the KS for a model.
 #'
 #' @param gains_table An object of class \code{blr_gains_table}.
 #' @param title Plot title.
