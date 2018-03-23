@@ -3,6 +3,10 @@ blr_reg_comp <- function(formula, data) {
   model <- glm(formula = formula, data = data,
                family = binomial(link = "logit"))
 
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick),
+        crayon::bold("Creating model overview."), "\n")
+  }
 
   dataname       <- data_name(model)
   resp_name      <- response_var(model)
@@ -10,7 +14,18 @@ blr_reg_comp <- function(formula, data) {
   converge       <- converge_status(model)
   resid_df       <- residual_df(model)
   mod_df         <- model_df(model)
+
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick),
+        crayon::bold("Creating response profile."), "\n")
+  }
+
   resp_prof      <- resp_profile(model)
+
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick),
+        crayon::bold("Extracting maximum likelihood estimates."), "\n")
+  }
 
   parameter      <- predictor_names(model)
   df             <- predictor_df(model)
@@ -19,9 +34,19 @@ blr_reg_comp <- function(formula, data) {
   zval           <- predictor_zval(model)
   pval           <- predictor_pval(model)
 
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick),
+        crayon::bold("Computing odds ratio estimates."), "\n")
+  }
   blr_effects    <- odds_effect(model)
   blr_odds_point <- odds_point(model)
   blr_conf       <- suppressMessages(odds_conf_limit(model))
+
+  if (interactive()) {
+    cat(crayon::green(clisymbols::symbol$tick),
+        crayon::bold("Estimating concordant and discordant pairs."), "\n\n")
+  }
+
   blr_cord       <- blr_pairs(model)
 
   result <- list(

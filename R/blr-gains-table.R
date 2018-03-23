@@ -237,7 +237,7 @@ gains_decile_count <- function(data) {
   data %>%
     nrow() %>%
     divide_by(10) %>%
-    ceiling()
+    round()
 
 }
 
@@ -255,10 +255,16 @@ gains_table_prep <- function(model, data) {
 
 gains_table_modify <- function(data, decile_count) {
 
+  residual <-
+    data %>%
+    nrow() %>%
+    subtract((decile_count * 9))
+
   data %>%
     select(response = value, prob = value1) %>%
     arrange(desc(prob)) %>%
-    add_column(decile = rep(1:10, each = decile_count)) %>%
+    add_column(decile = c(rep(1:9, each = decile_count),
+                          rep(10, times = residual))) %>%
     group_by(decile) %>%
     summarise(total = n(), `1` = table(response)[[2]])
 }

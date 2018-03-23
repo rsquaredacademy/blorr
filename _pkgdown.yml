@@ -37,7 +37,7 @@ home:
   links:
   - text: Learn more
     href: https://www.rsquaredacademy.com
-  - test: Try shiny app at
+  - text: Try shiny app
     href: https://apps.rsquaredacademy.com
 
 reference:
