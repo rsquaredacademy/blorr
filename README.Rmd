@@ -21,7 +21,8 @@ blorr: Tools for building binary logistic regression models
 
 [![CRAN status](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
-blorr is designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models.
+Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression 
+output, variable selection procedure and model validation statistics.
 
 ### Installation
 
