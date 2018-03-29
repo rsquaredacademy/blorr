@@ -16,8 +16,10 @@ Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr
 status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
 ![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
-blorr is designed to make it easier for users, particularly
+Tools designed to make it easier for users, particularly
 beginner/intermediate R users to build logistic regression models.
+Includes comprehensive regression output, variable selection procedure
+and model validation statistics.
 
 ### Installation
 
