@@ -1,17 +1,20 @@
-source('helpers/model-validation.R')
-source('helpers/hosmer-lemeshow-test.R')
-source('helpers/gains-table.R')
-source('helpers/lorenz-curve.R')
-
-# confusion matrix
 conf_result <- eventReactive(input$submit_conf, {
+  
   if (input$conf_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$conf_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_confusion_matrix(k, cutoff = input$conf_cutoff))
+
+  if (input$conf_use_test_data) {
+    out <- blr_confusion_matrix(k, cutoff = input$conf_cutoff, data = final_split$test)
+  } else {
+    out <- blr_confusion_matrix(k, cutoff = input$conf_cutoff)
+  }
+
+  return(out)
+  
 })
 
 confusion_title <- eventReactive(input$submit_conf, {
@@ -30,13 +33,22 @@ output$conf_out <- renderPrint({
 
 # hosmer lemeshow test
 hoslem_result <- eventReactive(input$submit_hoslem, {
+
   if (input$hoslem_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$hoslem_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_hosmer_lemeshow_test(k))
+
+  if (input$hoslem_use_test_data) {
+    out <- blr_test_hosmer_lemeshow(k, data = final_split$test)
+  } else {
+    out <- blr_test_hosmer_lemeshow(k)
+  }
+
+  return(out)
+
 })
 
 output$hoslem_out <- renderPrint({
@@ -45,13 +57,22 @@ output$hoslem_out <- renderPrint({
 
 # gains chart and roc curve
 lift_result <- eventReactive(input$submit_lift, {
+
   if (input$lift_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$lift_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_gains_table(k))
+
+  if (input$lift_use_test_data) {
+    out <- blr_gains_table(k, data = final_split$test)
+  } else {
+    out <- blr_gains_table(k)
+  }
+
+  return(out)
+
 })
 
 gains_title <- eventReactive(input$submit_lift, {
@@ -72,29 +93,47 @@ output$lift_out <- renderPlot({
 
 # ROC curve
 roc_result <- eventReactive(input$submit_roc, {
+
   if (input$roc_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$roc_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_gains_table(k))
+
+  if (input$roc_use_test_data) {
+    out <- blr_gains_table(k, data = final_split$test)
+  } else {
+    out <- blr_gains_table(k)
+  }
+
+  return(out)
+
 })
 
 
 output$roc_out <- renderPlot({
-	blorr::blr_roc_curve(roc_result())
+	blr_roc_curve(roc_result())
 })
 
 # KS chart
 ks_result <- eventReactive(input$submit_ks, {
+
   if (input$ks_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$ks_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_gains_table(k))
+
+  if (input$ks_use_test_data) {
+    out <- blr_gains_table(k, data = final_split$test)
+  } else {
+    out <- blr_gains_table(k)
+  }
+
+  return(out)
+
 })
 
 
@@ -105,16 +144,18 @@ output$ks_out <- renderPlot({
 
 # lorenz curve
 lorenz_result <- eventReactive(input$submit_lorenz, {
+
   if (input$lorenz_use_prev) {
     k <- model()
   } else {
     data <- final_split$train
     k <- glm(input$lorenz_fmla, data = data, family = binomial(link = "logit"))
   }
+
   return(k)
+
 })
 
-
 output$lorenz_out <- renderPlot({
-	blr_lorenz_curve(lorenz_result())
+	blorr::blr_lorenz_curve(lorenz_result())
 })

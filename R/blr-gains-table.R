@@ -42,13 +42,17 @@ blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
 blr_gains_table.default <- function(model, data = NULL) {
 
   if (is.null(data)) {
-    data <- eval(model$call$data)
+    test_data <- FALSE
+    data      <- eval(model$call$data)
+  } else {
+    test_data <- TRUE
+    data      <- data
   }
 
   decile_count <- gains_decile_count(data)
 
   gains_table <-
-    gains_table_prep(model, data) %>%
+    gains_table_prep(model, data, test_data) %>%
     gains_table_modify(decile_count = decile_count) %>%
     gains_table_mutate()
 
@@ -242,11 +246,26 @@ gains_decile_count <- function(data) {
 }
 
 
-gains_table_prep <- function(model, data) {
+gains_table_prep <- function(model, data, test_data = FALSE) {
 
-  model %>%
-    model.frame() %>%
-    model.response() %>%
+  if (test_data) {
+    namu <-
+      model %>%
+      formula() %>%
+      extract2(2)
+
+    response <- 
+      data %>% 
+      pull(!! namu)
+
+  } else {
+    response <- 
+      model %>%
+      model.frame() %>%
+      model.response()
+  }
+
+  response %>%
     as_tibble() %>%
     bind_cols(predict.glm(model, newdata = data, type = "response") %>%
                 as_tibble())

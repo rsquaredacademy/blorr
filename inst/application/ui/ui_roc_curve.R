@@ -37,6 +37,16 @@ tabPanel('ROC Curve', value = 'tab_roc_curve',
 	                     "left", options = list(container = "body"))
 	    )
 	  ),
+
+    fluidRow(
+      column(2, align = 'right', br(), h5('Use test data:')),
+      column(2, align = 'left', br(),
+             checkboxInput(inputId = 'roc_use_test_data', label = '',
+                           value = FALSE),
+             bsTooltip("roc_use_test_data", "Use the test/validation data.",
+                       "left", options = list(container = "body"))
+      )
+    ),
     
     fluidRow(
         column(12, align = 'center',

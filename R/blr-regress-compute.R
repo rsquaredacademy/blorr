@@ -6,6 +6,8 @@ blr_reg_comp <- function(formula, data) {
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick),
         crayon::bold("Creating model overview."), "\n")
+  } else {
+    cat("Creating model overview.", "\n")
   }
 
   dataname       <- data_name(model)
@@ -18,6 +20,8 @@ blr_reg_comp <- function(formula, data) {
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick),
         crayon::bold("Creating response profile."), "\n")
+  } else {
+    cat("Creating response profile.", "\n")
   }
 
   resp_prof      <- resp_profile(model)
@@ -25,6 +29,8 @@ blr_reg_comp <- function(formula, data) {
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick),
         crayon::bold("Extracting maximum likelihood estimates."), "\n")
+  } else {
+    cat("Extracting maximum likelihood estimates.", "\n")
   }
 
   parameter      <- predictor_names(model)
@@ -37,7 +43,10 @@ blr_reg_comp <- function(formula, data) {
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick),
         crayon::bold("Computing odds ratio estimates."), "\n")
+  } else {
+    cat("Computing odds ratio estimates.", "\n")
   }
+
   blr_effects    <- odds_effect(model)
   blr_odds_point <- odds_point(model)
   blr_conf       <- suppressMessages(odds_conf_limit(model))
@@ -45,6 +54,8 @@ blr_reg_comp <- function(formula, data) {
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick),
         crayon::bold("Estimating concordant and discordant pairs."), "\n\n")
+  } else {
+    cat("Estimating concordant and discordant pairs.", "\n")
   }
 
   blr_cord       <- blr_pairs(model)

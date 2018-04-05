@@ -74,9 +74,7 @@ null_ll <- function(model) {
 
 model_ll <- function(model) {
 
-  model %>%
-    logLik() %>%
-    extract(1)
+  logLik(model)[1]
 
 }
 

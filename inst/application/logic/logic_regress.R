@@ -1,6 +1,3 @@
-source('helpers/model-fit-stats.R')
-source('helpers/multi-model-fit-stats.R')
-
 model <- eventReactive(input$submit_regress, {
   data <- final_split$train
   k <- glm(input$regress_fmla, data = data, family = binomial(link = "logit"))
@@ -34,7 +31,7 @@ result <- eventReactive(input$submit_mfs, {
     data <- final_split$train
     k <- glm(input$mfs_fmla, data = data, family = binomial(link = "logit"))
   }
-  return(blr_model_fit_stats(k))
+  return(blorr::blr_model_fit_stats(k))
 })
 
 output$mfs <- renderPrint({
@@ -47,7 +44,7 @@ mmfs_result <- eventReactive(input$submit_mmfs, {
   data <- final_split$train
   m1 <- glm(input$mmfs_fmla_1, data = data, family = binomial(link = "logit"))
   m2 <- glm(input$mmfs_fmla_2, data = data, family = binomial(link = "logit"))
-  blr_multi_model_fit_stats(m1, m2)
+  blorr::blr_multi_model_fit_stats(m1, m2)
 })
 
 output$mmfs <- renderPrint({

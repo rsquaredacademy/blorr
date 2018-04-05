@@ -186,9 +186,7 @@ i_model <- function(model) {
 
   dat <-
     model %>%
-    use_series(call) %>%
-    use_series(data) %>%
-    eval_tidy()
+    use_series(data) 
 
   glm(
     glue(dep, " ~ 1"), data = dat,
@@ -280,5 +278,6 @@ fl <- function(x, w) {
 }
 
 mod_sel_data <- function(model) {
-  eval(model$call$data)
+  model %>%
+    use_series(data)
 }

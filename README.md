@@ -105,6 +105,11 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 
 ``` r
 blr_regress(model)
+#> Creating model overview. 
+#> Creating response profile. 
+#> Extracting maximum likelihood estimates. 
+#> Computing odds ratio estimates. 
+#> Estimating concordant and discordant pairs.
 #>                              Model Overview                              
 #> ------------------------------------------------------------------------
 #> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
@@ -205,23 +210,23 @@ blr_test_hosmer_lemeshow(model)
 #>                         def = 1                 def = 0        
 #> Group    Total    Observed    Expected    Observed    Expected 
 #> --------------------------------------------------------------
-#>   1       20         0          0.16         20        19.84   
-#>   2       20         0          0.53         20        19.47   
-#>   3       20         2          0.99         18        19.01   
-#>   4       20         1          1.64         19        18.36   
-#>   5       21         3          2.72         18        18.28   
-#>   6       19         3          4.05         16        14.95   
-#>   7       20         7          6.50         13        13.50   
-#>   8       20         10         8.90         10        11.10   
-#>   9       20         13        11.49         7          8.51   
-#>  10       20         14        16.02         6          3.98   
+#>   1       20         20         0.16         0         19.84   
+#>   2       20         20         0.53         0         19.47   
+#>   3       20         22         0.99         -2        19.01   
+#>   4       20         21         1.64         -1        18.36   
+#>   5       21         24         2.72         -3        18.28   
+#>   6       19         22         4.05         -3        14.95   
+#>   7       20         27         6.50         -7        13.50   
+#>   8       20         30         8.90        -10        11.10   
+#>   9       20         33        11.49        -13         8.51   
+#>  10       20         34        16.02        -14         3.98   
 #> --------------------------------------------------------------
 #> 
 #>      Goodness of Fit Test      
 #> ------------------------------
 #> Chi-Square    DF    Pr > ChiSq 
 #> ------------------------------
-#>   4.4998      8       0.8095   
+#> 4634.4022     8       0.0000   
 #> ------------------------------
 ```
 

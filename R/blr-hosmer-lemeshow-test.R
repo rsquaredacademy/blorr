@@ -29,7 +29,21 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
     data <- eval(model$call$data)
   }
 
-  resp        <- model$y
+  # resp        <- model$y
+  if (is.null(data)) {
+    resp <- model$y 
+  } else {
+    namu <-
+      model %>%
+      formula() %>%
+      extract2(2)
+
+    resp <- 
+      data %>% 
+      pull(!! namu) %>%
+      as.numeric()
+  }
+
   hoslem_data <- hoslem_data_prep(model, data, resp)
   int_limits  <- hoslem_int_limits(hoslem_data)
 

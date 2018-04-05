@@ -78,9 +78,8 @@ lr_reduced_model <- function(full_model) {
 
   dat <-
     full_model %>%
-    use_series(call) %>%
-    use_series(data) %>%
-    eval_tidy()
+    use_series(data) 
+
 
   glm(glue(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
 

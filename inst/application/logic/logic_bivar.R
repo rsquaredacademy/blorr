@@ -1,5 +1,3 @@
-source('helpers/segment_dist.R')
-
 observe({
 
 	updateSelectInput(session, inputId = "resp_bivar",
@@ -47,8 +45,9 @@ woe_iv_2 <- eventReactive(input$submit_woe2, {
 })
 
 seg_dist <- eventReactive(input$submit_segdist, {
-	blr_segment_dist(data = final_split$train,
-		response = input$resp_segdist, predictor = input$var_segdist)
+	blorr::blr_segment_dist(data = final_split$train,
+		response = !! sym(as.character(input$resp_segdist)), 
+		predictor = !! sym(as.character(input$var_segdist)))
 })
 
 twowayseg <- eventReactive(input$submit_2wayseg, {
