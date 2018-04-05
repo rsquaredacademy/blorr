@@ -25,9 +25,6 @@ blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
 
   if (is.null(data)) {
     data <- eval(model$call$data)
-  }
-
-  if (is.null(data)) {
   	response <- model$y	
   } else {
   	namu <-

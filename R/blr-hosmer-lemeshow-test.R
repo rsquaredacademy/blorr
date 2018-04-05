@@ -27,10 +27,6 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   if (is.null(data)) {
     data <- eval(model$call$data)
-  }
-
-  # resp        <- model$y
-  if (is.null(data)) {
     resp <- model$y 
   } else {
     namu <-

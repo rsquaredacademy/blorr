@@ -61,7 +61,7 @@ tabPanel('Sample Data', value = 'tab_use_sample',
 					inputId = 'hsb_data',
 					label = 'hsb',
 					width = '200px',
-					onclick ="window.open('http://www.rsquaredacademy.com/descriptr/reference/hsb.html', 'newwindow', 'width=800,height=600')"
+					onclick ="window.open('https://blorr.rsquaredacademy.com/reference/hsb2.html', 'newwindow', 'width=800,height=600')"
 				)
 			),
 
