@@ -1,7 +1,3 @@
-source('helpers/backward-elimination.R')
-source('helpers/forward-selection.R')
-source('helpers/stepwise-selection.R')
-
 model_be <- eventReactive(input$submit_varsel_be, {
   data <- final_split$train
   m <- glm(input$varsel_be_fmla, data = data, family = binomial(link = "logit"))

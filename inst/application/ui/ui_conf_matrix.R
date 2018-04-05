@@ -46,6 +46,16 @@ tabPanel('Confusion Matrix', value = 'tab_conf_matrix',
 	                     "left", options = list(container = "body"))
 	    )
 	  ),
+
+    fluidRow(
+      column(2, align = 'right', br(), h5('Use test data:')),
+      column(2, align = 'left', br(),
+             checkboxInput(inputId = 'conf_use_test_data', label = '',
+                           value = FALSE),
+             bsTooltip("conf_use_test_data", "Use the test/validation data.",
+                       "left", options = list(container = "body"))
+      )
+    ),
     
     fluidRow(
         column(12, align = 'center',

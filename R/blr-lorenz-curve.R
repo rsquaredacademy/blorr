@@ -22,7 +22,9 @@
 blr_gini_index <- function(model, data = NULL) {
 
   if (is.null(data)) {
-    data <- eval(model$call$data)
+    data <- 
+      model %>%
+      use_series(data)
   }
 
   prob <- predict.glm(model, newdata = data, type = "response")
@@ -77,7 +79,9 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
                              lorenz_curve_col = "blue") {
 
   if (is.null(data)) {
-    data <- eval(model$call$data)
+    data <- 
+      model %>%
+      use_series(data)
   }
 
   prob <- lorenz_curve_prob(data, model)
@@ -103,12 +107,13 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
 
 lorenz_curve_prob <- function(data, model) {
 
-  data %>%
-    mutate(
-      prob = predict.glm(model, newdata = ., type = "response")
-    ) %>%
+  data$prob <- predict.glm(model, newdata = data, type = 'response')
+
+  prob <- 
+    data %>%
     arrange(prob) %>%
     pull(prob)
+
 
 }
 

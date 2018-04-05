@@ -21,6 +21,7 @@ family = binomial(link = 'logit'))
 
 blr_pairs(model)
 
+
 }
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},

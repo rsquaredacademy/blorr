@@ -12,6 +12,7 @@
 #'
 #' blr_pairs(model)
 #'
+#' 
 #' @useDynLib blorr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom dplyr filter

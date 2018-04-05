@@ -172,7 +172,9 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       lbic       <- c(lbic, mbic)
       ldev       <- c(ldev, mdev)
 
-      if (interactive()) {
+      if (isRunning()) {
+        cat(paste("-", dplyr::last(preds), "added"), "\n")
+      } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
       } else {
         cat(paste("-", dplyr::last(preds), "added"), "\n")
@@ -251,7 +253,9 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           method    <- c(method, tech[2])
           all_step  <- all_step + 1
 
-          if (interactive()) {
+          if (isRunning()) {
+            cat(paste("-", preds[minc2], "removed"), "\n")
+          } else if (interactive()) {
             cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), "\n")
           } else {
             cat(paste("-", preds[minc2], "removed"), "\n")
