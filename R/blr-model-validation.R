@@ -23,20 +23,22 @@
 #'
 blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
 
+  namu <-
+    model %>%
+    formula() %>%
+    extract2(2)
+
   if (is.null(data)) {
     data <- eval(model$call$data)
-  	response <- model$y	
+  	response <-
+  	  data %>%
+  	  pull(!! namu)
   } else {
-  	namu <-
-		  model %>%
-		  formula() %>%
-		  extract2(2)
-
-		response <- 
-		  data %>% 
+		response <-
+		  data %>%
 		  pull(!! namu)
   }
-  	
+
   p_data   <- predict(model, newdata = data, type = "response")
 
   confusionMatrix(data = as.numeric(p_data > cutoff), reference = response)
