@@ -202,55 +202,50 @@
 <a class="sourceLine" id="cb4-58" data-line-number="58"><span class="co">#&gt; Final Model Output </span></a>
 <a class="sourceLine" id="cb4-59" data-line-number="59"><span class="co">#&gt; ------------------</span></a>
 <a class="sourceLine" id="cb4-60" data-line-number="60"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt;                              Model Overview                              </span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
-<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb4-61" data-line-number="61"><span class="co">#&gt; - Creating model overview. </span></a>
+<a class="sourceLine" id="cb4-62" data-line-number="62"><span class="co">#&gt; - Creating response profile. </span></a>
+<a class="sourceLine" id="cb4-63" data-line-number="63"><span class="co">#&gt; - Extracting maximum likelihood estimates. </span></a>
+<a class="sourceLine" id="cb4-64" data-line-number="64"><span class="co">#&gt; - Estimating concordant and discordant pairs. </span></a>
+<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="co">#&gt;                              Model Overview                              </span></a>
 <a class="sourceLine" id="cb4-66" data-line-number="66"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt;                     Response Summary                     </span></a>
-<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
-<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb4-67" data-line-number="67"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb4-68" data-line-number="68"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-71" data-line-number="71"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-72" data-line-number="72"><span class="co">#&gt;                     Response Summary                     </span></a>
 <a class="sourceLine" id="cb4-73" data-line-number="73"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
-<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
-<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-79" data-line-number="79"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
-<a class="sourceLine" id="cb4-80" data-line-number="80"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
-<a class="sourceLine" id="cb4-81" data-line-number="81"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
-<a class="sourceLine" id="cb4-82" data-line-number="82"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
-<a class="sourceLine" id="cb4-83" data-line-number="83"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-84" data-line-number="84"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-85" data-line-number="85"><span class="co">#&gt;                   Odds Ratio Estimates                    </span></a>
-<a class="sourceLine" id="cb4-86" data-line-number="86"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-87" data-line-number="87"><span class="co">#&gt;  Effects          Estimate          95% Wald Conf. Limit </span></a>
-<a class="sourceLine" id="cb4-88" data-line-number="88"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-89" data-line-number="89"><span class="co">#&gt;    read            1.1091          1.0569          1.1699 </span></a>
-<a class="sourceLine" id="cb4-90" data-line-number="90"><span class="co">#&gt;  female1           4.4039          1.8955         11.0521 </span></a>
-<a class="sourceLine" id="cb4-91" data-line-number="91"><span class="co">#&gt;  science           1.0994          1.0377          1.1702 </span></a>
-<a class="sourceLine" id="cb4-92" data-line-number="92"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-93" data-line-number="93"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-94" data-line-number="94"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-79" data-line-number="79"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb4-80" data-line-number="80"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-81" data-line-number="81"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb4-82" data-line-number="82"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-83" data-line-number="83"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
+<a class="sourceLine" id="cb4-84" data-line-number="84"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
+<a class="sourceLine" id="cb4-85" data-line-number="85"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
+<a class="sourceLine" id="cb4-86" data-line-number="86"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
+<a class="sourceLine" id="cb4-87" data-line-number="87"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-88" data-line-number="88"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-89" data-line-number="89"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb4-90" data-line-number="90"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-91" data-line-number="91"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
+<a class="sourceLine" id="cb4-92" data-line-number="92"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
+<a class="sourceLine" id="cb4-93" data-line-number="93"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
+<a class="sourceLine" id="cb4-94" data-line-number="94"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
 <a class="sourceLine" id="cb4-95" data-line-number="95"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-96" data-line-number="96"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
-<a class="sourceLine" id="cb4-97" data-line-number="97"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
-<a class="sourceLine" id="cb4-98" data-line-number="98"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
-<a class="sourceLine" id="cb4-99" data-line-number="99"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
-<a class="sourceLine" id="cb4-100" data-line-number="100"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-101" data-line-number="101"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-102" data-line-number="102"><span class="co">#&gt;                  Selection Summary                  </span></a>
-<a class="sourceLine" id="cb4-103" data-line-number="103"><span class="co">#&gt; ---------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-104" data-line-number="104"><span class="co">#&gt; Step    Variable       AIC        BIC      Deviance </span></a>
-<a class="sourceLine" id="cb4-105" data-line-number="105"><span class="co">#&gt; ---------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-106" data-line-number="106"><span class="co">#&gt; 1       read         183.063    189.660     179.063 </span></a>
-<a class="sourceLine" id="cb4-107" data-line-number="107"><span class="co">#&gt; 2       female       176.887    176.887     176.887 </span></a>
-<a class="sourceLine" id="cb4-108" data-line-number="108"><span class="co">#&gt; 3       science      168.236    168.236     168.236 </span></a>
-<a class="sourceLine" id="cb4-109" data-line-number="109"><span class="co">#&gt; ---------------------------------------------------</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-96" data-line-number="96"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-97" data-line-number="97"><span class="co">#&gt;                  Selection Summary                  </span></a>
+<a class="sourceLine" id="cb4-98" data-line-number="98"><span class="co">#&gt; ---------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-99" data-line-number="99"><span class="co">#&gt; Step    Variable       AIC        BIC      Deviance </span></a>
+<a class="sourceLine" id="cb4-100" data-line-number="100"><span class="co">#&gt; ---------------------------------------------------</span></a>
+<a class="sourceLine" id="cb4-101" data-line-number="101"><span class="co">#&gt; 1       read         183.063    189.660     179.063 </span></a>
+<a class="sourceLine" id="cb4-102" data-line-number="102"><span class="co">#&gt; 2       female       176.887    176.887     176.887 </span></a>
+<a class="sourceLine" id="cb4-103" data-line-number="103"><span class="co">#&gt; 3       science      168.236    168.236     168.236 </span></a>
+<a class="sourceLine" id="cb4-104" data-line-number="104"><span class="co">#&gt; ---------------------------------------------------</span></a></code></pre></div>
 </div>
 <div id="plot" class="section level4">
 <h4 class="hasAnchor">
@@ -389,58 +384,52 @@
 <a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; Final Model Output </span></a>
 <a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; ------------------</span></a>
 <a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt;                              Model Overview                              </span></a>
-<a class="sourceLine" id="cb8-72" data-line-number="72"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-73" data-line-number="73"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
-<a class="sourceLine" id="cb8-74" data-line-number="74"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-75" data-line-number="75"><span class="co">#&gt;   data      honcomp     200        199           195            TRUE     </span></a>
+<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt; - Creating model overview. </span></a>
+<a class="sourceLine" id="cb8-72" data-line-number="72"><span class="co">#&gt; - Creating response profile. </span></a>
+<a class="sourceLine" id="cb8-73" data-line-number="73"><span class="co">#&gt; - Extracting maximum likelihood estimates. </span></a>
+<a class="sourceLine" id="cb8-74" data-line-number="74"><span class="co">#&gt; - Estimating concordant and discordant pairs. </span></a>
+<a class="sourceLine" id="cb8-75" data-line-number="75"><span class="co">#&gt;                              Model Overview                              </span></a>
 <a class="sourceLine" id="cb8-76" data-line-number="76"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-77" data-line-number="77"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-78" data-line-number="78"><span class="co">#&gt;                     Response Summary                     </span></a>
-<a class="sourceLine" id="cb8-79" data-line-number="79"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-80" data-line-number="80"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
-<a class="sourceLine" id="cb8-81" data-line-number="81"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-82" data-line-number="82"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb8-77" data-line-number="77"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb8-78" data-line-number="78"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-79" data-line-number="79"><span class="co">#&gt;   data      honcomp     200        199           195            TRUE     </span></a>
+<a class="sourceLine" id="cb8-80" data-line-number="80"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-81" data-line-number="81"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-82" data-line-number="82"><span class="co">#&gt;                     Response Summary                     </span></a>
 <a class="sourceLine" id="cb8-83" data-line-number="83"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-84" data-line-number="84"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-85" data-line-number="85"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
-<a class="sourceLine" id="cb8-86" data-line-number="86"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-87" data-line-number="87"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
-<a class="sourceLine" id="cb8-88" data-line-number="88"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-89" data-line-number="89"><span class="co">#&gt; (Intercept)    1     -14.5773       2.1568    -6.7589      0.0000 </span></a>
-<a class="sourceLine" id="cb8-90" data-line-number="90"><span class="co">#&gt;   female1      1      1.3622        0.4605     2.9580      0.0031 </span></a>
-<a class="sourceLine" id="cb8-91" data-line-number="91"><span class="co">#&gt;    read        1      0.0631        0.0281     2.2455      0.0247 </span></a>
-<a class="sourceLine" id="cb8-92" data-line-number="92"><span class="co">#&gt;   science      1      0.0569        0.0326     1.7429      0.0814 </span></a>
-<a class="sourceLine" id="cb8-93" data-line-number="93"><span class="co">#&gt;    math        1      0.1113        0.0338     3.2992      0.0010 </span></a>
-<a class="sourceLine" id="cb8-94" data-line-number="94"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-95" data-line-number="95"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-96" data-line-number="96"><span class="co">#&gt;                    Odds Ratio Estimates                    </span></a>
-<a class="sourceLine" id="cb8-97" data-line-number="97"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-98" data-line-number="98"><span class="co">#&gt;  Effects          Estimate           95% Wald Conf. Limit </span></a>
-<a class="sourceLine" id="cb8-99" data-line-number="99"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-100" data-line-number="100"><span class="co">#&gt;  female1           3.9048          1.6348          10.0549 </span></a>
-<a class="sourceLine" id="cb8-101" data-line-number="101"><span class="co">#&gt;    read            1.0651          1.0096           1.1280 </span></a>
-<a class="sourceLine" id="cb8-102" data-line-number="102"><span class="co">#&gt;  science           1.0585          0.9940           1.1307 </span></a>
-<a class="sourceLine" id="cb8-103" data-line-number="103"><span class="co">#&gt;    math            1.1178          1.0498           1.1992 </span></a>
-<a class="sourceLine" id="cb8-104" data-line-number="104"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-105" data-line-number="105"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-106" data-line-number="106"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
-<a class="sourceLine" id="cb8-107" data-line-number="107"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-108" data-line-number="108"><span class="co">#&gt; % Concordant          0.8835          Somers' D        0.7669   </span></a>
-<a class="sourceLine" id="cb8-109" data-line-number="109"><span class="co">#&gt; % Discordant          0.1165          Gamma            0.7669   </span></a>
-<a class="sourceLine" id="cb8-110" data-line-number="110"><span class="co">#&gt; % Tied                0.0000          Tau-a            0.3003   </span></a>
-<a class="sourceLine" id="cb8-111" data-line-number="111"><span class="co">#&gt; Pairs                  7791           c                0.8835   </span></a>
-<a class="sourceLine" id="cb8-112" data-line-number="112"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-113" data-line-number="113"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-114" data-line-number="114"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb8-115" data-line-number="115"><span class="co">#&gt;          Backward Elimination Summary         </span></a>
-<a class="sourceLine" id="cb8-116" data-line-number="116"><span class="co">#&gt; --------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-117" data-line-number="117"><span class="co">#&gt; Variable        AIC        BIC      Deviance </span></a>
-<a class="sourceLine" id="cb8-118" data-line-number="118"><span class="co">#&gt; --------------------------------------------</span></a>
-<a class="sourceLine" id="cb8-119" data-line-number="119"><span class="co">#&gt; Full Model    162.424    188.811     146.424 </span></a>
-<a class="sourceLine" id="cb8-120" data-line-number="120"><span class="co">#&gt; prog          158.953    178.743     146.953 </span></a>
-<a class="sourceLine" id="cb8-121" data-line-number="121"><span class="co">#&gt; socst         157.286    173.777     147.286 </span></a>
-<a class="sourceLine" id="cb8-122" data-line-number="122"><span class="co">#&gt; --------------------------------------------</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-84" data-line-number="84"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb8-85" data-line-number="85"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-86" data-line-number="86"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb8-87" data-line-number="87"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-88" data-line-number="88"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-89" data-line-number="89"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb8-90" data-line-number="90"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-91" data-line-number="91"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb8-92" data-line-number="92"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-93" data-line-number="93"><span class="co">#&gt; (Intercept)    1     -14.5773       2.1568    -6.7589      0.0000 </span></a>
+<a class="sourceLine" id="cb8-94" data-line-number="94"><span class="co">#&gt;   female1      1      1.3622        0.4605     2.9580      0.0031 </span></a>
+<a class="sourceLine" id="cb8-95" data-line-number="95"><span class="co">#&gt;    read        1      0.0631        0.0281     2.2455      0.0247 </span></a>
+<a class="sourceLine" id="cb8-96" data-line-number="96"><span class="co">#&gt;   science      1      0.0569        0.0326     1.7429      0.0814 </span></a>
+<a class="sourceLine" id="cb8-97" data-line-number="97"><span class="co">#&gt;    math        1      0.1113        0.0338     3.2992      0.0010 </span></a>
+<a class="sourceLine" id="cb8-98" data-line-number="98"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-99" data-line-number="99"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-100" data-line-number="100"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb8-101" data-line-number="101"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-102" data-line-number="102"><span class="co">#&gt; % Concordant          0.8835          Somers' D        0.7669   </span></a>
+<a class="sourceLine" id="cb8-103" data-line-number="103"><span class="co">#&gt; % Discordant          0.1165          Gamma            0.7669   </span></a>
+<a class="sourceLine" id="cb8-104" data-line-number="104"><span class="co">#&gt; % Tied                0.0000          Tau-a            0.3003   </span></a>
+<a class="sourceLine" id="cb8-105" data-line-number="105"><span class="co">#&gt; Pairs                  7791           c                0.8835   </span></a>
+<a class="sourceLine" id="cb8-106" data-line-number="106"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-107" data-line-number="107"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-108" data-line-number="108"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-109" data-line-number="109"><span class="co">#&gt;          Backward Elimination Summary         </span></a>
+<a class="sourceLine" id="cb8-110" data-line-number="110"><span class="co">#&gt; --------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-111" data-line-number="111"><span class="co">#&gt; Variable        AIC        BIC      Deviance </span></a>
+<a class="sourceLine" id="cb8-112" data-line-number="112"><span class="co">#&gt; --------------------------------------------</span></a>
+<a class="sourceLine" id="cb8-113" data-line-number="113"><span class="co">#&gt; Full Model    162.424    188.811     146.424 </span></a>
+<a class="sourceLine" id="cb8-114" data-line-number="114"><span class="co">#&gt; prog          158.953    178.743     146.953 </span></a>
+<a class="sourceLine" id="cb8-115" data-line-number="115"><span class="co">#&gt; socst         157.286    173.777     147.286 </span></a>
+<a class="sourceLine" id="cb8-116" data-line-number="116"><span class="co">#&gt; --------------------------------------------</span></a></code></pre></div>
 </div>
 <div id="plot-1" class="section level4">
 <h4 class="hasAnchor">
@@ -676,61 +665,55 @@
 <a class="sourceLine" id="cb12-151" data-line-number="151"><span class="co">#&gt; Final Model Output </span></a>
 <a class="sourceLine" id="cb12-152" data-line-number="152"><span class="co">#&gt; ------------------</span></a>
 <a class="sourceLine" id="cb12-153" data-line-number="153"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-154" data-line-number="154"><span class="co">#&gt;                              Model Overview                               </span></a>
-<a class="sourceLine" id="cb12-155" data-line-number="155"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-156" data-line-number="156"><span class="co">#&gt; Data Set    Resp Var     Obs.    Df. Model    Df. Residual    Convergence </span></a>
-<a class="sourceLine" id="cb12-157" data-line-number="157"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-158" data-line-number="158"><span class="co">#&gt;   data         y        20000      19999         19995           TRUE     </span></a>
+<a class="sourceLine" id="cb12-154" data-line-number="154"><span class="co">#&gt; - Creating model overview. </span></a>
+<a class="sourceLine" id="cb12-155" data-line-number="155"><span class="co">#&gt; - Creating response profile. </span></a>
+<a class="sourceLine" id="cb12-156" data-line-number="156"><span class="co">#&gt; - Extracting maximum likelihood estimates. </span></a>
+<a class="sourceLine" id="cb12-157" data-line-number="157"><span class="co">#&gt; - Estimating concordant and discordant pairs. </span></a>
+<a class="sourceLine" id="cb12-158" data-line-number="158"><span class="co">#&gt;                              Model Overview                               </span></a>
 <a class="sourceLine" id="cb12-159" data-line-number="159"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-160" data-line-number="160"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-161" data-line-number="161"><span class="co">#&gt;                     Response Summary                     </span></a>
-<a class="sourceLine" id="cb12-162" data-line-number="162"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-163" data-line-number="163"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
-<a class="sourceLine" id="cb12-164" data-line-number="164"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-165" data-line-number="165"><span class="co">#&gt;    0             10041             1             9959    </span></a>
+<a class="sourceLine" id="cb12-160" data-line-number="160"><span class="co">#&gt; Data Set    Resp Var     Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb12-161" data-line-number="161"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-162" data-line-number="162"><span class="co">#&gt;   data         y        20000      19999         19995           TRUE     </span></a>
+<a class="sourceLine" id="cb12-163" data-line-number="163"><span class="co">#&gt; -------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-164" data-line-number="164"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-165" data-line-number="165"><span class="co">#&gt;                     Response Summary                     </span></a>
 <a class="sourceLine" id="cb12-166" data-line-number="166"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-167" data-line-number="167"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-168" data-line-number="168"><span class="co">#&gt;                    Maximum Likelihood Estimates                    </span></a>
-<a class="sourceLine" id="cb12-169" data-line-number="169"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-170" data-line-number="170"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value     Pr(&gt;|z|) </span></a>
-<a class="sourceLine" id="cb12-171" data-line-number="171"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-172" data-line-number="172"><span class="co">#&gt; (Intercept)    1     -1.5228        0.0287    -53.1302      0.0000 </span></a>
-<a class="sourceLine" id="cb12-173" data-line-number="173"><span class="co">#&gt;     x1         1      1.0276        0.0212     48.4927      0.0000 </span></a>
-<a class="sourceLine" id="cb12-174" data-line-number="174"><span class="co">#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 </span></a>
-<a class="sourceLine" id="cb12-175" data-line-number="175"><span class="co">#&gt;     x2         1      0.9807        0.0209     46.9690      0.0000 </span></a>
-<a class="sourceLine" id="cb12-176" data-line-number="176"><span class="co">#&gt;     x5         1      0.0357        0.0192      1.8531      0.0639 </span></a>
-<a class="sourceLine" id="cb12-177" data-line-number="177"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-178" data-line-number="178"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-179" data-line-number="179"><span class="co">#&gt;                    Odds Ratio Estimates                    </span></a>
-<a class="sourceLine" id="cb12-180" data-line-number="180"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-181" data-line-number="181"><span class="co">#&gt;  Effects          Estimate           95% Wald Conf. Limit </span></a>
-<a class="sourceLine" id="cb12-182" data-line-number="182"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-183" data-line-number="183"><span class="co">#&gt;     x1             2.7944          2.6814           2.9137 </span></a>
-<a class="sourceLine" id="cb12-184" data-line-number="184"><span class="co">#&gt;     x3             2.7899          2.6768           2.9094 </span></a>
-<a class="sourceLine" id="cb12-185" data-line-number="185"><span class="co">#&gt;     x2             2.6662          2.5599           2.7783 </span></a>
-<a class="sourceLine" id="cb12-186" data-line-number="186"><span class="co">#&gt;     x5             1.0363          0.9979           1.0761 </span></a>
-<a class="sourceLine" id="cb12-187" data-line-number="187"><span class="co">#&gt; ----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-188" data-line-number="188"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-189" data-line-number="189"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
-<a class="sourceLine" id="cb12-190" data-line-number="190"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-191" data-line-number="191"><span class="co">#&gt; % Concordant          0.8911          Somers' D        0.7821   </span></a>
-<a class="sourceLine" id="cb12-192" data-line-number="192"><span class="co">#&gt; % Discordant          0.1089          Gamma            0.7821   </span></a>
-<a class="sourceLine" id="cb12-193" data-line-number="193"><span class="co">#&gt; % Tied                0.0000          Tau-a            0.3911   </span></a>
-<a class="sourceLine" id="cb12-194" data-line-number="194"><span class="co">#&gt; Pairs                99998319         c                0.8911   </span></a>
-<a class="sourceLine" id="cb12-195" data-line-number="195"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-196" data-line-number="196"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-197" data-line-number="197"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-198" data-line-number="198"><span class="co">#&gt;                       Stepwise Summary                       </span></a>
-<a class="sourceLine" id="cb12-199" data-line-number="199"><span class="co">#&gt; -----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-200" data-line-number="200"><span class="co">#&gt; Variable     Method        AIC          BIC       Deviance  </span></a>
-<a class="sourceLine" id="cb12-201" data-line-number="201"><span class="co">#&gt; -----------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb12-202" data-line-number="202"><span class="co">#&gt; x6          addition    18869.627    18885.434    18865.627 </span></a>
-<a class="sourceLine" id="cb12-203" data-line-number="203"><span class="co">#&gt; x1          addition    18571.376    18595.087    18565.376 </span></a>
-<a class="sourceLine" id="cb12-204" data-line-number="204"><span class="co">#&gt; x3          addition    18016.724    18048.338    18008.724 </span></a>
-<a class="sourceLine" id="cb12-205" data-line-number="205"><span class="co">#&gt; x2          addition    16642.374    16681.891    16632.374 </span></a>
-<a class="sourceLine" id="cb12-206" data-line-number="206"><span class="co">#&gt; x6          removal     16640.653    16672.267    16632.653 </span></a>
-<a class="sourceLine" id="cb12-207" data-line-number="207"><span class="co">#&gt; x5          addition    16639.219    16678.736    16629.219 </span></a>
-<a class="sourceLine" id="cb12-208" data-line-number="208"><span class="co">#&gt; -----------------------------------------------------------</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-167" data-line-number="167"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb12-168" data-line-number="168"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-169" data-line-number="169"><span class="co">#&gt;    0             10041             1             9959    </span></a>
+<a class="sourceLine" id="cb12-170" data-line-number="170"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-171" data-line-number="171"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-172" data-line-number="172"><span class="co">#&gt;                    Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb12-173" data-line-number="173"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-174" data-line-number="174"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value     Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb12-175" data-line-number="175"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-176" data-line-number="176"><span class="co">#&gt; (Intercept)    1     -1.5228        0.0287    -53.1302      0.0000 </span></a>
+<a class="sourceLine" id="cb12-177" data-line-number="177"><span class="co">#&gt;     x1         1      1.0276        0.0212     48.4927      0.0000 </span></a>
+<a class="sourceLine" id="cb12-178" data-line-number="178"><span class="co">#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 </span></a>
+<a class="sourceLine" id="cb12-179" data-line-number="179"><span class="co">#&gt;     x2         1      0.9807        0.0209     46.9690      0.0000 </span></a>
+<a class="sourceLine" id="cb12-180" data-line-number="180"><span class="co">#&gt;     x5         1      0.0357        0.0192      1.8531      0.0639 </span></a>
+<a class="sourceLine" id="cb12-181" data-line-number="181"><span class="co">#&gt; ------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-182" data-line-number="182"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-183" data-line-number="183"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb12-184" data-line-number="184"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-185" data-line-number="185"><span class="co">#&gt; % Concordant          0.8911          Somers' D        0.7821   </span></a>
+<a class="sourceLine" id="cb12-186" data-line-number="186"><span class="co">#&gt; % Discordant          0.1089          Gamma            0.7821   </span></a>
+<a class="sourceLine" id="cb12-187" data-line-number="187"><span class="co">#&gt; % Tied                0.0000          Tau-a            0.3911   </span></a>
+<a class="sourceLine" id="cb12-188" data-line-number="188"><span class="co">#&gt; Pairs                99998319         c                0.8911   </span></a>
+<a class="sourceLine" id="cb12-189" data-line-number="189"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-190" data-line-number="190"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-191" data-line-number="191"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-192" data-line-number="192"><span class="co">#&gt;                       Stepwise Summary                       </span></a>
+<a class="sourceLine" id="cb12-193" data-line-number="193"><span class="co">#&gt; -----------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-194" data-line-number="194"><span class="co">#&gt; Variable     Method        AIC          BIC       Deviance  </span></a>
+<a class="sourceLine" id="cb12-195" data-line-number="195"><span class="co">#&gt; -----------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb12-196" data-line-number="196"><span class="co">#&gt; x6          addition    18869.627    18885.434    18865.627 </span></a>
+<a class="sourceLine" id="cb12-197" data-line-number="197"><span class="co">#&gt; x1          addition    18571.376    18595.087    18565.376 </span></a>
+<a class="sourceLine" id="cb12-198" data-line-number="198"><span class="co">#&gt; x3          addition    18016.724    18048.338    18008.724 </span></a>
+<a class="sourceLine" id="cb12-199" data-line-number="199"><span class="co">#&gt; x2          addition    16642.374    16681.891    16632.374 </span></a>
+<a class="sourceLine" id="cb12-200" data-line-number="200"><span class="co">#&gt; x6          removal     16640.653    16672.267    16632.653 </span></a>
+<a class="sourceLine" id="cb12-201" data-line-number="201"><span class="co">#&gt; x5          addition    16639.219    16678.736    16629.219 </span></a>
+<a class="sourceLine" id="cb12-202" data-line-number="202"><span class="co">#&gt; -----------------------------------------------------------</span></a></code></pre></div>
 </div>
 <div id="plot-2" class="section level4">
 <h4 class="hasAnchor">

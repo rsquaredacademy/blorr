@@ -5,6 +5,7 @@
 #' @param object An object of class "formula" (or one that can be coerced to
 #'   that class): a symbolic description of the model to be fitted or class
 #'   \code{glm}.
+#' @param odd_conf_limit If TRUE, odds ratio confidence limts will be displayed.
 #' @param ... Other inputs.
 #'
 #' @examples
@@ -17,6 +18,9 @@
 #'
 #' blr_regress(model)
 #'
+#' # odds ratio estimates
+#' blr_regress(model, odd_conf_limit = TRUE)
+#'
 #' @export
 #'
 blr_regress <- function(object, ...) UseMethod("blr_regress")
@@ -24,8 +28,8 @@ blr_regress <- function(object, ...) UseMethod("blr_regress")
 
 #' @export
 #'
-blr_regress.default <- function(object, data, ...) {
-  result <- blr_reg_comp(object, data)
+blr_regress.default <- function(object, data, odd_conf_limit = FALSE, ...) {
+  result <- blr_reg_comp(object, data, odd_conf_limit)
   class(result) <- "blr_regress"
   return(result)
 }
@@ -33,11 +37,11 @@ blr_regress.default <- function(object, data, ...) {
 #' @rdname blr_regress
 #' @export
 #'
-blr_regress.glm <- function(object, ...) {
+blr_regress.glm <- function(object, odd_conf_limit = FALSE, ...) {
 
   formula <- formula(object)
   data    <- eval(object$call$data)
-  blr_regress.default(object = formula, data = data)
+  blr_regress.default(object = formula, data = data, odd_conf_limit = odd_conf_limit)
 }
 
 #' @export

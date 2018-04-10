@@ -83,46 +83,51 @@ print_blr_reg <- function(x) {
   }
   cat(rep("-", w17), sep = "", "\n\n")
 
-  # odds ration estimates
-  w18 <- c("Odds Ratio", x$blr_effects) %>%
-    nchar() %>%
-    max()
-  w19 <- c("Estimate", x$blr_odds_point) %>%
-    nchar() %>%
-    max()
-  w20 <- x$blr_conf %>%
-    use_series(`2.5 %`) %>%
-    format(round(4), nsmall = 4) %>%
-    prepend("95% Wald") %>%
-    nchar() %>%
-    max()
-  w21 <- x$blr_conf %>%
-    use_series(`97.5 %`) %>%
-    format(round(4), nsmall = 4) %>%
-    prepend("Conf. Limit") %>%
-    nchar() %>%
-    max()
+  if (x$odds_conf) {
 
-  w22 <- sum(w18, w19, w20, w21, 12)
+    # odds ration estimates
+    w18 <- c("Odds Ratio", x$blr_effects) %>%
+      nchar() %>%
+      max()
+    w19 <- c("Estimate", x$blr_odds_point) %>%
+      nchar() %>%
+      max()
+    w20 <- x$blr_conf %>%
+      use_series(`2.5 %`) %>%
+      format(round(4), nsmall = 4) %>%
+      prepend("95% Wald") %>%
+      nchar() %>%
+      max()
+    w21 <- x$blr_conf %>%
+      use_series(`97.5 %`) %>%
+      format(round(4), nsmall = 4) %>%
+      prepend("Conf. Limit") %>%
+      nchar() %>%
+      max()
 
-  oddn <- length(x$blr_effects)
+    w22 <- sum(w18, w19, w20, w21, 12)
 
-  cat(fc("Odds Ratio Estimates", w22), "\n")
-  cat(rep("-", w22), sep = "", "\n")
-  cat(
-    fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Wald", w20),
-    fl("Conf. Limit", w21), "\n"
-  )
-  cat(rep("-", w22), sep = "", "\n")
-  for (i in seq_len(oddn)) {
+    oddn <- length(x$blr_effects)
+
+    cat(fc("Odds Ratio Estimates", w22), "\n")
+    cat(rep("-", w22), sep = "", "\n")
     cat(
-      fc(x$blr_effects[i], w18), fs(),
-      fc(format(round(x$blr_odds_point[i], 4), nsmall = 4), w19), fs(),
-      fc(format(round(x$blr_conf$`2.5 %`[i], 4), nsmall = 4), w20),
-      fs(), fg(format(round(x$blr_conf$`97.5 %`[i], 4), nsmall = 4), w21), "\n"
+      fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Wald", w20),
+      fl("Conf. Limit", w21), "\n"
     )
+    cat(rep("-", w22), sep = "", "\n")
+    for (i in seq_len(oddn)) {
+      cat(
+        fc(x$blr_effects[i], w18), fs(),
+        fc(format(round(x$blr_odds_point[i], 4), nsmall = 4), w19), fs(),
+        fc(format(round(x$blr_conf$`2.5 %`[i], 4), nsmall = 4), w20),
+        fs(), fg(format(round(x$blr_conf$`97.5 %`[i], 4), nsmall = 4), w21), "\n"
+      )
+    }
+    cat(rep("-", w22), sep = "", "\n\n")
+
   }
-  cat(rep("-", w22), sep = "", "\n\n")
+
 
   w23 <- 12
   w24 <- x$blr_cord %>%

@@ -7,7 +7,7 @@
 \usage{
 blr_regress(object, ...)
 
-\method{blr_regress}{glm}(object, ...)
+\method{blr_regress}{glm}(object, odd_conf_limit = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class "formula" (or one that can be coerced to
@@ -15,6 +15,8 @@ that class): a symbolic description of the model to be fitted or class
 \code{glm}.}
 
 \item{...}{Other inputs.}
+
+\item{odd_conf_limit}{If TRUE, odds ratio confidence limts will be displayed.}
 }
 \description{
 Binary logistic regression.
@@ -28,5 +30,8 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 
 blr_regress(model)
+
+# odds ratio estimates
+blr_regress(model, odd_conf_limit = TRUE)
 
 }
