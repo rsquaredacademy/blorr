@@ -179,46 +179,41 @@
 <h4 class="hasAnchor">
 <a href="#regression-output" class="anchor"></a>Regression Output</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/blr_regress.html">blr_regress</a></span>(model)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt;                              Model Overview                              </span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; - Creating model overview. </span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; - Creating response profile. </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; - Extracting maximum likelihood estimates. </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; - Estimating concordant and discordant pairs.</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;                              Model Overview                              </span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;                     Response Summary                     </span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;   data      honcomp     200        199           196            TRUE     </span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; ------------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;                     Response Summary                     </span></a>
 <a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; --------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;                   Odds Ratio Estimates                    </span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt;  Effects          Estimate          95% Wald Conf. Limit </span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt;  female1           4.4039          1.8955         11.0521 </span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt;    read            1.1091          1.0569          1.1699 </span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt;  science           1.0994          1.0377          1.1702 </span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; ---------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; Outcome        Frequency        Outcome        Frequency </span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt;    0              147              1              53     </span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; --------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt;                   Maximum Likelihood Estimates                    </span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 </span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 </span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 </span></a>
+<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; -----------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt;  Association of Predicted Probabilities and Observed Responses  </span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; ---------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt; % Concordant          0.8561          Somers' D        0.7147   </span></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; % Discordant          0.1425          Gamma            0.7136   </span></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; % Tied                0.0014          Tau-a            0.2794   </span></a>
+<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; Pairs                  7791           c                0.8568   </span></a>
+<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt; ---------------------------------------------------------------</span></a></code></pre></div>
 </div>
 <div id="model-fit-statistics" class="section level4">
 <h4 class="hasAnchor">
@@ -331,7 +326,7 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw">plot</span>()</a></code></pre></div>
-<p><img src="README-lift-1.png" width="672"></p>
+<p><img src="tools/README-lift-1.png" width="672"></p>
 </div>
 <div id="roc-curve" class="section level4">
 <h4 class="hasAnchor">
@@ -339,7 +334,7 @@
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/blr_roc_curve.html">blr_roc_curve</a></span>()</a></code></pre></div>
-<p><img src="README-roc-1.png" width="672"></p>
+<p><img src="tools/README-roc-1.png" width="672"></p>
 </div>
 <div id="ks-chart" class="section level4">
 <h4 class="hasAnchor">
@@ -347,13 +342,13 @@
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">model <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/blr_ks_chart.html">blr_ks_chart</a></span>()</a></code></pre></div>
-<p><img src="README-kschart-1.png" width="672"></p>
+<p><img src="tools/README-kschart-1.png" width="672"></p>
 </div>
 <div id="lorenz-curve" class="section level4">
 <h4 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h4>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</a></code></pre></div>
-<p><img src="README-unnamed-chunk-2-1.png" width="672"></p>
+<p><img src="tools/README-unnamed-chunk-2-1.png" width="672"></p>
 <p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>

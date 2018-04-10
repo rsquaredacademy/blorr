@@ -6,7 +6,7 @@ test_that("output from blr_regress is as expected", {
     family = binomial(link = "logit")
   )
 
-  k <- blr_regress(model)
+  k <- blr_regress(model, odd_conf_limit = TRUE)
 
   x <- cat(
     "                             Model Overview

@@ -41,6 +41,12 @@ blr_regress(model)
 blr_regress(object = honcomp ~ female + read + science, data = hsb2)
 ```
 
+#### Odds Ratio Estimates
+
+```{r reg3}
+blr_regress(model, odd_conf_limit = TRUE)
+```
+
 ### Model Fit Statistics
 
 #### Single Model
