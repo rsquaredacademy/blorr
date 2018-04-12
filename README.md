@@ -178,16 +178,16 @@ blr_confusion_matrix(model)
 #>                   Kappa : 0.4673          
 #>  Mcnemar's Test P-Value : 0.034955        
 #>                                           
-#>             Sensitivity : 0.9184          
-#>             Specificity : 0.5094          
-#>          Pos Pred Value : 0.8385          
-#>          Neg Pred Value : 0.6923          
-#>              Prevalence : 0.7350          
-#>          Detection Rate : 0.6750          
-#>    Detection Prevalence : 0.8050          
+#>             Sensitivity : 0.5094          
+#>             Specificity : 0.9184          
+#>          Pos Pred Value : 0.6923          
+#>          Neg Pred Value : 0.8385          
+#>              Prevalence : 0.2650          
+#>          Detection Rate : 0.1350          
+#>    Detection Prevalence : 0.1950          
 #>       Balanced Accuracy : 0.7139          
 #>                                           
-#>        'Positive' Class : 0               
+#>        'Positive' Class : 1               
 #> 
 ```
 
