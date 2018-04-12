@@ -284,3 +284,21 @@ test_that("stepwise selection plot is as expected", {
 
   vdiffr::expect_doppelganger("stepwise selection plot", p$plot)
 })
+
+
+test_that("stepwise backward selection plot is as expected", {
+  
+  skip_on_cran()
+
+    model <- glm(
+      honcomp ~ female + read + science + math + prog + socst,
+      data = hsb2, family = binomial(link = "logit")
+    )
+
+  p <-
+    model %>%
+    blr_step_aic_backward() %>%
+    plot()
+
+  vdiffr::expect_doppelganger("stepwise backward selection plot", p$plot)
+})
