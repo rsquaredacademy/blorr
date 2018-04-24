@@ -135,6 +135,12 @@
 
     <p>A panel of diagnostic plots for leverage.</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Pregibon, D. (1981), “Logistic Regression Diagnostics,” Annals of Statistics, 9, 705–724.</p>
+<p>Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.</p>
+<p>Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman &amp; Hall.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other diagnostic plots: <code><a href='blr_plot_diag_fit.html'>blr_plot_diag_fit</a></code>,
@@ -145,7 +151,7 @@
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
 <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_plot_diag_leverage</span>(<span class='no'>model</span>)</div><div class='img'><img src='blr_plot_diag_leverage-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>blr_plot_diag_leverage</span>(<span class='no'>model</span>)</div><div class='img'><img src='blr_plot_diag_leverage-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -154,6 +160,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
