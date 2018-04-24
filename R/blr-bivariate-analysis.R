@@ -1,17 +1,17 @@
 #' Bivariate analysis
 #'
-#' Information value and likelihood ratio test.
+#' Information value and likelihood ratio chi square test for initial variable/predictor selection.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
 #' @param ... Predictor variables; columns in \code{data}.
 #'
 #' @return A tibble with the following columns:
-#' * Variable name.
-#' * Information value.
-#' * Likelihood ratio statisitc.
-#' * Likelihood ratio degrees of freedom.
-#' * Likelihood ratio p value.
+#' \item{Variable}{Variable name}
+#' \item{Information Value}{Information value}
+#' \item{LR Chi Square}{Likelihood ratio statisitc}
+#' \item{LR DF}{Likelihood ratio degrees of freedom}
+#' \item{LR p-value}{Likelihood ratio p value}
 #'
 #' @examples
 #' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
