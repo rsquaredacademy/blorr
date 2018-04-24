@@ -1,4 +1,4 @@
-#' Weight of evidence & information value
+#' WoE & IV
 #'
 #' Weight of evidence and information value.
 #'

@@ -3,7 +3,7 @@
 \name{blr_woe_iv}
 \alias{blr_woe_iv}
 \alias{plot.blr_woe_iv}
-\title{Weight of evidence & information value}
+\title{WoE & IV}
 \usage{
 blr_woe_iv(data, predictor, response, digits = 4, ...)
 
