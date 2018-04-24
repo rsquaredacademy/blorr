@@ -170,9 +170,9 @@ print.blr_segment <- function(x, ...) {
   print_blr_segment(x)
 }
 
-#' Two way event distribution
+#' Two way event rate
 #'
-#' Event distribution across two qualitative variables.
+#' Event rate across two qualitative variables.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param response Response variable; column in \code{data}.

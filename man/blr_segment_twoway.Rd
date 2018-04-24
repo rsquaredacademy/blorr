@@ -3,7 +3,7 @@
 \name{blr_segment_twoway}
 \alias{blr_segment_twoway}
 \alias{blr_segment_twoway.default}
-\title{Two way event distribution}
+\title{Two way event rate}
 \usage{
 blr_segment_twoway(data, response, variable_1, variable_2)
 
@@ -22,7 +22,7 @@ blr_segment_twoway(data, response, variable_1, variable_2)
 A tibble.
 }
 \description{
-Event distribution across two qualitative variables.
+Event rate across two qualitative variables.
 }
 \examples{
 blr_segment_twoway(hsb2, honcomp, prog, female)
