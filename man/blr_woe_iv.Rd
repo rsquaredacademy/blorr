@@ -48,6 +48,10 @@ k
 plot(k)
 
 }
+\references{
+Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+credit  scoring. New Jersey, Wiley.
+}
 \seealso{
 Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
   \code{\link{blr_segment_dist}},
