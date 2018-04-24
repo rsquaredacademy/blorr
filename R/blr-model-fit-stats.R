@@ -13,6 +13,17 @@
 #'
 #' @importFrom stats AIC BIC logLik deviance
 #' @importFrom magrittr divide_by raise_to_power add
+#' 
+#' @references
+#' J. Scott Long & Jeremy Freese, 2000. "FITSTAT: Stata module to compute fit statistics for 
+#' single equation regression models," Statistical Software Components S407201, Boston College 
+#' Department of Economics, revised 22 Feb 2001. 
+#' 
+#' Freese, Jeremy and J. Scott Long.  Regression Models for Categorical Dependent Variables 
+#' Using Stata. College Station: Stata Press, 2006.
+#' 
+#' Long, J. Scott. Regression Models for Categorical and Limited Dependent Variables.  
+#' Thousand Oaks: Sage Publications, 1997.
 #'
 #' @family model fit statistics
 #'

@@ -21,6 +21,17 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_model_fit_stats(model)
 
 }
+\references{
+J. Scott Long & Jeremy Freese, 2000. "FITSTAT: Stata module to compute fit statistics for 
+single equation regression models," Statistical Software Components S407201, Boston College 
+Department of Economics, revised 22 Feb 2001. 
+
+Freese, Jeremy and J. Scott Long.  Regression Models for Categorical Dependent Variables 
+Using Stata. College Station: Stata Press, 2006.
+
+Long, J. Scott. Regression Models for Categorical and Limited Dependent Variables.  
+Thousand Oaks: Sage Publications, 1997.
+}
 \seealso{
 Other model fit statistics: \code{\link{blr_multi_model_fit_stats}},
   \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
