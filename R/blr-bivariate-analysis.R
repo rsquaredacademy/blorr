@@ -230,7 +230,7 @@ print.blr_segment_twoway <- function(x, ...) {
 
 #' Response distribution
 #'
-#' Distribution of response by segements/levels of a qualitative variable.
+#' Distribution of response variable by segements/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
@@ -248,6 +248,9 @@ print.blr_segment_twoway <- function(x, ...) {
 #'
 #' @examples
 #' k <- blr_segment_dist(hsb2, honcomp, prog)
+#' k
+#' 
+#' # plot
 #' plot(k)
 #'
 #' @importFrom ggplot2 geom_col sec_axis
