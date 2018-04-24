@@ -121,9 +121,9 @@ lr_extract <- function(lr, value) {
     pull(!! vals)
 
 }
-#' Event distribution
+#' Event rate
 #'
-#' Event distribution by segements/levels of a qualitative variable.
+#' Event rate by segements/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
