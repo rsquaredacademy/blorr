@@ -22,6 +22,11 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_cox_snell(model)
 
 }
+\references{
+Cox, D. R., & Snell, E. J. (1989). The analysis of binary data (2nd ed.).  London: Chapman and Hall. 
+
+Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
+}
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},
   \code{\link{blr_multi_model_fit_stats}},

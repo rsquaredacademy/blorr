@@ -22,6 +22,15 @@ blr_model_fit_stats(model)
 
 }
 \references{
+Menard, S. (2000). Coefficients of determination for multiple logistic regression analysis. 
+The American Statistician, 54(1), 17-24.
+
+Windmeijer,  F.  A.  G.  (1995).  Goodness-of-fit  measures  in  binary  choice  models. Econometric 
+Reviews, 14, 101-116.
+
+Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
+New  York:  John Wiley & Sons. 
+
 J. Scott Long & Jeremy Freese, 2000. "FITSTAT: Stata module to compute fit statistics for 
 single equation regression models," Statistical Software Components S407201, Boston College 
 Department of Economics, revised 22 Feb 2001. 

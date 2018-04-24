@@ -22,3 +22,7 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_mcfadden(model)
 
 }
+\references{
+McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
+Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
+}

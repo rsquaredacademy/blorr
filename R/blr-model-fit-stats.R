@@ -15,6 +15,15 @@
 #' @importFrom magrittr divide_by raise_to_power add
 #' 
 #' @references
+#' Menard, S. (2000). Coefficients of determination for multiple logistic regression analysis. 
+#' The American Statistician, 54(1), 17-24.
+#' 
+#' Windmeijer,  F.  A.  G.  (1995).  Goodness-of-fit  measures  in  binary  choice  models. Econometric 
+#' Reviews, 14, 101-116.
+#' 
+#' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
+#' New  York:  John Wiley & Sons. 
+#' 
 #' J. Scott Long & Jeremy Freese, 2000. "FITSTAT: Stata module to compute fit statistics for 
 #' single equation regression models," Statistical Software Components S407201, Boston College 
 #' Department of Economics, revised 22 Feb 2001. 
@@ -24,6 +33,7 @@
 #' 
 #' Long, J. Scott. Regression Models for Categorical and Limited Dependent Variables.  
 #' Thousand Oaks: Sage Publications, 1997.
+#' 
 #'
 #' @family model fit statistics
 #'
@@ -106,6 +116,10 @@ model_bic <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return McFadden's r-squared.
+#' 
+#' @references
+#' McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
+#' Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -132,6 +146,10 @@ blr_rsq_mcfadden <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return McFadden's adjusted r-squared.
+#' 
+#' @references
+#' McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
+#' Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -157,6 +175,11 @@ blr_rsq_mcfadden_adj <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return Cox Snell pseudo r-squared.
+#' 
+#' @references
+#' Cox, D. R., & Snell, E. J. (1989). The analysis of binary data (2nd ed.).  London: Chapman and Hall. 
+#' 
+#' Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -182,6 +205,13 @@ blr_rsq_cox_snell <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
+#' 
+#' @references
+#' Cragg, S. G., & Uhler, R. (1970). The demand for automobiles. Canadian Journal of Economics, 3, 386-406.
+#' 
+#' Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
+#' 
+#' Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination. Biometrika, 78, 691–692. 
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -218,6 +248,10 @@ blr_rsq_nagelkerke <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
+#' 
+#' @references
+#' McKelvey, R. D., & Zavoina,  W. (1975). A statistical model for the  analysis  of ordinal level dependent 
+#' variables. Journal of Mathematical Sociology, 4, 103-12.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -264,6 +298,10 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 #' @param model An object of class \code{glm}.
 #'
 #' @return Effron pseudo r-squared.
+#' 
+#' @references
+#' Efron, B. (1978). Regression and ANOVA with zero-one data: Measures of residual variation. Journal of 
+#' the American Statistical Association, 73, 113-121. 
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
