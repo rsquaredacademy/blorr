@@ -1,25 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+blorr: Tools for building binary logistic regression models
+-----------------------------------------------------------
 
-## blorr: Tools for building binary logistic regression models
+**Author:** [Aravind Hebbali]()<br/> **License:** [MIT](https://opensource.org/licenses/MIT)
 
-**Author:** [Aravind Hebbali]()<br/> **License:**
-[MIT](https://opensource.org/licenses/MIT)
+[![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
 
-[![CRAN
-status](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
-[![Travis build
-status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr)
-[![Coverage
-status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
-![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
-
-Tools designed to make it easier for users, particularly
-beginner/intermediate R users to build logistic regression models.
-Includes comprehensive regression output, variable selection procedure
-and model validation statistics.
+Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
 
 ### Installation
 
@@ -34,17 +22,14 @@ devtools::install_github("rsquaredacademy/blorr")
 
 Use `blr_launch_app()` to explore the package using a shiny app.
 
-## Vignettes
+Vignettes
+---------
 
-  - [Bivariate
-    Analysis](https://blorr.rsquaredacademy.com/bivariate_analysis.html)
-  - [Model Fit Statistics](https://blorr.rsquaredacademy.com/intro.html)
-  - [Model
-    Validation](https://blorr.rsquaredacademy.com/model_validation.html)
-  - [Variable
-    Seelction](https://blorr.rsquaredacademy.com/variable_selection.html)
-  - [Residual
-    Diagnostics](https://blorr.rsquaredacademy.com/residual_diagnostics.html)
+-   [Bivariate Analysis](https://blorr.rsquaredacademy.com/bivariate_analysis.html)
+-   [Model Fit Statistics](https://blorr.rsquaredacademy.com/intro.html)
+-   [Model Validation](https://blorr.rsquaredacademy.com/model_validation.html)
+-   [Variable Selection](https://blorr.rsquaredacademy.com/variable_selection.html)
+-   [Residual Diagnostics](https://blorr.rsquaredacademy.com/residual_diagnostics.html)
 
 ### Consistent Prefix
 
@@ -259,7 +244,7 @@ model %>%
   plot()
 ```
 
-![](tools/README-lift-1.png)<!-- -->
+![](tools/README-lift-1.png)
 
 #### ROC Curve
 
@@ -269,7 +254,7 @@ model %>%
   blr_roc_curve()
 ```
 
-![](tools/README-roc-1.png)<!-- -->
+![](tools/README-roc-1.png)
 
 #### KS Chart
 
@@ -279,7 +264,7 @@ model %>%
   blr_ks_chart()
 ```
 
-![](tools/README-kschart-1.png)<!-- -->
+![](tools/README-kschart-1.png)
 
 #### Lorenz Curve
 
@@ -287,8 +272,6 @@ model %>%
 blr_lorenz_curve(model)
 ```
 
-![](tools/README-unnamed-chunk-2-1.png)<!-- -->
+![](tools/README-unnamed-chunk-2-1.png)
 
-Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
-abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
