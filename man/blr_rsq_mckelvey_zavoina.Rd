@@ -22,6 +22,10 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_mckelvey_zavoina(model)
 
 }
+\references{
+McKelvey, R. D., & Zavoina,  W. (1975). A statistical model for the  analysis  of ordinal level dependent 
+variables. Journal of Mathematical Sociology, 4, 103-12.
+}
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},
   \code{\link{blr_multi_model_fit_stats}},

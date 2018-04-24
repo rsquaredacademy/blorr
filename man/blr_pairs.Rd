@@ -21,7 +21,13 @@ family = binomial(link = 'logit'))
 
 blr_pairs(model)
 
+}
+\references{
+Nelsen  RB  (1998):  Concordance  and  Gini’s  measure  of  association. Journal  of  Nonparametric  
+Statistics, 9(3):227–238. 
 
+Newson  R  (2006):  Confidence  intervals  for  rank  statistics:  Somers'  D  and  extensions.  
+The  Stata Journal, 6(3):309–334.
 }
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},

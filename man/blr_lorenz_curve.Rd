@@ -25,7 +25,8 @@ blr_lorenz_curve(model, data = NULL, title = "Lorenz Curve",
 \item{lorenz_curve_col}{Color of the lorenz curve.}
 }
 \description{
-Lorenz curve is a visual representation of inequality.
+Lorenz curve is a visual representation of inequality. It is
+  used to measure the discriminatory power of the predictive model.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

@@ -22,6 +22,13 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_nagelkerke(model)
 
 }
+\references{
+Cragg, S. G., & Uhler, R. (1970). The demand for automobiles. Canadian Journal of Economics, 3, 386-406.
+
+Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
+
+Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination. Biometrika, 78, 691–692.
+}
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},
   \code{\link{blr_multi_model_fit_stats}},

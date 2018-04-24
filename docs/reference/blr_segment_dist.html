@@ -117,7 +117,7 @@
     </div>
 
     
-    <p>Distribution of response by segements/levels of a qualitative variable.</p>
+    <p>Distribution of response variable by segements/levels of a qualitative variable.</p>
     
 
     <pre class="usage"><span class='fu'>blr_segment_dist</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)
@@ -190,6 +190,16 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_segment_dist</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)
+<span class='no'>k</span></div><div class='output co'>#&gt;          Event Segmentation           
+#&gt; -------------------------------------
+#&gt;   prog       n     1s     n%     1s%  
+#&gt; -------------------------------------
+#&gt;    1        45     7     0.22    0.04 
+#&gt;    2        105    40    0.52    0.20 
+#&gt;    3        50     6     0.25    0.03 
+#&gt; -------------------------------------
+#&gt; </div><div class='input'>
+<span class='co'># plot</span>
 <span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_segment_dist-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>

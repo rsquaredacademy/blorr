@@ -17,7 +17,7 @@ Gini index.
 \description{
 Gini index is a measure of inequality and was developed to measure income
   inequality in labour market. In the predictive model, Gini Index is used
-  for measuring inequality/discrimination.
+  for measuring discriminatory power.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -25,6 +25,16 @@ family = binomial(link = 'logit'))
 
 blr_gini_index(model)
 
+}
+\references{
+Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+credit  scoring. New Jersey, Wiley. 
+
+Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.): 
+Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag. 
+
+Kočenda  E,  Vojtek  M  (2011):  Default  Predictors  in  Retail  Credit  Scoring:  Evidence  from  Czech  
+Banking Data. Forthcoming in: Emerging Markets Finance and Trade.
 }
 \seealso{
 Other model validation techniques: \code{\link{blr_confusion_matrix}},

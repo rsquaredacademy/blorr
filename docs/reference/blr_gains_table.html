@@ -117,7 +117,8 @@
     </div>
 
     
-    <p>Gains table.</p>
+    <p>Compute sensitivity, specificity, accuracy and KS statistics to 
+  generate the lift chart and the KS chart.</p>
     
 
     <pre class="usage"><span class='fu'>blr_gains_table</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -177,6 +178,15 @@
 
     <p>A tibble.</p>
     
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley &amp; Sons.</p>
+<p>Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley &amp; Sons.</p>
+<p>Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.  
+Oxford,  Oxford  Uni-versity Press.</p>
+<p>Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:  
+A  Valid-ation Methodology, Moody’s Investors Service.</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
@@ -194,17 +204,17 @@
 <span class='co'># gains table</span>
 <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 12
 #&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
-#&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;
-#&gt;  1      1    20    14     6  22.3    14   141     6    39        26.4
-#&gt;  2      2    20    13     7  42.1    27   134    13    26        50.9
-#&gt;  3      3    20    10    10  54.2    37   124    23    16        69.8
-#&gt;  4      4    20     7    13  58.5    44   111    36     9        83.0
-#&gt;  5      5    20     3    17  52.6    47    94    53     6        88.7
-#&gt;  6      6    20     3    17  46.7    50    77    70     3        94.3
-#&gt;  7      7    20     1    19  35.7    51    58    89     2        96.2
-#&gt;  8      8    20     2    18  27.2    53    40   107     0       100  
-#&gt;  9      9    20     0    20  13.6    53    20   127     0       100  
-#&gt; 10     10    20     0    20   0      53     0   147     0       100  
+#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;
+#&gt;  1   1.00    20    14     6  22.3    14   141     6    39        26.4
+#&gt;  2   2.00    20    13     7  42.1    27   134    13    26        50.9
+#&gt;  3   3.00    20    10    10  54.2    37   124    23    16        69.8
+#&gt;  4   4.00    20     7    13  58.5    44   111    36     9        83.0
+#&gt;  5   5.00    20     3    17  52.6    47    94    53     6        88.7
+#&gt;  6   6.00    20     3    17  46.7    50    77    70     3        94.3
+#&gt;  7   7.00    20     1    19  35.7    51    58    89     2        96.2
+#&gt;  8   8.00    20     2    18  27.2    53    40   107     0       100  
+#&gt;  9   9.00    20     0    20  13.6    53    20   127     0       100  
+#&gt; 10  10.0     20     0    20   0      53     0   147     0       100  
 #&gt; # ... with 2 more variables: specificity &lt;dbl&gt;, accuracy &lt;dbl&gt;</div><div class='input'>
 <span class='co'># lift chart</span>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)
@@ -217,6 +227,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

@@ -101,7 +101,7 @@ test_that("output from blr_effron_rsq is as expected", {
   expected <- 0.3305
   expect_equal(actual, expected)
 })
-
+  
 
 
 test_that("blr_model_fit_stats prints the correct output", {
@@ -120,6 +120,8 @@ test_that("blr_model_fit_stats prints the correct output", {
     BIC:                          181.430    AIC:                             168.236
     ---------------------------------------------------------------------------------"
   )
+
+  expect_output(print(k), x)
 })
 
 test_that("blr_multi_model_fit_stats prints the correct output", {

@@ -22,6 +22,10 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_effron(model)
 
 }
+\references{
+Efron, B. (1978). Regression and ANOVA with zero-one data: Measures of residual variation. Journal of 
+the American Statistical Association, 73, 113-121.
+}
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},
   \code{\link{blr_multi_model_fit_stats}},

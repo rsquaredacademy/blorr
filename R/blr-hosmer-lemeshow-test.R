@@ -1,9 +1,13 @@
 #' Hosmer lemeshow test
 #'
-#' Hosmer lemeshow test.
+#' Hosmer lemeshow goodness of fit test.
 #'
 #' @param model An object of class \code{glm}.
 #' @param data a \code{tibble} or \code{data.frame}.
+#' 
+#' @references
+#' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
+#' New  York:  John Wiley & Sons. 
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

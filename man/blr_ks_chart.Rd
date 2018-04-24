@@ -32,6 +32,13 @@ gt <- blr_gains_table(model)
 blr_ks_chart(gt)
 
 }
+\references{
+Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal: 
+The Coefficient of Discrimination," The American Statistician, 63(4), 366-372.
+
+Horn, S. D. (1977), Goodness-of-fit tests for discrete data: a review and an application to a
+health impairment scale, Biometrics, 33, 237–247.
+}
 \seealso{
 Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_decile_capture_rate}},

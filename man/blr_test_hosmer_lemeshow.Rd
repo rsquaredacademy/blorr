@@ -12,7 +12,7 @@ blr_test_hosmer_lemeshow(model, data = NULL)
 \item{data}{a \code{tibble} or \code{data.frame}.}
 }
 \description{
-Hosmer lemeshow test.
+Hosmer lemeshow goodness of fit test.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -20,6 +20,10 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 
 blr_test_hosmer_lemeshow(model)
 
+}
+\references{
+Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
+New  York:  John Wiley & Sons.
 }
 \seealso{
 Other model validation techniques: \code{\link{blr_confusion_matrix}},

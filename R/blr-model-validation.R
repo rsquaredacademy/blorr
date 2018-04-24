@@ -48,6 +48,6 @@ blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
     as.numeric() %>%
     as.factor()
 
-  confusionMatrix(data = c_data, reference = response)
+  confusionMatrix(data = c_data, reference = response, positive = '1')
 
 }

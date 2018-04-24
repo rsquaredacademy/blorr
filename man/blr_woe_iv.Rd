@@ -3,7 +3,7 @@
 \name{blr_woe_iv}
 \alias{blr_woe_iv}
 \alias{plot.blr_woe_iv}
-\title{Weight of evidence & information value}
+\title{WoE & IV}
 \usage{
 blr_woe_iv(data, predictor, response, digits = 4, ...)
 
@@ -47,6 +47,10 @@ k
 # plot woe
 plot(k)
 
+}
+\references{
+Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+credit  scoring. New Jersey, Wiley.
 }
 \seealso{
 Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},

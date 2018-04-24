@@ -1,4 +1,4 @@
-#' Weight of evidence & information value
+#' WoE & IV
 #'
 #' Weight of evidence and information value.
 #'
@@ -15,6 +15,10 @@
 #' @param ... Other inputs.
 #'
 #' @return A tibble.
+#' 
+#' @references
+#' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+#' credit  scoring. New Jersey, Wiley. 
 #'
 #' @examples
 #' # woe and iv

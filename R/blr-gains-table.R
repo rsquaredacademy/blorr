@@ -1,6 +1,7 @@
 #' Gains table & lift chart
 #'
-#' Gains table.
+#' Compute sensitivity, specificity, accuracy and KS statistics to 
+#'   generate the lift chart and the KS chart.
 #'
 #' @param model An object of class \code{glm}.
 #' @param data A \code{tibble} or a \code{data.frame}.
@@ -14,6 +15,17 @@
 #' @param ... Other inputs.
 #'
 #' @return A tibble.
+#' 
+#' @references
+#' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons. 
+#' 
+#' Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons. 
+#' 
+#' Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.  
+#' Oxford,  Oxford  Uni-versity Press. 
+#' 
+#' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:  
+#' A  Valid-ation Methodology, Moody’s Investors Service.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -109,6 +121,13 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param xaxis_title X axis title.
 #' @param yaxis_title Y axis title.
 #' @param ks_line_color Color of the line indicating maximum KS statistic.
+#' 
+#' @references
+#' Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal: 
+#' The Coefficient of Discrimination," The American Statistician, 63(4), 366-372.
+#' 
+#' Horn, S. D. (1977), Goodness-of-fit tests for discrete data: a review and an application to a
+#' health impairment scale, Biometrics, 33, 237–247.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

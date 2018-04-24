@@ -3,7 +3,7 @@
 \name{blr_segment}
 \alias{blr_segment}
 \alias{blr_segment.default}
-\title{Event distribution}
+\title{Event rate}
 \usage{
 blr_segment(data, response, predictor)
 
@@ -20,7 +20,7 @@ blr_segment(data, response, predictor)
 A tibble.
 }
 \description{
-Event distribution by segements/levels of a qualitative variable.
+Event rate by segements/levels of a qualitative variable.
 }
 \examples{
 blr_segment(hsb2, honcomp, prog)
