@@ -13,10 +13,10 @@
 #'   from the model.
 #' @param details Logical; if \code{TRUE}, will print the regression result at
   #' each step.
-#' @param x An object of class \code{ols_step_both_p}.
+#' @param x An object of class \code{blr_step_p_both}.
 #' @param ... Other arguments.
-#' @return \code{ols_step_both_p} returns an object of class \code{"ols_step_both_p"}.
-#' An object of class \code{"ols_step_both_p"} is a list containing the
+#' @return \code{blr_step_p_both} returns an object of class \code{"blr_step_p_both"}.
+#' An object of class \code{"blr_step_p_both"} is a list containing the
 #' following components:
 #'
 #' \item{orders}{candidate predictor variables according to the order by which they were added or removed from the model}
@@ -36,31 +36,31 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @section Deprecated Function:
-#' \code{ols_stepwise()} has been deprecated. Instead use \code{ols_step_both_p()}.
+#' \code{ols_stepwise()} has been deprecated. Instead use \code{blr_step_p_both()}.
 #'
 #' @examples
 #' # stepwise regression
-#' model <- lm(y ~ ., data = surgical)
-#' ols_step_both_p(model)
+#' model <- glm(y ~ ., data = stepwise)
+#' blr_step_p_both(model)
 #'
 #' # stepwise regression plot
-#' model <- lm(y ~ ., data = surgical)
-#' k <- ols_step_both_p(model)
+#'model <- glm(y ~ ., data = stepwise)
+#' k <- blr_step_p_both(model)
 #' plot(k)
 #'
 #' @family variable selection_procedures
 #'
 #' @export
 #'
-ols_step_both_p <- function(model, ...) UseMethod("ols_step_both_p")
+blr_step_p_both <- function(model, ...) UseMethod("blr_step_p_both")
 
 #' @export
-#' @rdname ols_step_both_p
+#' @rdname blr_step_p_both
 #'
-ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FALSE, ...) {
+blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FALSE, ...) {
 
-  if (!all(class(model) == "lm")) {
-    stop("Please specify a OLS linear regression model.", call. = FALSE)
+  if (!any(class(model) == "glm")) {
+    stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
 
   if ((pent < 0) | (pent > 1)) {
@@ -85,8 +85,10 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     names() %>%
     extract(1)
 
-  l        <- mod_sel_data(model)
-  nam      <- coeff_names(model)
+  l        <- suppressMessages(
+                full_join(model$data, as.data.frame(model.matrix(model)))) %>%
+                select(-`(Intercept)`)
+  nam      <- names(model$coefficients)[-1]
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (pent) / 2, df)
   trem     <- qt(1 - (prem) / 2, df)
@@ -104,13 +106,9 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   tvals   <- c()
   step    <- 1
   ppos    <- step + 1
-  rsq     <- c()
-  cp      <- c()
-  f       <- c()
-  fp      <- c()
-
-
-
+  aic     <- c()
+  bic     <- c()
+  dev     <- c()
 
   cat(format("Stepwise Selection Method", justify = "left", width = 27), "\n")
   cat(rep("-", 27), sep = "", "\n\n")
@@ -131,9 +129,14 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- ols_regress(paste(response, "~", paste(predictors, collapse = " + ")), l)
-    pvals[i] <- m$pvalues[ppos]
-    tvals[i] <- m$tvalues[ppos]
+    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
+             l, family = binomial(link = 'logit'))
+    m_sum <- summary(m)
+    pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+    tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+    # m <- ols_regress(paste(response, "~", paste(predictors, collapse = " + ")), l)
+    # pvals[i] <- m$pvalues[ppos]
+    # tvals[i] <- m$tvalues[ppos]
   }
 
   minp    <- which(pvals == min(pvals))
@@ -141,18 +144,23 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   maxt    <- which(tvals == max(tvals))
   preds   <- all_pred[maxt]
   lpreds  <- length(preds)
-  fr      <- ols_regress(paste(response, "~",
-                               paste(preds, collapse = " + ")), l)
-  rsq     <- fr$rsq
-  adjrsq  <- fr$adjr
-  cp      <- ols_mallows_cp(fr$model, model)
-  aic     <- ols_aic(fr$model)
-  sbc     <- ols_sbc(fr$model)
-  sbic    <- ols_sbic(fr$model, model)
-  rmse    <- sqrt(fr$ems)
-  betas   <- append(betas, fr$betas)
-  lbetas  <- append(lbetas, length(fr$betas))
-  pvalues <- append(pvalues, fr$pvalues)
+  fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+  mfs    <- blr_model_fit_stats(fr)
+  aic    <- mfs$m_aic
+  bic    <- mfs$m_bic
+  dev    <- mfs$m_deviance
+  # fr      <- ols_regress(paste(response, "~",
+  #                              paste(preds, collapse = " + ")), l)
+  # rsq     <- fr$rsq
+  # adjrsq  <- fr$adjr
+  # cp      <- ols_mallows_cp(fr$model, model)
+  # aic     <- ols_aic(fr$model)
+  # sbc     <- ols_sbc(fr$model)
+  # sbic    <- ols_sbic(fr$model, model)
+  # rmse    <- sqrt(fr$ems)
+  # betas   <- append(betas, fr$betas)
+  # lbetas  <- append(lbetas, length(fr$betas))
+  # pvalues <- append(pvalues, fr$pvalues)
 
   if (details == TRUE) {
     cat("\n")
@@ -168,7 +176,7 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   if (details == TRUE) {
     cat("\n")
-    m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+    m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
     print(m)
     cat("\n\n")
   }
@@ -190,10 +198,15 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     for (i in seq_len(len_p)) {
 
       predictors <- c(preds, all_pred[i])
-      m          <- ols_regress(paste(response, "~",
-                                      paste(predictors, collapse = " + ")), l)
-      pvals[i]   <- m$pvalues[ppos]
-      tvals[i]   <- m$tvalues[ppos]
+      m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
+             l, family = binomial(link = 'logit'))
+      m_sum <- summary(m)
+      pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+      tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+      # m          <- ols_regress(paste(response, "~",
+      #                                 paste(predictors, collapse = " + ")), l)
+      # pvals[i]   <- m$pvalues[ppos]
+      # tvals[i]   <- m$tvalues[ppos]
     }
 
     minp  <- which(pvals == min(pvals))
@@ -207,18 +220,23 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       method    <- c(method, tech[1])
       lpreds    <- length(preds)
       all_step  <- all_step + 1
-      fr        <- ols_regress(paste(response, "~",
-                                     paste(preds, collapse = " + ")), l)
-      rsq       <- c(rsq, fr$rsq)
-      adjrsq    <- c(adjrsq, fr$adjr)
-      aic       <- c(aic, ols_aic(fr$model))
-      sbc       <- c(sbc, ols_sbc(fr$model))
-      sbic      <- c(sbic, ols_sbic(fr$model, model))
-      cp        <- c(cp, ols_mallows_cp(fr$model, model))
-      rmse      <- c(rmse, sqrt(fr$ems))
-      betas     <- append(betas, fr$betas)
-      lbetas    <- append(lbetas, length(fr$betas))
-      pvalues   <- append(pvalues, fr$pvalues)
+      fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+      mfs    <- blr_model_fit_stats(fr)
+      aic    <- c(aic, mfs$m_aic)
+      bic    <- c(bic, mfs$m_bic)
+      dev    <- c(dev, mfs$m_deviance)
+      # fr        <- ols_regress(paste(response, "~",
+      #                                paste(preds, collapse = " + ")), l)
+      # rsq       <- c(rsq, fr$rsq)
+      # adjrsq    <- c(adjrsq, fr$adjr)
+      # aic       <- c(aic, ols_aic(fr$model))
+      # sbc       <- c(sbc, ols_sbc(fr$model))
+      # sbic      <- c(sbic, ols_sbic(fr$model, model))
+      # cp        <- c(cp, ols_mallows_cp(fr$model, model))
+      # rmse      <- c(rmse, sqrt(fr$ems))
+      # betas     <- append(betas, fr$betas)
+      # lbetas    <- append(lbetas, length(fr$betas))
+      # pvalues   <- append(pvalues, fr$pvalues)
 
       if (details == TRUE) {
         cat("\n")
@@ -234,22 +252,23 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
       if (details == TRUE) {
         cat("\n")
-        m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+        m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
         print(m)
         cat("\n\n")
       }
 
 
-      if (details == TRUE) {
-        cat("\n")
-        m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
-        print(m)
-        cat("\n\n")
-      }
+      # if (details == TRUE) {
+      #   cat("\n")
+      #   m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+      #   print(m)
+      #   cat("\n\n")
+      # }
 
-      m2      <- ols_regress(paste(response, "~",
-                                   paste(preds, collapse = " + ")), l)
-      tvals_r <- abs(m2$tvalues[-1])
+      m2     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, 
+                  family = binomial(link = 'logit')) %>%
+                  summary()
+      tvals_r <- abs(unname(m_sum$coefficients[, 3])[-1])
       mint    <- which(tvals_r == min(tvals_r))
       if (tvals_r[mint] < trem) {
 
@@ -259,18 +278,21 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         preds     <- preds[-mint]
         all_step  <- all_step + 1
         ppos      <- ppos - length(mint)
-        fr        <- ols_regress(paste(response, "~",
-                                       paste(preds, collapse = " + ")), l)
-        rsq       <- c(rsq, fr$rsq)
-        adjrsq    <- c(adjrsq, fr$adjr)
-        aic       <- c(aic, ols_aic(fr$model))
-        sbc       <- c(sbc, ols_sbc(fr$model))
-        sbic      <- c(sbic, ols_sbic(fr$model, model))
-        cp        <- c(cp, ols_mallows_cp(fr$model, model))
-        rmse      <- c(rmse, sqrt(fr$ems))
-        betas     <- append(betas, fr$betas)
-        lbetas    <- append(lbetas, length(fr$betas))
-        pvalues   <- append(pvalues, fr$pvalues)
+        fr        <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+        mfs    <- blr_model_fit_stats(fr)
+        aic    <- c(aic, mfs$m_aic)
+        bic    <- c(bic, mfs$m_bic)
+        dev    <- c(dev, mfs$m_deviance)
+        # rsq       <- c(rsq, fr$rsq)
+        # adjrsq    <- c(adjrsq, fr$adjr)
+        # aic       <- c(aic, ols_aic(fr$model))
+        # sbc       <- c(sbc, ols_sbc(fr$model))
+        # sbic      <- c(sbic, ols_sbic(fr$model, model))
+        # cp        <- c(cp, ols_mallows_cp(fr$model, model))
+        # rmse      <- c(rmse, sqrt(fr$ems))
+        # betas     <- append(betas, fr$betas)
+        # lbetas    <- append(lbetas, length(fr$betas))
+        # pvalues   <- append(pvalues, fr$pvalues)
 
         if (details == TRUE) {
           cat("\n")
@@ -286,7 +308,7 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
         if (details == TRUE) {
           cat("\n")
-          m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+          m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
           print(m)
           cat("\n\n")
         }
@@ -306,46 +328,31 @@ ols_step_both_p.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   cat("Final Model Output", "\n")
   cat(rep("-", 18), sep = "", "\n\n")
 
-  fi <- ols_regress(
+  fi <- blr_regress(
     paste(response, "~", paste(preds, collapse = " + ")),
     data = l
   )
   print(fi)
-
-  beta_pval <- tibble(
-    model     = rep(seq_len(all_step), lbetas),
-    predictor = names(betas),
-    beta      = betas,
-    pval      = pvalues
-  )
 
   out <- list(
     orders     = var_index,
     method     = method,
     steps      = all_step,
     predictors = preds,
-    rsquare    = rsq,
     aic        = aic,
-    sbc        = sbc,
-    sbic       = sbic,
-    adjr       = adjrsq,
-    rmse       = rmse,
-    mallows_cp = cp,
-    indvar     = cterms,
-    betas      = betas,
-    lbetas     = lbetas,
-    pvalues    = pvalues,
-    beta_pval  = beta_pval
+    bic        = bic,
+    dev        = dev,
+    indvar     = cterms
   )
 
-  class(out) <- "ols_step_both_p"
+  class(out) <- "blr_step_p_both"
 
   return(out)
 }
 
 #' @export
 #'
-print.ols_step_both_p <- function(x, ...) {
+print.blr_step_p_both <- function(x, ...) {
   if (x$steps > 0) {
     print_stepwise(x)
   } else {
@@ -354,32 +361,25 @@ print.ols_step_both_p <- function(x, ...) {
 }
 
 #' @export
-#' @rdname ols_step_both_p
+#' @rdname blr_step_p_both
 #'
-plot.ols_step_both_p <- function(x, model = NA, ...) {
+plot.blr_step_p_both <- function(x, model = NA, ...) {
 
   a <- NULL
   b <- NULL
 
   y <- seq_len(x$steps)
 
-  d1 <- tibble(a = y, b = x$rsquare)
-  d2 <- tibble(a = y, b = x$adjr)
-  d3 <- tibble(a = y, b = x$mallows_cp)
   d4 <- tibble(a = y, b = x$aic)
-  d5 <- tibble(a = y, b = x$sbic)
-  d6 <- tibble(a = y, b = x$sbc)
+  d5 <- tibble(a = y, b = x$bic)
+  d6 <- tibble(a = y, b = x$dev)
 
-  p1 <- plot_stepwise(d1, "R-Square")
-  p2 <- plot_stepwise(d2, "Adj. R-Square")
-  p3 <- plot_stepwise(d3, "C(p)")
   p4 <- plot_stepwise(d4, "AIC")
-  p5 <- plot_stepwise(d5, "SBIC")
-  p6 <- plot_stepwise(d6, "SBC")
+  p5 <- plot_stepwise(d5, "BIC")
+  p6 <- plot_stepwise(d6, "Deviance")
 
   # grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, top = "Stepwise Regression")
-  myplots <- list(plot_1 = p1, plot_2 = p2, plot_3 = p3,
-                  plot_4 = p4, plot_5 = p5, plot_6 = p6)
+  myplots <- list(plot_4 = p4, plot_5 = p5, plot_6 = p6)
   result <- marrangeGrob(myplots, nrow = 2, ncol = 2)
   result
 
@@ -400,10 +400,3 @@ plot_stepwise <- function(d, title) {
 }
 
 
-#' @export
-#' @rdname ols_step_both_p
-#' @usage NULL
-#'
-ols_stepwise <- function(model, pent = 0.1, prem = 0.3, details = FALSE, ...) {
-  .Deprecated("ols_step_both_p()")
-}

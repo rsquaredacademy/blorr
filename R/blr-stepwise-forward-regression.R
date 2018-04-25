@@ -20,13 +20,9 @@
 #'
 #' \item{steps}{number of steps}
 #' \item{predictors}{variables added to the model}
-#' \item{rsquare}{coefficient of determination}
 #' \item{aic}{akaike information criteria}
-#' \item{sbc}{bayesian information criteria}
-#' \item{sbic}{sawa's bayesian information criteria}
-#' \item{adjr}{adjusted r-square}
-#' \item{rmse}{root mean square error}
-#' \item{mallows_cp}{mallow's Cp}
+#' \item{bic}{bayesian information criteria}
+#' \item{dev}{deviance}
 #' \item{indvar}{predictors}
 #'
 #' @references
@@ -78,11 +74,13 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     stop("Please specify a model with at least 2 predictors.", call. = FALSE)
   }
 
-  l        <- mod_sel_data(model)
+  l        <- suppressMessages(
+                full_join(model$data, as.data.frame(model.matrix(model)))) %>%
+                select(-`(Intercept)`)
+  nam      <- names(model$coefficients)[-1]
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (penter) / 2, df)
   n        <- ncol(l)
-  nam      <- colnames(attr(model$terms, "factors"))
   response <- names(model$model)[1]
   all_pred <- nam
   cterms   <- all_pred
@@ -116,7 +114,8 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")), l, family = binomial(link = 'logit'))
+    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
+             l, family = binomial(link = 'logit'))
     m_sum <- summary(m)
     pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
     tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
@@ -132,7 +131,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   aic    <- mfs$m_aic
   bic    <- mfs$m_bic
   dev    <- mfs$m_deviance
-  
+
   if (details == TRUE) {
     cat("\n")
     cat(paste("Forward Selection: Step", step), "\n\n")

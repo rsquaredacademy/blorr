@@ -796,36 +796,31 @@ print_step_backward <- function(data) {
   # width
   w1 <- nchar("Step")
   w2 <- max(nchar("Variable"), nchar(data$removed))
-  w3 <- max(nchar("R-Square"), nchar(format(round(data$rsquare, 4), nsmall = 4)))
-  w4 <- max(nchar("R-Square"), nchar(format(round(data$adjr, 3), nsmall = 4)))
-  w5 <- max(nchar("C(p)"), nchar(format(round(data$mallows_cp, 4), nsmall = 4)))
-  w6 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
-  w7 <- max(nchar("RMSE"), nchar(format(round(data$rmse, 4), nsmall = 4)))
-  w <- sum(w1, w2, w3, w4, w5, w6, w7, 24)
+  w3 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
+  w4 <- max(nchar("BIC"), nchar(format(round(data$bic, 4), nsmall = 4)))
+  w5 <- max(nchar("Deviance"), nchar(format(round(data$dev, 4), nsmall = 4)))
+  w <- sum(w1, w2, w3, w4, w5, 16)
 
   cat("\n\n")
   cat(format("Elimination Summary", justify = "centre", width = w), "\n")
   cat(rep("-", w), sep = "", "\n")
   cat(
     format("", width = w1), fs(), format("Variable", width = w2), fs(),
-    format("", width = w3), fs(), format("Adj.", width = w4, justify = "centre"), fs(),
-    format("", width = w5), fs(), format("", width = w6), fs(),
-    format("", width = w7), fs(), "\n"
+    format("", width = w3), fs(), format("", width = w4), fs(),
+    format("", width = w5), fs(), "\n"
   )
   cat(
     format("Step", width = w1, justify = "centre"), fs(), format("Removed", width = w2, justify = "centre"), fs(),
-    format("R-Square", width = w3, justify = "centre"), fs(), format("R-Square", width = w4, justify = "centre"), fs(),
-    format("C(p)", width = w5, justify = "centre"), fs(), format("AIC", width = w6, justify = "centre"), fs(),
-    format("RMSE", width = w7, justify = "centre"), fs(), "\n"
+    format("AIC", width = w3, justify = "centre"), fs(), format("BIC", width = w4, justify = "centre"), fs(),
+    format("Deviance", width = w5, justify = "centre"), fs(),"\n"
   )
   cat(rep("-", w), sep = "", "\n")
 
   for (i in seq_len(n)) {
     cat(
       format(i, width = w1), fs(), format(data$removed[i], width = w2), fs(),
-      format(round(data$rsquare[i], 4), width = w3, nsmall = 3), fs(), format(round(data$adjr[i], 4), width = w4, nsmall = 3), fs(),
-      format(round(data$mallows_cp[i], 4), width = w5, justify = "centre", nsmall = 4), fs(),
-      format(round(data$aic[i], 4), width = w6, nsmall = 4), fs(), format(round(data$rmse[i], 4), width = w7, nsmall = 4), fs(), "\n"
+      format(round(data$aic[i], 4), width = w3, nsmall = 3), fs(), format(round(data$bic[i], 4), width = w4, nsmall = 3), fs(),
+      format(round(data$dev[i], 4), width = w5, justify = "centre", nsmall = 4), fs(), "\n"
     )
   }
   cat(rep("-", w), sep = "", "\n")
@@ -884,39 +879,34 @@ print_stepwise <- function(data) {
   # width
   w1 <- nchar("Step")
   w2 <- max(nchar("Variable"), nchar(data$orders))
-  w8 <- max(nchar("Removed"), nchar(data$method))
-  w3 <- max(nchar("R-Square"), nchar(format(round(data$rsquare, 3), nsmall = 3)))
-  w4 <- max(nchar("R-Square"), nchar(format(round(data$adjr, 3), nsmall = 3)))
-  w5 <- max(nchar("C(p)"), nchar(format(round(data$mallows_cp, 4), nsmall = 4)))
-  w6 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
-  w7 <- max(nchar("RMSE"), nchar(format(round(data$rmse, 4), nsmall = 4)))
-  w <- sum(w1, w2, w3, w4, w5, w6, w7, w8, 28)
+  w3 <- max(nchar("Removed"), nchar(data$method))
+  w4 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
+  w5 <- max(nchar("BIC"), nchar(format(round(data$bic, 4), nsmall = 4)))
+  w6 <- max(nchar("Deviance"), nchar(format(round(data$dev, 4), nsmall = 4)))
+  w <- sum(w1, w2, w3, w4, w5, w6, 20)
 
   cat("\n")
   cat(format("Stepwise Selection Summary", justify = "centre", width = w), "\n")
   cat(rep("-", w), sep = "", "\n")
   cat(
-    format("", width = w1), fs(), format("", width = w2), fs(), format("Added/", width = w8, justify = "centre"), fs(),
-    format("", width = w3), fs(), format("Adj.", width = w4, justify = "centre"), fs(),
-    format("", width = w5), fs(), format("", width = w6), fs(),
-    format("", width = w7), fs(), "\n"
+    format("", width = w1), fs(), format("", width = w2), fs(), format("Added/", width = w3, justify = "centre"), fs(),
+    format("", width = w4), fs(),  fs(),
+    format("", width = w5), fs(), format("", width = w6), fs(), "\n"
   )
   cat(
     format("Step", width = w1, justify = "centre"), fs(), format("Variable", width = w2, justify = "centre"), fs(),
-    format("Removed", width = w8, justify = "centre"), fs(),
-    format("R-Square", width = w3, justify = "centre"), fs(), format("R-Square", width = w4, justify = "centre"), fs(),
-    format("C(p)", width = w5, justify = "centre"), fs(), format("AIC", width = w6, justify = "centre"), fs(),
-    format("RMSE", width = w7, justify = "centre"), fs(), "\n"
+    format("Removed", width = w3, justify = "centre"), fs(),
+    format("AIC", width = w4, justify = "centre"), fs(), format("BIC", width = w5, justify = "centre"), fs(),
+    format("C(p)", width = w6, justify = "centre"), fs(), "\n"
   )
   cat(rep("-", w), sep = "", "\n")
 
   for (i in seq_len(n)) {
     cat(
       format(i, width = w1, justify = "centre"), fs(), format(data$orders[i], width = w2, justify = "centre"), fs(),
-      format(data$method[i], width = w8), fs(), format(round(data$rsquare[i], 3), width = w3, nsmall = 3), fs(),
-      format(round(data$adjr[i], 3), width = w4, nsmall = 3), fs(),
-      format(round(data$mallows_cp[i], 3), width = w5, justify = "centre", nsmall = 4), fs(),
-      format(round(data$aic[i], 4), width = w6, nsmall = 4), fs(), format(round(data$rmse[i], 4), width = w7, nsmall = 4), fs(), "\n"
+      format(data$method[i], width = w3), fs(), format(round(data$aic[i], 3), width = w4, nsmall = 3), fs(),
+      format(round(data$bic[i], 3), width = w5, nsmall = 3), fs(),
+      format(round(data$dev[i], 3), width = w6, justify = "centre", nsmall = 4), fs(), "\n"
     )
   }
   cat(rep("-", w), sep = "", "\n")

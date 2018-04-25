@@ -34,13 +34,9 @@ following components:
 
 \item{steps}{number of steps}
 \item{predictors}{variables added to the model}
-\item{rsquare}{coefficient of determination}
 \item{aic}{akaike information criteria}
-\item{sbc}{bayesian information criteria}
-\item{sbic}{sawa's bayesian information criteria}
-\item{adjr}{adjusted r-square}
-\item{rmse}{root mean square error}
-\item{mallows_cp}{mallow's Cp}
+\item{bic}{bayesian information criteria}
+\item{dev}{deviance}
 \item{indvar}{predictors}
 }
 \description{
@@ -75,5 +71,6 @@ Chicago, IL., McGraw Hill/Irwin.
 \seealso{
 Other variable selection procedures: \code{\link{blr_step_aic_backward}},
   \code{\link{blr_step_aic_both}},
-  \code{\link{blr_step_aic_forward}}
+  \code{\link{blr_step_aic_forward}},
+  \code{\link{blr_step_p_backward}}
 }

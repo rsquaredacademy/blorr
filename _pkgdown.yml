@@ -96,7 +96,9 @@ reference:
   - blr_step_aic_forward
   - blr_step_p_forward
   - blr_step_aic_backward
+  - blr_step_p_backward
   - blr_step_aic_both
+  - blr_step_p_both
 
 - title: Residual Diagnostics
 
