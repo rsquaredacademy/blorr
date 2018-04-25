@@ -5,8 +5,8 @@
 \title{Lorenz curve}
 \usage{
 blr_lorenz_curve(model, data = NULL, title = "Lorenz Curve",
-  xaxis_title = "Cumulative Population \%",
-  yaxis_title = "Cumulative Events \%", diag_line_col = "red",
+  xaxis_title = "Cumulative Events \%",
+  yaxis_title = "Cumulative Non Events \%", diag_line_col = "red",
   lorenz_curve_col = "blue")
 }
 \arguments{

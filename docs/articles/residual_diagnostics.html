@@ -98,36 +98,36 @@
     
     
 <div class="contents">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(blorr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(magrittr)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blorr)
+<span class="kw">library</span>(magrittr)</code></pre></div>
 <div id="model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model" class="anchor"></a>Model</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,
+             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
 </div>
 <div id="influence-diagnostics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#influence-diagnostics" class="anchor"></a>Influence Diagnostics</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/blr_plot_diag_influence.html">blr_plot_diag_influence</a></span>(model)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_influence.html">blr_plot_diag_influence</a></span>(model)</code></pre></div>
 <p><img src="residual_diagnostics_files/figure-html/infl-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="leverage-diagnostics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#leverage-diagnostics" class="anchor"></a>Leverage Diagnostics</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></span>(model)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></span>(model)</code></pre></div>
 <p><img src="residual_diagnostics_files/figure-html/lev-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="fitted-values-diagnostics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fitted-values-diagnostics" class="anchor"></a>Fitted Values Diagnostics</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/blr_plot_diag_fit.html">blr_plot_diag_fit</a></span>(model)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_fit.html">blr_plot_diag_fit</a></span>(model)</code></pre></div>
 <p><img src="residual_diagnostics_files/figure-html/fit-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="dfbetas-panel" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dfbetas-panel" class="anchor"></a>DFBETAs Panel</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/blr_plot_dfbetas_panel.html">blr_plot_dfbetas_panel</a></span>(model)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_dfbetas_panel.html">blr_plot_dfbetas_panel</a></span>(model)</code></pre></div>
 <p><img src="residual_diagnostics_files/figure-html/dfbetas-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 </div>
