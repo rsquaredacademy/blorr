@@ -94,6 +94,7 @@ reference:
 
   contents:
   - blr_step_aic_forward
+  - blr_step_p_forward
   - blr_step_aic_backward
   - blr_step_aic_both
 

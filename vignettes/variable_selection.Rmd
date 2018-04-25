@@ -106,3 +106,32 @@ model %>%
   plot()
 ```
 
+
+### Forward Selection
+
+#### Model
+
+```{r mod1p}
+model <- glm(honcomp ~ female + read + science, data = hsb2,
+  family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r forward1p}
+blr_step_p_forward(model)
+```
+
+#### Detailed Output
+
+```{r forward2p}
+blr_step_p_forward(model, details = TRUE)
+```
+
+#### Plot
+
+```{r forward3p}
+model %>%
+  blr_step_p_forward() %>%
+  plot()
+```

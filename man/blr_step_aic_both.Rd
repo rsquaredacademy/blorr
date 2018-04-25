@@ -57,5 +57,6 @@ Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourt
 }
 \seealso{
 Other variable selection procedures: \code{\link{blr_step_aic_backward}},
-  \code{\link{blr_step_aic_forward}}
+  \code{\link{blr_step_aic_forward}},
+  \code{\link{blr_step_p_forward}}
 }
