@@ -91,7 +91,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
 
   if (is.null(data)) {
     test_data <- FALSE
-    data      <- eval(model$call$data)
+    data      <- model$data
   } else {
     test_data <- TRUE
     data      <- data
@@ -123,7 +123,7 @@ lorenz_decile_count <- function(data) {
 
   data %>%
     nrow() %>%
-    divide_by(100) %>%
+    divide_by(10) %>%
     round()
 
 }
@@ -133,13 +133,13 @@ lorenz_table_modify <- function(data, decile_count) {
   residual <-
     data %>%
     nrow() %>%
-    subtract((decile_count * 99))
+    subtract((decile_count * 9))
 
   data %>%
     select(response = value, prob = value1) %>%
     arrange(desc(prob)) %>%
-    add_column(decile = c(rep(1:99, each = decile_count),
-                          rep(100, times = residual))) %>%
+    add_column(decile = c(rep(1:9, each = decile_count),
+                          rep(10, times = residual))) %>%
     group_by(decile) %>%
     summarise(total = n(), `1` = table(response)[[2]])
 }
