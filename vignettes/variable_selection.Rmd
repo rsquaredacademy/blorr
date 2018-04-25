@@ -106,3 +106,88 @@ model %>%
   plot()
 ```
 
+
+### Forward Selection
+
+#### Model
+
+```{r mod1p}
+model <- glm(honcomp ~ female + read + science, data = hsb2,
+  family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r forward1p}
+blr_step_p_forward(model)
+```
+
+#### Detailed Output
+
+```{r forward2p}
+blr_step_p_forward(model, details = TRUE)
+```
+
+#### Plot
+
+```{r forward3p}
+model %>%
+  blr_step_p_forward() %>%
+  plot()
+```
+
+### Backward Elimination
+
+#### Model
+
+```{r mod2p}
+model <- glm(honcomp ~ female + read + science + math + prog + socst, data = hsb2, family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r backward1p}
+blr_step_p_backward(model)
+```
+
+#### Detailed Output
+
+```{r backward2p}
+blr_step_p_backward(model, details = TRUE)
+```
+
+#### Plot
+
+```{r backward3p}
+model %>%
+  blr_step_p_backward() %>%
+  plot()
+```
+
+### Stepwise Selection
+
+#### Model
+
+```{r mod3p}
+model <- glm(y ~ ., data = stepwise)
+```
+
+#### Selection Summary
+
+```{r stepwise1p}
+blr_step_p_both(model)
+```
+
+#### Detailed Output
+
+```{r stepwise2p}
+blr_step_p_both(model, details = TRUE)
+```
+
+#### Plot
+
+```{r stepwise3p}
+model %>%
+  blr_step_p_both() %>%
+  plot()
+```

@@ -784,3 +784,130 @@ print_blr_twoway_segment <- function(x) {
     cat(rep("-", w), sep = "", "\n")
   }
 }
+
+
+print_step_backward <- function(data) {
+  n <- data$steps
+
+  if (n < 1) {
+    stop("No variables have been removed from the model based on p-values.")
+  }
+
+  # width
+  w1 <- nchar("Step")
+  w2 <- max(nchar("Variable"), nchar(data$removed))
+  w3 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
+  w4 <- max(nchar("BIC"), nchar(format(round(data$bic, 4), nsmall = 4)))
+  w5 <- max(nchar("Deviance"), nchar(format(round(data$dev, 4), nsmall = 4)))
+  w <- sum(w1, w2, w3, w4, w5, 16)
+
+  cat("\n\n")
+  cat(format("Elimination Summary", justify = "centre", width = w), "\n")
+  cat(rep("-", w), sep = "", "\n")
+  cat(
+    format("", width = w1), fs(), format("Variable", width = w2), fs(),
+    format("", width = w3), fs(), format("", width = w4), fs(),
+    format("", width = w5), fs(), "\n"
+  )
+  cat(
+    format("Step", width = w1, justify = "centre"), fs(), format("Removed", width = w2, justify = "centre"), fs(),
+    format("AIC", width = w3, justify = "centre"), fs(), format("BIC", width = w4, justify = "centre"), fs(),
+    format("Deviance", width = w5, justify = "centre"), fs(),"\n"
+  )
+  cat(rep("-", w), sep = "", "\n")
+
+  for (i in seq_len(n)) {
+    cat(
+      format(i, width = w1), fs(), format(data$removed[i], width = w2), fs(),
+      format(round(data$aic[i], 4), width = w3, nsmall = 3), fs(), format(round(data$bic[i], 4), width = w4, nsmall = 3), fs(),
+      format(round(data$dev[i], 4), width = w5, justify = "centre", nsmall = 4), fs(), "\n"
+    )
+  }
+  cat(rep("-", w), sep = "", "\n")
+}
+
+print_step_forward <- function(data) {
+  n <- length(data$predictors)
+
+  if (n < 1) {
+    stop("No variables have been added to the model based on p-values.")
+  }
+
+  # width
+  w1 <- nchar("Step")
+  w2 <- max(nchar("Variable"), nchar(data$predictors))
+  w3 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
+  w4 <- max(nchar("BIC"), nchar(format(round(data$bic, 4), nsmall = 4)))
+  w5 <- max(nchar("Deviance"), nchar(format(round(data$dev, 4), nsmall = 4)))
+  w <- sum(w1, w2, w3, w4, w5, 16)
+
+  cat("\n")
+  cat(format("Selection Summary", justify = "centre", width = w), "\n")
+  cat(rep("-", w), sep = "", "\n")
+  cat(
+    format("", width = w1), fs(), format("Variable", width = w2), fs(),
+    format("", width = w3), fs(), format("", width = w4), fs(),
+    format("", width = w5), fs(), "\n"
+  )
+  cat(
+    format("Step", width = w1, justify = "centre"), fs(), format("Entered", width = w2, justify = "centre"), fs(),
+    format("AIC", width = w3, justify = "centre"), fs(), format("BIC", width = w4, justify = "centre"), fs(),
+    format("Deviance", width = w5, justify = "centre"), fs(), "\n"
+  )
+  cat(rep("-", w), sep = "", "\n")
+
+  for (i in seq_len(n)) {
+    cat(
+      format(i, width = w1), fs(), format(data$predictors[i], width = w2), fs(),
+      format(round(data$aic[i], 4), width = w3, nsmall = 4), fs(),
+      format(round(data$bic[i], 4), width = w4, nsmall = 4), fs(),
+      format(round(data$dev[i], 4), width = w5, justify = "centre", nsmall = 4), fs(), "\n"
+    )
+  }
+  cat(rep("-", w), sep = "", "\n")
+}
+
+
+
+print_stepwise <- function(data) {
+  n <- data$steps
+
+  if (n < 1) {
+    stop("No variables have been added to or removed from the model based on p-values.")
+  }
+
+  # width
+  w1 <- nchar("Step")
+  w2 <- max(nchar("Variable"), nchar(data$orders))
+  w3 <- max(nchar("Removed"), nchar(data$method))
+  w4 <- max(nchar("AIC"), nchar(format(round(data$aic, 4), nsmall = 4)))
+  w5 <- max(nchar("BIC"), nchar(format(round(data$bic, 4), nsmall = 4)))
+  w6 <- max(nchar("Deviance"), nchar(format(round(data$dev, 4), nsmall = 4)))
+  w <- sum(w1, w2, w3, w4, w5, w6, 20)
+
+  cat("\n")
+  cat(format("Stepwise Selection Summary", justify = "centre", width = w), "\n")
+  cat(rep("-", w), sep = "", "\n")
+  cat(
+    format("", width = w1), fs(), format("", width = w2), fs(), format("Added/", width = w3, justify = "centre"), fs(),
+    format("", width = w4), fs(),  fs(),
+    format("", width = w5), fs(), format("", width = w6), fs(), "\n"
+  )
+  cat(
+    format("Step", width = w1, justify = "centre"), fs(), format("Variable", width = w2, justify = "centre"), fs(),
+    format("Removed", width = w3, justify = "centre"), fs(),
+    format("AIC", width = w4, justify = "centre"), fs(), format("BIC", width = w5, justify = "centre"), fs(),
+    format("C(p)", width = w6, justify = "centre"), fs(), "\n"
+  )
+  cat(rep("-", w), sep = "", "\n")
+
+  for (i in seq_len(n)) {
+    cat(
+      format(i, width = w1, justify = "centre"), fs(), format(data$orders[i], width = w2, justify = "centre"), fs(),
+      format(data$method[i], width = w3), fs(), format(round(data$aic[i], 3), width = w4, nsmall = 3), fs(),
+      format(round(data$bic[i], 3), width = w5, nsmall = 3), fs(),
+      format(round(data$dev[i], 3), width = w6, justify = "centre", nsmall = 4), fs(), "\n"
+    )
+  }
+  cat(rep("-", w), sep = "", "\n")
+}

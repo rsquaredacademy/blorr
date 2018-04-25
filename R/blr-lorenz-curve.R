@@ -8,16 +8,16 @@
 #' @param data A \code{tibble} or \code{data.frame}.
 #'
 #' @return Gini index.
-#' 
+#'
 #' @references
-#' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
-#' credit  scoring. New Jersey, Wiley. 
-#' 
-#' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.): 
-#' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag. 
-#' 
-#' Kočenda  E,  Vojtek  M  (2011):  Default  Predictors  in  Retail  Credit  Scoring:  Evidence  from  Czech  
-#' Banking Data. Forthcoming in: Emerging Markets Finance and Trade. 
+#' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
+#' credit  scoring. New Jersey, Wiley.
+#'
+#' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.):
+#' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
+#'
+#' Kočenda  E,  Vojtek  M  (2011):  Default  Predictors  in  Retail  Credit  Scoring:  Evidence  from  Czech
+#' Banking Data. Forthcoming in: Emerging Markets Finance and Trade.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -32,7 +32,7 @@
 blr_gini_index <- function(model, data = NULL) {
 
   if (is.null(data)) {
-    data <- 
+    data <-
       model %>%
       use_series(data)
   }
@@ -84,71 +84,76 @@ blr_gini_index <- function(model, data = NULL) {
 #' @export
 #'
 blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
-                             xaxis_title = "Cumulative Population %",
-                             yaxis_title = "Cumulative Events %",
+                             xaxis_title = "Cumulative Events %",
+                             yaxis_title = "Cumulative Non Events %",
                              diag_line_col = "red",
                              lorenz_curve_col = "blue") {
 
   if (is.null(data)) {
-    data <- 
-      model %>%
-      use_series(data)
+    test_data <- FALSE
+    data      <- model$data
+  } else {
+    test_data <- TRUE
+    data      <- data
   }
-
-  prob <- lorenz_curve_prob(data, model)
-  n    <- lorenz_curve_n(prob)
-  p    <- lorenz_curve_p(n)
-  l    <- lorenz_curve_l(prob, n)
 
   g_index <-
     blr_gini_index(model = model, data = data) %>%
     round(2)
 
-  tibble(p = p, l = l) %>%
-    ggplot() + geom_line(aes(x = p, y = l), color = lorenz_curve_col) +
-    geom_line(aes(x = p, y = p), color = diag_line_col) +
+  decile_count <- lorenz_decile_count(data)
+
+  gains_table_prep(model, data, test_data) %>%
+    lorenz_table_modify(decile_count = decile_count) %>%
+    gains_table_mutate() %>%
+    lorenz_plot_data() %>%
+    ggplot() +
+    geom_line(aes(x = `cum_1s_per`, y = `cum_0s_per`),
+                color = lorenz_curve_col) +
+    geom_line(aes(x = `cum_1s_per`, y = `cum_1s_per`), color = diag_line_col) +
     ggtitle(label = title, subtitle = glue("Gini Index = ", {g_index})) +
-    scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
-    scale_y_continuous(labels = scales::percent) + ylab(yaxis_title) +
+    xlab(xaxis_title) + ylab(yaxis_title) +
     theme(plot.title = element_text(hjust = 0.5),
-      plot.subtitle = element_text(hjust = 0.5))
+          plot.subtitle = element_text(hjust = 0.5))
 
 }
 
 
-lorenz_curve_prob <- function(data, model) {
+lorenz_decile_count <- function(data) {
 
-  data$prob <- predict.glm(model, newdata = data, type = 'response')
+  data %>%
+    nrow() %>%
+    divide_by(10) %>%
+    round()
 
-  prob <- 
+}
+
+lorenz_table_modify <- function(data, decile_count) {
+
+  residual <-
     data %>%
-    arrange(prob) %>%
-    pull(prob)
+    nrow() %>%
+    subtract((decile_count * 9))
 
-
+  data %>%
+    select(response = value, prob = value1) %>%
+    arrange(desc(prob)) %>%
+    add_column(decile = c(rep(1:9, each = decile_count),
+                          rep(10, times = residual))) %>%
+    group_by(decile) %>%
+    summarise(total = n(), `1` = table(response)[[2]])
 }
 
+lorenz_plot_data <- function(gains_table) {
 
-lorenz_curve_n <- function(prob) {
-
-  prob %>%
-    length() %>%
-    rep(x = 1)
-}
-
-lorenz_curve_p <- function(n) {
-
-  cumsum(n) %>%
-    divide_by(sum(n)) %>%
-    prepend(0)
-
-}
-
-lorenz_curve_l <- function(prob, n) {
-
-  prob_cum <- prob * n
-  cumsum(prob_cum) %>%
-    divide_by(sum(prob_cum)) %>%
-    prepend(0)
+  gains_table %>%
+    select(`cum_0s_%`, `cum_1s_%`) %>%
+    mutate(
+      cum_0s_per    = `cum_0s_%` / 100,
+      cum_1s_per    = `cum_1s_%` / 100
+    ) %>%
+    select(cum_0s_per, cum_1s_per) %>%
+    add_row(cum_0s_per = 0, cum_1s_per = 0, .before = 1) %>%
+    add_row(cum_0s_per = 1, cum_1s_per = 1)
 
 }
