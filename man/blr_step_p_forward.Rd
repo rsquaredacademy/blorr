@@ -44,11 +44,6 @@ Build regression model from a set of candidate predictor variables by
 entering predictors based on p values, in a stepwise manner until there is
 no variable left to enter any more.
 }
-\section{Deprecated Function}{
-
-\code{blr_step_forward()} has been deprecated. Instead use \code{blr_step_p_forward()}.
-}
-
 \examples{
 # stepwise forward regression
 model <- glm(honcomp ~ female + read + science, data = hsb2,

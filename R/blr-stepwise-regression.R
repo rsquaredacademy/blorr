@@ -23,20 +23,13 @@
 #' \item{method}{addition/deletion}
 #' \item{steps}{total number of steps}
 #' \item{predictors}{variables retained in the model (after addition)}
-#' \item{rsquare}{coefficient of determination}
 #' \item{aic}{akaike information criteria}
-#' \item{sbc}{bayesian information criteria}
-#' \item{sbic}{sawa's bayesian information criteria}
-#' \item{adjr}{adjusted r-square}
-#' \item{rmse}{root mean square error}
-#' \item{mallows_cp}{mallow's Cp}
+#' \item{bic}{bayesian information criteria}
+#' \item{dev}{deviance}
 #' \item{indvar}{predictors}
 #'
 #' @references
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
-#'
-#' @section Deprecated Function:
-#' \code{ols_stepwise()} has been deprecated. Instead use \code{blr_step_p_both()}.
 #'
 #' @examples
 #' # stepwise regression
@@ -167,6 +160,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     cat(paste("Stepwise Selection: Step", step), "\n\n")
   }
 
+  if (isRunning()) {
+    cat(paste("-", dplyr::last(preds), "added"), "\n")
+  } else 
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
   } else {
@@ -243,7 +239,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         cat(paste("Stepwise Selection: Step", step), "\n\n")
       }
 
-      if (interactive()) {
+      if (isRunning()) {
+        cat(paste("-", dplyr::last(preds), "added"), "\n")
+      } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
       } else {
         cat(paste("-", dplyr::last(preds), "added"), "\n")
@@ -299,6 +297,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
           cat(paste("Stepwise Selection: Step", all_step), "\n\n")
         }
 
+        if (isRunning()) {
+          cat(paste("-", dplyr::last(var_index), "added"), "\n")
+        } else 
         if (interactive()) {
           cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(var_index)), "\n")
         } else {

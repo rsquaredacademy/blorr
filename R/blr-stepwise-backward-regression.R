@@ -128,7 +128,9 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         # bic    <- c(sbc, ols_sbc(fr$model))
         # dev    <- c(sbic, ols_sbic(fr$model, model))
 
-        if (interactive()) {
+        if (isRunning()) {
+        cat(paste("-", dplyr::last(rpred), "added"), "\n")
+        } else if (interactive()) {
           cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
         } else {
           cat(paste("-", dplyr::last(rpred)), "\n")
@@ -154,7 +156,9 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
-      if (interactive()) {
+      if (isRunning()) {
+        cat(paste("-", rpred[i], "added"), "\n")
+      } else if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
       } else {
         cat(paste("-", rpred[i]), "\n")
