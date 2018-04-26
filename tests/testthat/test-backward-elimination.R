@@ -27,7 +27,7 @@ test_that("output from backward variable p elimination is as expected", {
     blr_step_p_backward() %>%
     use_series(removed)
 
-  expected <- c("prog3", "prog2", "socst")
+  expected <- c("prog", "socst")
 
   expect_equivalent(actual, expected)
 })

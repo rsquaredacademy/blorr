@@ -70,10 +70,8 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
 
 
-  l        <- suppressMessages(
-                full_join(model$data, as.data.frame(model.matrix(model)))) %>%
-                select(-`(Intercept)`)
-  nam      <- names(model$coefficients)[-1]
+  l        <- model$data
+  nam      <- colnames(attr(model$terms, "factors"))
   response <- names(model$model)[1]
   preds    <- nam
   cterms   <- preds
@@ -103,8 +101,10 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
 
   while (!end) {
     m <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
-    m_sum <- summary(m)
-    pvals <- unname(m_sum$coefficients[, 4])[-1]
+    m_sum <- Anova(m, test.statistic = "Wald")
+    pvals <- m_sum$`Pr(>Chisq)`
+    # m_sum <- summary(m)
+    # pvals <- unname(m_sum$coefficients[, 4])[-1]
     # m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
     # pvals <- m$pvalues[-1]
     maxp  <- which(pvals == max(pvals))

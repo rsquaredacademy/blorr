@@ -27,7 +27,7 @@ test_that("output from forward variable p selection is as expected", {
     blr_step_p_forward() %>%
     use_series(predictors)
 
-  expected <- c("read", "science", "female1")
+  expected <- c("read", "female", "science")
 
   expect_equivalent(actual, expected)
 })

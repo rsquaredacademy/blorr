@@ -78,10 +78,8 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     names() %>%
     extract(1)
 
-  l        <- suppressMessages(
-                full_join(model$data, as.data.frame(model.matrix(model)))) %>%
-                select(-`(Intercept)`)
-  nam      <- names(model$coefficients)[-1]
+  l        <- model$data
+  nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (pent) / 2, df)
   trem     <- qt(1 - (prem) / 2, df)
@@ -98,7 +96,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   pvals   <- c()
   tvals   <- c()
   step    <- 1
-  ppos    <- step + 1
+  ppos    <- step 
   aic     <- c()
   bic     <- c()
   dev     <- c()
@@ -124,24 +122,27 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     predictors <- all_pred[i]
     m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
              l, family = binomial(link = 'logit'))
-    m_sum <- summary(m)
-    pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-    tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+    m_sum <- Anova(m, test.statistic = "Wald")
+    pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
+    tvals[i] <- m_sum$Chisq[ppos]
+    # m_sum <- summary(m)
+    # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+    # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
     # m <- ols_regress(paste(response, "~", paste(predictors, collapse = " + ")), l)
     # pvals[i] <- m$pvalues[ppos]
     # tvals[i] <- m$tvalues[ppos]
   }
 
   minp    <- which(pvals == min(pvals))
-  tvals   <- abs(tvals)
-  maxt    <- which(tvals == max(tvals))
-  preds   <- all_pred[maxt]
+  # tvals   <- abs(tvals)
+  # maxt    <- which(tvals == max(tvals))
+  preds   <- all_pred[minp]
   lpreds  <- length(preds)
-  fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
-  mfs    <- blr_model_fit_stats(fr)
-  aic    <- mfs$m_aic
-  bic    <- mfs$m_bic
-  dev    <- mfs$m_deviance
+  fr      <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+  mfs     <- blr_model_fit_stats(fr)
+  aic     <- mfs$m_aic
+  bic     <- mfs$m_bic
+  dev     <- mfs$m_deviance
   # fr      <- ols_regress(paste(response, "~",
   #                              paste(preds, collapse = " + ")), l)
   # rsq     <- fr$rsq
@@ -184,10 +185,10 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   while (step < mlen_p) {
 
-    all_pred <- all_pred[-maxt]
+    all_pred <- all_pred[-minp]
     len_p    <- length(all_pred)
     step     <- step + 1
-    ppos     <- ppos + length(maxt)
+    ppos     <- ppos + length(minp)
     pvals    <- c()
     tvals    <- c()
 
@@ -196,9 +197,12 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       predictors <- c(preds, all_pred[i])
       m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
              l, family = binomial(link = 'logit'))
-      m_sum <- summary(m)
-      pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-      tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+      m_sum <- Anova(m, test.statistic = "Wald")
+      pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
+      tvals[i] <- m_sum$Chisq[ppos]
+      # m_sum <- summary(m)
+      # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+      # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
       # m          <- ols_regress(paste(response, "~",
       #                                 paste(predictors, collapse = " + ")), l)
       # pvals[i]   <- m$pvalues[ppos]
@@ -206,13 +210,13 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     }
 
     minp  <- which(pvals == min(pvals))
-    tvals <- abs(tvals)
-    maxt  <- which(tvals == max(tvals))
+    # tvals <- abs(tvals)
+    # maxt  <- which(tvals == max(tvals))
 
-    if (tvals[maxt] >= tenter) {
+    if (pvals[minp] <= pent) {
 
-      preds     <- c(preds, all_pred[maxt])
-      var_index <- c(var_index, all_pred[maxt])
+      preds     <- c(preds, all_pred[minp])
+      var_index <- c(var_index, all_pred[minp])
       method    <- c(method, tech[1])
       lpreds    <- length(preds)
       all_step  <- all_step + 1
@@ -264,23 +268,25 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       # }
 
       m2     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, 
-                  family = binomial(link = 'logit')) %>%
-                  summary()
-      tvals_r <- abs(unname(m_sum$coefficients[, 3])[-1])
-      mint    <- which(tvals_r == min(tvals_r))
-      if (tvals_r[mint] < trem) {
+                  family = binomial(link = 'logit')) 
+      m_sum <- Anova(m2, test.statistic = "Wald")
+      pvals_r <- m_sum$`Pr(>Chisq)`
+      # tvals_r <- m_sum$Chisq[ppos]
+      # tvals_r <- abs(unname(m_sum$coefficients[, 3])[-1])
+      maxp    <- which(pvals_r == max(pvals_r))
+      if (pvals_r[maxp] > prem) {
 
-        var_index <- c(var_index, preds[mint])
+        var_index <- c(var_index, preds[maxp])
         lvar      <- length(var_index)
         method    <- c(method, tech[2])
-        preds     <- preds[-mint]
+        preds     <- preds[-maxp]
         all_step  <- all_step + 1
-        ppos      <- ppos - length(mint)
+        ppos      <- ppos - length(maxp)
         fr        <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
-        mfs    <- blr_model_fit_stats(fr)
-        aic    <- c(aic, mfs$m_aic)
-        bic    <- c(bic, mfs$m_bic)
-        dev    <- c(dev, mfs$m_deviance)
+        mfs       <- blr_model_fit_stats(fr)
+        aic       <- c(aic, mfs$m_aic)
+        bic       <- c(bic, mfs$m_bic)
+        dev       <- c(dev, mfs$m_deviance)
         # rsq       <- c(rsq, fr$rsq)
         # adjrsq    <- c(adjrsq, fr$adjr)
         # aic       <- c(aic, ols_aic(fr$model))

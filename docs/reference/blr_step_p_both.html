@@ -204,9 +204,6 @@ following components:</p>
 #&gt; Variables Entered/Removed: 
 #&gt; 
 #&gt; &lt;U+2714&gt; x6 
-#&gt; &lt;U+2714&gt; x1 
-#&gt; &lt;U+2714&gt; x3 
-#&gt; &lt;U+2714&gt; x2 
 #&gt; &lt;U+2714&gt; x5 
 #&gt; &lt;U+2716&gt; x6 
 #&gt; 
@@ -241,8 +238,8 @@ following components:</p>
 #&gt; ------------------------------------------------------------------
 #&gt; (Intercept)    1     -1.5228        0.0287    -53.1302      0.0000 
 #&gt;     x1         1      1.0276        0.0212     48.4927      0.0000 
-#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 
 #&gt;     x2         1      0.9807        0.0209     46.9690      0.0000 
+#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 
 #&gt;     x5         1      0.0357        0.0192      1.8531      0.0639 
 #&gt; ------------------------------------------------------------------
 #&gt; 
@@ -259,12 +256,9 @@ following components:</p>
 #&gt;                      Added/                                                  
 #&gt; Step    Variable    Removed        AIC           BIC           C(p)       
 #&gt; ----------------------------------------------------------------------
-#&gt;    1       x6       addition     18869.627     18885.434    18865.6270    
-#&gt;    2       x1       addition     18571.376     18595.087    18565.3760    
-#&gt;    3       x3       addition     18016.724     18048.338    18008.7240    
-#&gt;    4       x2       addition     16642.374     16681.891    16632.3740    
-#&gt;    5       x5       addition     16640.883     16688.304    16628.8830    
-#&gt;    6       x6       removal      16639.219     16678.736    16629.2190    
+#&gt;    1       x1       addition     16642.374     16681.891    16632.3740    
+#&gt;    2       x2       addition     16640.883     16688.304    16628.8830    
+#&gt;    3       x3       removal      16639.219     16678.736    16629.2190    
 #&gt; ----------------------------------------------------------------------</div><div class='input'>
 <span class='co'># stepwise regression plot</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>y</span> ~ <span class='no'>.</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>stepwise</span>)
@@ -285,9 +279,6 @@ following components:</p>
 #&gt; Variables Entered/Removed: 
 #&gt; 
 #&gt; &lt;U+2714&gt; x6 
-#&gt; &lt;U+2714&gt; x1 
-#&gt; &lt;U+2714&gt; x3 
-#&gt; &lt;U+2714&gt; x2 
 #&gt; &lt;U+2714&gt; x5 
 #&gt; &lt;U+2716&gt; x6 
 #&gt; 
@@ -322,8 +313,8 @@ following components:</p>
 #&gt; ------------------------------------------------------------------
 #&gt; (Intercept)    1     -1.5228        0.0287    -53.1302      0.0000 
 #&gt;     x1         1      1.0276        0.0212     48.4927      0.0000 
-#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 
 #&gt;     x2         1      0.9807        0.0209     46.9690      0.0000 
+#&gt;     x3         1      1.0260        0.0213     48.2799      0.0000 
 #&gt;     x5         1      0.0357        0.0192      1.8531      0.0639 
 #&gt; ------------------------------------------------------------------
 #&gt; 
@@ -335,7 +326,7 @@ following components:</p>
 #&gt; Pairs                99998319         c                0.8911   
 #&gt; ---------------------------------------------------------------
 #&gt; </div><div class='input'><span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='input'>
-</div><div class='img'><img src='blr_step_p_both-2.png' alt='' width='700' height='432.632880098887' /></div></pre>
+</div><div class='img'><img src='blr_step_p_both-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
