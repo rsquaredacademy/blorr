@@ -9,6 +9,7 @@ Description: Tools designed to make it easier for users, particularly beginner/i
 Depends:
     R(>= 3.2.0)
 Imports: 
+    car
     caret,
     cli,
     clisymbols,
