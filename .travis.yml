@@ -5,6 +5,11 @@ cache: packages
 warnings_are_errors: true
 sudo: false
 
+addons:
+  apt:
+    packages:
+      - libnlopt-dev
+
 r:
     - 3.2
     - oldrel
