@@ -172,10 +172,6 @@ following components:</p>
 <dt>indvar</dt><dd><p>predictors</p></dd>
 
     
-    <h2 class="hasAnchor" id="deprecated-function"><a class="anchor" href="#deprecated-function"></a>Deprecated Function</h2>
-
-    <p><code>blr_step_forward()</code> has been deprecated. Instead use <code>blr_step_p_forward()</code>.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley &amp; Sons, 2012. Print.</p>
@@ -199,7 +195,7 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; 
 #&gt; Candidate Terms: 
 #&gt; 
-#&gt; 1. female1 
+#&gt; 1. female 
 #&gt; 2. read 
 #&gt; 3. science 
 #&gt; 
@@ -208,8 +204,8 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; Variables Entered: 
 #&gt; 
 #&gt; &lt;U+2714&gt; read 
+#&gt; &lt;U+2714&gt; female 
 #&gt; &lt;U+2714&gt; science 
-#&gt; &lt;U+2714&gt; female1 
 #&gt; 
 #&gt; 
 #&gt; Final Model Output 
@@ -224,32 +220,32 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; ------------------------------------------------------------------------
 #&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
 #&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     372        371           368            TRUE     
+#&gt;   data      honcomp     200        199           196            TRUE     
 #&gt; ------------------------------------------------------------------------
 #&gt; 
 #&gt;                     Response Summary                     
 #&gt; --------------------------------------------------------
 #&gt; Outcome        Frequency        Outcome        Frequency 
 #&gt; --------------------------------------------------------
-#&gt;    0              290              1              82     
+#&gt;    0              147              1              53     
 #&gt; --------------------------------------------------------
 #&gt; 
 #&gt;                   Maximum Likelihood Estimates                    
 #&gt; -----------------------------------------------------------------
 #&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
 #&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -11.5804       1.3980    -8.2836      0.0000 
-#&gt;    read        1      0.1000        0.0210     4.7651      0.0000 
-#&gt;   science      1      0.0798        0.0246     3.2390      0.0012 
-#&gt;   female1      1      0.9324        0.3126     2.9826      0.0029 
+#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
+#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 
+#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 
+#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 
 #&gt; -----------------------------------------------------------------
 #&gt; 
 #&gt;  Association of Predicted Probabilities and Observed Responses  
 #&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8259          Somers' D        0.6607   
-#&gt; % Discordant          0.1687          Gamma            0.6572   
-#&gt; % Tied                0.0054          Tau-a            0.2265   
-#&gt; Pairs                 23780           c                0.8286   
+#&gt; % Concordant          0.8561          Somers' D        0.7147   
+#&gt; % Discordant          0.1425          Gamma            0.7136   
+#&gt; % Tied                0.0014          Tau-a            0.2794   
+#&gt; Pairs                  7791           c                0.8568   
 #&gt; ---------------------------------------------------------------
 #&gt; </div><div class='output co'>#&gt; 
 #&gt;                  Selection Summary                   
@@ -257,9 +253,9 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt;         Variable                                        
 #&gt; Step    Entered       AIC         BIC       Deviance    
 #&gt; ----------------------------------------------------
-#&gt;    1    read        316.3831    324.2209    312.3831    
-#&gt;    2    science     310.5294    322.2861    304.5294    
-#&gt;    3    female1     303.0855    318.7611    295.0855    
+#&gt;    1    read        183.0630    189.6596    179.0630    
+#&gt;    2    female      176.8874    186.7824    170.8874    
+#&gt;    3    science     168.2364    181.4296    160.2364    
 #&gt; ----------------------------------------------------</div><div class='input'>
 <span class='co'># stepwise forward regression plot</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
@@ -269,7 +265,7 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; 
 #&gt; Candidate Terms: 
 #&gt; 
-#&gt; 1. female1 
+#&gt; 1. female 
 #&gt; 2. read 
 #&gt; 3. science 
 #&gt; 
@@ -278,8 +274,8 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; Variables Entered: 
 #&gt; 
 #&gt; &lt;U+2714&gt; read 
+#&gt; &lt;U+2714&gt; female 
 #&gt; &lt;U+2714&gt; science 
-#&gt; &lt;U+2714&gt; female1 
 #&gt; 
 #&gt; 
 #&gt; Final Model Output 
@@ -294,32 +290,32 @@ Chicago, IL., McGraw Hill/Irwin.</p>
 #&gt; ------------------------------------------------------------------------
 #&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
 #&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     372        371           368            TRUE     
+#&gt;   data      honcomp     200        199           196            TRUE     
 #&gt; ------------------------------------------------------------------------
 #&gt; 
 #&gt;                     Response Summary                     
 #&gt; --------------------------------------------------------
 #&gt; Outcome        Frequency        Outcome        Frequency 
 #&gt; --------------------------------------------------------
-#&gt;    0              290              1              82     
+#&gt;    0              147              1              53     
 #&gt; --------------------------------------------------------
 #&gt; 
 #&gt;                   Maximum Likelihood Estimates                    
 #&gt; -----------------------------------------------------------------
 #&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
 #&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -11.5804       1.3980    -8.2836      0.0000 
-#&gt;    read        1      0.1000        0.0210     4.7651      0.0000 
-#&gt;   science      1      0.0798        0.0246     3.2390      0.0012 
-#&gt;   female1      1      0.9324        0.3126     2.9826      0.0029 
+#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
+#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 
+#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 
+#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 
 #&gt; -----------------------------------------------------------------
 #&gt; 
 #&gt;  Association of Predicted Probabilities and Observed Responses  
 #&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8259          Somers' D        0.6607   
-#&gt; % Discordant          0.1687          Gamma            0.6572   
-#&gt; % Tied                0.0054          Tau-a            0.2265   
-#&gt; Pairs                 23780           c                0.8286   
+#&gt; % Concordant          0.8561          Somers' D        0.7147   
+#&gt; % Discordant          0.1425          Gamma            0.7136   
+#&gt; % Tied                0.0014          Tau-a            0.2794   
+#&gt; Pairs                  7791           c                0.8568   
 #&gt; ---------------------------------------------------------------
 #&gt; </div><div class='input'><span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='input'>
 </div><div class='img'><img src='blr_step_p_forward-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
@@ -330,8 +326,6 @@ Chicago, IL., McGraw Hill/Irwin.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#deprecated-function">Deprecated Function</a></li>
 
       <li><a href="#references">References</a></li>
 

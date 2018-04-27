@@ -193,20 +193,18 @@ following components:</p>
 #&gt; 
 #&gt; Candidate Terms: 
 #&gt; 
-#&gt; 1 . female1 
+#&gt; 1 . female 
 #&gt; 2 . read 
 #&gt; 3 . science 
 #&gt; 4 . math 
-#&gt; 5 . prog2 
-#&gt; 6 . prog3 
-#&gt; 7 . socst 
+#&gt; 5 . prog 
+#&gt; 6 . socst 
 #&gt; 
 #&gt; We are eliminating variables based on p value...
 #&gt; 
 #&gt; Variables Removed: 
 #&gt; 
-#&gt; &lt;U+2716&gt; prog3 
-#&gt; &lt;U+2716&gt; prog2 
+#&gt; &lt;U+2716&gt; prog 
 #&gt; &lt;U+2716&gt; socst 
 #&gt; 
 #&gt; No more variables satisfy the condition of p value = 0.3
@@ -259,9 +257,8 @@ following components:</p>
 #&gt;         Variable                                        
 #&gt; Step    Removed       AIC         BIC       Deviance    
 #&gt; ----------------------------------------------------
-#&gt;    1    prog3       160.7102    183.7984    146.7102    
-#&gt;    2    prog2       158.9527    178.7427    146.9527    
-#&gt;    3    socst       157.2856    173.7772    147.2856    
+#&gt;    1    prog        158.9527    178.7427    146.9527    
+#&gt;    2    socst       157.2856    173.7772    147.2856    
 #&gt; ----------------------------------------------------</div><div class='input'>
 <span class='co'># stepwise backward regression plot</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span> + <span class='no'>math</span> + <span class='no'>prog</span> + <span class='no'>socst</span>,
@@ -271,20 +268,18 @@ following components:</p>
 #&gt; 
 #&gt; Candidate Terms: 
 #&gt; 
-#&gt; 1 . female1 
+#&gt; 1 . female 
 #&gt; 2 . read 
 #&gt; 3 . science 
 #&gt; 4 . math 
-#&gt; 5 . prog2 
-#&gt; 6 . prog3 
-#&gt; 7 . socst 
+#&gt; 5 . prog 
+#&gt; 6 . socst 
 #&gt; 
 #&gt; We are eliminating variables based on p value...
 #&gt; 
 #&gt; Variables Removed: 
 #&gt; 
-#&gt; &lt;U+2716&gt; prog3 
-#&gt; &lt;U+2716&gt; prog2 
+#&gt; &lt;U+2716&gt; prog 
 #&gt; &lt;U+2716&gt; socst 
 #&gt; 
 #&gt; No more variables satisfy the condition of p value = 0.3

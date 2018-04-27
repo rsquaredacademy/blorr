@@ -39,13 +39,9 @@ following components:
 \item{method}{addition/deletion}
 \item{steps}{total number of steps}
 \item{predictors}{variables retained in the model (after addition)}
-\item{rsquare}{coefficient of determination}
 \item{aic}{akaike information criteria}
-\item{sbc}{bayesian information criteria}
-\item{sbic}{sawa's bayesian information criteria}
-\item{adjr}{adjusted r-square}
-\item{rmse}{root mean square error}
-\item{mallows_cp}{mallow's Cp}
+\item{bic}{bayesian information criteria}
+\item{dev}{deviance}
 \item{indvar}{predictors}
 }
 \description{
@@ -53,11 +49,6 @@ Build regression model from a set of candidate predictor variables by
 entering and removing predictors based on p values, in a stepwise manner
 until there is no variable left to enter or remove any more.
 }
-\section{Deprecated Function}{
-
-\code{ols_stepwise()} has been deprecated. Instead use \code{blr_step_p_both()}.
-}
-
 \examples{
 # stepwise regression
 model <- glm(y ~ ., data = stepwise)

@@ -31,8 +31,6 @@
 #' Kutner, MH, Nachtscheim CJ, Neter J and Li W., 2004, Applied Linear Statistical Models (5th edition).
 #' Chicago, IL., McGraw Hill/Irwin.
 #'
-#' @section Deprecated Function:
-#' \code{blr_step_forward()} has been deprecated. Instead use \code{blr_step_p_forward()}.
 #'
 #' @examples
 #' # stepwise forward regression
@@ -47,6 +45,7 @@
 #' plot(k)
 #'
 #' @importFrom stats qt
+#' @importFrom car Anova
 #'
 #' @family variable selection procedures
 #'
@@ -58,6 +57,7 @@ blr_step_p_forward <- function(model, ...) UseMethod("blr_step_p_forward")
 #' @rdname blr_step_p_forward
 #'
 blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...) {
+  
   if (!any(class(model) == "glm")) {
     stop("Please specify a binary logistic regression model.", call. = FALSE)
   }
@@ -74,10 +74,8 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     stop("Please specify a model with at least 2 predictors.", call. = FALSE)
   }
 
-  l        <- suppressMessages(
-                full_join(model$data, as.data.frame(model.matrix(model)))) %>%
-                select(-`(Intercept)`)
-  nam      <- names(model$coefficients)[-1]
+  l        <- model$data
+  nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (penter) / 2, df)
   n        <- ncol(l)
@@ -87,7 +85,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   mlen_p   <- length(all_pred)
 
   step     <- 1
-  ppos     <- step + 1
+  ppos     <- step 
   preds    <- c()
   pvals    <- c()
   tvals    <- c()
@@ -116,15 +114,15 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     predictors <- all_pred[i]
     m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
              l, family = binomial(link = 'logit'))
-    m_sum <- summary(m)
-    pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-    tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+    m_sum <- Anova(m, test.statistic = "Wald")
+    pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
+    tvals[i] <- m_sum$Chisq[ppos]
   }
 
   minp   <- which(pvals == min(pvals))
-  tvals  <- abs(tvals)
-  maxt   <- which(tvals == max(tvals))
-  preds  <- all_pred[maxt]
+  # tvals  <- abs(tvals)
+  # maxt   <- which(tvals == max(tvals))
+  preds  <- all_pred[minp]
   lpreds <- length(preds)
   fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
   mfs    <- blr_model_fit_stats(fr)
@@ -137,7 +135,9 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat(paste("Forward Selection: Step", step), "\n\n")
   }
 
-  if (interactive()) {
+  if (isRunning()) {
+    cat(paste("-", dplyr::last(preds), "added"), "\n")
+  } else if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
   } else {
     cat(paste("-", dplyr::last(preds)), "\n")
@@ -152,9 +152,9 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   while (step < mlen_p) {
 
-    all_pred <- all_pred[-maxt]
+    all_pred <- all_pred[-minp]
     len_p    <- length(all_pred)
-    ppos     <- ppos + length(maxt)
+    ppos     <- ppos + length(minp)
     pvals    <- c()
     tvals    <- c()
 
@@ -162,9 +162,12 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
       predictors <- c(preds, all_pred[i])
       m <- glm(paste(response, "~", paste(predictors, collapse = " + ")), l, family = binomial(link = 'logit'))
-      m_sum <- summary(m)
-      pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-      tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+      m_sum <- Anova(m, test.statistic = "Wald")
+      pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
+      tvals[i] <- m_sum$Chisq[ppos]
+      # m_sum <- summary(m)
+      # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+      # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
       # m <- blr_regress(paste(response, "~",
       #                        paste(predictors, collapse = " + ")), l)
       # pvals[i] <- m$pval[ppos]
@@ -172,13 +175,13 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     }
 
     minp  <- which(pvals == min(pvals))
-    tvals <- abs(tvals)
-    maxt  <- which(tvals == max(tvals))
+    # tvals <- abs(tvals)
+    # maxt  <- which(tvals == max(tvals))
 
-    if (tvals[maxt] >= tenter) {
+    if (pvals[minp] <= penter) {
 
       step   <- step + 1
-      preds  <- c(preds, all_pred[maxt])
+      preds  <- c(preds, all_pred[minp])
       lpreds <- length(preds)
       fr     <- glm(paste(response, "~",
                                   paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
@@ -192,7 +195,9 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
         cat(paste("Forward Selection: Step", step), "\n\n")
       }
 
-      if (interactive()) {
+      if (isRunning()) {
+        cat(paste("-", dplyr::last(preds), "added"), "\n")
+      } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
       } else {
         cat(paste("-", dplyr::last(preds)), "\n")
@@ -215,7 +220,9 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat("\n\n")
     cat("Variables Entered:", "\n\n")
     for (i in seq_len(length(preds))) {
-      if (interactive()) {
+      if (isRunning()) {
+        cat(paste("+", preds[i]), "\n")
+      } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), "\n")
       } else {
         cat(paste("+", preds[i]), "\n")
