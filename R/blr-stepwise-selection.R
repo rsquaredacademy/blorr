@@ -49,17 +49,10 @@ blr_step_aic_both <- function(model, details = FALSE, ...) UseMethod("blr_step_a
 #' @export
 #'
 blr_step_aic_both.default <- function(model, details = FALSE, ...) {
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
-
-  if (!is.logical(details)) {
-    stop("details must be either TRUE or FALSE", call. = FALSE)
-  }
-
-  if (length(model$coefficients) < 3) {
-    stop("Please specify a model with at least 2 predictors.", call. = FALSE)
-  }
+  
+  blr_check_model(model)
+  blr_check_logic(details)
+  blr_check_npredictors(model, 3)
 
   l          <- mod_sel_data(model)
   nam        <- colnames(attr(model$terms, "factors"))

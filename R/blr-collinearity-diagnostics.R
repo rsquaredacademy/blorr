@@ -72,9 +72,7 @@ blr_coll_diag <- function(model) UseMethod("blr_coll_diag")
 #'
 blr_coll_diag.default <- function(model) {
 
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
+  blr_check_model(model)
 
   vift    <- blr_vif_tol(model)
   eig_ind <- blr_eigen_cindex(model)
@@ -102,9 +100,7 @@ print.blr_coll_diag <- function(x, ...) {
 #'
 blr_vif_tol <- function(model) {
 
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
+  blr_check_model(model)
 
   vt <- viftol(model)
   tibble(Variable  = vt$nam,
@@ -118,9 +114,7 @@ blr_vif_tol <- function(model) {
 #'
 blr_eigen_cindex <- function(model) {
 
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
+  blr_check_model(model)
 
   pvdata <- NULL
 

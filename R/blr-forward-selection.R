@@ -53,17 +53,10 @@ blr_step_aic_forward <- function(model, details = FALSE, ...)
 #' @export
 #'
 blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
-
-  if (!is.logical(details)) {
-    stop("details must be either TRUE or FALSE", call. = FALSE)
-  }
-
-  if (length(model$coefficients) < 3) {
-    stop("Please specify a model with at least 2 predictors.", call. = FALSE)
-  }
+  
+  blr_check_model(model)
+  blr_check_logic(details)
+  blr_check_npredictors(model, 3)
 
   response <-
     model %>%

@@ -46,6 +46,8 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
                           point_color = "blue",
                           plot_title_justify = 0.5) {
 
+  blr_check_gtable(gains_table)
+
   roc_data_prep(gains_table) %>%
     ggplot(aes(x = `1 - specificity`, y = sensitivity_per)) +
     geom_point(shape = point_shape, fill = point_fill, color = point_color) +

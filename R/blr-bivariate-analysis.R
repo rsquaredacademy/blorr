@@ -34,6 +34,9 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
   resp <- enquo(response)
   predictors <- quos(...)
 
+  blr_check_data(data)
+  blr_check_varnames(data, response)
+
   mdata <-
     data %>%
     select(!! resp, !!! predictors)
@@ -145,6 +148,10 @@ blr_segment <- function(data, response, predictor) UseMethod("blr_segment")
 #'
 blr_segment.default <- function(data, response, predictor) {
 
+  blr_check_data(data)
+  blr_check_varnames(data, response)
+  blr_check_varnames(data, predictor)
+
   resp <- enquo(response)
   pred <- enquo(predictor)
 
@@ -194,6 +201,11 @@ blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod
 #' @export
 #'
 blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
+
+  blr_check_data(data)
+  blr_check_varnames(data, response)
+  blr_check_varnames(data, variable_1)
+  blr_check_varnames(data, variable_2)
 
   resp  <- enquo(response)
   var_1 <- enquo(variable_1)
@@ -265,6 +277,10 @@ blr_segment_dist <- function(data, response, predictor) UseMethod("blr_segment_d
 #' @export
 #'
 blr_segment_dist.default <- function(data, response, predictor) {
+
+  blr_check_data(data)
+  blr_check_varnames(data, response)
+  blr_check_varnames(data, predictor)
 
   resp <- enquo(response)
   pred <- enquo(predictor)

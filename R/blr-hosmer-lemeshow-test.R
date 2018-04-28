@@ -29,6 +29,8 @@ blr_test_hosmer_lemeshow <- function(model, data = NULL)
 #'
 blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
+  blr_check_model(model)
+
   if (is.null(data)) {
     data <- eval(model$call$data)
     resp <- model$y 
@@ -37,6 +39,8 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
       model %>%
       formula() %>%
       extract2(2)
+
+    blr_check_data(data)
 
     resp <- 
       data %>% 

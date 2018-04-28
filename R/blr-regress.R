@@ -29,9 +29,14 @@ blr_regress <- function(object, ...) UseMethod("blr_regress")
 #' @export
 #'
 blr_regress.default <- function(object, data, odd_conf_limit = FALSE, ...) {
+
+	blr_check_data(data)
+	blr_check_logic(odd_conf_limit)
+
   result <- blr_reg_comp(object, data, odd_conf_limit)
   class(result) <- "blr_regress"
   return(result)
+
 }
 
 #' @rdname blr_regress
@@ -39,6 +44,8 @@ blr_regress.default <- function(object, data, odd_conf_limit = FALSE, ...) {
 #'
 blr_regress.glm <- function(object, odd_conf_limit = FALSE, ...) {
 
+	blr_check_model(object)
+	blr_check_logic(odd_conf_limit)
   formula <- formula(object)
   data    <- eval(object$call$data)
   blr_regress.default(object = formula, data = data, odd_conf_limit = odd_conf_limit)
