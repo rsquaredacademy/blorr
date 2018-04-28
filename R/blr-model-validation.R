@@ -24,6 +24,9 @@
 #'
 blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
 
+  blr_check_model(model)
+  blr_check_values(cutoff, 0, 1)
+
   namu <-
     model %>%
     formula() %>%
@@ -35,6 +38,7 @@ blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
   	  data %>%
   	  pull(!! namu)
   } else {
+    blr_check_data(data)
 		response <-
 		  data %>%
 		  pull(!! namu)

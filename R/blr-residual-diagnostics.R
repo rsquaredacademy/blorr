@@ -25,6 +25,8 @@
 #'
 blr_plot_diag_influence <- function(model) {
 
+  blr_check_model(model)
+
   p1 <- blr_plot_pearson_residual(model)
   p2 <- blr_plot_deviance_residual(model)
   p3 <- blr_plot_diag_c(model)
@@ -66,6 +68,8 @@ blr_plot_diag_influence <- function(model) {
 #'
 blr_plot_diag_fit <- function(model) {
 
+  blr_check_model(model)
+
   p1 <- blr_plot_difdev_fitted(model)
   p2 <- blr_plot_difchisq_fitted(model)
   p3 <- blr_plot_leverage_fitted(model)
@@ -105,6 +109,8 @@ blr_plot_diag_fit <- function(model) {
 #' @export
 #'
 blr_plot_diag_leverage <- function(model) {
+
+  blr_check_model(model)
 
   p1 <- blr_plot_difdev_leverage(model)
   p2 <- blr_plot_difchisq_leverage(model)

@@ -24,6 +24,8 @@
 #'
 blr_linktest <- function(model) {
 
+  blr_check_model(model)
+
   dat <-
     model %>%
     use_series(call) %>%

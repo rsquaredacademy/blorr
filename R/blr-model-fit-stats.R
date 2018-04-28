@@ -45,6 +45,8 @@ blr_model_fit_stats <- function(model, ...) UseMethod("blr_model_fit_stats")
 #'
 blr_model_fit_stats.default <- function(model, ...) {
 
+  blr_check_model(model)
+
   lr <- fit_stat(model)
 
   result <- list(
@@ -133,6 +135,8 @@ model_bic <- function(model) {
 #'
 blr_rsq_mcfadden <- function(model) {
 
+  blr_check_model(model)
+
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model)
   1 - (f_model_ll/ i_model_ll)
@@ -162,6 +166,8 @@ blr_rsq_mcfadden <- function(model) {
 #' @export
 #'
 blr_rsq_mcfadden_adj <- function(model) {
+
+  blr_check_model(model)
 
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model) - model_d_f(model)
@@ -193,6 +199,7 @@ blr_rsq_mcfadden_adj <- function(model) {
 #'
 blr_rsq_cox_snell <- function(model) {
 
+  blr_check_model(model)
   1 - cox_snell_comp(model)
 
 }
@@ -224,6 +231,8 @@ blr_rsq_cox_snell <- function(model) {
 #' @export
 #'
 blr_rsq_nagelkerke <- function(model) {
+
+  blr_check_model(model)
 
   n <-
     model %>%
@@ -264,6 +273,8 @@ blr_rsq_nagelkerke <- function(model) {
 #' @export
 #'
 blr_rsq_mckelvey_zavoina <- function(model) {
+
+  blr_check_model(model)
 
   predicted      <- predict(model)
   mean_predicted <- mean(predicted)
@@ -315,6 +326,8 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 #'
 blr_rsq_effron <- function(model) {
 
+  blr_check_model(model)
+
   predicted <- predict(model, type = "response")
   resp      <-model$y
   mean_resp <- mean(resp)
@@ -357,6 +370,8 @@ blr_rsq_effron <- function(model) {
 #'
 blr_rsq_count <- function(model) {
 
+  blr_check_model(model)
+
   predicted <- predict(model, type = "response")
   zero_one  <- if_else(predicted >= 0.5, 1, 0)
   resp      <- model$y
@@ -387,6 +402,8 @@ blr_rsq_count <- function(model) {
 #' @export
 #'
 blr_rsq_adj_count <- function(model) {
+
+  blr_check_model(model)
 
   n2 <-
     model %>%

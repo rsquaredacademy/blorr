@@ -57,22 +57,11 @@ blr_step_p_forward <- function(model, ...) UseMethod("blr_step_p_forward")
 #' @rdname blr_step_p_forward
 #'
 blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...) {
-  
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
 
-  if ((penter < 0) | (penter > 1)) {
-    stop("p value for entering variables into the model must be between 0 and 1.", call. = FALSE)
-  }
-
-  if (!is.logical(details)) {
-    stop("details must be either TRUE or FALSE", call. = FALSE)
-  }
-
-  if (length(model$coefficients) < 3) {
-    stop("Please specify a model with at least 2 predictors.", call. = FALSE)
-  }
+  blr_check_model(model)
+  blr_check_logic(details)
+  blr_check_npredictors(model, 3)
+  blr_check_values(penter, 0, 1)
 
   l        <- model$data
   nam      <- colnames(attr(model$terms, "factors"))

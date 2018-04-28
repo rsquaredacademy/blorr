@@ -29,6 +29,8 @@ blr_multi_model_fit_stats <- function(model, ...) UseMethod("blr_multi_model_fit
 #'
 blr_multi_model_fit_stats.default <- function(model, ...) {
 
+  blr_check_model(model)
+
   k        <- list(model, ...)
   j        <- map(k, blr_model_fit_stats)
   n        <- length(j)

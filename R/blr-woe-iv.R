@@ -43,6 +43,8 @@ blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
 #'
 blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
 
+  blr_check_data(data)
+
   pred <- enquo(predictor)
   resp <- enquo(response)
 

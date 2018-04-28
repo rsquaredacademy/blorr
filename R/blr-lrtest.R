@@ -43,6 +43,9 @@ blr_test_lr.default <- function(full_model, reduced_model) {
     reduced_model <- lr_reduced_model(full_model)
   }
 
+  blr_check_model(full_model)
+  blr_check_model(reduced_model)
+
   fm_class <- model_class(full_model)
   rm_class <- model_class(reduced_model)
 

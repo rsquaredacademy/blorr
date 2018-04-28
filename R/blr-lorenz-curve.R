@@ -31,11 +31,15 @@
 #'
 blr_gini_index <- function(model, data = NULL) {
 
+  blr_check_model(model)
+
   if (is.null(data)) {
     data <-
       model %>%
       use_series(data)
   }
+
+  blr_check_data(data)
 
   prob <- predict.glm(model, newdata = data, type = "response")
   n    <- length(prob)

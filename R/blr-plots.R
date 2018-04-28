@@ -20,6 +20,8 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
                                      title = "Standardized Pearson Residual vs Fitted Values",
                                      xaxis_title = "Fitted Values",
                                      yaxis_title = "Standardized Pearson Residual") {
+
+  blr_check_model(model)
   fit_val <- fitted(model)
   res_val <- rstandard(model, type = "pearson")
 
@@ -51,6 +53,7 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
                                       xaxis_title = "id",
                                       yaxis_title = "Standardized Pearson Residuals") {
 
+  blr_check_model(model)
   res_val <- rstandard(model, type = "pearson")
   id      <- plot_id(res_val)
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -78,6 +81,7 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
                                      xaxis_title = "Fitted Values",
                                      yaxis_title = "Deviance Residual") {
 
+  blr_check_model(model)
   fit_val <- fitted(model)
   res_val <- rstandard(model)
 
@@ -103,6 +107,8 @@ blr_plot_deviance_residual <- function(model, point_color = "blue",
                                        title = "Deviance Residuals Plot",
                                        xaxis_title = "id",
                                        yaxis_title = "Deviance Residuals") {
+
+  blr_check_model(model)
   res_val <- rstandard(model)
   id      <- plot_id(res_val)
 
@@ -130,6 +136,7 @@ blr_plot_leverage_fitted <- function(model, point_color = "blue",
                                      xaxis_title = "Fitted Values",
                                      yaxis_title = "Leverage") {
 
+  blr_check_model(model)
   fit_val <- fitted(model)
   res_val <- hatvalues(model)
 
@@ -157,6 +164,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
                               xaxis_title = "id",
                               yaxis_title = "Leverage") {
 
+  blr_check_model(model)
   res_val <- hatvalues(model)
   id      <- plot_id(res_val)
 
@@ -185,6 +193,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
 #'
 blr_residual_diagnostics <- function(model) {
 
+  blr_check_model(model)
   res_val <-
     model %>%
     residuals(type = "pearson") %>%
@@ -227,6 +236,7 @@ blr_plot_diag_c <- function(model, point_color = "blue",
                             xaxis_title = "id",
                             yaxis_title = "CI Displacement C") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, c)
   id      <- plot_id(res_val)
 
@@ -254,6 +264,7 @@ blr_plot_diag_cbar <- function(model, point_color = "blue",
                                xaxis_title = "id",
                                yaxis_title = "CI Displacement CBAR") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, cbar)
   id      <- plot_id(res_val)
 
@@ -281,6 +292,7 @@ blr_plot_diag_difchisq <- function(model, point_color = "blue",
                                    xaxis_title = "id",
                                    yaxis_title = "Delta Chisquare") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model,difchisq)
   id      <- plot_id(res_val)
 
@@ -307,6 +319,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
                                  xaxis_title = "id",
                                  yaxis_title = "Delta Deviance") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, difdev)
   id      <- plot_id(res_val)
 
@@ -358,9 +371,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 blr_plot_dfbetas_panel <- function(model) {
 
-  if (!any(class(model) == "glm")) {
-    stop("Please specify a binary logistic regression model.", call. = FALSE)
-  }
+  blr_check_model(model)
 
   dfb       <- dfbetas(model)
   n         <- nrow(dfb)
@@ -406,6 +417,7 @@ blr_plot_c_fitted <- function(model, point_color = "blue",
                               xaxis_title = "Fitted Values",
                               yaxis_title = "CI Displacement C") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, c)
   fit_val <- fitted(model)
 
@@ -432,6 +444,7 @@ blr_plot_difchisq_fitted <- function(model, point_color = "blue",
                                      xaxis_title = "Fitted Values",
                                      yaxis_title = "Delta Chi Square") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, difchisq)
   fit_val <- fitted(model)
 
@@ -458,6 +471,7 @@ blr_plot_difdev_fitted <- function(model, point_color = "blue",
                                    xaxis_title = "Fitted Values",
                                    yaxis_title = "Delta Deviance") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, difdev)
   fit_val <- fitted(model)
 
@@ -484,6 +498,7 @@ blr_plot_difdev_leverage <- function(model, point_color = "blue",
                                      xaxis_title = "Leverage",
                                      yaxis_title = "Delta Deviance") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, difdev)
   hat_val <- hatvalues(model)
 
@@ -510,6 +525,7 @@ blr_plot_difchisq_leverage <- function(model, point_color = "blue",
                                        xaxis_title = "Leverage",
                                        yaxis_title = "Delta Chi Square") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, difchisq)
   hat_val <- hatvalues(model)
 
@@ -536,6 +552,7 @@ blr_plot_c_leverage <- function(model, point_color = "blue",
                                 xaxis_title = "Leverage",
                                 yaxis_title = "CI Displacement C") {
 
+  blr_check_model(model)
   res_val <- extract_diag(model, c)
   hat_val <- hatvalues(model)
 
@@ -563,6 +580,7 @@ blr_plot_fitted_leverage <- function(model, point_color = "blue",
                                      xaxis_title = "Leverage",
                                      yaxis_title = "Fitted Values") {
 
+  blr_check_model(model)
   fit_val <- fitted(model)
   hat_val <- hatvalues(model)
 

@@ -29,6 +29,8 @@
 #'
 blr_pairs <- function(model) {
 
+  blr_check_model(model)
+
   resp    <- model$y
   fit     <- fitted(model)
   pairs   <- tibble(response = resp, fit_val = fit)

@@ -53,11 +53,14 @@ blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
 #'
 blr_gains_table.default <- function(model, data = NULL) {
 
+  blr_check_model(model)
+
   if (is.null(data)) {
     test_data <- FALSE
     data      <- eval(model$call$data)
   } else {
     test_data <- TRUE
+    blr_check_data(data)
     data      <- data
   }
 
@@ -95,6 +98,8 @@ print.blr_gains_table <- function(x, ...) {
 plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Population",
                                  yaxis_title = "% Cumulative 1s", diag_line_col = "red",
                                  lift_curve_col = "blue", plot_title_justify = 0.5, ...) {
+
+  blr_check_gtable(x)
 
   gains_plot_data(x) %>%
     ggplot() +
@@ -144,6 +149,8 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
                          xaxis_title = "Cumulative Population %",
                          ks_line_color = "black") {
+
+  blr_check_gtable(gains_table)
 
   ks_line    <- ks_chart_line(gains_table)
   annotate_y <- ks_chart_annotate_y(ks_line)
@@ -197,6 +204,8 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
                                     bar_color = "blue", text_size = 3.5,
                                     text_vjust = -0.3) {
 
+  blr_check_gtable(gains_table)
+
   decile_rate <- decile_capture_rate(gains_table)
 
   p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
@@ -238,7 +247,8 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
                                   title = "Decile Lift Chart",
                                   bar_color = "blue", text_size = 3.5,
                                   text_vjust = -0.3) {
-
+  
+  blr_check_gtable(gains_table)
   global_mean <- lift_chart_global_mean(gains_table)
   lift_data   <- lift_chart_data(gains_table, global_mean)
 
