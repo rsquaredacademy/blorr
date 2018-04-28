@@ -32,7 +32,7 @@ blr_check_model <- function(model) {
 "Please specify the model in the below format:",
 
 "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit')",
-  		
+
 "Happy modeling :)\n")
 
   }
@@ -124,17 +124,19 @@ blr_check_gtable <- function(table) {
 }
 
 blr_check_varnames <- function(data, column) {
-  
+
   data_name <- deparse(substitute(data))
   resp <- enquo(column)
   k <- check_choice(quo_name(resp), choices = names(data))
-  
+
   if (k != TRUE) {
 
     cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
-  
+
 }
+
+
 

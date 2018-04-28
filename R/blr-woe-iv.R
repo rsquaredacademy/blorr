@@ -44,8 +44,6 @@ blr_woe_iv <- function(data, predictor, response, digits = 4, ...)
 blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
 
   blr_check_data(data)
-  blr_check_varnames(data, response)
-  blr_check_varnames(data, predictor)
 
   pred <- enquo(predictor)
   resp <- enquo(response)
