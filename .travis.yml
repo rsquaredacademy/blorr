@@ -10,7 +10,8 @@ addons:
     packages:
       - libnlopt-dev
 
-r:
+r:  
+    - 3.3
     - 3.4
     - release
     - devel

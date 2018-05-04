@@ -7,7 +7,7 @@ Description: Tools designed to make it easier for users, particularly beginner/i
     R users to build logistic regression models. Includes comprehensive regression output, 
     variable selection procedure and model validation statistics.
 Depends:
-    R(>= 3.4.0)
+    R(>= 3.3.0)
 Imports: 
     car,
     caret,
