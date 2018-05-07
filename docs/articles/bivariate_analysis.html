@@ -42,7 +42,7 @@
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
+      <a href="../articles/intro.html">Introduction</a>
     </li>
     <li>
       <a href="../articles/model_validation.html">Model Validation</a>
@@ -98,182 +98,252 @@
     
     
 <div class="contents">
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blorr)
-<span class="kw">library</span>(magrittr)</code></pre></div>
 <div id="introduction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(hsb2, honcomp, female, prog, race, schtyp)
-<span class="co">#&gt;                          Bivariate Analysis                           </span>
-<span class="co">#&gt; ---------------------------------------------------------------------</span>
-<span class="co">#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value </span>
-<span class="co">#&gt; ---------------------------------------------------------------------</span>
-<span class="co">#&gt;  female           0.10              3.9350          1        0.0473   </span>
-<span class="co">#&gt;   prog            0.43              16.1450         2        3e-04    </span>
-<span class="co">#&gt;   race            0.33              11.3694         3        0.0099   </span>
-<span class="co">#&gt;  schtyp           0.00              0.0445          1        0.8330   </span>
-<span class="co">#&gt; ---------------------------------------------------------------------</span></code></pre></div>
+<p>The blorr package offers tools for building and validating binary logistic regression models. It is most suitable for beginner/intermediate R users and those who teach statistics using R. The API is very simple and most of the functions take either a data.frame/tibble or a model as input. <strong>blorr</strong> use consistent prefix <strong>blr_</strong> for easy tab completion. The below diagram shows the API design:</p>
+<p>This document is a quick start guide to the tools offered by <strong>blorr</strong>. Other vignettes provide more details on specific topics:</p>
+<ul>
+<li>Bivariate Analysis</li>
+<li>Variable Selection</li>
+<li>Residual Diagnsotics</li>
+<li>Model Validation</li>
+</ul>
+</div>
+<div id="libraries" class="section level3">
+<h3 class="hasAnchor">
+<a href="#libraries" class="anchor"></a>Libraries</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blorr)
+<span class="kw">library</span>(magrittr)</code></pre></div>
+</div>
+<div id="data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data" class="anchor"></a>Data</h3>
+<p>We will use the bank marketing data set.</p>
+</div>
+<div id="bivariate-analysis" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(bank_marketing, y, job, marital, education, default, housing, 
+  loan, contact, poutcome)
+<span class="co">#&gt;                           Bivariate Analysis                           </span>
+<span class="co">#&gt; ----------------------------------------------------------------------</span>
+<span class="co">#&gt; Variable     Information Value    LR Chi Square    LR DF    LR p-value </span>
+<span class="co">#&gt; ----------------------------------------------------------------------</span>
+<span class="co">#&gt;    job             0.16              75.2690        11        0.0000   </span>
+<span class="co">#&gt;  marital           0.05              21.6821         2        0.0000   </span>
+<span class="co">#&gt; education          0.05              25.0466         3        0.0000   </span>
+<span class="co">#&gt;  default           0.02              6.0405          1        0.0140   </span>
+<span class="co">#&gt;  housing           0.16              72.2813         1        0.0000   </span>
+<span class="co">#&gt;   loan             0.06              26.6615         1        0.0000   </span>
+<span class="co">#&gt;  contact           0.31             124.3834         2        0.0000   </span>
+<span class="co">#&gt; poutcome           0.53             270.6450         3        0.0000   </span>
+<span class="co">#&gt; ----------------------------------------------------------------------</span></code></pre></div>
 </div>
 <div id="weight-of-evidence-information-value" class="section level3">
 <h3 class="hasAnchor">
 <a href="#weight-of-evidence-information-value" class="anchor"></a>Weight of Evidence &amp; Information Value</h3>
-<div id="introduction-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#introduction-1" class="anchor"></a>Introduction</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, prog, honcomp)
-<span class="co">#&gt;                            Weight of Evidence                             </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt;   1          38          7           0.26       0.13       0.67     0.08  </span>
-<span class="co">#&gt;   2          65          40          0.44       0.75      -0.53     0.17  </span>
-<span class="co">#&gt;   3          44          6           0.30       0.11       0.97     0.18  </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(bank_marketing, job, y)
+<span class="co">#&gt;                                Weight of Evidence                                </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
+<span class="co">#&gt;    levels        0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
+<span class="co">#&gt;  management        809         130          0.20       0.25      -0.22     0.01  </span>
+<span class="co">#&gt;  technician        682          79          0.17       0.15       0.11     0.00  </span>
+<span class="co">#&gt; entrepreneur       139          12          0.03       0.02       0.40     0.00  </span>
+<span class="co">#&gt;  blue-collar       937          73          0.23       0.14       0.51     0.05  </span>
+<span class="co">#&gt;    unknown          29          2           0.01       0.00       0.61     0.00  </span>
+<span class="co">#&gt;    retired         152          47          0.04       0.09      -0.87     0.05  </span>
+<span class="co">#&gt;    admin.          433          61          0.11       0.12      -0.09     0.00  </span>
+<span class="co">#&gt;   services         392          39          0.10       0.08       0.26     0.01  </span>
+<span class="co">#&gt; self-employed      132          22          0.03       0.04      -0.26     0.00  </span>
+<span class="co">#&gt;  unemployed        126          15          0.03       0.03       0.08     0.00  </span>
+<span class="co">#&gt;   housemaid        110          12          0.03       0.02       0.17     0.00  </span>
+<span class="co">#&gt;    student          63          25          0.02       0.05      -1.13     0.04  </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;       Information Value       </span>
 <span class="co">#&gt; -----------------------------</span>
 <span class="co">#&gt; Variable    Information Value </span>
 <span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt;   prog           0.4329       </span>
+<span class="co">#&gt;   job            0.1594       </span>
 <span class="co">#&gt; -----------------------------</span></code></pre></div>
-</div>
 <div id="plot" class="section level4">
 <h4 class="hasAnchor">
 <a href="#plot" class="anchor"></a>Plot</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(hsb2, prog, honcomp)
-<span class="kw">plot</span>(k)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="kw"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(bank_marketing, job, y)
+<span class="kw">plot</span>(k)
+<span class="co">#&gt; Warning in fun(x, ...): NAs introduced by coercion</span>
+<span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span>
+
+<span class="co">#&gt; Warning in FUN(X[[i]], ...): NAs introduced by coercion</span>
+<span class="co">#&gt; Warning: Removed 12 rows containing missing values (geom_point).</span></code></pre></div>
 <p><img src="bivariate_analysis_files/figure-html/woeplot-1.png" width="672"></p>
 </div>
 <div id="multiple-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#multiple-variables" class="anchor"></a>Multiple Variables</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span>(hsb2, honcomp, prog, race, female, schtyp)
-<span class="co">#&gt; Variable: prog</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span>(bank_marketing, y, job, marital, education, default, housing, 
+  loan, contact, poutcome)
+<span class="co">#&gt; Variable: job</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                                Weight of Evidence                                </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
+<span class="co">#&gt;    levels        0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
+<span class="co">#&gt;  management        809         130          0.20       0.25      -0.22     0.01  </span>
+<span class="co">#&gt;  technician        682          79          0.17       0.15       0.11     0.00  </span>
+<span class="co">#&gt; entrepreneur       139          12          0.03       0.02       0.40     0.00  </span>
+<span class="co">#&gt;  blue-collar       937          73          0.23       0.14       0.51     0.05  </span>
+<span class="co">#&gt;    unknown          29          2           0.01       0.00       0.61     0.00  </span>
+<span class="co">#&gt;    retired         152          47          0.04       0.09      -0.87     0.05  </span>
+<span class="co">#&gt;    admin.          433          61          0.11       0.12      -0.09     0.00  </span>
+<span class="co">#&gt;   services         392          39          0.10       0.08       0.26     0.01  </span>
+<span class="co">#&gt; self-employed      132          22          0.03       0.04      -0.26     0.00  </span>
+<span class="co">#&gt;  unemployed        126          15          0.03       0.03       0.08     0.00  </span>
+<span class="co">#&gt;   housemaid        110          12          0.03       0.02       0.17     0.00  </span>
+<span class="co">#&gt;    student          63          25          0.02       0.05      -1.13     0.04  </span>
+<span class="co">#&gt; --------------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; Variable    Information Value </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt;   job            0.1594       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: marital</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                             Weight of Evidence                              </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt;  levels     0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt; married       2467        273          0.62       0.53       0.15     0.01  </span>
+<span class="co">#&gt;  single       1079        191          0.27       0.37      -0.32     0.03  </span>
+<span class="co">#&gt; divorced      458          53          0.11       0.10       0.11     0.00  </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; Variable    Information Value </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; marital          0.0464       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: education</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                              Weight of Evidence                              </span>
+<span class="co">#&gt; ----------------------------------------------------------------------------</span>
+<span class="co">#&gt;  levels      0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; ----------------------------------------------------------------------------</span>
+<span class="co">#&gt; tertiary       1104        195          0.28       0.38      -0.31     0.03  </span>
+<span class="co">#&gt; secondary      2121        231          0.53       0.45       0.17     0.01  </span>
+<span class="co">#&gt;  unknown       154          25          0.04       0.05      -0.23     0.00  </span>
+<span class="co">#&gt;  primary       625          66          0.16       0.13       0.20     0.01  </span>
+<span class="co">#&gt; ----------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value        </span>
+<span class="co">#&gt; ------------------------------</span>
+<span class="co">#&gt; Variable     Information Value </span>
+<span class="co">#&gt; ------------------------------</span>
+<span class="co">#&gt; education         0.0539       </span>
+<span class="co">#&gt; ------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: default</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            Weight of Evidence                             </span>
 <span class="co">#&gt; -------------------------------------------------------------------------</span>
 <span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
 <span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt;   1          38          7           0.26       0.13       0.67     0.08  </span>
-<span class="co">#&gt;   2          65          40          0.44       0.75      -0.53     0.17  </span>
-<span class="co">#&gt;   3          44          6           0.30       0.11       0.97     0.18  </span>
+<span class="co">#&gt;   no        3928        514          0.98       0.99      -0.01     0.00  </span>
+<span class="co">#&gt;  yes         76          3           0.02       0.01       1.19     0.02  </span>
 <span class="co">#&gt; -------------------------------------------------------------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;       Information Value       </span>
 <span class="co">#&gt; -----------------------------</span>
 <span class="co">#&gt; Variable    Information Value </span>
 <span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt;   prog           0.4329       </span>
+<span class="co">#&gt; default          0.0159       </span>
 <span class="co">#&gt; -----------------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Variable: race</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                            Weight of Evidence                             </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt;   1          22          2           0.15       0.04       1.38     0.15  </span>
-<span class="co">#&gt;   2          6           5           0.04       0.09      -0.84     0.04  </span>
-<span class="co">#&gt;   3          18          2           0.12       0.04       1.18     0.10  </span>
-<span class="co">#&gt;   4         101          44          0.69       0.83      -0.19     0.03  </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;       Information Value       </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt; Variable    Information Value </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt;   race            0.326       </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Variable: female</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                            Weight of Evidence                             </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt;   0          73          18          0.50       0.34       0.38     0.06  </span>
-<span class="co">#&gt;   1          74          35          0.50       0.66      -0.27     0.04  </span>
-<span class="co">#&gt; -------------------------------------------------------------------------</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;       Information Value       </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt; Variable    Information Value </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt;  female          0.1023       </span>
-<span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Variable: schtyp</span>
+<span class="co">#&gt; Variable: housing</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                            Weight of Evidence                            </span>
 <span class="co">#&gt; ------------------------------------------------------------------------</span>
-<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe     iv   </span>
+<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist       woe      iv   </span>
 <span class="co">#&gt; ------------------------------------------------------------------------</span>
-<span class="co">#&gt;   1         123          45          0.84       0.85      -0.01    0.00  </span>
-<span class="co">#&gt;   2          24          8           0.16       0.15       0.08    0.00  </span>
+<span class="co">#&gt;  yes        2364        203          0.59       0.39      0.41     0.08  </span>
+<span class="co">#&gt;   no        1640        314          0.41       0.61     -0.39     0.08  </span>
 <span class="co">#&gt; ------------------------------------------------------------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;       Information Value       </span>
 <span class="co">#&gt; -----------------------------</span>
 <span class="co">#&gt; Variable    Information Value </span>
 <span class="co">#&gt; -----------------------------</span>
-<span class="co">#&gt;  schtyp          0.0012       </span>
+<span class="co">#&gt; housing          0.1586       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: loan</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                            Weight of Evidence                             </span>
+<span class="co">#&gt; -------------------------------------------------------------------------</span>
+<span class="co">#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; -------------------------------------------------------------------------</span>
+<span class="co">#&gt;  yes        680          45          0.17       0.09       0.67     0.06  </span>
+<span class="co">#&gt;   no        3324        472          0.83       0.91      -0.10     0.01  </span>
+<span class="co">#&gt; -------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; Variable    Information Value </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt;   loan           0.0633       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: contact</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                             Weight of Evidence                              </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt;  levels      0s_count    1s_count    0s_dist    1s_dist       woe      iv   </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt;  unknown       1292         54          0.32       0.10      1.13     0.25  </span>
+<span class="co">#&gt; cellular       2452        424          0.61       0.82     -0.29     0.06  </span>
+<span class="co">#&gt; telephone      260          39          0.06       0.08     -0.15     0.00  </span>
+<span class="co">#&gt; ---------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; Variable    Information Value </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; contact          0.3086       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Variable: poutcome</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                             Weight of Evidence                             </span>
+<span class="co">#&gt; --------------------------------------------------------------------------</span>
+<span class="co">#&gt; levels     0s_count    1s_count    0s_dist    1s_dist        woe      iv   </span>
+<span class="co">#&gt; --------------------------------------------------------------------------</span>
+<span class="co">#&gt; unknown      3352        334          0.84       0.65       0.26     0.05  </span>
+<span class="co">#&gt; failure      450          58          0.11       0.11       0.00     0.00  </span>
+<span class="co">#&gt;  other       156          30          0.04       0.06      -0.40     0.01  </span>
+<span class="co">#&gt; success       46          95          0.01       0.18      -2.77     0.48  </span>
+<span class="co">#&gt; --------------------------------------------------------------------------</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;       Information Value       </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; Variable    Information Value </span>
+<span class="co">#&gt; -----------------------------</span>
+<span class="co">#&gt; poutcome         0.5346       </span>
 <span class="co">#&gt; -----------------------------</span></code></pre></div>
 </div>
-</div>
-<div id="response-distribution-by-segments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#response-distribution-by-segments" class="anchor"></a>Response Distribution by Segments</h3>
-<div id="introduction-2" class="section level4">
-<h4 class="hasAnchor">
-<a href="#introduction-2" class="anchor"></a>Introduction</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog)
-<span class="co">#&gt;          Event Segmentation           </span>
-<span class="co">#&gt; -------------------------------------</span>
-<span class="co">#&gt;   prog       n     1s     n%     1s%  </span>
-<span class="co">#&gt; -------------------------------------</span>
-<span class="co">#&gt;    1        45     7     0.22    0.04 </span>
-<span class="co">#&gt;    2        105    40    0.52    0.20 </span>
-<span class="co">#&gt;    3        50     6     0.25    0.03 </span>
-<span class="co">#&gt; -------------------------------------</span></code></pre></div>
-</div>
-<div id="plot-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#plot-1" class="anchor"></a>Plot</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_segment_dist.html">blr_segment_dist</a></span>(hsb2, honcomp, prog) <span class="op">%&gt;%</span>
-<span class="st">  </span>plot</code></pre></div>
-<p><img src="bivariate_analysis_files/figure-html/bivar5-1.png" width="480" style="display: block; margin: auto;"></p>
-</div>
-</div>
-<div id="response-distribution-by-multiple-segments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#response-distribution-by-multiple-segments" class="anchor"></a>Response Distribution by Multiple Segments</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_segment_twoway.html">blr_segment_twoway</a></span>(hsb2, honcomp, prog, race)
-<span class="co">#&gt;                          race              </span>
-<span class="co">#&gt; -----------------------------------------</span>
-<span class="co">#&gt; prog      1       2       3       4     </span>
-<span class="co">#&gt; -----------------------------------------</span>
-<span class="co">#&gt;   1     0.000   0.000   0.000   0.035   </span>
-<span class="co">#&gt; -----------------------------------------</span>
-<span class="co">#&gt;   2     0.010   0.020   0.005   0.165   </span>
-<span class="co">#&gt; -----------------------------------------</span>
-<span class="co">#&gt;   3     0.000   0.005   0.005   0.020   </span>
-<span class="co">#&gt; -----------------------------------------</span></code></pre></div>
-</div>
-<div id="response-distribution" class="section level3">
-<h3 class="hasAnchor">
-<a href="#response-distribution" class="anchor"></a>Response Distribution</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_segment.html">blr_segment</a></span>(hsb2, honcomp, prog)
-<span class="co">#&gt; Event By Attributes </span>
-<span class="co">#&gt; -------------------</span>
-<span class="co">#&gt; prog           1s%  </span>
-<span class="co">#&gt; -------------------</span>
-<span class="co">#&gt;  1             0.04 </span>
-<span class="co">#&gt;  2             0.20 </span>
-<span class="co">#&gt;  3             0.03 </span>
-<span class="co">#&gt; -------------------</span></code></pre></div>
 </div>
 </div>
   </div>

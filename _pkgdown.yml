@@ -12,7 +12,7 @@ navbar:
       menu:
         - text: "Bivariate Analysis"
           href: articles/bivariate_analysis.html
-        - text: "Model Fit Statistics"
+        - text: "Introduction"
           href: articles/intro.html
         - text: "Model Validation"
           href: articles/model_validation.html

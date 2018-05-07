@@ -42,7 +42,7 @@
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
+      <a href="../articles/intro.html">Introduction</a>
     </li>
     <li>
       <a href="../articles/model_validation.html">Model Validation</a>
@@ -103,8 +103,9 @@
 <div id="model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model" class="anchor"></a>Model</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,
-             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>job <span class="op">+</span><span class="st"> </span>housing <span class="op">+</span><span class="st"> </span>contact <span class="op">+</span><span class="st"> </span>poutcome <span class="op">+</span><span class="st"> </span>duration <span class="op">+</span><span class="st"> </span>month <span class="op">+</span>
+<span class="st">             </span>campaign <span class="op">+</span><span class="st"> </span>loan <span class="op">+</span><span class="st"> </span>marital <span class="op">+</span><span class="st"> </span>education <span class="op">+</span><span class="st"> </span>day <span class="op">+</span><span class="st"> </span>balance <span class="op">+</span><span class="st"> </span>previous, 
+             <span class="dt">data =</span> bank_marketing, <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
 </div>
 <div id="influence-diagnostics" class="section level3">
 <h3 class="hasAnchor">

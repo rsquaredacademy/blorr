@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "Introduction to blorr"
 author: "Aravind Hebbali"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Introduction
+
 ```{r libs}
 library(blorr)
 library(magrittr)
@@ -23,8 +25,9 @@ library(magrittr)
 ### Model
 
 ```{r model}
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-             family = binomial(link = 'logit'))
+model <- glm(y ~ job + housing + contact + poutcome + duration + month +
+             campaign + loan + marital + education + day + balance + previous, 
+             data = bank_marketing, family = binomial(link = 'logit'))
 ```
 
 ### Regression Output
@@ -38,7 +41,7 @@ blr_regress(model)
 #### Using Formula
 
 ```{r reg2}
-blr_regress(object = honcomp ~ female + read + science, data = hsb2)
+blr_regress(y ~ marital + education + contact, data = bank_marketing)
 ```
 
 #### Odds Ratio Estimates
@@ -58,10 +61,10 @@ blr_model_fit_stats(model)
 #### Multiple Models 
 
 ```{r mmfs}
-model <- glm(honcomp ~ female + read + science, data = blorr::hsb2,
+model <- glm(y ~ marital + education + contact, data = bank_marketing,
   family = binomial(link = 'logit'))
 
-model2 <- glm(honcomp ~ female + read + math, data = blorr::hsb2,
+model2 <- glm(y ~ marital + education, data = bank_marketing,
   family = binomial(link = 'logit'))
 
 blr_multi_model_fit_stats(model, model2)

@@ -21,14 +21,13 @@ library(ggplot2)
 library(magrittr)
 ```
 
-### Forward Selection
-
-#### Model
+### Model
 
 ```{r mod1}
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-  family = binomial(link = 'logit'))
+model <- glm(y ~ ., data = bank_marketing, family = binomial(link = 'logit'))
 ```
+
+### Forward Selection
 
 #### Selection Summary
 
@@ -52,12 +51,6 @@ model %>%
 
 ### Backward Elimination
 
-#### Model
-
-```{r mod2}
-model <- glm(honcomp ~ female + read + science + math + prog + socst, data = hsb2, family = binomial(link = 'logit'))
-```
-
 #### Selection Summary
 
 ```{r backward1}
@@ -79,12 +72,6 @@ model %>%
 ```
 
 ### Stepwise Selection
-
-#### Model
-
-```{r mod3}
-model <- glm(y ~ ., data = stepwise)
-```
 
 #### Selection Summary
 
@@ -109,13 +96,6 @@ model %>%
 
 ### Forward Selection
 
-#### Model
-
-```{r mod1p}
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-  family = binomial(link = 'logit'))
-```
-
 #### Selection Summary
 
 ```{r forward1p}
@@ -138,12 +118,6 @@ model %>%
 
 ### Backward Elimination
 
-#### Model
-
-```{r mod2p}
-model <- glm(honcomp ~ female + read + science + math + prog + socst, data = hsb2, family = binomial(link = 'logit'))
-```
-
 #### Selection Summary
 
 ```{r backward1p}
@@ -165,12 +139,6 @@ model %>%
 ```
 
 ### Stepwise Selection
-
-#### Model
-
-```{r mod3p}
-model <- glm(y ~ ., data = stepwise)
-```
 
 #### Selection Summary
 

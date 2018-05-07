@@ -42,7 +42,7 @@
       <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
     </li>
     <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
+      <a href="../articles/intro.html">Introduction</a>
     </li>
     <li>
       <a href="../articles/model_validation.html">Model Validation</a>
@@ -103,8 +103,9 @@
 <div id="regression-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#regression-model" class="anchor"></a>Regression Model</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(honcomp <span class="op">~</span><span class="st"> </span>female <span class="op">+</span><span class="st"> </span>read <span class="op">+</span><span class="st"> </span>science, <span class="dt">data =</span> hsb2,
-             <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st"> </span>job <span class="op">+</span><span class="st"> </span>housing <span class="op">+</span><span class="st"> </span>contact <span class="op">+</span><span class="st"> </span>poutcome <span class="op">+</span><span class="st"> </span>duration <span class="op">+</span><span class="st"> </span>month <span class="op">+</span>
+<span class="st">             </span>campaign <span class="op">+</span><span class="st"> </span>loan <span class="op">+</span><span class="st"> </span>marital <span class="op">+</span><span class="st"> </span>education <span class="op">+</span><span class="st"> </span>day <span class="op">+</span><span class="st"> </span>balance <span class="op">+</span><span class="st"> </span>previous, 
+             <span class="dt">data =</span> bank_marketing, <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
 </div>
 <div id="confusion-matrix" class="section level3">
 <h3 class="hasAnchor">
@@ -113,28 +114,28 @@
 <span class="co">#&gt; Confusion Matrix and Statistics</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;           Reference</span>
-<span class="co">#&gt; Prediction   0   1</span>
-<span class="co">#&gt;          0 135  26</span>
-<span class="co">#&gt;          1  12  27</span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt;                Accuracy : 0.81            </span>
-<span class="co">#&gt;                  95% CI : (0.7487, 0.8619)</span>
-<span class="co">#&gt;     No Information Rate : 0.735           </span>
-<span class="co">#&gt;     P-Value [Acc &gt; NIR] : 0.008453        </span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt;                   Kappa : 0.4673          </span>
-<span class="co">#&gt;  Mcnemar's Test P-Value : 0.034955        </span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt;             Sensitivity : 0.5094          </span>
-<span class="co">#&gt;             Specificity : 0.9184          </span>
-<span class="co">#&gt;          Pos Pred Value : 0.6923          </span>
-<span class="co">#&gt;          Neg Pred Value : 0.8385          </span>
-<span class="co">#&gt;              Prevalence : 0.2650          </span>
-<span class="co">#&gt;          Detection Rate : 0.1350          </span>
-<span class="co">#&gt;    Detection Prevalence : 0.1950          </span>
-<span class="co">#&gt;       Balanced Accuracy : 0.7139          </span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt;        'Positive' Class : 1               </span>
+<span class="co">#&gt; Prediction    0    1</span>
+<span class="co">#&gt;          0 3909  339</span>
+<span class="co">#&gt;          1   95  178</span>
+<span class="co">#&gt;                                          </span>
+<span class="co">#&gt;                Accuracy : 0.904          </span>
+<span class="co">#&gt;                  95% CI : (0.895, 0.9124)</span>
+<span class="co">#&gt;     No Information Rate : 0.8856         </span>
+<span class="co">#&gt;     P-Value [Acc &gt; NIR] : 3.984e-05      </span>
+<span class="co">#&gt;                                          </span>
+<span class="co">#&gt;                   Kappa : 0.4035         </span>
+<span class="co">#&gt;  Mcnemar's Test P-Value : &lt; 2.2e-16      </span>
+<span class="co">#&gt;                                          </span>
+<span class="co">#&gt;             Sensitivity : 0.34429        </span>
+<span class="co">#&gt;             Specificity : 0.97627        </span>
+<span class="co">#&gt;          Pos Pred Value : 0.65201        </span>
+<span class="co">#&gt;          Neg Pred Value : 0.92020        </span>
+<span class="co">#&gt;              Prevalence : 0.11436        </span>
+<span class="co">#&gt;          Detection Rate : 0.03937        </span>
+<span class="co">#&gt;    Detection Prevalence : 0.06038        </span>
+<span class="co">#&gt;       Balanced Accuracy : 0.66028        </span>
+<span class="co">#&gt;                                          </span>
+<span class="co">#&gt;        'Positive' Class : 1              </span>
 <span class="co">#&gt; </span></code></pre></div>
 </div>
 <div id="hosmer-lemeshow-test" class="section level3">
@@ -146,23 +147,23 @@
 <span class="co">#&gt;                         def = 1                 def = 0        </span>
 <span class="co">#&gt; Group    Total    Observed    Expected    Observed    Expected </span>
 <span class="co">#&gt; --------------------------------------------------------------</span>
-<span class="co">#&gt;   1       20         0          0.16         20        19.84   </span>
-<span class="co">#&gt;   2       20         0          0.53         20        19.47   </span>
-<span class="co">#&gt;   3       20         2          0.99         18        19.01   </span>
-<span class="co">#&gt;   4       20         1          1.64         19        18.36   </span>
-<span class="co">#&gt;   5       21         3          2.72         18        18.28   </span>
-<span class="co">#&gt;   6       19         3          4.05         16        14.95   </span>
-<span class="co">#&gt;   7       20         7          6.50         13        13.50   </span>
-<span class="co">#&gt;   8       20         10         8.90         10        11.10   </span>
-<span class="co">#&gt;   9       20         13        11.49         7          8.51   </span>
-<span class="co">#&gt;  10       20         14        16.02         6          3.98   </span>
+<span class="co">#&gt;   1       453        0          2.14        453        450.86  </span>
+<span class="co">#&gt;   2       452        2          4.72        450        447.28  </span>
+<span class="co">#&gt;   3       452        3          7.77        449        444.23  </span>
+<span class="co">#&gt;   4       452        2         11.32        450        440.68  </span>
+<span class="co">#&gt;   5       452        11        15.72        441        436.28  </span>
+<span class="co">#&gt;   6       452        13        21.46        439        430.54  </span>
+<span class="co">#&gt;   7       452        30        30.56        422        421.44  </span>
+<span class="co">#&gt;   8       452        47        49.64        405        402.36  </span>
+<span class="co">#&gt;   9       452       141        97.93        311        354.07  </span>
+<span class="co">#&gt;  10       452       268        275.74       184        176.26  </span>
 <span class="co">#&gt; --------------------------------------------------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;      Goodness of Fit Test      </span>
 <span class="co">#&gt; ------------------------------</span>
 <span class="co">#&gt; Chi-Square    DF    Pr &gt; ChiSq </span>
 <span class="co">#&gt; ------------------------------</span>
-<span class="co">#&gt;   4.4998      8       0.8095   </span>
+<span class="co">#&gt;  44.4637      8       0.0000   </span>
 <span class="co">#&gt; ------------------------------</span></code></pre></div>
 </div>
 <div id="gains-table" class="section level3">
@@ -172,16 +173,16 @@
 <span class="co">#&gt; # A tibble: 10 x 12</span>
 <span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity</span>
 <span class="co">#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   1.00    20    14     6  22.3    14   141     6    39        26.4</span>
-<span class="co">#&gt;  2   2.00    20    13     7  42.1    27   134    13    26        50.9</span>
-<span class="co">#&gt;  3   3.00    20    10    10  54.2    37   124    23    16        69.8</span>
-<span class="co">#&gt;  4   4.00    20     7    13  58.5    44   111    36     9        83.0</span>
-<span class="co">#&gt;  5   5.00    20     3    17  52.6    47    94    53     6        88.7</span>
-<span class="co">#&gt;  6   6.00    20     3    17  46.7    50    77    70     3        94.3</span>
-<span class="co">#&gt;  7   7.00    20     1    19  35.7    51    58    89     2        96.2</span>
-<span class="co">#&gt;  8   8.00    20     2    18  27.2    53    40   107     0       100  </span>
-<span class="co">#&gt;  9   9.00    20     0    20  13.6    53    20   127     0       100  </span>
-<span class="co">#&gt; 10  10.0     20     0    20   0      53     0   147     0       100  </span>
+<span class="co">#&gt;  1   1.00   452   268   184  47.2   268  3820   184   249        51.8</span>
+<span class="co">#&gt;  2   2.00   452   141   311  66.7   409  3509   495   108        79.1</span>
+<span class="co">#&gt;  3   3.00   452    47   405  65.7   456  3104   900    61        88.2</span>
+<span class="co">#&gt;  4   4.00   452    30   422  61.0   486  2682  1322    31        94.0</span>
+<span class="co">#&gt;  5   5.00   452    13   439  52.5   499  2243  1761    18        96.5</span>
+<span class="co">#&gt;  6   6.00   452    11   441  43.7   510  1802  2202     7        98.6</span>
+<span class="co">#&gt;  7   7.00   452     2   450  32.8   512  1352  2652     5        99.0</span>
+<span class="co">#&gt;  8   8.00   452     3   449  22.2   515   903  3101     2        99.6</span>
+<span class="co">#&gt;  9   9.00   452     2   450  11.3   517   453  3551     0       100  </span>
+<span class="co">#&gt; 10  10.0    453     0   453   0     517     0  4004     0       100  </span>
 <span class="co">#&gt; # ... with 2 more variables: specificity &lt;dbl&gt;, accuracy &lt;dbl&gt;</span></code></pre></div>
 </div>
 <div id="lift-chart" class="section level3">

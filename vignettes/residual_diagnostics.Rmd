@@ -23,8 +23,9 @@ library(magrittr)
 ### Model
 
 ```{r model}
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-             family = binomial(link = 'logit'))
+model <- glm(y ~ job + housing + contact + poutcome + duration + month +
+             campaign + loan + marital + education + day + balance + previous, 
+             data = bank_marketing, family = binomial(link = 'logit'))
 ```
 
 ### Influence Diagnostics

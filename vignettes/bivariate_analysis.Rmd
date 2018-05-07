@@ -15,63 +15,59 @@ knitr::opts_chunk$set(
 )
 ```
 
+### Introduction
+
+The blorr package offers tools for building and validating binary logistic regression models. It 
+is most suitable for beginner/intermediate R users and those who teach statistics using R. The API
+is very simple and most of the functions take either a data.frame/tibble or a model as input. **blorr** use
+consistent prefix **blr_** for easy tab completion. The below diagram shows the API design:
+
+This document is a quick start guide to the tools offered by **blorr**. Other vignettes provide more details on 
+specific topics:
+
+- Bivariate Analysis
+- Variable Selection
+- Residual Diagnsotics
+- Model Validation
+
+### Libraries
+
 ```{r libs}
 library(blorr)
 library(magrittr)
 ```
 
-### Introduction
+### Data
+
+We will use the bank marketing data set. 
+
+
+### Bivariate Analysis
 
 ```{r bivar1}
-blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
+blr_bivariate_analysis(bank_marketing, y, job, marital, education, default, housing, 
+  loan, contact, poutcome)
 ```
 
 ### Weight of Evidence & Information Value
 
-#### Introduction
 
 ```{r woe1}
-blr_woe_iv(hsb2, prog, honcomp)
+blr_woe_iv(bank_marketing, job, y)
 ```
 
 #### Plot
 
 ```{r woeplot}
-k <- blr_woe_iv(hsb2, prog, honcomp)
+k <- blr_woe_iv(bank_marketing, job, y)
 plot(k)
 ```
 
 #### Multiple Variables
 
 ```{r woe2}
-blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
-```
-
-### Response Distribution by Segments
-
-#### Introduction
-
-```{r bivar4}
-blr_segment_dist(hsb2, honcomp, prog)
-```
-
-#### Plot
-
-```{r bivar5, fig.align='center', fig.width=5, fig.height=5}
-blr_segment_dist(hsb2, honcomp, prog) %>%
-  plot
-```
-
-### Response Distribution by Multiple Segments
-
-```{r bivar3}
-blr_segment_twoway(hsb2, honcomp, prog, race)
-```
-
-### Response Distribution
-
-```{r bivar2}
-blr_segment(hsb2, honcomp, prog)
+blr_woe_iv_stats(bank_marketing, y, job, marital, education, default, housing, 
+  loan, contact, poutcome)
 ```
 
 
