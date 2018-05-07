@@ -1,5 +1,6 @@
 #' @importFrom checkmate check_class check_tibble check_data_frame check_number check_logical check_true check_choice
 #' @importFrom rlang quo_name
+#' @importFrom stats family
 blr_check_model <- function(model) {
 
 	model_class  <- check_class(model, c("glm", "lm"))
