@@ -7,7 +7,7 @@
 \usage{
 blr_step_aic_both(model, details = FALSE, ...)
 
-\method{plot}{blr_step_aic_both}(x, ...)
+\method{plot}{blr_step_aic_both}(x, text_size = 3, ...)
 }
 \arguments{
 \item{model}{An object of class \code{lm}.}

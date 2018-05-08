@@ -284,7 +284,7 @@ print.blr_step_aic_backward <- function(x, ...) {
 #' @rdname blr_step_aic_backward
 #' @export
 #'
-plot.blr_step_aic_backward <- function(x, ...) {
+plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
 
   steps <- NULL
   aics  <- NULL

@@ -303,7 +303,7 @@ print.blr_step_aic_forward <- function(x, ...) {
 #' @rdname blr_step_aic_forward
 #' @export
 #'
-plot.blr_step_aic_forward <- function(x, ...) {
+plot.blr_step_aic_forward <- function(x, text_size = 3,  ...) {
 
   aic <- NULL
   tx  <- NULL

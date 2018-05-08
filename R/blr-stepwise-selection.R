@@ -316,7 +316,7 @@ print.blr_step_aic_both <- function(x, ...) {
 #' @rdname blr_step_aic_both
 #' @export
 #'
-plot.blr_step_aic_both <- function(x, ...) {
+plot.blr_step_aic_both <- function(x, text_size = 3,  ...) {
 
   aic <- NULL
   tx  <- NULL
