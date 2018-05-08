@@ -8,7 +8,7 @@
 blr_woe_iv(data, predictor, response, digits = 4, ...)
 
 \method{plot}{blr_woe_iv}(x, title = NA, xaxis_title = "Levels",
-  yaxis_title = "WoE", bar_color = "blue", line_color = "blue", ...)
+  yaxis_title = "WoE", bar_color = "blue", line_color = "red", ...)
 }
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}

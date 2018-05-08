@@ -21,6 +21,8 @@ each step.}
 \item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_step_aic_forward}.}
+
+\item{text_size}{size of the text in the plot.}
 }
 \value{
 \code{blr_step_aic_forward} returns an object of class

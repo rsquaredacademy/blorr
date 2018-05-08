@@ -10,6 +10,7 @@
 #'   printed on screen.
 #' @param ... Other arguments.
 #' @param x An object of class \code{blr_step_aic_both}.
+#' @param text_size size of the text in the plot.
 #'
 #' @return \code{blr_step_aic_both} returns an object of class \code{"blr_step_aic_both"}.
 #' An object of class \code{"blr_step_aic_both"} is a list containing the
@@ -354,7 +355,8 @@ plot.blr_step_aic_both <- function(x, ...) {
     geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
     ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
     ggtitle("Stepwise AIC Both Direction Selection") +
-    geom_text(data = d2, aes(x = x, y = y, label = tx), hjust = 0, nudge_x = 0.1)
+    geom_text(data = d2, aes(x = x, y = y, label = tx), 
+      size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)
 

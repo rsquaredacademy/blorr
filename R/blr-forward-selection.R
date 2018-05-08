@@ -10,6 +10,7 @@
 #'   each step.
 #' @param ... Other arguments.
 #' @param x An object of class \code{blr_step_aic_forward}.
+#' @param text_size size of the text in the plot.
 #'
 #' @return \code{blr_step_aic_forward} returns an object of class
 #' \code{"blr_step_aic_forward"}. An object of class
@@ -336,7 +337,8 @@ plot.blr_step_aic_forward <- function(x, ...) {
     geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
     ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
     ggtitle("Stepwise AIC Forward Selection") +
-    geom_text(data = d2, aes(x = x, y = y, label = tx), hjust = 0, nudge_x = 0.1)
+    geom_text(data = d2, aes(x = x, y = y, label = tx), 
+      size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)
 }

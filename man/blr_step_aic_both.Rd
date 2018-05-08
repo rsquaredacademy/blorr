@@ -18,6 +18,8 @@ printed on screen.}
 \item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_step_aic_both}.}
+
+\item{text_size}{size of the text in the plot.}
 }
 \value{
 \code{blr_step_aic_both} returns an object of class \code{"blr_step_aic_both"}.
