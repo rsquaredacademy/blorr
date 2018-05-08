@@ -10,16 +10,8 @@ navbar:
       href: index.html
     - text: "Guides"
       menu:
-        - text: "Bivariate Analysis"
-          href: articles/bivariate_analysis.html
         - text: "Introduction"
-          href: articles/intro.html
-        - text: "Model Validation"
-          href: articles/model_validation.html
-        - text: "Variable Selection"
-          href: articles/variable_selection.html
-        - text: "Residual Diagnostics"
-          href: articles/residual_diagnostics.html
+          href: articles/introduction.html
 
     - text: "Reference"
       menu:
