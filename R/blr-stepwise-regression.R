@@ -32,14 +32,16 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
+#' \dontrun{
 #' # stepwise regression
 #' model <- glm(y ~ ., data = stepwise)
 #' blr_step_p_both(model)
 #'
 #' # stepwise regression plot
-#'model <- glm(y ~ ., data = stepwise)
+#' model <- glm(y ~ ., data = stepwise)
 #' k <- blr_step_p_both(model)
 #' plot(k)
+#' }
 #'
 #' @family variable selection_procedures
 #'

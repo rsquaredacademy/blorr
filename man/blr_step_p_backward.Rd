@@ -45,6 +45,7 @@ removing predictors based on p values, in a stepwise manner until there is
 no variable left to remove any more.
 }
 \examples{
+\dontrun{
 # stepwise backward regression
 model <- glm(honcomp ~ female + read + science + math + prog + socst,
   data = hsb2, family = binomial(link = 'logit'))
@@ -55,6 +56,7 @@ model <- glm(honcomp ~ female + read + science + math + prog + socst,
   data = hsb2, family = binomial(link = 'logit'))
 k <- blr_step_p_backward(model)
 plot(k)
+}
 
 }
 \references{

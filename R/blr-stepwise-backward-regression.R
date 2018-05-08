@@ -29,6 +29,7 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
+#' \dontrun{
 #' # stepwise backward regression
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
 #'   data = hsb2, family = binomial(link = 'logit'))
@@ -39,6 +40,7 @@
 #'   data = hsb2, family = binomial(link = 'logit'))
 #' k <- blr_step_p_backward(model)
 #' plot(k)
+#' }
 #'
 #' @importFrom dplyr full_join select
 #'
