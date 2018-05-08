@@ -11,6 +11,7 @@
 #'   each step.
 #' @param ... Other arguments.
 #' @param x An object of class \code{blr_step_aic_backward}.
+#' @param text_size size of the text in the plot.
 #'
 #' @return \code{blr_step_aic_backward} returns an object of class
 #' \code{"blr_step_aic_backward"}. An object of class
@@ -283,7 +284,7 @@ print.blr_step_aic_backward <- function(x, ...) {
 #' @rdname blr_step_aic_backward
 #' @export
 #'
-plot.blr_step_aic_backward <- function(x, ...) {
+plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
 
   steps <- NULL
   aics  <- NULL
@@ -294,7 +295,7 @@ plot.blr_step_aic_backward <- function(x, ...) {
   y <-
     x %>%
     use_series(steps) %>%
-    seq_len() %>%
+    seq_len(.) %>%
     prepend(0)
 
   xloc <- y - 0.1
@@ -336,7 +337,7 @@ plot.blr_step_aic_backward <- function(x, ...) {
     ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
     ggtitle("Stepwise AIC Backward Elimination") +
     geom_text(data = d2, aes(x = x, y = y, label = tx),
-              hjust = 0, nudge_x = 0.1)
+              size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)
 

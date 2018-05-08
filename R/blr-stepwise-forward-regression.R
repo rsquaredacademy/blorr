@@ -33,6 +33,7 @@
 #'
 #'
 #' @examples
+#' \dontrun{
 #' # stepwise forward regression
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'   family = binomial(link = 'logit'))
@@ -43,6 +44,7 @@
 #'   family = binomial(link = 'logit'))
 #' k <- blr_step_p_forward(model)
 #' plot(k)
+#' }
 #'
 #' @importFrom stats qt
 #' @importFrom car Anova

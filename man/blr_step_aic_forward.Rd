@@ -10,7 +10,7 @@ blr_step_aic_forward(model, details = FALSE, ...)
 
 \method{blr_step_aic_forward}{default}(model, details = FALSE, ...)
 
-\method{plot}{blr_step_aic_forward}(x, ...)
+\method{plot}{blr_step_aic_forward}(x, text_size = 3, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
@@ -21,6 +21,8 @@ each step.}
 \item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_step_aic_forward}.}
+
+\item{text_size}{size of the text in the plot.}
 }
 \value{
 \code{blr_step_aic_forward} returns an object of class

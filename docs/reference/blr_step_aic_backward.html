@@ -62,19 +62,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
-    </li>
-    <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
-    </li>
-    <li>
-      <a href="../articles/variable_selection.html">Variable Selection</a>
-    </li>
-    <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/introduction.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -128,7 +116,7 @@ manner until there is no variable left to remove any more.</p>
 <span class='fu'>blr_step_aic_backward</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for blr_step_aic_backward</span>
-<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>plot</span>(<span class='no'>x</span>, <span class='kw'>text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -150,6 +138,10 @@ each step.</p></td>
     <tr>
       <th>x</th>
       <td><p>An object of class <code>blr_step_aic_backward</code>.</p></td>
+    </tr>
+    <tr>
+      <th>text_size</th>
+      <td><p>size of the text in the plot.</p></td>
     </tr>
     </table>
     

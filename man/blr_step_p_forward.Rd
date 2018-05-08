@@ -45,6 +45,7 @@ entering predictors based on p values, in a stepwise manner until there is
 no variable left to enter any more.
 }
 \examples{
+\dontrun{
 # stepwise forward regression
 model <- glm(honcomp ~ female + read + science, data = hsb2,
   family = binomial(link = 'logit'))
@@ -55,6 +56,7 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
   family = binomial(link = 'logit'))
 k <- blr_step_p_forward(model)
 plot(k)
+}
 
 }
 \references{

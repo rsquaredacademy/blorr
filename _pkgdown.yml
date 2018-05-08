@@ -10,16 +10,8 @@ navbar:
       href: index.html
     - text: "Guides"
       menu:
-        - text: "Bivariate Analysis"
-          href: articles/bivariate_analysis.html
-        - text: "Model Fit Statistics"
-          href: articles/intro.html
-        - text: "Model Validation"
-          href: articles/model_validation.html
-        - text: "Variable Selection"
-          href: articles/variable_selection.html
-        - text: "Residual Diagnostics"
-          href: articles/residual_diagnostics.html
+        - text: "Introduction"
+          href: articles/introduction.html
 
     - text: "Reference"
       menu:
@@ -141,5 +133,7 @@ reference:
 
   contents:
   - hsb2
+  - bank_marketing
+  - stepwise
 
 

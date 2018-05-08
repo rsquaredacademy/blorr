@@ -62,19 +62,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
-    </li>
-    <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
-    </li>
-    <li>
-      <a href="../articles/variable_selection.html">Variable Selection</a>
-    </li>
-    <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/introduction.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -185,148 +173,19 @@ following components:</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># stepwise backward regression</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># stepwise backward regression</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span> + <span class='no'>math</span> + <span class='no'>prog</span> + <span class='no'>socst</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-<span class='fu'>blr_step_p_backward</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; Backward Elimination Method 
-#&gt; ---------------------------
-#&gt; 
-#&gt; Candidate Terms: 
-#&gt; 
-#&gt; 1 . female 
-#&gt; 2 . read 
-#&gt; 3 . science 
-#&gt; 4 . math 
-#&gt; 5 . prog 
-#&gt; 6 . socst 
-#&gt; 
-#&gt; We are eliminating variables based on p value...
-#&gt; 
-#&gt; Variables Removed: 
-#&gt; 
-#&gt; &lt;U+2716&gt; prog 
-#&gt; &lt;U+2716&gt; socst 
-#&gt; 
-#&gt; No more variables satisfy the condition of p value = 0.3
-#&gt; 
-#&gt; 
-#&gt; Final Model Output 
-#&gt; ------------------
-#&gt; 
-#&gt; &lt;U+2714&gt; Creating model overview. 
-#&gt; &lt;U+2714&gt; Creating response profile. 
-#&gt; &lt;U+2714&gt; Extracting maximum likelihood estimates. 
-#&gt; &lt;U+2714&gt; Estimating concordant and discordant pairs. 
-#&gt; 
-#&gt;                              Model Overview                              
-#&gt; ------------------------------------------------------------------------
-#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     200        199           195            TRUE     
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;                     Response Summary                     
-#&gt; --------------------------------------------------------
-#&gt; Outcome        Frequency        Outcome        Frequency 
-#&gt; --------------------------------------------------------
-#&gt;    0              147              1              53     
-#&gt; --------------------------------------------------------
-#&gt; 
-#&gt;                   Maximum Likelihood Estimates                    
-#&gt; -----------------------------------------------------------------
-#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
-#&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -14.5773       2.1568    -6.7589      0.0000 
-#&gt;   female1      1      1.3622        0.4605     2.9580      0.0031 
-#&gt;    read        1      0.0631        0.0281     2.2455      0.0247 
-#&gt;   science      1      0.0569        0.0326     1.7429      0.0814 
-#&gt;    math        1      0.1113        0.0338     3.2992      0.0010 
-#&gt; -----------------------------------------------------------------
-#&gt; 
-#&gt;  Association of Predicted Probabilities and Observed Responses  
-#&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8835          Somers' D        0.7669   
-#&gt; % Discordant          0.1165          Gamma            0.7669   
-#&gt; % Tied                0.0000          Tau-a            0.3003   
-#&gt; Pairs                  7791           c                0.8835   
-#&gt; ---------------------------------------------------------------
-#&gt; </div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;                 Elimination Summary                  
-#&gt; ----------------------------------------------------
-#&gt;         Variable                                        
-#&gt; Step    Removed       AIC         BIC       Deviance    
-#&gt; ----------------------------------------------------
-#&gt;    1    prog        158.9527    178.7427    146.9527    
-#&gt;    2    socst       157.2856    173.7772    147.2856    
-#&gt; ----------------------------------------------------</div><div class='input'>
+<span class='fu'>blr_step_p_backward</span>(<span class='no'>model</span>)
+
 <span class='co'># stepwise backward regression plot</span>
 <span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span> + <span class='no'>math</span> + <span class='no'>prog</span> + <span class='no'>socst</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_step_p_backward</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; Backward Elimination Method 
-#&gt; ---------------------------
-#&gt; 
-#&gt; Candidate Terms: 
-#&gt; 
-#&gt; 1 . female 
-#&gt; 2 . read 
-#&gt; 3 . science 
-#&gt; 4 . math 
-#&gt; 5 . prog 
-#&gt; 6 . socst 
-#&gt; 
-#&gt; We are eliminating variables based on p value...
-#&gt; 
-#&gt; Variables Removed: 
-#&gt; 
-#&gt; &lt;U+2716&gt; prog 
-#&gt; &lt;U+2716&gt; socst 
-#&gt; 
-#&gt; No more variables satisfy the condition of p value = 0.3
-#&gt; 
-#&gt; 
-#&gt; Final Model Output 
-#&gt; ------------------
-#&gt; 
-#&gt; &lt;U+2714&gt; Creating model overview. 
-#&gt; &lt;U+2714&gt; Creating response profile. 
-#&gt; &lt;U+2714&gt; Extracting maximum likelihood estimates. 
-#&gt; &lt;U+2714&gt; Estimating concordant and discordant pairs. 
-#&gt; 
-#&gt;                              Model Overview                              
-#&gt; ------------------------------------------------------------------------
-#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     200        199           195            TRUE     
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;                     Response Summary                     
-#&gt; --------------------------------------------------------
-#&gt; Outcome        Frequency        Outcome        Frequency 
-#&gt; --------------------------------------------------------
-#&gt;    0              147              1              53     
-#&gt; --------------------------------------------------------
-#&gt; 
-#&gt;                   Maximum Likelihood Estimates                    
-#&gt; -----------------------------------------------------------------
-#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
-#&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -14.5773       2.1568    -6.7589      0.0000 
-#&gt;   female1      1      1.3622        0.4605     2.9580      0.0031 
-#&gt;    read        1      0.0631        0.0281     2.2455      0.0247 
-#&gt;   science      1      0.0569        0.0326     1.7429      0.0814 
-#&gt;    math        1      0.1113        0.0338     3.2992      0.0010 
-#&gt; -----------------------------------------------------------------
-#&gt; 
-#&gt;  Association of Predicted Probabilities and Observed Responses  
-#&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8835          Somers' D        0.7669   
-#&gt; % Discordant          0.1165          Gamma            0.7669   
-#&gt; % Tied                0.0000          Tau-a            0.3003   
-#&gt; Pairs                  7791           c                0.8835   
-#&gt; ---------------------------------------------------------------
-#&gt; </div><div class='input'><span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='input'>
-</div><div class='img'><img src='blr_step_p_backward-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_step_p_backward</span>(<span class='no'>model</span>)
+<span class='fu'>plot</span>(<span class='no'>k</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

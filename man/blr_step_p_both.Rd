@@ -50,6 +50,7 @@ entering and removing predictors based on p values, in a stepwise manner
 until there is no variable left to enter or remove any more.
 }
 \examples{
+\dontrun{
 # stepwise regression
 model <- glm(y ~ ., data = stepwise)
 blr_step_p_both(model)
@@ -58,6 +59,7 @@ blr_step_p_both(model)
 model <- glm(y ~ ., data = stepwise)
 k <- blr_step_p_both(model)
 plot(k)
+}
 
 }
 \references{

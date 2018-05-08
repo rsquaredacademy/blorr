@@ -1,0 +1,28 @@
+#' Bank marketing data set
+#'
+#' The data is related with direct marketing campaigns of a Portuguese banking institution. 
+#' The marketing campaigns were based on phone calls. Often, more than one contact to the 
+#' same client was required, in order to access if the product (bank term deposit) would 
+#' be ('yes') or not ('no') subscribed.
+#'
+#' @format A tibble with 4521 rows and 17 variables:
+#' \describe{
+#'	 \item{age}{age of the client}
+#'	 \item{job}{type of job}
+#'	 \item{marital}{marital status}
+#'	 \item{education}{education level of the client}
+#'	 \item{default}{has credit in default?} 
+#'	 \item{housing}{has housing loan?} 
+#'	 \item{loan}{has personal loan?} 
+#'	 \item{contact}{contact communication type}
+#'	 \item{month}{last contact month of year}
+#'	 \item{day_of_week}{last contact day of the week}
+#'	 \item{duration}{last contact duration, in seconds}
+#'	 \item{campaign}{number of contacts performed during this campaign and for this client}
+#'	 \item{pdays}{number of days that passed by after the client was last contacted from a previous campaign}
+#'	 \item{previous}{number of contacts performed before this campaign and for this clien}
+#'	 \item{poutcome}{outcome of the previous marketing campaign}
+#'	 \item{y}{has the client subscribed a term deposit?}
+#' }
+#' @source [Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
+"bank_marketing"

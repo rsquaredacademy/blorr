@@ -10,7 +10,7 @@ blr_step_aic_backward(model, details = FALSE, ...)
 
 \method{blr_step_aic_backward}{default}(model, details = FALSE, ...)
 
-\method{plot}{blr_step_aic_backward}(x, ...)
+\method{plot}{blr_step_aic_backward}(x, text_size = 3, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
@@ -22,6 +22,8 @@ each step.}
 \item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_step_aic_backward}.}
+
+\item{text_size}{size of the text in the plot.}
 }
 \value{
 \code{blr_step_aic_backward} returns an object of class

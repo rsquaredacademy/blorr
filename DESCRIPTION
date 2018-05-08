@@ -1,13 +1,14 @@
-Type: Package
 Package: blorr
+Type: Package
 Title: Tools for Developing Binary Logistic Regression Models
-Version: 0.0.9
+Version: 0.1.0
 Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
 Description: Tools designed to make it easier for users, particularly beginner/intermediate 
-    R users to build logistic regression models. Includes comprehensive regression output, 
-    variable selection procedure and model validation statistics.
+    R users to build and validate binary logistic regression models. Includes bivariate analysis,
+    comprehensive regression output, model fit statistics, variable selection procedures, model
+    validation techniques and 'shiny' app for interactive model building.
 Depends:
-    R(>= 3.4.0)
+    R(>= 3.3)
 Imports: 
     car,
     caret,
@@ -54,5 +55,4 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-LinkingTo: 
-    Rcpp
+LinkingTo: Rcpp

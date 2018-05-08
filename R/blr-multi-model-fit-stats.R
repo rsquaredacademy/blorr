@@ -68,7 +68,7 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
     x %>%
     use_series(mfit) %>%
     nrow() %>%
-    seq_len()
+    seq_len(.)
 
   col_names <- c("Measures", paste("Model", model_id))
   print(multi_fit_stats_table(df, measures, col_names))
