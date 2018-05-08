@@ -243,7 +243,7 @@ blr_rsq_nagelkerke <- function(model) {
 
   i_model_ll <-
     imodel(model) %>%
-    exp() %>%
+    exp(.) %>%
     raise_to_power(pow)
 
   blr_rsq_cox_snell(model) / (1 - i_model_ll)
@@ -465,7 +465,7 @@ cox_snell_comp <- function(model) {
   f_model_ll <-
     model %>%
     model_ll() %>%
-    exp()
+    exp(.)
 
   n <-
     model %>%
@@ -475,7 +475,7 @@ cox_snell_comp <- function(model) {
   pow <- 2 / n
 
   imodel(model) %>%
-    exp() %>%
+    exp(.) %>%
     divide_by(f_model_ll) %>%
     raise_to_power(pow)
 

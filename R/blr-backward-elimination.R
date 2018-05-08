@@ -295,7 +295,7 @@ plot.blr_step_aic_backward <- function(x, ...) {
   y <-
     x %>%
     use_series(steps) %>%
-    seq_len() %>%
+    seq_len(.) %>%
     prepend(0)
 
   xloc <- y - 0.1

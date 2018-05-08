@@ -77,7 +77,7 @@ x_length <- function(x) {
 
   x %>%
     length() %>%
-    seq_len()
+    seq_len(.)
 }
 
 bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {

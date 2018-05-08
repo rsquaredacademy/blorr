@@ -593,7 +593,7 @@ plot_id <- function(res_val) {
 
   res_val %>%
     length() %>%
-    seq_len()
+    seq_len(.)
 
 }
 

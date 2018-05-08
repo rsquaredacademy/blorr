@@ -143,7 +143,7 @@ odds_point <- function(model) {
 
   model %>%
     coef() %>%
-    exp() %>%
+    exp(.) %>%
     extract(-1) %>%
     unname()
 
@@ -156,7 +156,7 @@ odds_conf_limit <- function(model) {
     confint() %>%
     as_tibble() %>%
     slice(2:n()) %>%
-    exp()
+    exp(.)
 
 }
 
