@@ -1,6 +1,8 @@
 #' Bivariate analysis
 #'
-#' Information value and likelihood ratio chi square test for initial variable/predictor selection.
+#' Information value and likelihood ratio chi square test for initial 
+#'   variable/predictor selection. Currently avialable for categorical 
+#'   predictors only.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param response Response variable; column in \code{data}.

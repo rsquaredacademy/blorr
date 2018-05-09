@@ -25,7 +25,9 @@ A tibble with the following columns:
 \item{LR p-value}{Likelihood ratio p value}
 }
 \description{
-Information value and likelihood ratio chi square test for initial variable/predictor selection.
+Information value and likelihood ratio chi square test for initial 
+  variable/predictor selection. Currently avialable for categorical 
+  predictors only.
 }
 \examples{
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
