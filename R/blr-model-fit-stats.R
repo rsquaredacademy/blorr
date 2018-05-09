@@ -239,14 +239,21 @@ blr_rsq_nagelkerke <- function(model) {
     use_series(data) %>%
     nrow()
 
-  pow <- 2 / n
+  num <-
+    (model_ll(model) %>%
+          multiply_by(-2)) %>%
+    subtract(imodel(model) %>%
+      multiply_by(-2)) %>%
+    divide_by(n) %>%
+    exp(.)
 
-  i_model_ll <-
+  den <- 
     imodel(model) %>%
-    exp(.) %>%
-    raise_to_power(pow)
+    multiply_by(2) %>%
+    divide_by(n) %>%
+    exp(.)
 
-  blr_rsq_cox_snell(model) / (1 - i_model_ll)
+  (1 - num) / (1 - den)
 
 }
 
@@ -462,22 +469,16 @@ extract_lr <- function(lr, value) {
 
 cox_snell_comp <- function(model) {
 
-  f_model_ll <-
-    model %>%
-    model_ll() %>%
-    exp(.)
-
   n <-
     model %>%
     use_series(data) %>%
     nrow()
 
-  pow <- 2 / n
-
   imodel(model) %>%
-    exp(.) %>%
-    divide_by(f_model_ll) %>%
-    raise_to_power(pow)
+    subtract(model_ll(model)) %>%
+    multiply_by(2) %>%
+    divide_by(n) %>%
+    exp(.)  
 
 }
 

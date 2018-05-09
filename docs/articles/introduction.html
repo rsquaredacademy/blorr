@@ -112,7 +112,7 @@
 <div id="bivariate-analysis" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h3>
-<p>Let us begin with careful bivariate analysis of each possible variable and the outcome variable. We will use information value and likelihood ratio chi square test for selecting the initial set of predictors for our model.</p>
+<p>Let us begin with careful bivariate analysis of each possible variable and the outcome variable. We will use information value and likelihood ratio chi square test for selecting the initial set of predictors for our model. The bivariate analysis is currently avialable for categorical predictors only.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(bank_marketing, y, job, marital, education, default, 
   housing, loan, contact, poutcome)
 <span class="co">#&gt;                           Bivariate Analysis                           </span>
@@ -236,6 +236,7 @@
 <span class="co">#&gt; ------------------------------</span>
 <span class="co">#&gt; education         0.0539       </span>
 <span class="co">#&gt; ------------------------------</span></code></pre></div>
+<p><code><a href="../reference/blr_woe_iv.html">blr_woe_iv()</a></code> and <code><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats()</a></code> are currently avialable for categorical predictors only.</p>
 </div>
 </div>
 <div id="stepwise-selection" class="section level3">
@@ -506,7 +507,7 @@
 <span class="co">#&gt; Deviance(4498):              2246.679    LR(22):                           967.980 </span>
 <span class="co">#&gt;                                          Prob &gt; LR:                          0.000 </span>
 <span class="co">#&gt; MCFadden's R2                   0.301    McFadden's Adj R2:                  0.287 </span>
-<span class="co">#&gt; ML (Cox-Snell) R2:                NaN    Cragg-Uhler(Nagelkerke) R2:           NaN </span>
+<span class="co">#&gt; ML (Cox-Snell) R2:              0.193    Cragg-Uhler(Nagelkerke) R2:         0.379 </span>
 <span class="co">#&gt; McKelvey &amp; Zavoina's R2:        0.388    Efron's R2:                         0.278 </span>
 <span class="co">#&gt; Count R2:                       0.904    Adj Count R2:                       0.157 </span>
 <span class="co">#&gt; BIC:                         2440.259    AIC:                             2292.679 </span>
