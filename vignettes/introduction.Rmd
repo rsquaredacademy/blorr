@@ -56,7 +56,8 @@ at https://archive.ics.uci.edu/ml/datasets/bank+marketing.
 
 Let us begin with careful bivariate analysis of each possible variable and the 
 outcome variable. We will use information value and likelihood ratio chi square 
-test for selecting the initial set of predictors for our model.
+test for selecting the initial set of predictors for our model. The bivariate
+analysis is currently avialable for categorical predictors only.
 
 ```{r bivar1}
 blr_bivariate_analysis(bank_marketing, y, job, marital, education, default, 
@@ -97,6 +98,9 @@ variables using `blr_woe_iv_stats()`.
 ```{r woe2}
 blr_woe_iv_stats(bank_marketing, y, job, marital, education)
 ```
+
+`blr_woe_iv()` and `blr_woe_iv_stats()` are currently avialable for categorical 
+predictors only.
 
 ### Stepwise Selection
 

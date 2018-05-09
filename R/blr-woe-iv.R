@@ -1,6 +1,7 @@
 #' WoE & IV
 #'
-#' Weight of evidence and information value.
+#' Weight of evidence and information value. Currently avialable for categorical 
+#'   predictors only.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
@@ -105,7 +106,8 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 
 #' Multi variable WOE & IV
 #'
-#' Prints weight of evidence and information value for multiple variables.
+#' Prints weight of evidence and information value for multiple variables. 
+#'   Currently avialable for categorical predictors only.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
 #' @param response Response variable; column in \code{data}.

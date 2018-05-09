@@ -37,7 +37,8 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 A tibble.
 }
 \description{
-Weight of evidence and information value.
+Weight of evidence and information value. Currently avialable for categorical 
+  predictors only.
 }
 \examples{
 # woe and iv
