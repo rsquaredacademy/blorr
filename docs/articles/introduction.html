@@ -89,20 +89,20 @@
 <div id="introduction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h3>
-<p>The blorr package offers tools for building and validating binary logistic regression models. It is most suitable for beginner/intermediate R users and those who teach statistics using R. The API is very simple and most of the functions take either a <code>data.frame</code>/<code>tibble</code> or a <code>model</code> as input. <strong>blorr</strong> use consistent prefix <strong>blr_</strong> for easy tab completion. The below diagram shows the API design:</p>
+<p>The blorr package offers tools for building and validating binary logistic regression models. It is most suitable for beginner/intermediate R users and those who teach statistics using R. The API is very simple and most of the functions take either a <code>data.frame</code>/<code>tibble</code> or a <code>model</code> as input. <strong>blorr</strong> use consistent prefix <strong>blr_</strong> for easy tab completion.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install <strong>blorr</strong> using:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"blorr"</span>, <span class="dt">dependencies =</span> <span class="kw">c</span>(<span class="st">"Suggests"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"blorr"</span>)</code></pre></div>
 <p>The documentation of the package can be found at <a href="https://blorr.rsquaredacademy.com" class="uri">https://blorr.rsquaredacademy.com</a>. This vignette gives a quick tour of the package.</p>
 <div id="libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h3>
+<p>The following libraries are used in the examples in the vignette:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blorr)
-<span class="kw">library</span>(magrittr)
-<span class="kw">library</span>(ggplot2)</code></pre></div>
+<span class="kw">library</span>(magrittr)</code></pre></div>
 </div>
 <div id="data" class="section level3">
 <h3 class="hasAnchor">
@@ -113,8 +113,8 @@
 <h3 class="hasAnchor">
 <a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h3>
 <p>Let us begin with careful bivariate analysis of each possible variable and the outcome variable. We will use information value and likelihood ratio chi square test for selecting the initial set of predictors for our model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(bank_marketing, y, job, marital, education, default, housing, 
-  loan, contact, poutcome)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(bank_marketing, y, job, marital, education, default, 
+  housing, loan, contact, poutcome)
 <span class="co">#&gt;                           Bivariate Analysis                           </span>
 <span class="co">#&gt; ----------------------------------------------------------------------</span>
 <span class="co">#&gt; Variable     Information Value    LR Chi Square    LR DF    LR p-value </span>
@@ -355,7 +355,7 @@
 <div id="model-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model-1" class="anchor"></a>Model</h3>
-<p>Now that we have performed bivariate analysis and stepwise selection procedure, let us build the model using the <code>glm()</code>.</p>
+<p>We can use bivariate analysis and stepwise selection procedure to shortlist predictors and build the model using the <code>glm()</code>. The predictors used in the below model are for illustration purposes and not necessarily shortlisted from the bivariate analysis and variable selection procedures.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>duration <span class="op">+</span><span class="st"> </span>previous <span class="op">+</span><span class="st"> </span>housing <span class="op">+</span><span class="st"> </span>default <span class="op">+</span>
 <span class="st">             </span>loan <span class="op">+</span><span class="st"> </span>poutcome <span class="op">+</span><span class="st"> </span>job <span class="op">+</span><span class="st"> </span>marital, <span class="dt">data =</span> bank_marketing, 
              <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
@@ -363,16 +363,16 @@
 <div id="regression-output" class="section level3">
 <h3 class="hasAnchor">
 <a href="#regression-output" class="anchor"></a>Regression Output</h3>
-<p>Use <code><a href="../reference/blr_regress.html">blr_regress()</a></code> to generate comprehensive regression output. It accepts:</p>
+<p>Use <code><a href="../reference/blr_regress.html">blr_regress()</a></code> to generate comprehensive regression output. It accepts either of the following</p>
 <ul>
 <li>model built using <code>glm()</code>
 </li>
-<li>formula and data</li>
+<li>model formula and data</li>
 </ul>
 <div id="using-model" class="section level4">
 <h4 class="hasAnchor">
 <a href="#using-model" class="anchor"></a>Using Model</h4>
-<p>Let us use the model we have built.</p>
+<p>Let us look at the output generated from <code><a href="../reference/blr_regress.html">blr_regress()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_regress.html">blr_regress</a></span>(model)
 <span class="co">#&gt; - Creating model overview. </span>
 <span class="co">#&gt; - Creating response profile. </span>
@@ -428,11 +428,12 @@
 <span class="co">#&gt; % Tied                0.0000          Tau-a            0.1575   </span>
 <span class="co">#&gt; Pairs                2070068          c                0.8886   </span>
 <span class="co">#&gt; ---------------------------------------------------------------</span></code></pre></div>
+<p>If you want to examine the odds ratio estimates, set <code>odd_conf_limit</code> to <code>TRUE</code>. The odds ratio estimates are not explicitly computed as we observed considerable increase in computation time when dealing with large data sets.</p>
 </div>
 <div id="using-formula" class="section level4">
 <h4 class="hasAnchor">
 <a href="#using-formula" class="anchor"></a>Using Formula</h4>
-<p>Let us use the formula and the data set to generate the above result.</p>
+<p>Let us use the model formula and the data set to generate the above results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_regress.html">blr_regress</a></span>(y <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>duration <span class="op">+</span><span class="st"> </span>previous <span class="op">+</span><span class="st"> </span>housing <span class="op">+</span><span class="st"> </span>default <span class="op">+</span>
 <span class="st">             </span>loan <span class="op">+</span><span class="st"> </span>poutcome <span class="op">+</span><span class="st"> </span>job <span class="op">+</span><span class="st"> </span>marital, <span class="dt">data =</span> bank_marketing)
 <span class="co">#&gt; - Creating model overview. </span>
@@ -494,7 +495,7 @@
 <div id="model-fit-statistics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h3>
-<p>Model fit statistics are available to assess how well the model fits the data and to compare two different models. The output includes likelihood ratio test, AIC, BIC and a host of pseudo r-squared measures. You can read more about pseudo r-squared at <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/" class="uri">https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/</a>.</p>
+<p>Model fit statistics are available to assess how well the model fits the data and to compare two different models.The output includes likelihood ratio test, AIC, BIC and a host of pseudo r-squared measures. You can read more about pseudo r-squared at <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/" class="uri">https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/</a>.</p>
 <div id="single-model" class="section level4">
 <h4 class="hasAnchor">
 <a href="#single-model" class="anchor"></a>Single Model</h4>
@@ -554,17 +555,20 @@
 <li>
 <strong>Specificity</strong>: The % of correctly classified non-events out of all non-events = TN / (TN + FP)</li>
 <li><p><strong>Accuracy</strong>: The % of correctly classified observation over all observations = (TP + TN) / (TP + FP + TN + FN)</p></li>
-<li>True Positive (TP) : Events correctly classified as events.</li>
-<li>True Negative (TN) : Non-Events correctly classified as non-events.</li>
-<li>False Positive (FP): Non-events miss-classified as events.</li>
-<li><p>False Negative (FN): Events miss-classified as non-events.</p></li>
+<li>
+<em>True Positive (TP)</em> : Events correctly classified as events.</li>
+<li>
+<em>True Negative (TN)</em> : Non-Events correctly classified as non-events.</li>
+<li>
+<em>False Positive (FP)</em>: Non-events miss-classified as events.</li>
+<li><p><em>False Negative (FN)</em>: Events miss-classified as non-events.</p></li>
 </ul>
 <p>For a standard logistic model, the higher is the cut-off, the lower will be the sensitivity and the higher would be the specificity. As the cut-off is decreased, sensitivity will go up, as then more events would be captured. Also, specificity will go down, as more non-events would miss-classified as events. Hence a trade-off is done based on the requirements. For example, if we are looking to capture as many events as possible, and we can afford to have miss-classified non-events, then a low cut-off is taken.</p>
 </div>
 <div id="hosmer-lemeshow-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#hosmer-lemeshow-test" class="anchor"></a>Hosmer Lemeshow Test</h3>
-<p>Hosmer and Lemeshow developed a goodness-of-fit test for logistic regression models with binary responses. The test involves dividing the data into approx. ten groups of roughly equal size based on the percentiles of the estimated probabilities. The observations are sorted in increasing order of their estimated probability of having an even outcome. The discrepancies between the observed and expected number of observations in these groups are summarized by the Pearson chi-square statistic, which is then compared to chi-square distribution with t degrees of freedom, where t is the number of groups minus 2. Lower values of Goodness-of-fit are preferred.</p>
+<p>Hosmer and Lemeshow developed a goodness-of-fit test for logistic regression models with binary responses. The test involves dividing the data into approximately ten groups of roughly equal size based on the percentiles of the estimated probabilities. The observations are sorted in increasing order of their estimated probability of having an even outcome. The discrepancies between the observed and expected number of observations in these groups are summarized by the Pearson chi-square statistic, which is then compared to chi-square distribution with t degrees of freedom, where t is the number of groups minus 2. Lower values of Goodness-of-fit are preferred.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_test_hosmer_lemeshow.html">blr_test_hosmer_lemeshow</a></span>(model)
 <span class="co">#&gt;            Partition for the Hosmer &amp; Lemeshow Test            </span>
 <span class="co">#&gt; --------------------------------------------------------------</span>
@@ -639,7 +643,7 @@
 <div id="decile-lift-chart" class="section level3">
 <h3 class="hasAnchor">
 <a href="#decile-lift-chart" class="anchor"></a>Decile Lift Chart</h3>
-<p>The decile lift chart displays the lift over the global mean event rate for each decile. For a good model, the top deciles should have an event/conversion rate greater than the global mean.</p>
+<p>The decile lift chart displays the lift over the global mean event rate for each decile. For a model with good discriminatory power, the top deciles should have an event/conversion rate greater than the global mean.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/blr_decile_lift_chart.html">blr_decile_lift_chart</a></span>()</code></pre></div>
@@ -648,7 +652,7 @@
 <div id="capture-rate-by-decile" class="section level3">
 <h3 class="hasAnchor">
 <a href="#capture-rate-by-decile" class="anchor"></a>Capture Rate by Decile</h3>
-<p>If the model has good predictive power, the top deciles should have a higher event/conversion rate compared to the bottom deciles.</p>
+<p>If the model has good discriminatory power, the top deciles should have a higher event/conversion rate compared to the bottom deciles.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/blr_decile_capture_rate.html">blr_decile_capture_rate</a></span>()</code></pre></div>
@@ -657,7 +661,7 @@
 <div id="lorenz-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h3>
-<p>The Lorenz curve is a simple graphic device which illustrates the degree of inequality in the distribution of the variable concerned. It is a visual representation of inequality used to measure the discriminatory power of the predictive model.</p>
+<p>The Lorenz curve is a simple graphic device which illustrates the degree of inequality in the distribution of thevariable concerned. It is a visual representation of inequality used to measure the discriminatory power of the predictive model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(model)</code></pre></div>
 <p><img src="introduction_files/figure-html/val4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
@@ -665,22 +669,22 @@
 <div id="residual-influence-diagnostics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#residual-influence-diagnostics" class="anchor"></a>Residual &amp; Influence Diagnostics</h2>
-<p>C and CBAR are confidence interval displacement diagnostics that provide scalar measures of the influence of individual observations on <span class="math inline">\(\hat{\beta}\)</span>. DIFDEV and DIFCHISQ are diagnostics for detecting ill-fitted observations; in other words, observations that contribute heavily to the disagreement between the data and the predicted values of the fitted model. DIFDEV is the change in the deviance due to deleting an individual observation while DIFCHISQ is the change in the Pearson chi-square statistic for the same deletion.</p>
-<div id="influence-diagnostics" class="section level3">
-<h3 class="hasAnchor">
-<a href="#influence-diagnostics" class="anchor"></a>Influence Diagnostics</h3>
+<p><strong>blorr</strong> can generate 22 plots for residual, influence and leverage diagnostics.</p>
+<div id="influence-diagnostics" class="section level4">
+<h4 class="hasAnchor">
+<a href="#influence-diagnostics" class="anchor"></a>Influence Diagnostics</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_influence.html">blr_plot_diag_influence</a></span>(model)</code></pre></div>
 <p><img src="introduction_files/figure-html/infl-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
-<div id="leverage-diagnostics" class="section level3">
-<h3 class="hasAnchor">
-<a href="#leverage-diagnostics" class="anchor"></a>Leverage Diagnostics</h3>
+<div id="leverage-diagnostics" class="section level4">
+<h4 class="hasAnchor">
+<a href="#leverage-diagnostics" class="anchor"></a>Leverage Diagnostics</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></span>(model)</code></pre></div>
 <p><img src="introduction_files/figure-html/lev-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
-<div id="fitted-values-diagnostics" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fitted-values-diagnostics" class="anchor"></a>Fitted Values Diagnostics</h3>
+<div id="fitted-values-diagnostics" class="section level4">
+<h4 class="hasAnchor">
+<a href="#fitted-values-diagnostics" class="anchor"></a>Fitted Values Diagnostics</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_plot_diag_fit.html">blr_plot_diag_fit</a></span>(model)</code></pre></div>
 <p><img src="introduction_files/figure-html/fit-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
