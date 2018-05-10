@@ -11,3 +11,4 @@
 ^codecov\.yml$
 ^docs$
 ^hex_blorr\.png$
+^cran-comments\.md$
