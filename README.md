@@ -11,9 +11,11 @@ Tools designed to make it easier for users, particularly beginner/intermediate R
 
 ### Installation
 
-You can install blorr from github with:
-
 ``` r
+# Install blorr from CRAN
+install.packages("blorr")
+
+# Or the development version from GitHub
 # install.packages("devtools")
 devtools::install_github("rsquaredacademy/blorr")
 ```
@@ -25,11 +27,7 @@ Use `blr_launch_app()` to explore the package using a shiny app.
 Vignettes
 ---------
 
--   [Bivariate Analysis](https://blorr.rsquaredacademy.com/bivariate_analysis.html)
--   [Model Fit Statistics](https://blorr.rsquaredacademy.com/intro.html)
--   [Model Validation](https://blorr.rsquaredacademy.com/model_validation.html)
--   [Variable Selection](https://blorr.rsquaredacademy.com/variable_selection.html)
--   [Residual Diagnostics](https://blorr.rsquaredacademy.com/residual_diagnostics.html)
+-   [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
 
 ### Consistent Prefix
 
