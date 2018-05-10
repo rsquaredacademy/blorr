@@ -15,14 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Introduction
+## Introduction
 
 The blorr package offers tools for building and validating binary logistic regression models. It 
 is most suitable for beginner/intermediate R users and those who teach statistics using R. The API
 is very simple and most of the functions take either a `data.frame`/`tibble` or a `model` as input. **blorr** use
 consistent prefix **blr_** for easy tab completion.
 
-## Installation
+### Installation
 
 You can install **blorr** using:
 
@@ -42,7 +42,7 @@ library(blorr)
 library(magrittr)
 ```
 
-### Data
+## Data
 
 To demonstrate the features of blorr, we will use the bank marketing data set. 
 The data is related with direct marketing campaigns of a Portuguese banking 
@@ -52,7 +52,7 @@ product (bank term deposit) would be ('yes') or not ('no') subscribed. It
 contains a random sample (~4k) of the original data set which can be found 
 at https://archive.ics.uci.edu/ml/datasets/bank+marketing.
 
-### Bivariate Analysis
+## Bivariate Analysis
 
 Let us begin with careful bivariate analysis of each possible variable and the 
 outcome variable. We will use information value and likelihood ratio chi square 
@@ -102,7 +102,7 @@ blr_woe_iv_stats(bank_marketing, y, job, marital, education)
 `blr_woe_iv()` and `blr_woe_iv_stats()` are currently avialable for categorical 
 predictors only.
 
-### Stepwise Selection
+## Stepwise Selection
 
 For the initial/ first cut model, all the independent variables are put into 
 the model. Our goal is to include a limited number of independent variables 
@@ -133,6 +133,8 @@ model %>%
   plot()
 ```
 
+## Regression Output
+
 ### Model
 
 We can use bivariate analysis and stepwise selection procedure to shortlist 
@@ -145,8 +147,6 @@ model <- glm(y ~  age + duration + previous + housing + default +
              loan + poutcome + job + marital, data = bank_marketing, 
              family = binomial(link = 'logit'))
 ```
-
-### Regression Output
 
 Use `blr_regress()` to generate comprehensive regression output. It accepts 
 either of the following
@@ -175,7 +175,7 @@ blr_regress(y ~  age + duration + previous + housing + default +
              loan + poutcome + job + marital, data = bank_marketing)
 ```
 
-### Model Fit Statistics
+## Model Fit Statistics
 
 Model fit statistics are available to assess how well the model fits the data 
 and to compare two different models.The output includes likelihood ratio test, 

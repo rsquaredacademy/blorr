@@ -3,7 +3,7 @@ Type: Package
 Title: Tools for Developing Binary Logistic Regression Models
 Version: 0.1.0
 Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
-Description: Tools designed to make it easier for beginner/intermediate users to build and validate 
+Description: Tools designed to make it easier for beginner and intermediate users to build and validate 
     binary logistic regression models. Includes bivariate analysis, comprehensive regression output, 
     model fit statistics, variable selection procedures, model validation techniques and a 'shiny' 
     app for interactive model building.
