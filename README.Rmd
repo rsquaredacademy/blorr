@@ -13,14 +13,14 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-blorr: Tools for building binary logistic regression models 
+blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" align="right" />
 ------------
 
 **Author:** [Aravind Hebbali]()<br/>
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
-[![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) 
-
+[![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr)  [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) 
+ 
 Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression 
 output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
 
