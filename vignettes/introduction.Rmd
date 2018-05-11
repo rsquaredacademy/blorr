@@ -3,7 +3,7 @@ title: "A Short Introduction to the blorr Package"
 author: "Aravind Hebbali"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Bivariate Analysis}
+  %\VignetteIndexEntry{A Short Introduction to the blorr Package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

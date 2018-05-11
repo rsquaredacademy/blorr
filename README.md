@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-blorr: Tools for building binary logistic regression models
------------------------------------------------------------
+blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" align="right" />
+-----------------------------------------------------------------------------------------------------
 
 **Author:** [Aravind Hebbali]()<br/> **License:** [MIT](https://opensource.org/licenses/MIT)
 
