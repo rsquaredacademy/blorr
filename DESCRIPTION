@@ -16,7 +16,6 @@ Imports:
     cli,
     clisymbols,
     crayon,
-    descriptr,
     dplyr,
     e1071,  
     ggplot2,
@@ -33,6 +32,7 @@ Imports:
     utils
 Suggests: 
     covr,
+    descriptr,
     grid,
     ineq,
     jsonlite,
