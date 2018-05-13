@@ -5,7 +5,7 @@ blorr: Tools for building binary logistic regression models <img src="hex_blorr.
 
 **Author:** [Aravind Hebbali]()<br/> **License:** [MIT](https://opensource.org/licenses/MIT)
 
-[![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
 
@@ -210,16 +210,16 @@ blr_gains_table(model)
 #> # A tibble: 10 x 12
 #>    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
 #>     <dbl> <int> <int> <int> <dbl> <int> <int> <int> <int>       <dbl>
-#>  1   1.00    20    14     6  22.3    14   141     6    39        26.4
-#>  2   2.00    20    13     7  42.1    27   134    13    26        50.9
-#>  3   3.00    20    10    10  54.2    37   124    23    16        69.8
-#>  4   4.00    20     7    13  58.5    44   111    36     9        83.0
-#>  5   5.00    20     3    17  52.6    47    94    53     6        88.7
-#>  6   6.00    20     3    17  46.7    50    77    70     3        94.3
-#>  7   7.00    20     1    19  35.7    51    58    89     2        96.2
-#>  8   8.00    20     2    18  27.2    53    40   107     0       100  
-#>  9   9.00    20     0    20  13.6    53    20   127     0       100  
-#> 10  10.0     20     0    20   0      53     0   147     0       100  
+#>  1      1    20    14     6  22.3    14   141     6    39        26.4
+#>  2      2    20    13     7  42.1    27   134    13    26        50.9
+#>  3      3    20    10    10  54.2    37   124    23    16        69.8
+#>  4      4    20     7    13  58.5    44   111    36     9        83.0
+#>  5      5    20     3    17  52.6    47    94    53     6        88.7
+#>  6      6    20     3    17  46.7    50    77    70     3        94.3
+#>  7      7    20     1    19  35.7    51    58    89     2        96.2
+#>  8      8    20     2    18  27.2    53    40   107     0       100  
+#>  9      9    20     0    20  13.6    53    20   127     0       100  
+#> 10     10    20     0    20   0      53     0   147     0       100  
 #>    specificity accuracy
 #>          <dbl>    <dbl>
 #>  1        95.9     77.5
