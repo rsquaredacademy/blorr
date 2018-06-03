@@ -13,10 +13,10 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" align="right" />
+blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" height="100px" align="right" />
 ------------
 
-**Author:** [Aravind Hebbali]()<br/>
+**Author:** [Aravind Hebbali](https://www.aravindhebbali.com)<br/>
 **License:** [MIT](https://opensource.org/licenses/MIT)
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
