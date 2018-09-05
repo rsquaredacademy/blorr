@@ -43,14 +43,14 @@ blr_roc_curve(k)
 
 }
 \references{
-Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons. 
+Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons.
 
-Hosmer, D. W., Jr. and Lemeshow, S. (2000), Applied Logistic Regression, 2nd Edition, New York: John Wiley & Sons. 
+Hosmer, D. W., Jr. and Lemeshow, S. (2000), Applied Logistic Regression, 2nd Edition, New York: John Wiley & Sons.
 
-Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
-credit  scoring. New Jersey, Wiley. 
+Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
+credit  scoring. New Jersey, Wiley.
 
-Thomas  LC,  Edelman  DB,  Crook  JN  (2002):  Credit  Scoring  and  Its  Applications.  Philadelphia,  
+Thomas  LC,  Edelman  DB,  Crook  JN  (2002):  Credit  Scoring  and  Its  Applications.  Philadelphia,
 SIAM Monographs on Mathematical Modeling and Computation.
 }
 \seealso{

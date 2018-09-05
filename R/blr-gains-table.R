@@ -1,6 +1,6 @@
 #' Gains table & lift chart
 #'
-#' Compute sensitivity, specificity, accuracy and KS statistics to 
+#' Compute sensitivity, specificity, accuracy and KS statistics to
 #'   generate the lift chart and the KS chart.
 #'
 #' @param model An object of class \code{glm}.
@@ -15,16 +15,16 @@
 #' @param ... Other inputs.
 #'
 #' @return A tibble.
-#' 
+#'
 #' @references
-#' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons. 
-#' 
-#' Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons. 
-#' 
-#' Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.  
-#' Oxford,  Oxford  Uni-versity Press. 
-#' 
-#' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:  
+#' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons.
+#'
+#' Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons.
+#'
+#' Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
+#' Oxford,  Oxford  Uni-versity Press.
+#'
+#' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
 #' A  Valid-ation Methodology, Moody’s Investors Service.
 #'
 #' @examples
@@ -126,11 +126,11 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param xaxis_title X axis title.
 #' @param yaxis_title Y axis title.
 #' @param ks_line_color Color of the line indicating maximum KS statistic.
-#' 
+#'
 #' @references
-#' Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal: 
+#' Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal:
 #' The Coefficient of Discrimination," The American Statistician, 63(4), 366-372.
-#' 
+#'
 #' Horn, S. D. (1977), Goodness-of-fit tests for discrete data: a review and an application to a
 #' health impairment scale, Biometrics, 33, 237–247.
 #'
@@ -152,12 +152,13 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
 
   blr_check_gtable(gains_table)
 
-  ks_line    <- ks_chart_line(gains_table)
-  annotate_y <- ks_chart_annotate_y(ks_line)
-  ks_stat    <- ks_chart_stat(ks_line)
-  annotate_x <- ks_chart_annotate_x(ks_line)
+  ks_line    <- blr_prep_kschart_line(gains_table)
+  annotate_y <- blr_prep_ksannotate_y(ks_line)
+  ks_stat    <- blr_prep_kschart_stat(ks_line)
+  annotate_x <- blr_prep_ksannotate_x(ks_line)
 
-  ks_chart_data(gains_table) %>%
+  gains_table %>%
+    blr_prep_kschart_data() %>%
     ggplot(aes(x = cum_total_per)) +
     geom_line(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     geom_line(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
@@ -206,7 +207,7 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
 
   blr_check_gtable(gains_table)
 
-  decile_rate <- decile_capture_rate(gains_table)
+  decile_rate <- blr_prep_dcrate_data(gains_table)
 
   p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
     geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
@@ -247,10 +248,10 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
                                   title = "Decile Lift Chart",
                                   bar_color = "blue", text_size = 3.5,
                                   text_vjust = -0.3) {
-  
+
   blr_check_gtable(gains_table)
-  global_mean <- lift_chart_global_mean(gains_table)
-  lift_data   <- lift_chart_data(gains_table, global_mean)
+  global_mean <- blr_prep_lchart_gmean(gains_table)
+  lift_data   <- blr_prep_lchart_data(gains_table, global_mean)
 
   p <- ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
     geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
@@ -283,12 +284,12 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
       formula() %>%
       extract2(2)
 
-    response <- 
-      data %>% 
+    response <-
+      data %>%
       pull(!! namu)
 
   } else {
-    response <- 
+    response <-
       model %>%
       model.frame() %>%
       model.response()
@@ -356,93 +357,4 @@ gains_plot_data <- function(x) {
 }
 
 
-ks_chart_line <- function(gains_table) {
 
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
-    filter(ks == max(ks)) %>%
-    divide_by(100)
-
-}
-
-ks_chart_annotate_y <- function(ks_line) {
-
-  ks_line %>%
-    mutate(
-      ann_loc    = (`cum_1s_%` - `cum_0s_%`) / 2,
-      ann_locate = `cum_0s_%` + ann_loc
-    ) %>%
-    pull(ann_locate)
-
-}
-
-ks_chart_stat <- function(ks_line) {
-
-  ks_line %>%
-    pull(4) %>%
-    round(2) %>%
-    multiply_by(100)
-
-}
-
-
-ks_chart_annotate_x <- function(ks_line) {
-
-  ks_line %>%
-    pull(1) +
-    0.1
-
-}
-
-ks_chart_data <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
-    mutate(
-      cum_total_per = `cum_total_%` / 100,
-      cum_1s_per    = `cum_1s_%` / 100,
-      cum_0s_per    = `cum_0s_%` / 100
-    ) %>%
-    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
-
-}
-
-
-decile_capture_rate <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
-      decile_mean = `1` / total
-    )
-
-}
-
-lift_chart_global_mean <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(total, `1`) %>%
-    summarise_all(sum) %>%
-    mutate(
-      gmean = `1` / total
-    ) %>%
-    pull(gmean)
-
-}
-
-lift_chart_data <- function(gains_table, global_mean) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
-      decile_mean = `1` / total,
-      d_by_g_mean = decile_mean / global_mean
-    )
-
-}

@@ -1,6 +1,15 @@
+url: https://blorr.rsquaredacademy.com
+
+authors:
+  Aravind Hebbali:
+    href: https://www.aravindhebbali.com
+
 templates:
   params:
     bootswatch: cosmo
+    docsearch:
+      api_key:
+      index_name: blorr
 
 navbar:
   title: "blorr"
@@ -91,6 +100,16 @@ reference:
   - blr_step_p_backward
   - blr_step_aic_both
   - blr_step_p_both
+
+- title: Plot Data
+
+  contents:
+  - blr_prep_roc_data
+  - blr_prep_lorenz_data
+  - blr_prep_dcrate_data
+  - blr_prep_lchart_gmean
+  - blr_prep_lchart_data
+  - blr_prep_kschart_data
 
 - title: Residual Diagnostics
 

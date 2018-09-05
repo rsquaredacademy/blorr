@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ROC curve — blr_roc_curve • blorr</title>
+<title>Lift Chart data — blr_prep_lchart_gmean • blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,11 +28,9 @@
 
 
 
-<meta property="og:title" content="ROC curve — blr_roc_curve" />
+<meta property="og:title" content="Lift Chart data — blr_prep_lchart_gmean" />
 
-<meta property="og:description" content="Receiver operating characteristic curve (ROC) curve is used for assessing
-  accuracy of the model classification. It depicts sensitivity on the Y axis
-  and 1 – specificity on the X axis." />
+<meta property="og:description" content="Data for generating lift chart." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,105 +115,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ROC curve</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-roc-curve.R'><code>R/blr-roc-curve.R</code></a></small>
-    <div class="hidden name"><code>blr_roc_curve.Rd</code></div>
+    <h1>Lift Chart data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-plots-data.R'><code>R/blr-plots-data.R</code></a></small>
+    <div class="hidden name"><code>blr_prep_lchart_gmean.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Receiver operating characteristic curve (ROC) curve is used for assessing
-  accuracy of the model classification. It depicts sensitivity on the Y axis
-  and 1 – specificity on the X axis.</p>
+    <p>Data for generating lift chart.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>blr_roc_curve</span>(<span class='no'>gains_table</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"ROC Curve"</span>,
-  <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"1 - Specificity"</span>, <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>"Sensitivity"</span>,
-  <span class='kw'>roc_curve_col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>diag_line_col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>point_shape</span> <span class='kw'>=</span> <span class='fl'>18</span>,
-  <span class='kw'>point_fill</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>point_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>plot_title_justify</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_prep_lchart_gmean</span>(<span class='no'>gains_table</span>)
+
+<span class='fu'>blr_prep_lchart_data</span>(<span class='no'>gains_table</span>, <span class='no'>global_mean</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>gains_table</th>
-      <td><p>An object of class <code>blr_gains_table</code>.</p></td>
+      <td><p>An object of clas <code>blr_gains_table</code>.</p></td>
     </tr>
     <tr>
-      <th>title</th>
-      <td><p>Plot title.</p></td>
-    </tr>
-    <tr>
-      <th>xaxis_title</th>
-      <td><p>X axis title.</p></td>
-    </tr>
-    <tr>
-      <th>yaxis_title</th>
-      <td><p>Y axis title.</p></td>
-    </tr>
-    <tr>
-      <th>roc_curve_col</th>
-      <td><p>Color of the roc curve.</p></td>
-    </tr>
-    <tr>
-      <th>diag_line_col</th>
-      <td><p>Diagonal line color.</p></td>
-    </tr>
-    <tr>
-      <th>point_shape</th>
-      <td><p>Shape of the points on the roc curve.</p></td>
-    </tr>
-    <tr>
-      <th>point_fill</th>
-      <td><p>Fill of the points on the roc curve.</p></td>
-    </tr>
-    <tr>
-      <th>point_color</th>
-      <td><p>Color of the points on the roc curve.</p></td>
-    </tr>
-    <tr>
-      <th>plot_title_justify</th>
-      <td><p>Horizontal justification on the plot title.</p></td>
+      <th>global_mean</th>
+      <td><p>Overall conversion rate.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley &amp; Sons.</p>
-<p>Hosmer, D. W., Jr. and Lemeshow, S. (2000), Applied Logistic Regression, 2nd Edition, New York: John Wiley &amp; Sons.</p>
-<p>Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
-credit  scoring. New Jersey, Wiley.</p>
-<p>Thomas  LC,  Edelman  DB,  Crook  JN  (2002):  Credit  Scoring  and  Its  Applications.  Philadelphia,
-SIAM Monographs on Mathematical Modeling and Computation.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
-  <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
-  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
-  <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
-  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>, <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>,
-  <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
-  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
              <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-<span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='blr_gains_table.html'>blr_gains_table</a></span>(<span class='no'>model</span>)
-<span class='fu'>blr_roc_curve</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_roc_curve-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>gt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='blr_gains_table.html'>blr_gains_table</a></span>(<span class='no'>model</span>)
+<span class='no'>globalmean</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_prep_lchart_gmean</span>(<span class='no'>gt</span>)
+<span class='fu'>blr_prep_lchart_data</span>(<span class='no'>gt</span>, <span class='no'>globalmean</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
+#&gt;    decile total   `1` decile_mean d_by_g_mean
+#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+#&gt;  1      1    20    14        0.7        2.64 
+#&gt;  2      2    20    13        0.65       2.45 
+#&gt;  3      3    20    10        0.5        1.89 
+#&gt;  4      4    20     7        0.35       1.32 
+#&gt;  5      5    20     3        0.15       0.566
+#&gt;  6      6    20     3        0.15       0.566
+#&gt;  7      7    20     1        0.05       0.189
+#&gt;  8      8    20     2        0.1        0.377
+#&gt;  9      9    20     0        0          0    
+#&gt; 10     10    20     0        0          0    </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

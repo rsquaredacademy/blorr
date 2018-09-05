@@ -14,18 +14,18 @@
 #' @param point_fill Fill of the points on the roc curve.
 #' @param point_color Color of the points on the roc curve.
 #' @param plot_title_justify Horizontal justification on the plot title.
-#' 
-#' @references
-#' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons. 
-#' 
-#' Hosmer, D. W., Jr. and Lemeshow, S. (2000), Applied Logistic Regression, 2nd Edition, New York: John Wiley & Sons. 
-#' 
-#' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
-#' credit  scoring. New Jersey, Wiley. 
 #'
-#' Thomas  LC,  Edelman  DB,  Crook  JN  (2002):  Credit  Scoring  and  Its  Applications.  Philadelphia,  
-#' SIAM Monographs on Mathematical Modeling and Computation. 
-#' 
+#' @references
+#' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons.
+#'
+#' Hosmer, D. W., Jr. and Lemeshow, S. (2000), Applied Logistic Regression, 2nd Edition, New York: John Wiley & Sons.
+#'
+#' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
+#' credit  scoring. New Jersey, Wiley.
+#'
+#' Thomas  LC,  Edelman  DB,  Crook  JN  (2002):  Credit  Scoring  and  Its  Applications.  Philadelphia,
+#' SIAM Monographs on Mathematical Modeling and Computation.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
@@ -48,7 +48,8 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
 
   blr_check_gtable(gains_table)
 
-  roc_data_prep(gains_table) %>%
+  gains_table %>%
+    blr_prep_roc_data() %>%
     ggplot(aes(x = `1 - specificity`, y = sensitivity_per)) +
     geom_point(shape = point_shape, fill = point_fill, color = point_color) +
     geom_line(color = roc_curve_col) + ggtitle(title) +
@@ -57,18 +58,5 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
     theme(plot.title = element_text(hjust = plot_title_justify)) +
     geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
               color = diag_line_col)
-}
-
-roc_data_prep <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(sensitivity, specificity) %>%
-    mutate(
-      sensitivity_per   = sensitivity / 100,
-      `1 - specificity` = 1 - (specificity / 100)
-    ) %>%
-    add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1)
-
 }
 

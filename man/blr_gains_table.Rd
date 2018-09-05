@@ -37,7 +37,7 @@ blr_gains_table(model, data = NULL)
 A tibble.
 }
 \description{
-Compute sensitivity, specificity, accuracy and KS statistics to 
+Compute sensitivity, specificity, accuracy and KS statistics to
   generate the lift chart and the KS chart.
 }
 \examples{
@@ -52,14 +52,14 @@ plot(k)
 
 }
 \references{
-Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons. 
+Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons.
 
-Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons. 
+Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons.
 
-Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.  
-Oxford,  Oxford  Uni-versity Press. 
+Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
+Oxford,  Oxford  Uni-versity Press.
 
-Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:  
+Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
 A  Valid-ation Methodology, Moody’s Investors Service.
 }
 \seealso{
