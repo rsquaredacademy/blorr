@@ -105,6 +105,7 @@ reference:
 
   contents:
   - blr_prep_roc_data
+  - blr_prep_lorenz_data
 
 - title: Residual Diagnostics
 
