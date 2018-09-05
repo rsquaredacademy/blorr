@@ -158,3 +158,88 @@ blr_prep_lchart_data <- function(gains_table, global_mean) {
     )
 
 }
+
+#' KS Chart data
+#'
+#' Data for generating KS chart.
+#'
+#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param ks_line Overall conversion rate.
+#'
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model)
+#' blr_prep_kschart_data(gt)
+#' ks_line <- blr_prep_kschart_line(gt)
+#' blr_prep_kschart_stat(ks_line)
+#' blr_prep_ksannotate_y(ks_line)
+#' blr_prep_ksannotate_x(ks_line)
+#'
+#' @export
+#'
+blr_prep_kschart_data <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
+    mutate(
+      cum_total_per = `cum_total_%` / 100,
+      cum_1s_per    = `cum_1s_%` / 100,
+      cum_0s_per    = `cum_0s_%` / 100
+    ) %>%
+    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
+    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
+
+}
+
+#' @rdname blr_prep_kschart_data
+#' @export
+#'
+blr_prep_kschart_line <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
+    filter(ks == max(ks)) %>%
+    divide_by(100)
+
+}
+
+#' @rdname blr_prep_kschart_data
+#' @export
+#'
+blr_prep_ksannotate_y <- function(ks_line) {
+
+  ks_line %>%
+    mutate(
+      ann_loc    = (`cum_1s_%` - `cum_0s_%`) / 2,
+      ann_locate = `cum_0s_%` + ann_loc
+    ) %>%
+    pull(ann_locate)
+
+}
+
+#' @rdname blr_prep_kschart_data
+#' @export
+#'
+blr_prep_kschart_stat <- function(ks_line) {
+
+  ks_line %>%
+    pull(4) %>%
+    round(2) %>%
+    multiply_by(100)
+
+}
+
+#' @rdname blr_prep_kschart_data
+#' @export
+#'
+blr_prep_ksannotate_x <- function(ks_line) {
+
+  ks_line %>%
+    pull(1) +
+    0.1
+
+}
+

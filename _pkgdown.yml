@@ -109,6 +109,7 @@ reference:
   - blr_prep_dcrate_data
   - blr_prep_lchart_gmean
   - blr_prep_lchart_data
+  - blr_prep_kschart_data
 
 - title: Residual Diagnostics
 

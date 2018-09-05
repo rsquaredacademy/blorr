@@ -152,12 +152,13 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
 
   blr_check_gtable(gains_table)
 
-  ks_line    <- ks_chart_line(gains_table)
-  annotate_y <- ks_chart_annotate_y(ks_line)
-  ks_stat    <- ks_chart_stat(ks_line)
-  annotate_x <- ks_chart_annotate_x(ks_line)
+  ks_line    <- blr_prep_kschart_line(gains_table)
+  annotate_y <- blr_prep_ksannotate_y(ks_line)
+  ks_stat    <- blr_prep_kschart_stat(ks_line)
+  annotate_x <- blr_prep_ksannotate_x(ks_line)
 
-  ks_chart_data(gains_table) %>%
+  gains_table %>%
+    blr_prep_kschart_data() %>%
     ggplot(aes(x = cum_total_per)) +
     geom_line(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     geom_line(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
@@ -356,57 +357,4 @@ gains_plot_data <- function(x) {
 }
 
 
-ks_chart_line <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
-    filter(ks == max(ks)) %>%
-    divide_by(100)
-
-}
-
-ks_chart_annotate_y <- function(ks_line) {
-
-  ks_line %>%
-    mutate(
-      ann_loc    = (`cum_1s_%` - `cum_0s_%`) / 2,
-      ann_locate = `cum_0s_%` + ann_loc
-    ) %>%
-    pull(ann_locate)
-
-}
-
-ks_chart_stat <- function(ks_line) {
-
-  ks_line %>%
-    pull(4) %>%
-    round(2) %>%
-    multiply_by(100)
-
-}
-
-
-ks_chart_annotate_x <- function(ks_line) {
-
-  ks_line %>%
-    pull(1) +
-    0.1
-
-}
-
-ks_chart_data <- function(gains_table) {
-
-  gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
-    mutate(
-      cum_total_per = `cum_total_%` / 100,
-      cum_1s_per    = `cum_1s_%` / 100,
-      cum_0s_per    = `cum_0s_%` / 100
-    ) %>%
-    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
-
-}
 
