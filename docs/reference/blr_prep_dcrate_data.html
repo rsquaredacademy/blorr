@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KS chart — blr_ks_chart • blorr</title>
+<title>Decile capture rate data — blr_prep_dcrate_data • blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,13 +28,9 @@
 
 
 
-<meta property="og:title" content="KS chart — blr_ks_chart" />
+<meta property="og:title" content="Decile capture rate data — blr_prep_dcrate_data" />
 
-<meta property="og:description" content="Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
-marketing or credit risk models. It is the maximum difference between 
-cumulative event and non-event distribution across score/probability bands.
-The gains table typically has 
-across score bands and can be used to find the KS for a model." />
+<meta property="og:description" content="Data for generating decile capture rate." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,84 +115,53 @@ across score bands and can be used to find the KS for a model." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>KS chart</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-gains-table.R'><code>R/blr-gains-table.R</code></a></small>
-    <div class="hidden name"><code>blr_ks_chart.Rd</code></div>
+    <h1>Decile capture rate data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-plots-data.R'><code>R/blr-plots-data.R</code></a></small>
+    <div class="hidden name"><code>blr_prep_dcrate_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
-marketing or credit risk models. It is the maximum difference between <!-- % -->
-cumulative event and non-event distribution across score/probability bands.
-The gains table typically has <!-- % cumulative event and % cumulative non-event -->
-across score bands and can be used to find the KS for a model.</p>
+    <p>Data for generating decile capture rate.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>blr_ks_chart</span>(<span class='no'>gains_table</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"KS Chart"</span>, <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"Cumulative Population %"</span>, <span class='kw'>ks_line_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_prep_dcrate_data</span>(<span class='no'>gains_table</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>gains_table</th>
-      <td><p>An object of class <code>blr_gains_table</code>.</p></td>
-    </tr>
-    <tr>
-      <th>title</th>
-      <td><p>Plot title.</p></td>
-    </tr>
-    <tr>
-      <th>yaxis_title</th>
-      <td><p>Y axis title.</p></td>
-    </tr>
-    <tr>
-      <th>xaxis_title</th>
-      <td><p>X axis title.</p></td>
-    </tr>
-    <tr>
-      <th>ks_line_color</th>
-      <td><p>Color of the line indicating maximum KS statistic.</p></td>
+      <td><p>An object of clas <code>blr_gains_table</code></p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal:
-The Coefficient of Discrimination," The American Statistician, 63(4), 366-372.</p>
-<p>Horn, S. D. (1977), Goodness-of-fit tests for discrete data: a review and an application to a
-health impairment scale, Biometrics, 33, 237–247.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
-  <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
-  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
-  <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
-  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>,
-  <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
-  <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code>,
-  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'>glm</span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
              <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 <span class='no'>gt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='blr_gains_table.html'>blr_gains_table</a></span>(<span class='no'>model</span>)
-<span class='fu'>blr_ks_chart</span>(<span class='no'>gt</span>)</div><div class='img'><img src='blr_ks_chart-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>blr_prep_dcrate_data</span>(<span class='no'>gt</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 4
+#&gt;    decile total   `1` decile_mean
+#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;
+#&gt;  1      1    20    14        0.7 
+#&gt;  2      2    20    13        0.65
+#&gt;  3      3    20    10        0.5 
+#&gt;  4      4    20     7        0.35
+#&gt;  5      5    20     3        0.15
+#&gt;  6      6    20     3        0.15
+#&gt;  7      7    20     1        0.05
+#&gt;  8      8    20     2        0.1 
+#&gt;  9      9    20     0        0   
+#&gt; 10     10    20     0        0   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gains table &amp; lift chart — blr_gains_table â€¢ blorr</title>
+<title>Gains table &amp; lift chart â€” blr_gains_table â€¢ blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,23 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Gains table &amp; lift chart â€” blr_gains_table" />
+
+<meta property="og:description" content="Compute sensitivity, specificity, accuracy and KS statistics to
+  generate the lift chart and the KS chart." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +57,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">blorr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">blorr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -62,19 +76,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
-    </li>
-    <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
-    </li>
-    <li>
-      <a href="../articles/variable_selection.html">Variable Selection</a>
-    </li>
-    <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/introduction.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -103,6 +105,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -110,16 +113,20 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Gains table &amp; lift chart</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-gains-table.R'><code>R/blr-gains-table.R</code></a></small>
+    <div class="hidden name"><code>blr_gains_table.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>Compute sensitivity, specificity, accuracy and KS statistics to 
+    <p>Compute sensitivity, specificity, accuracy and KS statistics to
   generate the lift chart and the KS chart.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>blr_gains_table</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
@@ -129,7 +136,7 @@
   <span class='kw'>diag_line_col</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lift_curve_col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>plot_title_justify</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -182,20 +189,20 @@
 
     <p>Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley &amp; Sons.</p>
 <p>Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley &amp; Sons.</p>
-<p>Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.  
+<p>Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
 Oxford,  Oxford  Uni-versity Press.</p>
-<p>Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:  
-A  Valid-ation Methodology, Moody’s Investors Service.</p>
+<p>Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
+A  Valid-ation Methodology, Moodyâ€™s Investors Service.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
+    <div class='dont-index'><p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
   <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
   <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
   <code><a href='blr_gini_index.html'>blr_gini_index</a></code>, <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>,
   <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
   <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code>,
-  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p>
+  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -205,20 +212,20 @@ A  Valid-ation Methodology, Moody’s Investors Service.</p>
 <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 12
 #&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
 #&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;
-#&gt;  1   1.00    20    14     6  22.3    14   141     6    39        26.4
-#&gt;  2   2.00    20    13     7  42.1    27   134    13    26        50.9
-#&gt;  3   3.00    20    10    10  54.2    37   124    23    16        69.8
-#&gt;  4   4.00    20     7    13  58.5    44   111    36     9        83.0
-#&gt;  5   5.00    20     3    17  52.6    47    94    53     6        88.7
-#&gt;  6   6.00    20     3    17  46.7    50    77    70     3        94.3
-#&gt;  7   7.00    20     1    19  35.7    51    58    89     2        96.2
-#&gt;  8   8.00    20     2    18  27.2    53    40   107     0       100  
-#&gt;  9   9.00    20     0    20  13.6    53    20   127     0       100  
-#&gt; 10  10.0     20     0    20   0      53     0   147     0       100  
+#&gt;  1      1    20    14     6  22.3    14   141     6    39        26.4
+#&gt;  2      2    20    13     7  42.1    27   134    13    26        50.9
+#&gt;  3      3    20    10    10  54.2    37   124    23    16        69.8
+#&gt;  4      4    20     7    13  58.5    44   111    36     9        83.0
+#&gt;  5      5    20     3    17  52.6    47    94    53     6        88.7
+#&gt;  6      6    20     3    17  46.7    50    77    70     3        94.3
+#&gt;  7      7    20     1    19  35.7    51    58    89     2        96.2
+#&gt;  8      8    20     2    18  27.2    53    40   107     0       100  
+#&gt;  9      9    20     0    20  13.6    53    20   127     0       100  
+#&gt; 10     10    20     0    20   0      53     0   147     0       100  
 #&gt; # ... with 2 more variables: specificity &lt;dbl&gt;, accuracy &lt;dbl&gt;</div><div class='input'>
 <span class='co'># lift chart</span>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)
-<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_gains_table-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_gains_table-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -240,15 +247,18 @@ A  Valid-ation Methodology, Moody’s Investors Service.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Aravind Hebbali.</p>
+  <p>Developed by <a href='https://www.aravindhebbali.com'>Aravind Hebbali</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

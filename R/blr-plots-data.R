@@ -89,3 +89,29 @@ lorenz_plot_data <- function(gains_table) {
     add_row(cum_0s_per = 0, cum_1s_per = 0, .before = 1) %>%
     add_row(cum_0s_per = 1, cum_1s_per = 1)
 }
+
+#' Decile capture rate data
+#'
+#' Data for generating decile capture rate.
+#'
+#' @param gains_table An object of clas \code{blr_gains_table}
+#'
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model)
+#' blr_prep_dcrate_data(gt)
+#'
+#' @export
+#'
+blr_prep_dcrate_data <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total
+    )
+}
+
+
