@@ -115,3 +115,46 @@ blr_prep_dcrate_data <- function(gains_table) {
 }
 
 
+#' Lift Chart data
+#'
+#' Data for generating lift chart.
+#'
+#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param global_mean Overall conversion rate.
+#'
+#' @examples
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'              family = binomial(link = 'logit'))
+#' gt <- blr_gains_table(model)
+#' globalmean <- blr_prep_lchart_gmean(gt)
+#' blr_prep_lchart_data(gt, globalmean)
+#'
+#' @export
+#'
+blr_prep_lchart_gmean <- function(gains_table) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(total, `1`) %>%
+    summarise_all(sum) %>%
+    mutate(
+      gmean = `1` / total
+    ) %>%
+    pull(gmean)
+
+}
+
+#' @rdname blr_prep_lchart_gmean
+#' @export
+#'
+blr_prep_lchart_data <- function(gains_table, global_mean) {
+
+  gains_table %>%
+    use_series(gains_table) %>%
+    select(decile, total, `1`) %>%
+    mutate(
+      decile_mean = `1` / total,
+      d_by_g_mean = decile_mean / global_mean
+    )
+
+}
