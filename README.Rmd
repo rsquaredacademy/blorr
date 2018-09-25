@@ -13,20 +13,20 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" height="100px" align="right" />
-------------
-
-**Author:** [Aravind Hebbali](https://www.aravindhebbali.com)<br/>
-**License:** [MIT](https://opensource.org/licenses/MIT)
+# blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" height="100px" align="right" />
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
-[![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) 
-[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
- 
-Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression 
-output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
 
-### Installation
+[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+
+## Overview
+ 
+Tools designed to make it easier for users, particularly beginner/intermediate 
+R users to build logistic regression models. Includes comprehensive regression 
+output, variable selection procedures, model validation techniques and a 
+'shiny' app for interactive model building.
+
+## Installation
 
 ```{r gh-installation, eval = FALSE}
 # Install blorr from CRAN
@@ -37,38 +37,36 @@ install.packages("blorr")
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-### Shiny App
+## Shiny App
 
 Use `blr_launch_app()` to explore the package using a shiny app.
 
-## Vignettes
+## Articles
 
 - [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
 
-### Consistent Prefix
+## Usage
 
 blorr uses consistent prefix `blr_*` for easy tab completion.
-
-### Quick Overview
 
 ```{r libs}
 library(blorr)
 library(magrittr)
 ```
 
-#### Bivariate Analysis 
+### Bivariate Analysis 
 
 ```{r bivar}
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 ```
 
-#### Weight of Evidence & Information Value
+### Weight of Evidence & Information Value
 
 ```{r woeiv}
 blr_woe_iv(hsb2, prog, honcomp)
 ```
 
-#### Model
+### Model
 
 ```{r model}
 # create model using glm
@@ -76,37 +74,37 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 ```
 
-#### Regression Output
+### Regression Output
 
 ```{r regress}
 blr_regress(model)
 ```
 
-#### Model Fit Statistics
+### Model Fit Statistics
 
 ```{r mfs}
 blr_model_fit_stats(model)
 ```
 
-#### Confusion Matrix
+### Confusion Matrix
 
 ```{r conf}
 blr_confusion_matrix(model)
 ```
 
-#### Hosmer Lemeshow Test
+### Hosmer Lemeshow Test
 
 ```{r hoslem}
 blr_test_hosmer_lemeshow(model)
 ```
 
-#### Gains Table
+### Gains Table
 
 ```{r gains}
 blr_gains_table(model)
 ```
 
-#### Lift Chart
+### Lift Chart
 
 ```{r lift}
 model %>%
@@ -114,7 +112,7 @@ model %>%
   plot()
 ```
 
-#### ROC Curve
+### ROC Curve
 
 ```{r roc}
 model %>%
@@ -122,7 +120,7 @@ model %>%
   blr_roc_curve()
 ```
 
-#### KS Chart
+### KS Chart
 
 ```{r kschart}
 model %>%
@@ -130,10 +128,18 @@ model %>%
   blr_ks_chart()
 ```
 
-#### Lorenz Curve
+### Lorenz Curve
 
 ```{r}
 blr_lorenz_curve(model)
 ```
+
+## Getting Help
+
+If you encounter a bug, please file a minimal reproducible example using 
+[reprex](https://reprex.tidyverse.org/index.html) on github. For questions and 
+clarifications, use [StackOverflow](https://stackoverflow.com/).
+
+## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
