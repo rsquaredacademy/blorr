@@ -1,15 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" height="100px" align="right" />
---------------------------------------------------------------------------------------------------------------------
+====================================================================================================================
 
-**Author:** [Aravind Hebbali](https://www.aravindhebbali.com)<br/> **License:** [MIT](https://opensource.org/licenses/MIT)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html) [![Travis build status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+
+Overview
+--------
 
 Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
 
-### Installation
+Installation
+------------
 
 ``` r
 # Install blorr from CRAN
@@ -20,27 +24,27 @@ install.packages("blorr")
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-### Shiny App
+Shiny App
+---------
 
 Use `blr_launch_app()` to explore the package using a shiny app.
 
-Vignettes
----------
+Articles
+--------
 
 -   [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
 
-### Consistent Prefix
+Usage
+-----
 
 blorr uses consistent prefix `blr_*` for easy tab completion.
-
-### Quick Overview
 
 ``` r
 library(blorr)
 library(magrittr)
 ```
 
-#### Bivariate Analysis
+### Bivariate Analysis
 
 ``` r
 blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
@@ -55,7 +59,7 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #> ---------------------------------------------------------------------
 ```
 
-#### Weight of Evidence & Information Value
+### Weight of Evidence & Information Value
 
 ``` r
 blr_woe_iv(hsb2, prog, honcomp)
@@ -76,7 +80,7 @@ blr_woe_iv(hsb2, prog, honcomp)
 #> -----------------------------
 ```
 
-#### Model
+### Model
 
 ``` r
 # create model using glm
@@ -84,7 +88,7 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
 ```
 
-#### Regression Output
+### Regression Output
 
 ``` r
 blr_regress(model)
@@ -125,7 +129,7 @@ blr_regress(model)
 #> ---------------------------------------------------------------
 ```
 
-#### Model Fit Statistics
+### Model Fit Statistics
 
 ``` r
 blr_model_fit_stats(model)
@@ -142,7 +146,7 @@ blr_model_fit_stats(model)
 #> ---------------------------------------------------------------------------------
 ```
 
-#### Confusion Matrix
+### Confusion Matrix
 
 ``` r
 blr_confusion_matrix(model)
@@ -174,7 +178,7 @@ blr_confusion_matrix(model)
 #> 
 ```
 
-#### Hosmer Lemeshow Test
+### Hosmer Lemeshow Test
 
 ``` r
 blr_test_hosmer_lemeshow(model)
@@ -203,7 +207,7 @@ blr_test_hosmer_lemeshow(model)
 #> ------------------------------
 ```
 
-#### Gains Table
+### Gains Table
 
 ``` r
 blr_gains_table(model)
@@ -234,7 +238,7 @@ blr_gains_table(model)
 #> 10         0       26.5
 ```
 
-#### Lift Chart
+### Lift Chart
 
 ``` r
 model %>%
@@ -244,7 +248,7 @@ model %>%
 
 ![](tools/README-lift-1.png)
 
-#### ROC Curve
+### ROC Curve
 
 ``` r
 model %>%
@@ -254,7 +258,7 @@ model %>%
 
 ![](tools/README-roc-1.png)
 
-#### KS Chart
+### KS Chart
 
 ``` r
 model %>%
@@ -264,12 +268,20 @@ model %>%
 
 ![](tools/README-kschart-1.png)
 
-#### Lorenz Curve
+### Lorenz Curve
 
 ``` r
 blr_lorenz_curve(model)
 ```
 
 ![](tools/README-unnamed-chunk-2-1.png)
+
+Getting Help
+------------
+
+If you encounter a bug, please file a minimal reproducible example using [reprex](https://reprex.tidyverse.org/index.html) on github. For questions and clarifications, use [StackOverflow](https://stackoverflow.com/).
+
+Code of Conduct
+---------------
 
 Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
