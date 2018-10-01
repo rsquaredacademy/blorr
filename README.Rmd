@@ -13,11 +13,10 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-# blorr: Tools for building binary logistic regression models <img src="hex_blorr.png" height="100px" align="right" />
+# blorr <img src="hex_blorr.png" height="100px" align="right" />
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
-
-[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![Travis-CI Build Status](https://travis-ci.org/rsquaredacademy/olsrr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/olsrr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/olsrr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/olsrr) [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
 ## Overview
  
