@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Confusion matrix � blr_confusion_matrix • blorr</title>
+<title>Confusion matrix — blr_confusion_matrix • blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -18,13 +18,22 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Confusion matrix — blr_confusion_matrix" />
+
+<meta property="og:description" content="Wrapper for confMatrix from the caret package." />
+<meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">blorr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">blorr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -62,19 +75,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bivariate_analysis.html">Bivariate Analysis</a>
-    </li>
-    <li>
-      <a href="../articles/intro.html">Model Fit Statistics</a>
-    </li>
-    <li>
-      <a href="../articles/model_validation.html">Model Validation</a>
-    </li>
-    <li>
-      <a href="../articles/variable_selection.html">Variable Selection</a>
-    </li>
-    <li>
-      <a href="../articles/residual_diagnostics.html">Residual Diagnostics</a>
+      <a href="../articles/introduction.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -103,6 +104,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -110,19 +112,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Confusion matrix</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-model-validation.R'><code>R/blr-model-validation.R</code></a></small>
+    <div class="hidden name"><code>blr_confusion_matrix.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Wrapper for <code>confMatrix</code> from the caret package.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -145,13 +151,13 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other model validation techniques: <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
+    <div class='dont-index'><p>Other model validation techniques: <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
   <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
   <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
   <code><a href='blr_gini_index.html'>blr_gini_index</a></code>, <code><a href='blr_ks_chart.html'>blr_ks_chart</a></code>,
   <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
   <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code>,
-  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p>
+  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -173,16 +179,16 @@
 #&gt;                   Kappa : 0.5293          
 #&gt;  Mcnemar's Test P-Value : 0.417304        
 #&gt;                                           
-#&gt;             Sensitivity : 0.8503          
-#&gt;             Specificity : 0.6981          
-#&gt;          Pos Pred Value : 0.8865          
-#&gt;          Neg Pred Value : 0.6271          
-#&gt;              Prevalence : 0.7350          
-#&gt;          Detection Rate : 0.6250          
-#&gt;    Detection Prevalence : 0.7050          
+#&gt;             Sensitivity : 0.6981          
+#&gt;             Specificity : 0.8503          
+#&gt;          Pos Pred Value : 0.6271          
+#&gt;          Neg Pred Value : 0.8865          
+#&gt;              Prevalence : 0.2650          
+#&gt;          Detection Rate : 0.1850          
+#&gt;    Detection Prevalence : 0.2950          
 #&gt;       Balanced Accuracy : 0.7742          
 #&gt;                                           
-#&gt;        'Positive' Class : 0               
+#&gt;        'Positive' Class : 1               
 #&gt;                                           </div><div class='input'>
 </div></pre>
   </div>
@@ -203,15 +209,18 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Aravind Hebbali.</p>
+  <p>Developed by <a href='https://www.aravindhebbali.com'>Aravind Hebbali</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

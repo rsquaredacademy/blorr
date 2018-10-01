@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bank marketing data set — bank_marketing • blorr</title>
+<title>Getting help with blorr • blorr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -22,19 +22,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Bank marketing data set — bank_marketing" />
-
-<meta property="og:description" content="The data is related with direct marketing campaigns of a Portuguese banking institution. 
-The marketing campaigns were based on phone calls. Often, more than one contact to the 
-same client was required, in order to access if the product (bank term deposit) would 
-be ('yes') or not ('no') subscribed." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Getting help with blorr" />
 
 
 <!-- mathjax -->
@@ -49,7 +43,7 @@ be ('yes') or not ('no') subscribed." />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
@@ -60,7 +54,7 @@ be ('yes') or not ('no') subscribed." />
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">blorr</a>
+        <a class="navbar-link" href="index.html">blorr</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
       </span>
     </div>
@@ -68,7 +62,7 @@ be ('yes') or not ('no') subscribed." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
+  <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -78,7 +72,7 @@ be ('yes') or not ('no') subscribed." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/introduction.html">Introduction</a>
+      <a href="articles/introduction.html">Introduction</a>
     </li>
   </ul>
 </li>
@@ -90,10 +84,10 @@ be ('yes') or not ('no') subscribed." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../reference/index.html">Functions</a>
+      <a href="reference/index.html">Functions</a>
     </li>
     <li>
-      <a href="../news/index.html">News</a>
+      <a href="news/index.html">News</a>
     </li>
   </ul>
 </li>
@@ -116,62 +110,30 @@ be ('yes') or not ('no') subscribed." />
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-    <h1>Bank marketing data set</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/blorr/blob/master/R/blr-data-bank-marketing.R'><code>R/blr-data-bank-marketing.R</code></a></small>
-    <div class="hidden name"><code>bank_marketing.Rd</code></div>
+      <h1>Getting help with blorr</h1>
     </div>
 
-    <div class="ref-description">
-    
-    <p>The data is related with direct marketing campaigns of a Portuguese banking institution. 
-The marketing campaigns were based on phone calls. Often, more than one contact to the 
-same client was required, in order to access if the product (bank term deposit) would 
-be ('yes') or not ('no') subscribed.</p>
-    
-    </div>
+<div id="getting-help-with-blorr" class="section level1">
 
-    <pre class="usage"><span class='no'>bank_marketing</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A tibble with 4521 rows and 17 variables:</p><dl class='dl-horizontal'>
- <dt>age</dt><dd><p>age of the client</p></dd>
- <dt>job</dt><dd><p>type of job</p></dd>
- <dt>marital</dt><dd><p>marital status</p></dd>
- <dt>education</dt><dd><p>education level of the client</p></dd>
- <dt>default</dt><dd><p>has credit in default?</p></dd> 
- <dt>housing</dt><dd><p>has housing loan?</p></dd> 
- <dt>loan</dt><dd><p>has personal loan?</p></dd> 
- <dt>contact</dt><dd><p>contact communication type</p></dd>
- <dt>month</dt><dd><p>last contact month of year</p></dd>
- <dt>day_of_week</dt><dd><p>last contact day of the week</p></dd>
- <dt>duration</dt><dd><p>last contact duration, in seconds</p></dd>
- <dt>campaign</dt><dd><p>number of contacts performed during this campaign and for this client</p></dd>
- <dt>pdays</dt><dd><p>number of days that passed by after the client was last contacted from a previous campaign</p></dd>
- <dt>previous</dt><dd><p>number of contacts performed before this campaign and for this clien</p></dd>
- <dt>poutcome</dt><dd><p>outcome of the previous marketing campaign</p></dd>
- <dt>y</dt><dd><p>has the client subscribed a term deposit?</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p>[Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014</p>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
-          </ul>
-
-  </div>
+<p>Thanks for using blorr. Please follow the below steps before filing an issue:</p>
+<ul>
+<li>Start by making a minimal <strong>repr</strong>oducible <strong>ex</strong>ample using the <a href="http://reprex.tidyverse.org/">reprex</a> package.</li>
+<li>If it’s a question: post it on StackOverflow.</li>
+<li>If it’s a bug: file an issue.<br>
+</li>
+<li>If you’re not sure, please feel free to email us at <a href="mailto:pkgs@rsquaredacademy.com">pkgs@rsquaredacademy.com</a>
+</li>
+</ul>
+<p>Before opening a new issue, be sure to <a href="https://github.com/rsquaredacademy/blorr/issues">search issues and pull requests</a> to make sure the bug hasn’t been reported and/or already fixed in the development version. By default, the search will be pre-populated with <code>is:issue is:open</code>. You can <a href="https://help.github.com/articles/searching-issues-and-pull-requests/">edit the qualifiers</a> (e.g. <code>is:pr</code>, <code>is:closed</code>) as needed. For example, you’d simply remove <code>is:open</code> to search <em>all</em> issues in the repo, open or closed.</p>
+<p>Thanks for your help!</p>
 </div>
+
+  </div>
+
+</div>
+
 
       <footer>
       <div class="copyright">

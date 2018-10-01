@@ -8,14 +8,17 @@
 <title>A Short Introduction to the blorr Package • blorr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="A Short Introduction to the blorr Package">
+<meta property="og:description" content="">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">blorr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">blorr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -76,27 +83,30 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>A Short Introduction to the blorr Package</h1>
-                        <h4 class="author"><a href="https://www.aravindhebbali.com/">Aravind Hebbali</a></h4>
+                        <h4 class="author">Aravind Hebbali</h4>
             
-          </div>
+      
+      <small class="dont-index">Source: <a href="https://github.com/rsquaredacademy/blorr/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
+      <div class="hidden name"><code>introduction.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
-<div id="introduction" class="section level3">
-<h3 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h3>
-<p>The blorr package offers tools for building and validating binary logistic regression models. It is most suitable for beginner/intermediate R users and those who teach statistics using R. The API is very simple and most of the functions take either a <code>data.frame</code>/<code>tibble</code> or a <code>model</code> as input. <strong>blorr</strong> use consistent prefix <strong>blr_</strong> for easy tab completion.</p>
-</div>
-<div id="installation" class="section level2">
+<div id="introduction" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<a href="#introduction" class="anchor"></a>Introduction</h2>
+<p>The blorr package offers tools for building and validating binary logistic regression models. It is most suitable for beginner/intermediate R users and those who teach statistics using R. The API is very simple and most of the functions take either a <code>data.frame</code>/<code>tibble</code> or a <code>model</code> as input. <strong>blorr</strong> use consistent prefix <strong>blr_</strong> for easy tab completion.</p>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
 <p>You can install <strong>blorr</strong> using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"blorr"</span>)</code></pre></div>
 <p>The documentation of the package can be found at <a href="https://blorr.rsquaredacademy.com" class="uri">https://blorr.rsquaredacademy.com</a>. This vignette gives a quick tour of the package.</p>
+</div>
 <div id="libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h3>
@@ -104,14 +114,15 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(blorr)
 <span class="kw">library</span>(magrittr)</code></pre></div>
 </div>
-<div id="data" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data" class="anchor"></a>Data</h3>
+</div>
+<div id="data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data" class="anchor"></a>Data</h2>
 <p>To demonstrate the features of blorr, we will use the bank marketing data set. The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. Often, more than one contact to the same client was required, in order to access if the product (bank term deposit) would be (‘yes’) or not (‘no’) subscribed. It contains a random sample (~4k) of the original data set which can be found at <a href="https://archive.ics.uci.edu/ml/datasets/bank+marketing" class="uri">https://archive.ics.uci.edu/ml/datasets/bank+marketing</a>.</p>
 </div>
-<div id="bivariate-analysis" class="section level3">
-<h3 class="hasAnchor">
-<a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h3>
+<div id="bivariate-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h2>
 <p>Let us begin with careful bivariate analysis of each possible variable and the outcome variable. We will use information value and likelihood ratio chi square test for selecting the initial set of predictors for our model. The bivariate analysis is currently avialable for categorical predictors only.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(bank_marketing, y, job, marital, education, default, 
   housing, loan, contact, poutcome)
@@ -128,7 +139,6 @@
 <span class="co">#&gt;  contact           0.31             124.3834         2        0.0000   </span>
 <span class="co">#&gt; poutcome           0.53             270.6450         3        0.0000   </span>
 <span class="co">#&gt; ----------------------------------------------------------------------</span></code></pre></div>
-</div>
 <div id="weight-of-evidence-information-value" class="section level3">
 <h3 class="hasAnchor">
 <a href="#weight-of-evidence-information-value" class="anchor"></a>Weight of Evidence &amp; Information Value</h3>
@@ -239,11 +249,11 @@
 <p><code><a href="../reference/blr_woe_iv.html">blr_woe_iv()</a></code> and <code><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats()</a></code> are currently avialable for categorical predictors only.</p>
 </div>
 </div>
-<div id="stepwise-selection" class="section level3">
-<h3 class="hasAnchor">
-<a href="#stepwise-selection" class="anchor"></a>Stepwise Selection</h3>
-<p>For the initial/ first cut model, all the independent variables are put into the model. Our goal is to include a limited number of independent variables (5-15) which are all significant, without sacrificing too much on the model performance. The rationale behind not-including too many variables is that the model would be over fitted and would become unstable when tested on the validation sample. The variable reduction is done using forward or backward or stepwise variable selection procedures. We will use <code><a href="../reference/blr_step_aic_both.html">blr_step_aic_both()</a></code> to shortlist predictors for our model.</p>
 </div>
+<div id="stepwise-selection" class="section level2">
+<h2 class="hasAnchor">
+<a href="#stepwise-selection" class="anchor"></a>Stepwise Selection</h2>
+<p>For the initial/ first cut model, all the independent variables are put into the model. Our goal is to include a limited number of independent variables (5-15) which are all significant, without sacrificing too much on the model performance. The rationale behind not-including too many variables is that the model would be over fitted and would become unstable when tested on the validation sample. The variable reduction is done using forward or backward or stepwise variable selection procedures. We will use <code><a href="../reference/blr_step_aic_both.html">blr_step_aic_both()</a></code> to shortlist predictors for our model.</p>
 <div id="model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model" class="anchor"></a>Model</h3>
@@ -353,6 +363,10 @@
 <p><img src="introduction_files/figure-html/stepwise3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
+</div>
+<div id="regression-output" class="section level2">
+<h2 class="hasAnchor">
+<a href="#regression-output" class="anchor"></a>Regression Output</h2>
 <div id="model-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model-1" class="anchor"></a>Model</h3>
@@ -360,10 +374,6 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(y <span class="op">~</span><span class="st">  </span>age <span class="op">+</span><span class="st"> </span>duration <span class="op">+</span><span class="st"> </span>previous <span class="op">+</span><span class="st"> </span>housing <span class="op">+</span><span class="st"> </span>default <span class="op">+</span>
 <span class="st">             </span>loan <span class="op">+</span><span class="st"> </span>poutcome <span class="op">+</span><span class="st"> </span>job <span class="op">+</span><span class="st"> </span>marital, <span class="dt">data =</span> bank_marketing, 
              <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">'logit'</span>))</code></pre></div>
-</div>
-<div id="regression-output" class="section level3">
-<h3 class="hasAnchor">
-<a href="#regression-output" class="anchor"></a>Regression Output</h3>
 <p>Use <code><a href="../reference/blr_regress.html">blr_regress()</a></code> to generate comprehensive regression output. It accepts either of the following</p>
 <ul>
 <li>model built using <code>glm()</code>
@@ -493,9 +503,10 @@
 <span class="co">#&gt; ---------------------------------------------------------------</span></code></pre></div>
 </div>
 </div>
-<div id="model-fit-statistics" class="section level3">
-<h3 class="hasAnchor">
-<a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h3>
+</div>
+<div id="model-fit-statistics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#model-fit-statistics" class="anchor"></a>Model Fit Statistics</h2>
 <p>Model fit statistics are available to assess how well the model fits the data and to compare two different models.The output includes likelihood ratio test, AIC, BIC and a host of pseudo r-squared measures. You can read more about pseudo r-squared at <a href="https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/" class="uri">https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/</a>.</p>
 <div id="single-model" class="section level4">
 <h4 class="hasAnchor">
@@ -512,7 +523,6 @@
 <span class="co">#&gt; Count R2:                       0.904    Adj Count R2:                       0.157 </span>
 <span class="co">#&gt; BIC:                         2440.259    AIC:                             2292.679 </span>
 <span class="co">#&gt; ----------------------------------------------------------------------------------</span></code></pre></div>
-</div>
 </div>
 </div>
 <div id="model-validation" class="section level2">
@@ -603,16 +613,16 @@
 <span class="co">#&gt; # A tibble: 10 x 12</span>
 <span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity</span>
 <span class="co">#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt;  1   1.00   452   256   196  44.6   256  3808   196   261        49.5</span>
-<span class="co">#&gt;  2   2.00   452   128   324  61.3   384  3484   520   133        74.3</span>
-<span class="co">#&gt;  3   3.00   452    62   390  63.5   446  3094   910    71        86.3</span>
-<span class="co">#&gt;  4   4.00   452    31   421  59.0   477  2673  1331    40        92.3</span>
-<span class="co">#&gt;  5   5.00   452    10   442  49.9   487  2231  1773    30        94.2</span>
-<span class="co">#&gt;  6   6.00   452    14   438  41.7   501  1793  2211    16        96.9</span>
-<span class="co">#&gt;  7   7.00   452     7   445  31.9   508  1348  2656     9        98.3</span>
-<span class="co">#&gt;  8   8.00   452     4   448  21.5   512   900  3104     5        99.0</span>
-<span class="co">#&gt;  9   9.00   452     3   449  10.9   515   451  3553     2        99.6</span>
-<span class="co">#&gt; 10  10.0    453     2   451   0     517     0  4004     0       100  </span>
+<span class="co">#&gt;  1      1   452   256   196  44.6   256  3808   196   261        49.5</span>
+<span class="co">#&gt;  2      2   452   128   324  61.3   384  3484   520   133        74.3</span>
+<span class="co">#&gt;  3      3   452    62   390  63.5   446  3094   910    71        86.3</span>
+<span class="co">#&gt;  4      4   452    31   421  59.0   477  2673  1331    40        92.3</span>
+<span class="co">#&gt;  5      5   452    10   442  49.9   487  2231  1773    30        94.2</span>
+<span class="co">#&gt;  6      6   452    14   438  41.7   501  1793  2211    16        96.9</span>
+<span class="co">#&gt;  7      7   452     7   445  31.9   508  1348  2656     9        98.3</span>
+<span class="co">#&gt;  8      8   452     4   448  21.5   512   900  3104     5        99.0</span>
+<span class="co">#&gt;  9      9   452     3   449  10.9   515   451  3553     2        99.6</span>
+<span class="co">#&gt; 10     10   453     2   451   0     517     0  4004     0       100  </span>
 <span class="co">#&gt; # ... with 2 more variables: specificity &lt;dbl&gt;, accuracy &lt;dbl&gt;</span></code></pre></div>
 <div id="lift-chart" class="section level4">
 <h4 class="hasAnchor">
@@ -690,7 +700,6 @@
 <p><img src="introduction_files/figure-html/fit-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -698,7 +707,12 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#installation">Installation</a></li>
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#bivariate-analysis">Bivariate Analysis</a></li>
+      <li><a href="#stepwise-selection">Stepwise Selection</a></li>
+      <li><a href="#regression-output">Regression Output</a></li>
+      <li><a href="#model-fit-statistics">Model Fit Statistics</a></li>
       <li><a href="#model-validation">Model Validation</a></li>
       <li><a href="#residual-influence-diagnostics">Residual &amp; Influence Diagnostics</a></li>
       </ul>
@@ -709,15 +723,17 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.aravindhebbali.com/">Aravind Hebbali</a></p>
+  <p>Developed by <a href="https://www.aravindhebbali.com">Aravind Hebbali</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>
