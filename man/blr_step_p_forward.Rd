@@ -32,6 +32,7 @@ each step.}
 An object of class \code{"blr_step_p_forward"} is a list containing the
 following components:
 
+\item{model}{model with the least AIC; an object of class \code{glm}}
 \item{steps}{number of steps}
 \item{predictors}{variables added to the model}
 \item{aic}{akaike information criteria}
@@ -56,6 +57,10 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
   family = binomial(link = 'logit'))
 k <- blr_step_p_forward(model)
 plot(k)
+
+# final model
+k$model
+
 }
 
 }

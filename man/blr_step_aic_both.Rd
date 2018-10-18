@@ -26,6 +26,7 @@ printed on screen.}
 An object of class \code{"blr_step_aic_both"} is a list containing the
 following components:
 
+\item{model}{model with the least AIC; an object of class \code{glm}}
 \item{candidates}{candidate predictor variables}
 \item{predictors}{variables added/removed from the model}
 \item{method}{addition/deletion}
@@ -51,6 +52,11 @@ blr_step_aic_both(model, details = TRUE)
 
 # plot
 plot(blr_step_aic_both(model))
+
+# final model
+k <- blr_step_aic_both(model)
+k$model
+
 }
 
 }

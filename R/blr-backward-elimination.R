@@ -17,6 +17,7 @@
 #' \code{"blr_step_aic_backward"}. An object of class
 #' \code{"blr_step_aic_backward"} is a list containing the following components:
 #'
+#' \item{model}{model with the least AIC; an object of class \code{glm}}
 #' \item{candidates}{candidate predictor variables}
 #' \item{steps}{total number of steps}
 #' \item{predictors}{variables removed from the model}
@@ -40,6 +41,11 @@
 #'
 #' # plot
 #' plot(blr_step_aic_backward(model))
+#'
+#' # final model
+#' k <- blr_step_aic_backward(model)
+#' k$model
+#'
 #' }
 #'
 #' @family variable selection procedures
@@ -256,13 +262,17 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
+
   out <- list(
     candidates = nam,
     steps      = step,
     predictors = rpred,
     aics       = laic,
     bics       = lbic,
-    devs       = ldev
+    devs       = ldev,
+    model      = final_model
   )
 
   class(out) <- "blr_step_aic_backward"

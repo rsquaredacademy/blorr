@@ -18,6 +18,7 @@
 #' An object of class \code{"blr_step_p_backward"} is a list containing the
 #' following components:
 #'
+#' \item{model}{model with the least AIC; an object of class \code{glm}}
 #' \item{steps}{total number of steps}
 #' \item{removed}{variables removed from the model}
 #' \item{aic}{akaike information criteria}
@@ -40,6 +41,10 @@
 #'   data = hsb2, family = binomial(link = 'logit'))
 #' k <- blr_step_p_backward(model)
 #' plot(k)
+#'
+#' # final model
+#' k$model
+#'
 #' }
 #'
 #' @importFrom dplyr full_join select
@@ -167,12 +172,16 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   )
   print(fi)
 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
+
   out <- list(removed    = rpred,
               indvar     = cterms,
               steps      = step,
               bic        = bic,
               aic        = aic,
-              dev        = dev)
+              dev        = dev,
+              model      = final_model)
 
   class(out) <- "blr_step_p_backward"
 

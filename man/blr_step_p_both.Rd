@@ -35,6 +35,7 @@ each step.}
 An object of class \code{"blr_step_p_both"} is a list containing the
 following components:
 
+\item{model}{final model; an object of class \code{glm}}
 \item{orders}{candidate predictor variables according to the order by which they were added or removed from the model}
 \item{method}{addition/deletion}
 \item{steps}{total number of steps}
@@ -59,6 +60,10 @@ blr_step_p_both(model)
 model <- glm(y ~ ., data = stepwise)
 k <- blr_step_p_both(model)
 plot(k)
+
+# final model
+k$model
+
 }
 
 }

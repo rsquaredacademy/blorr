@@ -18,6 +18,7 @@
 #' An object of class \code{"blr_step_p_forward"} is a list containing the
 #' following components:
 #'
+#' \item{model}{model with the least AIC; an object of class \code{glm}}
 #' \item{steps}{number of steps}
 #' \item{predictors}{variables added to the model}
 #' \item{aic}{akaike information criteria}
@@ -44,6 +45,10 @@
 #'   family = binomial(link = 'logit'))
 #' k <- blr_step_p_forward(model)
 #' plot(k)
+#'
+#' # final model
+#' k$model
+#'
 #' }
 #'
 #' @importFrom stats qt
@@ -231,13 +236,16 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   )
   print(fi)
 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
 
   out <- list(predictors = preds,
               indvar     = cterms,
               steps      = step,
                bic       = bic,
               aic        = aic,
-              dev        = dev)
+              dev        = dev,
+              model      = final_model)
 
   class(out) <- "blr_step_p_forward"
 

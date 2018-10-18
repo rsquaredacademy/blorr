@@ -19,6 +19,7 @@
 #' An object of class \code{"blr_step_p_both"} is a list containing the
 #' following components:
 #'
+#' \item{model}{final model; an object of class \code{glm}}
 #' \item{orders}{candidate predictor variables according to the order by which they were added or removed from the model}
 #' \item{method}{addition/deletion}
 #' \item{steps}{total number of steps}
@@ -41,6 +42,10 @@
 #' model <- glm(y ~ ., data = stepwise)
 #' k <- blr_step_p_both(model)
 #' plot(k)
+#'
+#' # final model
+#' k$model
+#'
 #' }
 #'
 #' @family variable selection_procedures
@@ -329,6 +334,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   )
   print(fi)
 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
+
   out <- list(
     orders     = var_index,
     method     = method,
@@ -337,7 +345,8 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     aic        = aic,
     bic        = bic,
     dev        = dev,
-    indvar     = cterms
+    indvar     = cterms,
+    model      = final_model
   )
 
   class(out) <- "blr_step_p_both"
