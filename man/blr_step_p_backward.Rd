@@ -32,6 +32,7 @@ each step.}
 An object of class \code{"blr_step_p_backward"} is a list containing the
 following components:
 
+\item{model}{model with the least AIC; an object of class \code{glm}}
 \item{steps}{total number of steps}
 \item{removed}{variables removed from the model}
 \item{aic}{akaike information criteria}
@@ -56,6 +57,10 @@ model <- glm(honcomp ~ female + read + science + math + prog + socst,
   data = hsb2, family = binomial(link = 'logit'))
 k <- blr_step_p_backward(model)
 plot(k)
+
+# final model
+k$model
+
 }
 
 }

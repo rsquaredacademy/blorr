@@ -29,6 +29,7 @@ each step.}
 \code{"blr_step_aic_forward"}. An object of class
 \code{"blr_step_aic_forward"} is a list containing the following components:
 
+\item{model}{model with the least AIC; an object of class \code{glm}}
 \item{candidates}{candidate predictor variables}
 \item{steps}{total number of steps}
 \item{predictors}{variables entered into the model}
@@ -54,6 +55,11 @@ blr_step_aic_forward(model, details = TRUE)
 
 # plot
 plot(blr_step_aic_forward(model))
+
+# final model
+k <- blr_step_aic_forward(model)
+k$model
+
 }
 
 }
