@@ -49,8 +49,6 @@ Suggests:
     testthat,
     tidyr,
     vdiffr
-Remotes:
-    tidyverse/tibble
 License: MIT + file LICENSE
 URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
