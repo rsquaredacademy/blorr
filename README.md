@@ -1,7 +1,10 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# blorr <img src="hex_blorr.png" height="100px" align="right" />
+# blorr
+
+> Tools for building binary logistic regression
+models
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
 [![cran

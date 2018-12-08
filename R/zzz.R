@@ -9,7 +9,7 @@
     extract("blorr", "Version") %>%
     package_version()
 
-  local_version <- packageVersion("blorr")
+  local_version <- utils::packageVersion("blorr")
   behind_cran <- cran_version > local_version
 
   tips <- c(
