@@ -70,7 +70,7 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
     nrow() %>%
     seq_len(.)
 
-  col_names <- c("Measures", paste("Model", model_id))
+  col_names <- c(paste("Model", model_id))
   print(multi_fit_stats_table(df, measures, col_names))
 
 }
@@ -78,12 +78,12 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
 
 multi_fit_stats_table <- function(df, measures, col_names) {
 
-  df %>%
-    t() %>%
-    round(3) %>%
-    as_tibble() %>%
-    add_column(measures, .before = 1) %>%
-    as.data.frame() %>%
-    set_colnames(col_names)
+	df %>%
+	  t() %>%
+	  round(3)  %>%
+	  magrittr::set_colnames(col_names) %>%
+	  tibble::as_tibble() %>%
+	  tibble::add_column(Measures = measures, .before = 1) %>%
+	  as.data.frame() 
 
 }

@@ -1,17 +1,29 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-blorr <img src="hex_blorr.png" height="100px" align="right" />
-==============================================================
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html) [![Travis-CI Build Status](https://travis-ci.org/rsquaredacademy/olsrr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/olsrr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/olsrr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/olsrr) [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+# blorr <img src="hex_blorr.png" height="100px" align="right" />
 
-Overview
---------
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
+[![cran
+checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
+[![Travis-CI Build
+Status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr)
+[![AppVeyor Build
+Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr)
+[![Coverage
+status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
+![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 
-Tools designed to make it easier for users, particularly beginner/intermediate R users to build logistic regression models. Includes comprehensive regression output, variable selection procedures, model validation techniques and a 'shiny' app for interactive model building.
+## Overview
 
-Installation
-------------
+Tools designed to make it easier for users, particularly
+beginner/intermediate R users to build logistic regression models.
+Includes comprehensive regression output, variable selection procedures,
+model validation techniques and a ‘shiny’ app for interactive model
+building.
+
+## Installation
 
 ``` r
 # Install blorr from CRAN
@@ -22,18 +34,16 @@ install.packages("blorr")
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-Shiny App
----------
+## Shiny App
 
 Use `blr_launch_app()` to explore the package using a shiny app.
 
-Articles
---------
+## Articles
 
--   [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
+  - [A Short Introduction to the blorr
+    Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
 
-Usage
------
+## Usage
 
 blorr uses consistent prefix `blr_*` for easy tab completion.
 
@@ -209,6 +219,9 @@ blr_test_hosmer_lemeshow(model)
 
 ``` r
 blr_gains_table(model)
+#> Warning: Calling `as_tibble()` on a vector is discouraged, because the
+#> behavior is likely to change in the future. Use `enframe(name = NULL)`
+#> instead.
 #> # A tibble: 10 x 12
 #>    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
 #>     <dbl> <int> <int> <int> <dbl> <int> <int> <int> <int>       <dbl>
@@ -244,7 +257,7 @@ model %>%
   plot()
 ```
 
-![](tools/README-lift-1.png)
+![](tools/README-lift-1.png)<!-- -->
 
 ### ROC Curve
 
@@ -254,7 +267,7 @@ model %>%
   blr_roc_curve()
 ```
 
-![](tools/README-roc-1.png)
+![](tools/README-roc-1.png)<!-- -->
 
 ### KS Chart
 
@@ -264,7 +277,7 @@ model %>%
   blr_ks_chart()
 ```
 
-![](tools/README-kschart-1.png)
+![](tools/README-kschart-1.png)<!-- -->
 
 ### Lorenz Curve
 
@@ -272,14 +285,17 @@ model %>%
 blr_lorenz_curve(model)
 ```
 
-![](tools/README-unnamed-chunk-2-1.png)
+![](tools/README-unnamed-chunk-2-1.png)<!-- -->
 
-Getting Help
-------------
+## Getting Help
 
-If you encounter a bug, please file a minimal reproducible example using [reprex](https://reprex.tidyverse.org/index.html) on github. For questions and clarifications, use [StackOverflow](https://stackoverflow.com/).
+If you encounter a bug, please file a minimal reproducible example using
+[reprex](https://reprex.tidyverse.org/index.html) on github. For
+questions and clarifications, use
+[StackOverflow](https://stackoverflow.com/).
 
-Code of Conduct
----------------
+## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of
+Conduct](CONDUCT.md). By participating in this project you agree to
+abide by its terms.
