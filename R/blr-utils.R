@@ -1,15 +1,9 @@
-#' @importFrom magrittr %>% %<>% use_series extract2 extract
-#' @importFrom dplyr mutate if_else pull slice
-#' @importFrom tibble tibble as_tibble
-#' @importFrom rlang sym eval_tidy !!
-#' @importFrom glue glue
-#' @importFrom stats coef confint binomial df.residual glm terms
-#' @importFrom utils data
+#' @importFrom magrittr %>% %<>% 
 response_var <- function(model) {
 
   model %>%
-    use_series(terms) %>%
-    extract2(2)
+    magrittr::use_series(terms) %>%
+    magrittr::extract2(2)
 
 }
 
@@ -17,8 +11,8 @@ response_var <- function(model) {
 data_name <- function(model) {
 
   model %>%
-    use_series(call) %>%
-    extract2(4)
+    magrittr::use_series(call) %>%
+    magrittr::extract2(4)
 
 }
 
@@ -26,7 +20,7 @@ data_name <- function(model) {
 data_nrows <- function(model) {
 
   model %>%
-    use_series(data) %>%
+    magrittr::use_series(data) %>%
     nrow()
 
 }
@@ -35,7 +29,7 @@ data_nrows <- function(model) {
 converge_status <- function(model) {
 
   model %>%
-    use_series(converged)
+    magrittr::use_series(converged)
 
 }
 
@@ -43,7 +37,7 @@ converge_status <- function(model) {
 residual_df <- function(model) {
 
   model %>%
-    use_series(df.residual)
+    magrittr::use_series(df.residual)
 
 }
 
@@ -51,19 +45,20 @@ residual_df <- function(model) {
 model_df <- function(model) {
 
   model %>%
-    use_series(df.null)
+    magrittr::use_series(df.null)
 
 }
 
 # response profile
 resp_profile <- function(model) {
 
-  resp <- model %>%
+  resp <- 
+  	model %>%
     response_var()
 
   model %>%
-    use_series(data) %>%
-    pull(!! resp) %>%
+    magrittr::use_series(data) %>%
+    dplyr::pull(!! resp) %>%
     as.factor() %>%
     table()
 
@@ -74,7 +69,7 @@ resp_profile <- function(model) {
 predictor_names <- function(model) {
 
   model %>%
-    use_series(coefficients) %>%
+    magrittr::use_series(coefficients) %>%
     names()
 
 }
@@ -83,7 +78,7 @@ predictor_names <- function(model) {
 predictor_df <- function(model) {
 
   model %>%
-    use_series(rank) %>%
+    magrittr::use_series(rank) %>%
     rep_len(x = 1)
 
 }
@@ -92,7 +87,7 @@ predictor_df <- function(model) {
 predictor_est <- function(model) {
 
   model %>%
-    use_series(coefficients) %>%
+    magrittr::use_series(coefficients) %>%
     unname()
 
 }
@@ -102,8 +97,8 @@ predictor_mine <- function(model, col_name = NULL) {
 
   model %>%
     summary() %>%
-    use_series(coefficients) %>%
-    extract(, col_name) %>%
+    magrittr::use_series(coefficients) %>%
+    magrittr::extract(, col_name) %>%
     unname()
 
 }
@@ -132,9 +127,9 @@ predictor_pval <- function(model) {
 odds_effect <- function(model) {
 
   model %>%
-    coef() %>%
+    stats::coef() %>%
     names() %>%
-    extract(-1)
+    magrittr::extract(-1)
 
 }
 
@@ -142,9 +137,9 @@ odds_effect <- function(model) {
 odds_point <- function(model) {
 
   model %>%
-    coef() %>%
+    stats::coef() %>%
     exp(.) %>%
-    extract(-1) %>%
+    magrittr::extract(-1) %>%
     unname()
 
 }
@@ -153,9 +148,9 @@ odds_point <- function(model) {
 odds_conf_limit <- function(model) {
 
   model %>%
-    confint() %>%
-    as_tibble() %>%
-    slice(2:n()) %>%
+    stats::confint() %>%
+    tibble::as_tibble() %>%
+    dplyr::slice(2:n()) %>%
     exp(.)
 
 }
@@ -164,9 +159,9 @@ odds_conf_limit <- function(model) {
 mll <- function(model) {
 
   model %>%
-    logLik() %>%
-    extract(1) %>%
-    multiply_by(-2)
+    stats::logLik() %>%
+    magrittr::extract(1) %>%
+    magrittr::multiply_by(-2)
 
 }
 
@@ -175,7 +170,7 @@ model_class <- function(model) {
 
   model %>%
     class() %>%
-    extract(1)
+    magrittr::extract(1)
 
 }
 
@@ -186,11 +181,11 @@ i_model <- function(model) {
 
   dat <-
     model %>%
-    use_series(data) 
+	  magrittr::use_series(data) 
 
-  glm(
-    glue(dep, " ~ 1"), data = dat,
-    family = binomial(link = "logit")
+  stats::glm(
+    glue::glue(dep, " ~ 1"), data = dat,
+    family = stats::binomial(link = "logit")
   )
 
 }
@@ -199,7 +194,7 @@ i_model <- function(model) {
 model_d_f <- function(model) {
 
   model %>%
-    use_series(coefficients) %>%
+    magrittr::use_series(coefficients) %>%
     length()
 
 }
@@ -208,9 +203,9 @@ model_d_f <- function(model) {
 extract_ll <- function(model, n = 1) {
 
   blr_test_lr(model) %>%
-    use_series(model_info) %>%
-    pull(log_lik) %>%
-    extract(n)
+    magrittr::use_series(model_info) %>%
+    dplyr::pull(log_lik) %>%
+    magrittr::extract(n)
 
 }
 
@@ -218,8 +213,8 @@ extract_ll <- function(model, n = 1) {
 model_ll <- function(model) {
 
   model %>%
-    logLik() %>%
-    extract(1)
+    stats::logLik() %>%
+    magrittr::extract(1)
 
 }
 
@@ -279,5 +274,5 @@ fl <- function(x, w) {
 
 mod_sel_data <- function(model) {
   model %>%
-    use_series(data)
+    magrittr::use_series(data)
 }

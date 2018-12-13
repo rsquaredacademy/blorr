@@ -33,3 +33,4 @@ Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New 
 Other diagnostic plots: \code{\link{blr_plot_diag_influence}},
   \code{\link{blr_plot_diag_leverage}}
 }
+\concept{diagnostic plots}

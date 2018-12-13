@@ -1,15 +1,15 @@
 context("test-backward-elimination.R")
 
 test_that("output from backward variable elimination is as expected", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_step_aic_backward() %>%
-    use_series(predictors)
+    magrittr::use_series(predictors)
 
   expected <- c("prog", "socst")
 
@@ -17,15 +17,15 @@ test_that("output from backward variable elimination is as expected", {
 })
 
 test_that("output from backward variable p elimination is as expected", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_step_p_backward() %>%
-    use_series(removed)
+    magrittr::use_series(removed)
 
   expected <- c("prog", "socst")
 
@@ -34,9 +34,9 @@ test_that("output from backward variable p elimination is as expected", {
 
 test_that("print output from backward variable elimination is as expected", {
   
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   x <- cat("Backward Elimination Method 
@@ -73,9 +73,9 @@ socst         157.286    173.777     147.286
 
 test_that("print output from backward variable p elimination is as expected", {
   
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   x <- cat("Backward Elimination Method 
@@ -161,9 +161,9 @@ Step    Removed       AIC         BIC       Deviance
 
 test_that("output from backward variable elimination is as expected when details == TRUE", {
   
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   x <- cat("Backward Elimination Method 
@@ -290,9 +290,9 @@ socst         157.286    173.777     147.286
 
 test_that("output from backward variable elimination p is as expected when details == TRUE", {
   
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science + math + prog + socst,
-    data = hsb2, family = binomial(link = "logit")
+    data = hsb2, family = stats::binomial(link = "logit")
   )
 
   x <- cat("Backward Elimination Method 

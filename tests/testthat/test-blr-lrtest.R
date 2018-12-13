@@ -1,26 +1,27 @@
 context("test-blr-lrtest.R")
 
 test_that("blr_test_lr throws an error when the model is not an object of\n          class glm", {
-  model1 <- glm(
+  
+  model1 <- stats::glm(
     honcomp ~ 1, data = hsb2,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
-
-  model2 <- lm(write ~ 1, data = hsb2)
+  model2 <- stats::lm(write ~ 1, data = hsb2)
   expect_error(blr_test_lr(model1, model2))
   expect_error(blr_test_lr(model2, model1))
 })
 
 test_that("output is as expected when reduced model is not specified", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
-  actual <- blr_test_lr(model) %>%
-    use_series(test_result) %>%
-    pull(lr_ratio) %>%
+  actual <- 
+    blr_test_lr(model) %>%
+    magrittr::use_series(test_result) %>%
+    dplyr::pull(lr_ratio) %>%
     round(4)
 
   expected <- 71.0525

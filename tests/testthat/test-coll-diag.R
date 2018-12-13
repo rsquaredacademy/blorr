@@ -1,15 +1,15 @@
 context("test-coll-diag.R")
 
 test_that("output from blr_vif_tol is as expected", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_vif_tol() %>%
-    pull(VIF) %>%
+    dplyr::pull(VIF) %>%
     round(2)
 
   expected <- c(1.02, 1.66, 1.68)
@@ -18,15 +18,15 @@ test_that("output from blr_vif_tol is as expected", {
 })
 
 test_that("output from blr_eigen_cindex is as expected", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_eigen_cindex() %>%
-    pull(Eigenvalue) %>%
+    dplyr::pull(Eigenvalue) %>%
     round(2)
 
   expected <- c(3.57, 0.39, 0.02, 0.01)
@@ -35,9 +35,9 @@ test_that("output from blr_eigen_cindex is as expected", {
 })
 
 test_that("blr_coll_diag prints the correct output", {
-  model <- glm(
+  model <- stats::glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
 
   k <- blr_coll_diag(model)

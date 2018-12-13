@@ -15,13 +15,13 @@
 blr_prep_roc_data <- function(gains_table) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(sensitivity, specificity) %>%
-    mutate(
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(sensitivity, specificity) %>%
+    dplyr::mutate(
       sensitivity_per   = sensitivity / 100,
       `1 - specificity` = 1 - (specificity / 100)
     ) %>%
-    add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1)
+    tibble::add_row(sensitivity_per = 0, `1 - specificity` = 0, .before = 1)
 
 }
 
@@ -56,7 +56,7 @@ lorenz_decile_count <- function(data) {
 
   data %>%
     nrow() %>%
-    divide_by(10) %>%
+    magrittr::divide_by(10) %>%
     round()
 
 }
@@ -66,28 +66,28 @@ lorenz_table_modify <- function(data, decile_count) {
   residual <-
     data %>%
     nrow() %>%
-    subtract((decile_count * 9))
+    magrittr::subtract((decile_count * 9))
 
   data %>%
-    select(response = value, prob = value1) %>%
-    arrange(desc(prob)) %>%
-    add_column(decile = c(rep(1:9, each = decile_count),
+    dplyr::select(response = value, prob = value1) %>%
+    dplyr::arrange(dplyr::desc(prob)) %>%
+    tibble::add_column(decile = c(rep(1:9, each = decile_count),
                           rep(10, times = residual))) %>%
-    group_by(decile) %>%
-    summarise(total = n(), `1` = table(response)[[2]])
+    dplyr::group_by(decile) %>%
+    dplyr::summarise(total = n(), `1` = table(response)[[2]])
 }
 
 lorenz_plot_data <- function(gains_table) {
 
   gains_table %>%
-    select(`cum_0s_%`, `cum_1s_%`) %>%
-    mutate(
+    dplyr::select(`cum_0s_%`, `cum_1s_%`) %>%
+    dplyr::mutate(
       cum_0s_per    = `cum_0s_%` / 100,
       cum_1s_per    = `cum_1s_%` / 100
     ) %>%
-    select(cum_0s_per, cum_1s_per) %>%
-    add_row(cum_0s_per = 0, cum_1s_per = 0, .before = 1) %>%
-    add_row(cum_0s_per = 1, cum_1s_per = 1)
+    dplyr::select(cum_0s_per, cum_1s_per) %>%
+    tibble::add_row(cum_0s_per = 0, cum_1s_per = 0, .before = 1) %>%
+    tibble::add_row(cum_0s_per = 1, cum_1s_per = 1)
 }
 
 #' Decile capture rate data
@@ -107,9 +107,9 @@ lorenz_plot_data <- function(gains_table) {
 blr_prep_dcrate_data <- function(gains_table) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(decile, total, `1`) %>%
+    dplyr::mutate(
       decile_mean = `1` / total
     )
 }
@@ -134,13 +134,13 @@ blr_prep_dcrate_data <- function(gains_table) {
 blr_prep_lchart_gmean <- function(gains_table) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(total, `1`) %>%
-    summarise_all(sum) %>%
-    mutate(
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(total, `1`) %>%
+    dplyr::summarise_all(sum) %>%
+    dplyr::mutate(
       gmean = `1` / total
     ) %>%
-    pull(gmean)
+    dplyr::pull(gmean)
 
 }
 
@@ -150,9 +150,9 @@ blr_prep_lchart_gmean <- function(gains_table) {
 blr_prep_lchart_data <- function(gains_table, global_mean) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(decile, total, `1`) %>%
-    mutate(
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(decile, total, `1`) %>%
+    dplyr::mutate(
       decile_mean = `1` / total,
       d_by_g_mean = decile_mean / global_mean
     )
@@ -181,15 +181,15 @@ blr_prep_lchart_data <- function(gains_table, global_mean) {
 blr_prep_kschart_data <- function(gains_table) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
-    mutate(
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`) %>%
+    dplyr::mutate(
       cum_total_per = `cum_total_%` / 100,
       cum_1s_per    = `cum_1s_%` / 100,
       cum_0s_per    = `cum_0s_%` / 100
     ) %>%
-    select(cum_total_per, cum_1s_per, cum_0s_per) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
+    dplyr::select(cum_total_per, cum_1s_per, cum_0s_per) %>%
+    tibble::add_row(cum_total_per = 0, cum_1s_per = 0, cum_0s_per = 0, .before = 1)
 
 }
 
@@ -199,10 +199,10 @@ blr_prep_kschart_data <- function(gains_table) {
 blr_prep_kschart_line <- function(gains_table) {
 
   gains_table %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
-    filter(ks == max(ks)) %>%
-    divide_by(100)
+    magrittr::use_series(gains_table) %>%
+    dplyr::select(`cum_total_%`, `cum_1s_%`, `cum_0s_%`, ks) %>%
+    dplyr::filter(ks == max(ks)) %>%
+    magrittr::divide_by(100)
 
 }
 
@@ -212,11 +212,11 @@ blr_prep_kschart_line <- function(gains_table) {
 blr_prep_ksannotate_y <- function(ks_line) {
 
   ks_line %>%
-    mutate(
+    dplyr::mutate(
       ann_loc    = (`cum_1s_%` - `cum_0s_%`) / 2,
       ann_locate = `cum_0s_%` + ann_loc
     ) %>%
-    pull(ann_locate)
+    dplyr::pull(ann_locate)
 
 }
 
@@ -226,9 +226,9 @@ blr_prep_ksannotate_y <- function(ks_line) {
 blr_prep_kschart_stat <- function(ks_line) {
 
   ks_line %>%
-    pull(4) %>%
+    dplyr::pull(4) %>%
     round(2) %>%
-    multiply_by(100)
+    magrittr::multiply_by(100)
 
 }
 
@@ -238,7 +238,7 @@ blr_prep_kschart_stat <- function(ks_line) {
 blr_prep_ksannotate_x <- function(ks_line) {
 
   ks_line %>%
-    pull(1) +
+    dplyr::pull(1) +
     0.1
 
 }

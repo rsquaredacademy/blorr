@@ -69,3 +69,4 @@ Other variable selection procedures: \code{\link{blr_step_aic_backward}},
   \code{\link{blr_step_p_backward}},
   \code{\link{blr_step_p_forward}}
 }
+\concept{variable selection procedures}

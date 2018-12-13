@@ -10,9 +10,6 @@
 #'             family = binomial(link = 'logit'))
 #'
 #' blr_model_fit_stats(model)
-#'
-#' @importFrom stats AIC BIC logLik deviance
-#' @importFrom magrittr divide_by raise_to_power add
 #' 
 #' @references
 #' Menard, S. (2000). Coefficients of determination for multiple logistic regression analysis. 
@@ -82,33 +79,33 @@ print.blr_model_fit_stats <- function(x, ...) {
 model_deviance <- function(model) {
 
   model %>%
-    use_series(deviance)
+    magrittr::use_series(deviance)
 
 }
 
 null_ll <- function(model) {
 
   i_model(model) %>%
-    logLik() %>%
-    extract2(1)
+    stats::logLik() %>%
+    magrittr::extract2(1)
 
 }
 
 
 model_ll <- function(model) {
 
-  logLik(model)[1]
+  magrittr::logLik(model)[1]
 
 }
 
 
 model_aic <- function(model) {
-  AIC(model)
+  stats::AIC(model)
 }
 
 
 model_bic <- function(model) {
-  BIC(model)
+  stats::BIC(model)
 }
 
 #' McFadden's R2
@@ -236,21 +233,21 @@ blr_rsq_nagelkerke <- function(model) {
 
   n <-
     model %>%
-    use_series(data) %>%
+    magrittr::use_series(data) %>%
     nrow()
 
   num <-
     (model_ll(model) %>%
-          multiply_by(-2)) %>%
-    subtract(imodel(model) %>%
-      multiply_by(-2)) %>%
-    divide_by(n) %>%
+          magrittr::multiply_by(-2)) %>%
+    magrittr::subtract(imodel(model) %>%
+      magrittr::multiply_by(-2)) %>%
+    magrittr::divide_by(n) %>%
     exp(.)
 
   den <- 
     imodel(model) %>%
-    multiply_by(2) %>%
-    divide_by(n) %>%
+    magrittr::multiply_by(2) %>%
+    magrittr::divide_by(n) %>%
     exp(.)
 
   (1 - num) / (1 - den)
@@ -283,26 +280,26 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
 
-  predicted      <- predict(model)
+  predicted      <- stats::predict(model)
   mean_predicted <- mean(predicted)
 
   ess <-
     predicted %>%
-    subtract(mean_predicted) %>%
-    raise_to_power(2) %>%
+    magrittr::subtract(mean_predicted) %>%
+    magrittr::raise_to_power(2) %>%
     sum()
 
   pi_val <-
     pi %>%
-    raise_to_power(2) %>%
-    divide_by(3)
+    magrittr::raise_to_power(2) %>%
+    magrittr::divide_by(3)
 
   n <-
     model %>%
-    use_series(y) %>%
+    magrittr::use_series(y) %>%
     length() %>%
-    multiply_by(pi_val) %>%
-    add(ess)
+    magrittr::multiply_by(pi_val) %>%
+    magrittr::add(ess)
 
   ess / n
 
@@ -335,22 +332,22 @@ blr_rsq_effron <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- predict(model, type = "response")
-  resp      <-model$y
+  predicted <- stats::predict(model, type = "response")
+  resp      <- model$y
   mean_resp <- mean(resp)
 
   den <-
     resp %>%
-    subtract(mean_resp) %>%
-    raise_to_power(2) %>%
+    magrittr::subtract(mean_resp) %>%
+    magrittr::raise_to_power(2) %>%
     sum()
 
   num <-
     resp %>%
-    subtract(predicted) %>%
-    raise_to_power(2) %>%
+    magrittr::subtract(predicted) %>%
+    magrittr::raise_to_power(2) %>%
     sum() %>%
-    divide_by(den)
+    magrittr::divide_by(den)
 
   1 - num
 
@@ -379,14 +376,14 @@ blr_rsq_count <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  predicted <- stats::predict(model, type = "response")
+  zero_one  <- dplyr::if_else(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
 
-  if_else(zero_one == resp, 1, 0) %>%
+  dplyr::if_else(zero_one == resp, 1, 0) %>%
     sum() %>%
-    divide_by(n)
+    magrittr::divide_by(n)
 
 }
 
@@ -414,20 +411,20 @@ blr_rsq_adj_count <- function(model) {
 
   n2 <-
     model %>%
-    use_series(y) %>%
+    magrittr::use_series(y) %>%
     table() %>%
     max()
 
-  predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  predicted <- stats::predict(model, type = "response")
+  zero_one  <- dplyr::if_else(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
   den       <- n - n2
 
-  if_else(zero_one == resp, 1, 0) %>%
+  dplyr::if_else(zero_one == resp, 1, 0) %>%
     sum() %>%
-    subtract(n2) %>%
-    divide_by(den)
+    magrittr::subtract(n2) %>%
+    magrittr::divide_by(den)
 
 }
 
@@ -437,14 +434,14 @@ fit_stat <- function(model) {
 
   pred_n <-
     model %>%
-    coefficients() %>%
+    stats::coefficients() %>%
     length()
 
   dev_df <-
     model %>%
-    use_series(y) %>%
+    magrittr::use_series(y) %>%
     length() %>%
-    subtract(pred_n)
+    magrittr::subtract(pred_n)
 
   lr_ratio <- extract_lr(lr, lr_ratio)
   lr_df    <- extract_lr(lr, d_f)
@@ -459,11 +456,11 @@ fit_stat <- function(model) {
 
 extract_lr <- function(lr, value) {
 
-  vals <- enquo(value)
+  vals <- rlang::enquo(value)
 
   lr %>%
-    use_series(test_result) %>%
-    pull(!! vals)
+    magrittr::use_series(test_result) %>%
+    dplyr::pull(!! vals)
 
 }
 
@@ -471,13 +468,13 @@ cox_snell_comp <- function(model) {
 
   n <-
     model %>%
-    use_series(data) %>%
+    magrittr::use_series(data) %>%
     nrow()
 
   imodel(model) %>%
-    subtract(model_ll(model)) %>%
-    multiply_by(2) %>%
-    divide_by(n) %>%
+    magrittr::subtract(model_ll(model)) %>%
+    magrittr::multiply_by(2) %>%
+    magrittr::divide_by(n) %>%
     exp(.)  
 
 }

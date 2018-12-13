@@ -68,8 +68,8 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   mlen_p     <- length(predictors)
   tech       <- c("addition", "removal")
 
-  mo <- glm(paste(response, "~", 1), data = l,
-            family = binomial(link = "logit"))
+  mo <- stats::glm(paste(response, "~", 1), data = l,
+            family = stats::binomial(link = "logit"))
   aic_c <- model_aic(mo)
 
   cat(format("Stepwise Selection Method", justify = "left", width = 25), "\n")
@@ -106,9 +106,9 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
     for (i in seq_len(lpds)) {
       predn <- c(preds, predictors[i])
-      m <- glm(
+      m <- stats::glm(
         paste(response, "~", paste(predn, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
+        data = l, family = stats::binomial(link = "logit")
       )
       aics[i] <- model_aic(m)
       bics[i] <- model_bic(m)
@@ -119,7 +119,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       predictors = predictors, aics = aics, bics = bics,
       devs = devs
     )
-    da2 <- arrange(da, aics)
+    da2 <- dplyr::arrange(da, aics)
 
     if (details == TRUE) {
       w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
@@ -172,7 +172,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       lbic       <- c(lbic, mbic)
       ldev       <- c(ldev, mdev)
 
-      if (isRunning()) {
+      if (shiny::isRunning()) {
         cat(paste("-", dplyr::last(preds), "added"), "\n")
       } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -192,9 +192,9 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
         for (i in seq_len(lpreds)) {
           preda <- preds[-i]
-          m <- glm(
+          m <- stats::glm(
             paste(response, "~", paste(preda, collapse = " + ")),
-            data = l, family = binomial(link = "logit")
+            data = l, family = stats::binomial(link = "logit")
           )
           aics[i] <- model_aic(m)
           bics[i] <- model_bic(m)
@@ -205,7 +205,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           predictors = preds, aics = aics, bics = bics,
           devs = devs
         )
-        da2 <- arrange(da, aics)
+        da2 <- dplyr::arrange(da, aics)
 
         if (details == TRUE) {
           w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
@@ -253,7 +253,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           method    <- c(method, tech[2])
           all_step  <- all_step + 1
 
-          if (isRunning()) {
+          if (shiny::isRunning()) {
             cat(paste("-", preds[minc2], "removed"), "\n")
           } else if (interactive()) {
             cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), "\n")
@@ -292,8 +292,8 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
+  final_model <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = stats::binomial(link = 'logit'))
 
   out <- list(
     candidates = nam,
@@ -337,7 +337,7 @@ plot.blr_step_aic_both <- function(x, text_size = 3,  ...) {
 
   y <-
     x %>%
-    use_series(aic) %>%
+    magrittr::use_series(aic) %>%
     length() %>%
     seq_len(.)
 
@@ -348,24 +348,29 @@ plot.blr_step_aic_both <- function(x, text_size = 3,  ...) {
 
   ymin <-
     x %>%
-    use_series(aic) %>%
+    magrittr::use_series(aic) %>%
     min() %>%
-    subtract(1)
+    magrittr::subtract(1)
 
   ymax <-
     x %>%
-    use_series(aic) %>%
+    magrittr::use_series(aic) %>%
     max() %>%
-    add(1)
+    magrittr::add(1)
 
-  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
-  d  <- tibble(a = y, b = x$aic)
+  d2 <- tibble::tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble::tibble(a = y, b = x$aic)
 
-  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
-    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
-    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
-    ggtitle("Stepwise AIC Both Direction Selection") +
-    geom_text(data = d2, aes(x = x, y = y, label = tx), 
+  p <- 
+    ggplot2::ggplot(d, ggplot2::aes(x = a, y = b)) + 
+    ggplot2::geom_line(color = "blue") +
+    ggplot2::geom_point(color = "blue", shape = 1, size = 2) + 
+    ggplot2::xlim(c(xmin, xmax)) +
+    ggplot2::ylim(c(ymin, ymax)) + 
+    ggplot2::xlab("Step") + 
+    ggplot2::ylab("AIC") +
+    ggplot2::ggtitle("Stepwise AIC Both Direction Selection") +
+    ggplot2::geom_text(data = d2, ggplot2::aes(x = x, y = y, label = tx), 
       size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)

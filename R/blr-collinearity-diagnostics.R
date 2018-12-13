@@ -61,9 +61,6 @@
 #' # collinearity diagnostics
 #' blr_coll_diag(model)
 #'
-#' @importFrom stats lm as.formula model.matrix
-#' @importFrom tibble as_data_frame
-#'
 #' @export
 #'
 blr_coll_diag <- function(model) UseMethod("blr_coll_diag")
@@ -103,7 +100,7 @@ blr_vif_tol <- function(model) {
   blr_check_model(model)
 
   vt <- viftol(model)
-  tibble(Variable  = vt$nam,
+  tibble::tibble(Variable  = vt$nam,
          Tolerance = vt$tol,
          VIF       = vt$vifs)
 
@@ -120,20 +117,20 @@ blr_eigen_cindex <- function(model) {
 
   x <-
     model %>%
-    model.matrix() %>%
-    as_data_frame()
+    stats::model.matrix() %>%
+    tibble::as_data_frame()
 
   e <-
     x %>%
     evalue() %>%
-    use_series(e)
+    magrittr::use_series(e)
 
   cindex <- cindx(e)
 
   pv <-
     x %>%
     evalue() %>%
-    use_series(pvdata) %>%
+    magrittr::use_series(pvdata) %>%
     pveindex()
 
   out <- data.frame(Eigenvalue = cbind(e, cindex, pv))
@@ -149,10 +146,10 @@ fmrsq <- function(nam, data, i) {
   r.squared <- NULL
 
   fm <-
-    as.formula(paste0("`", nam[i], "` ", "~ .")) %>%
-    lm(data = data) %>%
+    stats::as.formula(paste0("`", nam[i], "` ", "~ .")) %>%
+    stats::lm(data = data) %>%
     summary() %>%
-    use_series(r.squared)
+    magrittr::use_series(r.squared)
 
   1 - fm
 
@@ -162,17 +159,17 @@ viftol <- function(model) {
 
   m <-
     model %>%
-    model.matrix() %>%
-    as_data_frame() %>%
-    select(-1)
+    stats::model.matrix() %>%
+    tibble::as_data_frame() %>%
+    dplyr::select(-1)
 
   nam <- names(m)
 
   p <-
     model %>%
-    use_series(coefficients) %>%
+    magrittr::use_series(coefficients) %>%
     length() %>%
-    subtract(1)
+    magrittr::subtract(1)
 
   tol <- c()
 
@@ -197,9 +194,9 @@ evalue <- function(x) {
 
   e <-
     tu %>%
-    divide_by(diag(tu)) %>%
+    magrittr::divide_by(diag(tu)) %>%
     eigen() %>%
-    use_series(values)
+    magrittr::use_series(values)
 
   list(e = e, pvdata = z)
 
@@ -209,13 +206,13 @@ evalue <- function(x) {
 cindx <- function(e) {
 
   e %>%
-    extract(1) %>%
-    divide_by(e) %>%
+    magrittr::extract(1) %>%
+    magrittr::divide_by(e) %>%
     sqrt(.)
 
 }
 
-#' @importFrom magrittr multiply_by_matrix
+
 pveindex <- function(z) {
 
   d <- NULL
@@ -225,21 +222,21 @@ pveindex <- function(z) {
 
   svdxd <-
     svdx %>%
-    use_series(d)
+    magrittr::use_series(d)
 
   phi_diag <-
     1 %>%
-    divide_by(svdxd) %>%
+    magrittr::divide_by(svdxd) %>%
     diag()
 
   phi <-
     svdx %>%
-    use_series(v) %>%
-    multiply_by_matrix(phi_diag)
+    magrittr::use_series(v) %>%
+    magrittr::multiply_by_matrix(phi_diag)
 
   ph <-
     phi %>%
-    raise_to_power(2) %>%
+    magrittr::raise_to_power(2) %>%
     t()
 
   diag_sum <-
@@ -248,7 +245,7 @@ pveindex <- function(z) {
     diag()
 
   ph %>%
-    multiply_by_matrix(diag_sum) %>%
+    magrittr::multiply_by_matrix(diag_sum) %>%
     prop.table(margin = 2)
 
 }

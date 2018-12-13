@@ -4,7 +4,8 @@
 \alias{blr_plot_residual_fitted}
 \title{Residual vs fitted values plot}
 \usage{
-blr_plot_residual_fitted(model, point_color = "blue", line_color = "red",
+blr_plot_residual_fitted(model, point_color = "blue",
+  line_color = "red",
   title = "Standardized Pearson Residual vs Fitted Values",
   xaxis_title = "Fitted Values",
   yaxis_title = "Standardized Pearson Residual")

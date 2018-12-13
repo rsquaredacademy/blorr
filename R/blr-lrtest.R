@@ -25,8 +25,7 @@
 #'
 #' @seealso \code{\link[lmtest]{lrtest}}
 #'
-#' @importFrom magrittr multiply_by subtract %<>%
-#' @importFrom stats coefficients pchisq formula
+#' @importFrom magrittr %<>%
 #'
 #' @family model fit statistics
 #'
@@ -81,10 +80,10 @@ lr_reduced_model <- function(full_model) {
 
   dat <-
     full_model %>%
-    use_series(data) 
+    magrittr::use_series(data) 
 
 
-  glm(glue(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
+  stats::glm(glue::glue(dep, " ~ 1"), data = dat, family = stats::binomial(link = "logit"))
 
 }
 
@@ -96,13 +95,13 @@ lr_test_result <- function(full_model, reduced_model) {
 
   df <-
     full_model %>%
-    coefficients() %>%
+    stats::coefficients() %>%
     length() %>%
-    subtract(1)
+    magrittr::subtract(1)
 
-  pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
+  pval <- stats::pchisq(q = lr, df = df, lower.tail = FALSE)
 
-  tibble(lr_ratio = lr,
+  tibble::tibble(lr_ratio = lr,
          d_f      = df,
          p_value  = pval)
 
@@ -113,18 +112,18 @@ lr_model_info <- function(full_model, reduced_model) {
 
   full_model_formula <-
     full_model %>%
-    use_series(formula)
+    magrittr::use_series(formula)
 
   reduced_model_formula <-
     reduced_model %>%
-    use_series(formula)
+    magrittr::use_series(formula)
 
   full_model_df    <- model_d_f(full_model)
   reduced_model_df <- model_d_f(reduced_model)
   full_model_ll    <- mll(full_model)
   reduced_model_ll <- mll(reduced_model)
 
-  tibble(model = c("full model", "reduced model"),
+  tibble::tibble(model = c("full model", "reduced model"),
     formulas   = c(full_model    = full_model_formula,
                    reduced_model = reduced_model_formula),
     log_lik    = c(full_model_ll, reduced_model_ll),

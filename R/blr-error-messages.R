@@ -1,10 +1,7 @@
-#' @importFrom checkmate check_class check_tibble check_data_frame check_number check_logical check_true check_choice
-#' @importFrom rlang quo_name
-#' @importFrom stats family
 blr_check_model <- function(model) {
 
-	model_class  <- check_class(model, c("glm", "lm"))
-	model_family <- check_true(family(model)$family == "binomial")
+	model_class  <- checkmate::check_class(model, c("glm", "lm"))
+	model_family <- checkmate::check_true(stats::family(model)$family == "binomial")
 
 	fmla <- deparse(formula(model))
 	data <- deparse(model$call$data)
@@ -42,8 +39,8 @@ blr_check_model <- function(model) {
 
 blr_check_data <- function(data) {
 
-  tib <- check_tibble(data)
-  df  <- check_data_frame(data)
+  tib <- checkmate::check_tibble(data)
+  df  <- checkmate::check_data_frame(data)
   data_class <- class(data)
   data_name <- deparse(substitute(data))
 
@@ -58,7 +55,7 @@ blr_check_data <- function(data) {
 
 blr_check_logic <- function(logic) {
 
-  lval <- check_logical(logic)
+  lval <- checkmate::check_logical(logic)
   logic_class <- class(logic)
   logic_name <- deparse(substitute(logic))
 
@@ -75,7 +72,7 @@ blr_check_logic <- function(logic) {
 
 blr_check_values <- function(value, lower, upper) {
 
-  valid <- check_number(value, lower = lower, upper = upper)
+  valid <- checkmate::check_number(value, lower = lower, upper = upper)
   value_class <- class(value)
   value_name <- deparse(substitute(value))
 
@@ -94,7 +91,7 @@ blr_check_npredictors <- function(model, min) {
 
   n <-
     model %>%
-    coefficients() %>%
+    stats::coefficients() %>%
     length()
 
   if (n < min) {
@@ -110,7 +107,7 @@ blr_check_npredictors <- function(model, min) {
 
 blr_check_gtable <- function(table) {
 
-	gclass <- check_class(table, "blr_gains_table")
+	gclass <- checkmate::check_class(table, "blr_gains_table")
 	table_name <- deparse(substitute(table))
 	table_class <- class(table)
 
@@ -127,12 +124,12 @@ blr_check_gtable <- function(table) {
 blr_check_varnames <- function(data, column) {
 
   data_name <- deparse(substitute(data))
-  resp <- enquo(column)
-  k <- check_choice(quo_name(resp), choices = names(data))
+  resp <- rlang::enquo(column)
+  k <- checkmate::check_choice(rlang::quo_name(resp), choices = names(data))
 
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }

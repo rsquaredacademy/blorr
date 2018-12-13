@@ -34,3 +34,4 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_lorenz_curve}},
   \code{\link{blr_roc_curve}}
 }
+\concept{model validation techniques}

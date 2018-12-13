@@ -5,8 +5,8 @@
 \title{CI Displacement C vs leverage plot}
 \usage{
 blr_plot_c_leverage(model, point_color = "blue",
-  title = "CI Displacement C vs Leverage Plot", xaxis_title = "Leverage",
-  yaxis_title = "CI Displacement C")
+  title = "CI Displacement C vs Leverage Plot",
+  xaxis_title = "Leverage", yaxis_title = "CI Displacement C")
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

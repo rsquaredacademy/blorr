@@ -36,31 +36,31 @@ blr_gini_index <- function(model, data = NULL) {
   if (is.null(data)) {
     data <-
       model %>%
-      use_series(data)
+      magrittr::use_series(data)
   }
 
   blr_check_data(data)
 
-  prob <- predict.glm(model, newdata = data, type = "response")
+  prob <- stats::predict.glm(model, newdata = data, type = "response")
   n    <- length(prob)
 
   data %>%
-    mutate(
-      prob = predict.glm(model, newdata = ., type = "response")
+    dplyr::mutate(
+      prob = stats::predict.glm(model, newdata = ., type = "response")
     ) %>%
-    arrange(prob) %>%
-    mutate(
+    dplyr::arrange(prob) %>%
+    dplyr::mutate(
       n      = seq_len(n()),
       prob_n = prob * n
     ) %>%
-    pull(prob_n) %>%
+    dplyr::pull(prob_n) %>%
     sum() %>%
-    divide_by(prob %>%
+    magrittr::divide_by(prob %>%
       sum()) %>%
-    multiply_by(2) %>%
-    subtract(n %>%
-      add(1)) %>%
-    divide_by(n)
+    magrittr::multiply_by(2) %>%
+    magrittr::subtract(n %>%
+      magrittr::add(1)) %>%
+    magrittr::divide_by(n)
 
 }
 
@@ -106,14 +106,15 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
     round(2)
 
   blr_prep_lorenz_data(model, data, test_data) %>%
-    ggplot() +
-    geom_line(aes(x = `cum_1s_per`, y = `cum_0s_per`),
+    ggplot2::ggplot() +
+    ggplot2::geom_line(ggplot2::aes(x = `cum_1s_per`, y = `cum_0s_per`),
                 color = lorenz_curve_col) +
-    geom_line(aes(x = `cum_1s_per`, y = `cum_1s_per`), color = diag_line_col) +
-    ggtitle(label = title, subtitle = glue("Gini Index = ", {g_index})) +
-    xlab(xaxis_title) + ylab(yaxis_title) +
-    theme(plot.title = element_text(hjust = 0.5),
-          plot.subtitle = element_text(hjust = 0.5))
+    ggplot2::geom_line(ggplot2::aes(x = `cum_1s_per`, y = `cum_1s_per`), color = diag_line_col) +
+    ggplot2::ggtitle(label = title, subtitle = glue::glue("Gini Index = ", {g_index})) +
+    ggplot2::xlab(xaxis_title) + 
+    ggplot2::ylab(yaxis_title) +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
+          plot.subtitle = ggplot2::element_text(hjust = 0.5))
 
 }
 

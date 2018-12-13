@@ -66,18 +66,18 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
 
   response <-
     model %>%
-    use_series(model) %>%
+    magrittr::use_series(model) %>%
     names() %>%
-    extract(1)
+    magrittr::extract(1)
 
   l     <- mod_sel_data(model)
   nam   <- coeff_names(model)
   preds <- nam
   aic_f <- model_aic(model)
 
-    mi <- glm(
+    mi <- stats::glm(
     paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = "logit")
+    data = l, family = stats::binomial(link = "logit")
   )
 
   laic <- aic_f
@@ -106,9 +106,9 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
 
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
-    m <- glm(
+    m <- stats::glm(
       paste(response, "~", paste(predictors, collapse = " + ")),
-      data = l, family = binomial(link = "logit")
+      data = l, family = stats::binomial(link = "logit")
     )
     aics[i] <- model_aic(m)
     bics[i] <- model_bic(m)
@@ -116,7 +116,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
   }
 
   da <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
-  da2 <- arrange(da, aics)
+  da2 <- dplyr::arrange(da, aics)
 
   if (details == TRUE) {
     w1 <- max(nchar("Predictor"), nchar(predictors))
@@ -161,9 +161,9 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
       step  <- step + 1
       aic_f <- aics[minc]
 
-      mi <- glm(
+      mi <- stats::glm(
         paste(response, "~", paste(preds, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
+        data = l, family = stats::binomial(link = "logit")
       )
 
       laic <- c(laic, aic_f)
@@ -173,7 +173,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
       bics <- c()
       devs <- c()
 
-      if (isRunning()) {
+      if (shiny::isRunning()) {
         cat(paste("-", dplyr::last(rpred)), "\n")
       } else if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
@@ -184,9 +184,9 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
 
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
-        m <- glm(
+        m <- stats::glm(
           paste(response, "~", paste(predictors, collapse = " + ")),
-          data = l, family = binomial(link = "logit")
+          data = l, family = stats::binomial(link = "logit")
         )
         aics[i] <- model_aic(m)
         bics[i] <- model_bic(m)
@@ -202,7 +202,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
           predictors = preds, aics = aics, bics = bics,
           devs = devs
         )
-        da2 <- arrange(da, aics)
+        da2 <- dplyr::arrange(da, aics)
         w1  <- max(nchar("Predictor"), nchar(predictors))
         w2  <- 2
         w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
@@ -242,7 +242,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
-      if (isRunning()) {
+      if (shiny::isRunning()) {
         cat(paste("-", rpred[i]), "\n")
       } else if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
@@ -262,8 +262,8 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
+  final_model <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = stats::binomial(link = 'logit'))
 
   out <- list(
     candidates = nam,
@@ -304,49 +304,54 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
 
   y <-
     x %>%
-    use_series(steps) %>%
+    magrittr::use_series(steps) %>%
     seq_len(.) %>%
-    prepend(0)
+    purrr::prepend(0)
 
   xloc <- y - 0.1
 
   yloc <-
     x %>%
-    use_series(aics) %>%
-    subtract(0.2)
+    magrittr::use_series(aics) %>%
+    magrittr::subtract(0.2)
 
   xmin <-
     y %>%
     min() %>%
-    subtract(0.4)
+    magrittr::subtract(0.4)
 
   xmax <-
     y %>%
     max() %>%
-    add(1)
+    magrittr::add(1)
 
   ymin <-
     x %>%
-    use_series(aics) %>%
+    magrittr::use_series(aics) %>%
     min() %>%
-    add(1)
+    magrittr::add(1)
 
   ymax <-
     x %>%
-    use_series(aics) %>%
+    magrittr::use_series(aics) %>%
     max() %>%
-    add(1)
+    magrittr::add(1)
 
   predictors <- c("Full Model", x$predictors)
 
-  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
-  d  <- tibble(a = y, b = x$aics)
+  d2 <- tibble::tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble::tibble(a = y, b = x$aics)
 
-  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
-    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
-    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
-    ggtitle("Stepwise AIC Backward Elimination") +
-    geom_text(data = d2, aes(x = x, y = y, label = tx),
+  p <- 
+    ggplot2::ggplot(d, ggplot2::aes(x = a, y = b)) + 
+    ggplot2::geom_line(color = "blue") +
+    ggplot2::geom_point(color = "blue", shape = 1, size = 2) + 
+    ggplot2::xlim(c(xmin, xmax)) +
+    ggplot2::ylim(c(ymin, ymax)) + 
+    ggplot2::xlab("Step") + 
+    ggplot2::ylab("AIC") +
+    ggplot2::ggtitle("Stepwise AIC Backward Elimination") +
+    ggplot2::geom_text(data = d2, ggplot2::aes(x = x, y = y, label = tx),
               size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)
@@ -366,7 +371,7 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
 coeff_names <- function(model) {
 
   model %>%
-    use_series(terms) %>%
+    magrittr::use_series(terms) %>%
     attr(which = "factors") %>%
     colnames()
 

@@ -18,8 +18,7 @@
 #' @examples
 #' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #'
-#' @importFrom rlang enquo !! quos !!!
-#' @importFrom purrr map_dbl
+#' @importFrom rlang !! !!!
 #'
 #' @family bivariate analysis procedures
 #'
@@ -33,24 +32,24 @@ blr_bivariate_analysis <- function(data, response, ...)
 #'
 blr_bivariate_analysis.default <- function(data, response, ...) {
 
-  resp <- enquo(response)
-  predictors <- quos(...)
+  resp <- rlang::enquo(response)
+  predictors <- rlang::quos(...)
 
   blr_check_data(data)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
+  k <- checkmate::check_choice(rlang::quo_name(resp), choices = names(data))
   
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
   mdata <-
     data %>%
-    select(!! resp, !!! predictors)
+    dplyr::select(!! resp, !!! predictors)
 
   varnames      <- names(mdata)
   resp_name     <- varnames[1]
@@ -58,7 +57,7 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
   len_pred_name <- x_length(pred_name)
   result        <- bivar_comp(len_pred_name, mdata, pred_name, resp_name)
 
-  result <- tibble(variable         = pred_name,
+  result <- tibble::tibble(variable         = pred_name,
                    iv               = result$iv,
                    likelihood_ratio = result$likelihood_ratio,
                    df               = result$df,
@@ -93,14 +92,14 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
 
     ivs[i] <- ivs_comp(mdata, pred_name, resp_name, i)
 
-    model <- glm(
-      as.formula(paste(resp_name, "~", pred_name[i])), data = mdata,
-      family = binomial(link = "logit")
+    model <- stats::glm(
+      stats::as.formula(paste(resp_name, "~", pred_name[i])), data = mdata,
+      family = stats::binomial(link = "logit")
     )
 
-    model1 <- glm(
-      as.formula(paste(resp_name, "~", 1)), data = mdata,
-      family = binomial(link = "logit")
+    model1 <- stats::glm(
+      stats::as.formula(paste(resp_name, "~", 1)), data = mdata,
+      family = stats::binomial(link = "logit")
     )
 
     lr           <- blr_test_lr(model, model1)
@@ -110,29 +109,29 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
 
   }
 
-  list(likelihood_ratio = map_dbl(lr_ratios, 1),
-       iv               = map_dbl(ivs, 1),
-       df               = map_dbl(lr_dfs, 1),
-       pval             = map_dbl(lr_pvals, 1))
+  list(likelihood_ratio = purrr::map_dbl(lr_ratios, 1),
+       iv               = purrr::map_dbl(ivs, 1),
+       df               = purrr::map_dbl(lr_dfs, 1),
+       pval             = purrr::map_dbl(lr_pvals, 1))
 
 }
 
 ivs_comp <- function(mdata, pred_name, resp_name, i) {
 
-  blr_woe_iv(mdata, !! sym(pred_name[i]), !! sym(resp_name)) %>%
-    use_series(woe_iv_table) %>%
-    pull(iv) %>%
+  blr_woe_iv(mdata, !! rlang::sym(pred_name[i]), !! rlang::sym(resp_name)) %>%
+    magrittr::use_series(woe_iv_table) %>%
+    dplyr::pull(iv) %>%
     sum()
 
 }
 
 lr_extract <- function(lr, value) {
 
-  vals <- enquo(value)
+  vals <- rlang::enquo(value)
 
   lr %>%
-    use_series(test_result) %>%
-    pull(!! vals)
+    magrittr::use_series(test_result) %>%
+    dplyr::pull(!! vals)
 
 }
 #' Event rate
@@ -160,39 +159,38 @@ blr_segment <- function(data, response, predictor) UseMethod("blr_segment")
 blr_segment.default <- function(data, response, predictor) {
 
   blr_check_data(data)
-  # blr_check_varnames(data, response)
 
-  resp <- enquo(response)
-  pred <- enquo(predictor)
+  resp <- rlang::enquo(response)
+  pred <- rlang::enquo(predictor)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
+  k <- checkmate::check_choice(rlang::quo_name(resp), choices = names(data))
   
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
-  k2 <- check_choice(quo_name(pred), choices = names(data))
+  k2 <- checkmate::check_choice(rlang::quo_name(pred), choices = names(data))
   
   if (k2 != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
   segment_data <-
     data %>%
-    select(!! pred, !! resp) %>%
-    group_by(!! pred) %>%
-    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
-    mutate(
+    dplyr::select(!! pred, !! resp) %>%
+    dplyr::group_by(!! pred) %>%
+    dplyr::summarise(n = dplyr::n(), `1s` = table(!! resp)[[2]]) %>%
+    dplyr::mutate(
       `1s%` = round((`1s` / sum(n)), 2)
     ) %>%
-    select(-n, -`1s`)
+    dplyr::select(-n, -`1s`)
 
   result <- list(segment_data = segment_data)
   class(result) <- "blr_segment"
@@ -232,57 +230,54 @@ blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod
 blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
 
   blr_check_data(data)
-  # blr_check_varnames(data, response)
-  # blr_check_varnames(data, variable_1)
-  # blr_check_varnames(data, variable_2)
 
-  resp  <- enquo(response)
-  var_1 <- enquo(variable_1)
-  var_2 <- enquo(variable_2)
+  resp  <- rlang::enquo(response)
+  var_1 <- rlang::enquo(variable_1)
+  var_2 <- rlang::enquo(variable_2)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
+  k <- checkmate::check_choice(rlang::quo_name(resp), choices = names(data))
   
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
 
-  k2 <- check_choice(quo_name(var_1), choices = names(data))
+  k2 <- checkmate::check_choice(rlang::quo_name(var_1), choices = names(data))
   
   if (k2 != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(var_1)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(var_1)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
-  k3 <- check_choice(quo_name(var_2), choices = names(data))
+  k3 <- checkmate::check_choice(rlang::quo_name(var_2), choices = names(data))
   
   if (k3 != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(var_2)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(var_2)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
 
-  n     <- nrow(data)
+  n <- nrow(data)
 
   dat <-
     data %>%
-    filter((!! resp) == 1) %>%
-    select(!! var_1, !! var_2)
+    dplyr::filter((!! resp) == 1) %>%
+    dplyr::select(!! var_1, !! var_2)
 
   var_names <- names(dat)
 
   twoway <-
     dat %>%
     table() %>%
-    divide_by(n)
+    magrittr::divide_by(n)
 
   result <- list(twoway_segment = twoway, varnames = var_names)
   class(result) <- "blr_segment_twoway"
@@ -325,7 +320,6 @@ print.blr_segment_twoway <- function(x, ...) {
 #' # plot
 #' plot(k)
 #'
-#' @importFrom ggplot2 geom_col sec_axis
 #'
 #' @family bivariate analysis procedures
 #'
@@ -340,24 +334,24 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
   blr_check_data(data)
 
-  resp <- enquo(response)
-  pred <- enquo(predictor)
+  resp <- rlang::enquo(response)
+  pred <- rlang::enquo(predictor)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
+  k <- checkmate::check_choice(rlang::quo_name(resp), choices = names(data))
   
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
 
-  k2 <- check_choice(quo_name(pred), choices = names(data))
+  k2 <- checkmate::check_choice(rlang::quo_name(pred), choices = names(data))
   
   if (k2 != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", crayon::bold$red(rlang::quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
     stop("", call. = FALSE)
   }
@@ -367,7 +361,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
   var_name <-
     dist_table %>%
     names() %>%
-    extract(1)
+    magrittr::extract(1)
 
   names(dist_table)[1] <- "variable"
 
@@ -381,10 +375,10 @@ blr_segment_dist.default <- function(data, response, predictor) {
 segment_comp <- function(data, pred, resp) {
 
   data %>%
-    select(!! pred, !! resp) %>%
-    group_by(!! pred) %>%
-    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
-    mutate(
+    dplyr::select(!! pred, !! resp) %>%
+    dplyr::group_by(!! pred) %>%
+    dplyr::summarise(n = dplyr::n(), `1s` = table(!! resp)[[2]]) %>%
+    dplyr::mutate(
       `n%` = round((n / sum(n)), 2),
       `1s%` = round((`1s` / sum(n)), 2)
     )
@@ -416,15 +410,18 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
 
   vname <-
     x %>%
-    use_series(var_name)
+    magrittr::use_series(var_name)
 
   x %>%
-    use_series(dist_table) %>%
-    ggplot(aes(variable)) + geom_col(aes(y = `n%`), fill = bar_color) +
-    geom_line(aes(y = `1s%`, group = 1), color = line_color) +
-    xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
-    scale_y_continuous(labels = scales::percent,
-      sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
+    magrittr::use_series(dist_table) %>%
+    ggplot2::ggplot(ggplot2::aes(variable)) + 
+    ggplot2::geom_col(ggplot2::aes(y = `n%`), fill = bar_color) +
+    ggplot2::geom_line(ggplot2::aes(y = `1s%`, group = 1), color = line_color) +
+    ggplot2::xlab(xaxis_title) + 
+    ggplot2::ggtitle(plot_title) + 
+    ggplot2::ylab(yaxis_title) +
+    ggplot2::scale_y_continuous(labels = scales::percent,
+      sec.axis = ggplot2::sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
         labels = scales::percent))
 }
 
@@ -432,11 +429,9 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
 secondary_axis_scale_comp <- function(x) {
 
   x %>%
-    use_series(dist_table) %>%
-    mutate(
-      sec = `n%` / `1s%`
-    ) %>%
-    pull(sec) %>%
+    magrittr::use_series(dist_table) %>%
+    dplyr::mutate(sec = `n%` / `1s%`) %>%
+    dplyr::pull(sec) %>%
     min()
 
 }

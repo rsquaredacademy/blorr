@@ -46,8 +46,6 @@
 #' k$model
 #'
 #' }
-#' 
-#' @importFrom shiny isRunning
 #'
 #' @family variable selection procedures
 #'
@@ -67,9 +65,9 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
 
   response <-
     model %>%
-    use_series(model) %>%
+    magrittr::use_series(model) %>%
     names() %>%
-    extract(1)
+    magrittr::extract(1)
 
   l        <- mod_sel_data(model)
   nam      <- coeff_names(model)
@@ -81,9 +79,9 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
   bics     <- c()
   devs     <- c()
 
-  mo <- glm(
+  mo <- stats::glm(
     paste(response, "~", 1), data = l,
-    family = binomial(link = "logit")
+    family = stats::binomial(link = "logit")
   )
   aic1 <- model_aic(mo)
 
@@ -101,9 +99,9 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    k <- glm(
+    k <- stats::glm(
       paste(response, "~", paste(predictors, collapse = " + ")),
-      data = l, family = binomial(link = "logit")
+      data = l, family = stats::binomial(link = "logit")
     )
     aics[i] <- model_aic(k)
     bics[i] <- model_bic(k)
@@ -114,7 +112,7 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
     predictors = all_pred, aics = aics, bics = bics,
     devs = devs
   )
-  da2 <- arrange(da, aics)
+  da2 <- dplyr::arrange(da, aics)
 
   if (details == TRUE) {
     w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
@@ -159,7 +157,7 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
     cat("Variables Entered:", "\n\n")
   }
 
-  if (isRunning()) {
+  if (shiny::isRunning()) {
     cat(paste("-", dplyr::last(preds)), "\n")
   } else if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -172,9 +170,9 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
     aics <- c()
     bics <- c()
     devs <- c()
-    mo <- glm(
+    mo <- stats::glm(
       paste(response, "~", paste(preds, collapse = " + ")), data = l,
-      family = binomial(link = "logit")
+      family = stats::binomial(link = "logit")
     )
     aic1 <- model_aic(mo)
 
@@ -184,9 +182,9 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
 
     for (i in seq_len(len_p)) {
       predictors <- c(preds, all_pred[i])
-      k <- glm(
+      k <- stats::glm(
         paste(response, "~", paste(predictors, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
+        data = l, family = stats::binomial(link = "logit")
       )
       aics[i] <- model_aic(k)
       bics[i] <- model_bic(k)
@@ -199,7 +197,7 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
         devs = devs
       )
 
-      da2 <- arrange(da, aics)
+      da2 <- dplyr::arrange(da, aics)
       w1  <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
       w2  <- 2
       w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
@@ -241,7 +239,7 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
       step     <- step + 1
 
      
-      if (isRunning()) {
+      if (shiny::isRunning()) {
         cat(paste("-", dplyr::last(preds)), "\n")
       } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -259,7 +257,7 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
     cat("\n\n")
     cat("Variables Entered:", "\n\n")
     for (i in seq_len(length(preds))) {
-      if (isRunning()) {
+      if (shiny::isRunning()) {
         cat(paste("-", preds[i]), "\n")
       } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), "\n")
@@ -279,8 +277,8 @@ blr_step_aic_forward.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
+  final_model <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = stats::binomial(link = 'logit'))
 
   out <- list(
     candidates = nam,
@@ -308,8 +306,6 @@ print.blr_step_aic_forward <- function(x, ...) {
   }
 }
 
-
-#' @importFrom ggplot2 xlim ylim
 #' @rdname blr_step_aic_forward
 #' @export
 #'
@@ -328,26 +324,31 @@ plot.blr_step_aic_forward <- function(x, text_size = 3,  ...) {
 
   ymin <-
     x %>%
-    use_series(aic) %>%
+    magrittr::use_series(aic) %>%
     min() %>%
-    subtract(1)
+    magrittr::subtract(1)
 
   ymax <-
     x %>%
-    use_series(aic) %>%
+    magrittr::use_series(aic) %>%
     max() %>%
-    add(1)
+    magrittr::add(1)
 
   predictors <- x$predictors
 
-  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
-  d  <- tibble(a = y, b = x$aics)
+  d2 <- tibble::tibble(x = xloc, y = yloc, tx = predictors)
+  d  <- tibble::tibble(a = y, b = x$aics)
 
-  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
-    geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
-    ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
-    ggtitle("Stepwise AIC Forward Selection") +
-    geom_text(data = d2, aes(x = x, y = y, label = tx), 
+  p <- 
+    ggplot2::ggplot(d, ggplot2::aes(x = a, y = b)) + 
+    ggplot2::geom_line(color = "blue") +
+    ggplot2::geom_point(color = "blue", shape = 1, size = 2) + 
+    ggplot2::xlim(c(xmin, xmax)) +
+    ggplot2::ylim(c(ymin, ymax)) + 
+    ggplot2::xlab("Step") + 
+    ggplot2::ylab("AIC") +
+    ggplot2::ggtitle("Stepwise AIC Forward Selection") +
+    ggplot2::geom_text(data = d2, ggplot2::aes(x = x, y = y, label = tx), 
       size = text_size, hjust = 0, nudge_x = 0.1)
 
   print(p)

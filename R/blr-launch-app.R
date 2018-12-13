@@ -1,4 +1,3 @@
-#' @importFrom shiny runApp
 #' @title Launch shiny app
 #' @description Launches shiny app for interactive model building.
 #' @examples
@@ -8,5 +7,5 @@
 #' @export
 #'
 blr_launch_app <- function() {
-  runApp(appDir = system.file("application", package = "blorr"))
+  shiny::runApp(appDir = system.file("application", package = "blorr"))
 }
