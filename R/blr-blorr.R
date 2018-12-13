@@ -30,6 +30,6 @@ if (getRversion() >= "2.15.1") {
     "twoway_segment", "varnames", "color", "concordance", "concordant",
     "d_by_g_mean","dbetas", "decile_mean", "discordant", "gmean", "obs",
     "pairs", "tied", "ties", "txt", "coefficients", "terms", "df.residual",
-    "deviance"
+    "deviance", "formula"
   ))
 }
