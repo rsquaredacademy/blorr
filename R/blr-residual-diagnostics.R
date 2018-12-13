@@ -36,7 +36,7 @@ blr_plot_diag_influence <- function(model) {
   p7 <- blr_plot_leverage(model)
 
   myplots <- list(p1, p2, p3, p4, p5, p6, p7)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  do.call(gridExtra::grid.arrange, c(myplots, list(ncol = 2)))
 
   result <- list(plots = myplots)
   invisible(result)
@@ -76,7 +76,7 @@ blr_plot_diag_fit <- function(model) {
   p4 <- blr_plot_c_fitted(model)
 
   myplots <- list(p1, p2, p3, p4)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  do.call(gridExtra::grid.arrange, c(myplots, list(ncol = 2)))
 
   result <- list(plots = myplots)
   invisible(result)
@@ -118,7 +118,7 @@ blr_plot_diag_leverage <- function(model) {
   p4 <- blr_plot_fitted_leverage(model)
 
   myplots <- list(p1, p2, p3, p4)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  do.call(gridExtra::grid.arrange, c(myplots, list(ncol = 2)))
 
   result <- list(plots = myplots)
   invisible(result)

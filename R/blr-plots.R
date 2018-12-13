@@ -384,7 +384,7 @@ blr_plot_dfbetas_panel <- function(model) {
 
   }
 
-  suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
+  suppressWarnings(do.call(gridExtra::grid.arrange, c(myplots, list(ncol = 2))))
   names(outliers) <- model_coeff_names(model)
   result <- list(outliers = outliers, plots = myplots)
   invisible(result)

@@ -57,7 +57,7 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
     ggplot2::scale_x_continuous(labels = scales::percent) + 
     ggplot2::scale_y_continuous(labels = scales::percent) + 
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = plot_title_justify)) +
-    ggplot2::geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
+    ggplot2::geom_line(ggplot2::aes(x = `1 - specificity`, y = `1 - specificity`),
               color = diag_line_col)
 }
 

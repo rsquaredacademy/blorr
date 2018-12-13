@@ -3,7 +3,7 @@ blr_check_model <- function(model) {
 	model_class  <- checkmate::check_class(model, c("glm", "lm"))
 	model_family <- checkmate::check_true(stats::family(model)$family == "binomial")
 
-	fmla <- deparse(formula(model))
+	fmla <- deparse(stats::formula(model))
 	data <- deparse(model$call$data)
 
 	if (model_class != TRUE) {
