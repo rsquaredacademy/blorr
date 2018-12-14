@@ -8,8 +8,8 @@
 \usage{
 blr_step_p_forward(model, ...)
 
-\method{blr_step_p_forward}{default}(model, penter = 0.3, details = FALSE,
-  ...)
+\method{blr_step_p_forward}{default}(model, penter = 0.3,
+  details = FALSE, ...)
 
 \method{plot}{blr_step_p_forward}(x, model = NA, ...)
 }
@@ -76,3 +76,4 @@ Other variable selection procedures: \code{\link{blr_step_aic_backward}},
   \code{\link{blr_step_aic_forward}},
   \code{\link{blr_step_p_backward}}
 }
+\concept{variable selection procedures}

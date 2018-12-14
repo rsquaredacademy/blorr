@@ -8,8 +8,9 @@
 blr_segment_dist(data, response, predictor)
 
 \method{plot}{blr_segment_dist}(x, title = NA, xaxis_title = "Levels",
-  yaxis_title = "Sample Distribution", sec_yaxis_title = "1s Distribution",
-  bar_color = "blue", line_color = "red", ...)
+  yaxis_title = "Sample Distribution",
+  sec_yaxis_title = "1s Distribution", bar_color = "blue",
+  line_color = "red", ...)
 }
 \arguments{
 \item{data}{A \code{tibble} or a \code{data.frame}.}
@@ -54,3 +55,4 @@ Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
   \code{\link{blr_segment}},
   \code{\link{blr_woe_iv_stats}}, \code{\link{blr_woe_iv}}
 }
+\concept{bivariate analysis procedures}
