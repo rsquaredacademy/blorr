@@ -131,8 +131,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' health impairment scale, Biometrics, 33, 237–247.
 #'
 #' @examples
-#' model <- glm(honcomp ~ female + read + science, data = hsb2,
-#'              family = binomial(link = 'logit'))
+#' model <- glm(y ~ ., data = bank_marketing, family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
 #'
