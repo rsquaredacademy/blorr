@@ -13,7 +13,9 @@ knitr::opts_chunk$set(
 options(tibble.width = Inf)
 ```
 
-# blorr <img src="hex_blorr.png" height="100px" align="right" />
+# blorr 
+
+> Tools for building binary logistic regression models
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) [![cran checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
 [![Travis-CI Build Status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr) [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr) [![Coverage status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master) ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
