@@ -4,7 +4,7 @@ model <- stats::glm(y ~ ., data = bank_marketing, family = stats::binomial(link 
 
 test_that("output from blr_gains_table is as expected", {
   skip_on_cran()
-  gtable <- blr_gains_table(model, hsb2)
+  gtable <- blr_gains_table(model, data = bank_marketing)
   actual <- 
     gtable %>%
     magrittr::use_series(gains_table) %>%
