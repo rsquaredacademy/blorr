@@ -1,15 +1,13 @@
 context("test-blr-pairs.R")
 
 test_that("output from blr_pairs is as expected", {
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = blorr::hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
-  actual <- 
-  	model %>%
-  	blr_pairs() %>%
-    dplyr::pull(gamma) %>%
+  actual <- blr_pairs(model) %>%
+    pull(gamma) %>%
     round(2)
 
   expected <- 0.71

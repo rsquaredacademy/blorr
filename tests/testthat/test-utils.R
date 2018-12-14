@@ -1,20 +1,20 @@
 context("test-utils.R")
 
 # regression
-model <- stats::glm(
+model <- glm(
   honcomp ~ female + read + science, data = hsb2,
-  family = stats::binomial(link = "logit")
+  family = binomial(link = "logit")
 )
 
 test_that("response_var extract response variable name from the model", {
   actual <- response_var(model)
-  expected <- rlang::sym("honcomp")
+  expected <- sym("honcomp")
   expect_equal(actual, expected)
 })
 
 test_that("data_name extracts name of the data set from the model", {
   actual <- data_name(model)
-  expected <- rlang::sym("hsb2")
+  expected <- sym("hsb2")
   expect_equal(actual, expected)
 })
 
@@ -43,10 +43,8 @@ test_that("model_df returns the model degrees of freedom", {
 })
 
 test_that("output from resp_profile is as expected", {
-  actual <- 
-    model %>%
-    resp_profile() %>%
-    magrittr::extract2(1)
+  actual <- resp_profile(model) %>%
+    extract2(1)
   expected <- 147
   expect_equal(actual, expected)
 })
@@ -106,6 +104,16 @@ test_that("output from odds_point is as expected", {
   expected <- c(4.40, 1.11, 1.10)
   expect_equivalent(actual, expected)
 })
+
+# test_that('output from odds_conf_limit is as expected', {
+#
+#   actual <- odds_conf_limit(model) %>%
+#     pull(`2.5 %`) %>%
+#     round(2)
+#   expected <- c(1.90, 1.06, 1.04)
+#   expect_equivalent(actual, expected)
+#
+# })
 
 test_that("output from mll is as expected", {
   actual <- mll(model) %>%

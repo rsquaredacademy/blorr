@@ -35,4 +35,3 @@ Other model validation techniques: \code{\link{blr_decile_capture_rate}},
   \code{\link{blr_roc_curve}},
   \code{\link{blr_test_hosmer_lemeshow}}
 }
-\concept{model validation techniques}

@@ -47,6 +47,8 @@
 #'
 #' }
 #'
+#' @importFrom dplyr full_join select
+#'
 #' @family variable selection procedures
 #'
 #' @export
@@ -94,9 +96,13 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
 
   while (!end) {
-    m <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = stats::binomial(link = 'logit'))
-    m_sum <- car::Anova(m, test.statistic = "Wald")
+    m <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+    m_sum <- Anova(m, test.statistic = "Wald")
     pvals <- m_sum$`Pr(>Chisq)`
+    # m_sum <- summary(m)
+    # pvals <- unname(m_sum$coefficients[, 4])[-1]
+    # m <- ols_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+    # pvals <- m$pvalues[-1]
     maxp  <- which(pvals == max(pvals))
 
     suppressWarnings(
@@ -106,14 +112,19 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         rpred  <- c(rpred, preds[maxp])
         preds  <- preds[-maxp]
         lp     <- length(rpred)
-        fr     <- stats::glm(paste(response, "~",
-                    paste(preds, collapse = " + ")), l, family = stats::binomial(link = 'logit'))
+        fr     <- glm(paste(response, "~",
+                                  paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
         mfs    <- blr_model_fit_stats(fr)
         aic    <- c(aic, mfs$m_aic)
         bic    <- c(bic, mfs$m_bic)
         dev    <- c(dev, mfs$m_deviance)
-     
-        if (shiny::isRunning()) {
+        # fr     <- ols_regress(paste(response, "~",
+        #                         paste(preds, collapse = " + ")), l)
+        # aic    <- c(aic, ols_aic(fr$model))
+        # bic    <- c(sbc, ols_sbc(fr$model))
+        # dev    <- c(sbic, ols_sbic(fr$model, model))
+
+        if (isRunning()) {
         cat(paste("-", dplyr::last(rpred), "added"), "\n")
         } else if (interactive()) {
           cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
@@ -131,7 +142,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
       } else {
         end <- TRUE
         cat("\n")
-        cat(crayon::bold$red(glue::glue("No more variables satisfy the condition of p value = {prem}")))
+        cat(crayon::bold$red(glue("No more variables satisfy the condition of p value = {prem}")))
         cat("\n")
       }
     )
@@ -141,7 +152,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
-      if (shiny::isRunning()) {
+      if (isRunning()) {
         cat(paste("-", rpred[i], "added"), "\n")
       } else if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
@@ -161,8 +172,8 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   )
   print(fi)
 
-  final_model <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = stats::binomial(link = 'logit'))
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
 
   out <- list(removed    = rpred,
               indvar     = cterms,
@@ -199,16 +210,18 @@ plot.blr_step_p_backward <- function(x, model = NA, ...) {
 
   y <- seq_len(x$steps)
 
-  d4 <- tibble::tibble(a = y, b = x$aic)
-  d5 <- tibble::tibble(a = y, b = x$bic)
-  d6 <- tibble::tibble(a = y, b = x$dev)
+  d4 <- tibble(a = y, b = x$aic)
+  d5 <- tibble(a = y, b = x$bic)
+  d6 <- tibble(a = y, b = x$dev)
 
   p4 <- plot_stepwise(d4, "AIC")
   p5 <- plot_stepwise(d5, "BIC")
   p6 <- plot_stepwise(d6, "Deviance")
 
+  # grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, top = "Stepwise Backward Regression")
+
   myplots <- list(plot_4 = p4, plot_5 = p5, plot_6 = p6)
-  result <- gridExtra::marrangeGrob(myplots, nrow = 2, ncol = 2)
+  result <- marrangeGrob(myplots, nrow = 2, ncol = 2)
   result
 
 }

@@ -7,8 +7,7 @@
 blr_roc_curve(gains_table, title = "ROC Curve",
   xaxis_title = "1 - Specificity", yaxis_title = "Sensitivity",
   roc_curve_col = "blue", diag_line_col = "red", point_shape = 18,
-  point_fill = "blue", point_color = "blue",
-  plot_title_justify = 0.5)
+  point_fill = "blue", point_color = "blue", plot_title_justify = 0.5)
 }
 \arguments{
 \item{gains_table}{An object of class \code{blr_gains_table}.}
@@ -63,4 +62,3 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_lorenz_curve}},
   \code{\link{blr_test_hosmer_lemeshow}}
 }
-\concept{model validation techniques}

@@ -26,8 +26,8 @@ test_that("output from blr_segment is as expected", {
 
   actual <-
     k %>%
-    magrittr::use_series(segment_data) %>%
-    dplyr::pull(`1s%`)
+    use_series(segment_data) %>%
+    pull(`1s%`)
 
   expected <- c(0.01, 0.02, 0.01, 0.22)
 
@@ -55,7 +55,7 @@ test_that("output from blr_twoway_segment is as expected", {
   k <- blr_segment_twoway(hsb2, honcomp, prog, race)
   actual <-
     k %>%
-    magrittr::use_series(twoway_segment) %>%
+    use_series(twoway_segment) %>%
     `[`(, 4) %>%
     round(2) %>%
     unname()
@@ -86,8 +86,8 @@ test_that("output from blr_segment_dist is as expected", {
   k <- blr_segment_dist(hsb2, honcomp, race)
   actual <-
     k %>%
-    magrittr::use_series(dist_table) %>%
-    dplyr::pull(`1s%`)
+    use_series(dist_table) %>%
+    pull(`1s%`)
   expected <- c(0.01, 0.02, 0.01, 0.22)
   expect_equivalent(actual, expected)
 })
@@ -115,8 +115,8 @@ test_that("output from blr_woe_iv is as expected", {
   k <- blr_woe_iv(hsb2, prog, honcomp)
   actual <-
     k %>%
-    magrittr::use_series(woe_iv_table) %>%
-    dplyr::pull(iv) %>%
+    use_series(woe_iv_table) %>%
+    pull(iv) %>%
     sum()
   expected <- 0.4329
   expect_equal(actual, expected)

@@ -28,16 +28,16 @@ blr_linktest <- function(model) {
 
   dat <-
     model %>%
-    magrittr::use_series(call) %>%
-    magrittr::use_series(data) %>%
-    rlang::eval_tidy()
+    use_series(call) %>%
+    use_series(data) %>%
+    eval_tidy()
 
-  fit    <- stats::predict.glm(model, newdata = dat)
+  fit    <- predict.glm(model, newdata = dat)
   fit2   <- fit ^ 2
   resp   <- model$y
-  newdat <- tibble::tibble(fit = fit, fit2 = fit2, resp = resp)
+  newdat <- tibble(fit = fit, fit2 = fit2, resp = resp)
 
-  stats::glm(resp ~ fit + fit2, data = newdat, family = stats::binomial(link = "logit")) %>%
+  glm(resp ~ fit + fit2, data = newdat, family = binomial(link = "logit")) %>%
     summary()
 
 }

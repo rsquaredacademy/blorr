@@ -1,9 +1,9 @@
 context("test-blr-regress.R")
 
 test_that("output from blr_regress is as expected", {
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   k <- blr_regress(model, odd_conf_limit = TRUE)

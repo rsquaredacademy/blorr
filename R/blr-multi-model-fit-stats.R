@@ -16,6 +16,9 @@
 #'
 #' blr_multi_model_fit_stats(model, model2)
 #'
+#' @importFrom purrr map_df
+#' @importFrom magrittr set_colnames
+#'
 #' @family model fit statistics
 #'
 #' @export
@@ -29,7 +32,7 @@ blr_multi_model_fit_stats.default <- function(model, ...) {
   blr_check_model(model)
 
   k        <- list(model, ...)
-  j        <- purrr::map(k, blr_model_fit_stats)
+  j        <- map(k, blr_model_fit_stats)
   n        <- length(j)
   names(j) <- letters[seq_len(n)]
 
@@ -37,7 +40,7 @@ blr_multi_model_fit_stats.default <- function(model, ...) {
     class(j[[i]]) <- "list"
   }
 
-  result <- list(mfit = purrr::map_df(j, tibble::as_tibble))
+  result <- list(mfit = map_df(j, as_tibble))
   class(result) <- "blr_multi_model_fit_stats"
 
   return(result)
@@ -50,8 +53,8 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
 
   df <-
     x %>%
-    magrittr::use_series(mfit) %>%
-    dplyr::select(-lr_df, -dev_df)
+    use_series(mfit) %>%
+    select(-lr_df, -dev_df)
 
   measures <- c(
     "Log-Lik Intercept Only", "Log-Lik Full Model", "Deviance",
@@ -63,7 +66,7 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
 
   model_id <-
     x %>%
-    magrittr::use_series(mfit) %>%
+    use_series(mfit) %>%
     nrow() %>%
     seq_len(.)
 

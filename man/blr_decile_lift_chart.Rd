@@ -5,9 +5,8 @@
 \title{Decile lift chart}
 \usage{
 blr_decile_lift_chart(gains_table, xaxis_title = "Decile",
-  yaxis_title = "Decile Mean / Global Mean",
-  title = "Decile Lift Chart", bar_color = "blue", text_size = 3.5,
-  text_vjust = -0.3)
+  yaxis_title = "Decile Mean / Global Mean", title = "Decile Lift Chart",
+  bar_color = "blue", text_size = 3.5, text_vjust = -0.3)
 }
 \arguments{
 \item{gains_table}{An object of class \code{blr_gains_table}.}
@@ -43,4 +42,3 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_roc_curve}},
   \code{\link{blr_test_hosmer_lemeshow}}
 }
-\concept{model validation techniques}

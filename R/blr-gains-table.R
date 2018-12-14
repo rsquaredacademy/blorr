@@ -37,6 +37,12 @@
 #' k <- blr_gains_table(model)
 #' plot(k)
 #'
+#' @importFrom stats model.frame model.response predict.glm
+#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all desc
+#' @importFrom tibble add_column add_row
+#' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
+#' scale_x_continuous scale_y_continuous theme element_text
+#'
 #' @family model validation techniques
 #'
 #' @export
@@ -77,8 +83,8 @@ blr_gains_table.default <- function(model, data = NULL) {
 print.blr_gains_table <- function(x, ...) {
 
   x %>%
-    magrittr::use_series(gains_table) %>%
-    dplyr::select(
+    use_series(gains_table) %>%
+    select(
       -cum_1s, -cum_0s, -cum_total, -`cum_total_%`,
       -`cum_1s_%`, -`cum_0s_%`
     ) %>%
@@ -96,15 +102,13 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
   blr_check_gtable(x)
 
   gains_plot_data(x) %>%
-    ggplot2::ggplot() +
-    ggplot2::geom_line(ggplot2::aes(x = cum_total_per, y = cum_1s_per), color = lift_curve_col) +
-    ggplot2::geom_line(ggplot2::aes(x = cum_total_per, y = cum_total_y), color = diag_line_col) +
-    ggplot2::ggtitle(title) + 
-    ggplot2::xlab(xaxis_title) + 
-    ggplot2::ylab(yaxis_title) +
-    ggplot2::scale_x_continuous(labels = scales::percent) +
-    ggplot2::scale_y_continuous(labels = scales::percent) +
-    ggplot2::theme(plot.title = ggplot2::element_text(hjust = plot_title_justify))
+    ggplot() +
+    geom_line(aes(x = cum_total_per, y = cum_1s_per), color = lift_curve_col) +
+    geom_line(aes(x = cum_total_per, y = cum_total_y), color = diag_line_col) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
+    scale_x_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent) +
+    theme(plot.title = element_text(hjust = plot_title_justify))
 
 }
 
@@ -131,9 +135,12 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' health impairment scale, Biometrics, 33, 237–247.
 #'
 #' @examples
-#' model <- glm(y ~ ., data = bank_marketing, family = binomial(link = 'logit'))
+#' model <- glm(honcomp ~ female + read + science, data = hsb2,
+#'              family = binomial(link = 'logit'))
 #' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
+#'
+#' @importFrom ggplot2 element_blank annotate geom_segment
 #'
 #' @family model validation techniques
 #'
@@ -152,22 +159,20 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
 
   gains_table %>%
     blr_prep_kschart_data() %>%
-    ggplot2::ggplot(ggplot2::aes(x = cum_total_per)) +
-    ggplot2::geom_line(ggplot2::aes(y = cum_1s_per, color = "Cumulative 1s %")) +
-    ggplot2::geom_line(ggplot2::aes(y = cum_0s_per, color = "Cumulative 0s %")) +
-    ggplot2::geom_point(ggplot2::aes(y = cum_1s_per, color = "Cumulative 1s %")) +
-    ggplot2::geom_point(ggplot2::aes(y = cum_0s_per, color = "Cumulative 0s %")) +
-    ggplot2::geom_segment(ggplot2::aes(x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
-      yend = ks_line[[2]]), color = ks_line_color) +
-    ggplot2::annotate("text", x = annotate_x, y = annotate_y,
+    ggplot(aes(x = cum_total_per)) +
+    geom_line(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
+    geom_line(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
+    geom_point(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
+    geom_point(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
+    geom_segment(x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
+      yend = ks_line[[2]], color = ks_line_color) +
+    annotate("text", x = annotate_x, y = annotate_y,
              label = paste0("KS: ", ks_stat, "%")) +
-    ggplot2::ggtitle(title) + 
-    ggplot2::xlab(xaxis_title) + 
-    ggplot2::ylab(yaxis_title) +
-    ggplot2::scale_x_continuous(labels = scales::percent) +
-    ggplot2::scale_y_continuous(labels = scales::percent) +
-    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5),
-          legend.title = ggplot2::element_blank())
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
+    scale_x_continuous(labels = scales::percent) +
+    scale_y_continuous(labels = scales::percent) +
+    theme(plot.title = element_text(hjust = 0.5),
+          legend.title = element_blank())
 
 }
 
@@ -204,14 +209,10 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
 
   decile_rate <- blr_prep_dcrate_data(gains_table)
 
-  p <- 
-    ggplot2::ggplot(data = decile_rate, ggplot2::aes(x = decile, y = decile_mean)) +
-    ggplot2::geom_col(fill = bar_color) + 
-    ggplot2::ggtitle(title) + 
-    ggplot2::xlab(xaxis_title) +
-    ggplot2::geom_text(ggplot2::aes(label = round(decile_mean, 2)), vjust = text_vjust,
-      size = text_size) + 
-    ggplot2::ylab(yaxis_title)
+  p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
+    geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
+    geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
+      size = text_size) + ylab(yaxis_title)
 
   print(p)
 
@@ -252,14 +253,10 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
   global_mean <- blr_prep_lchart_gmean(gains_table)
   lift_data   <- blr_prep_lchart_data(gains_table, global_mean)
 
-  p <- 
-    ggplot2::ggplot(data = lift_data, ggplot2::aes(x = decile, y = d_by_g_mean)) +
-    ggplot2::geom_col(fill = bar_color) + 
-    ggplot2::ggtitle(title) + 
-    ggplot2::xlab(xaxis_title) +
-    ggplot2::geom_text(ggplot2::aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
-      size = text_size) + 
-    ggplot2::ylab(yaxis_title)
+  p <- ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
+    geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
+    geom_text(aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
+      size = text_size) + ylab(yaxis_title)
 
   print(p)
 
@@ -273,7 +270,7 @@ gains_decile_count <- function(data) {
 
   data %>%
     nrow() %>%
-    magrittr::divide_by(10) %>%
+    divide_by(10) %>%
     round()
 
 }
@@ -284,24 +281,24 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
   if (test_data) {
     namu <-
       model %>%
-      stats::formula() %>%
-      magrittr::extract2(2)
+      formula() %>%
+      extract2(2)
 
     response <-
       data %>%
-      dplyr::pull(!! namu)
+      pull(!! namu)
 
   } else {
     response <-
       model %>%
-      stats::model.frame() %>%
-      stats::model.response()
+      model.frame() %>%
+      model.response()
   }
 
   response %>%
-    tibble::enframe(name = NULL) %>%
-    dplyr::bind_cols(stats::predict.glm(model, newdata = data, type = "response") %>%
-                tibble::enframe(name = NULL))
+    as_tibble() %>%
+    bind_cols(predict.glm(model, newdata = data, type = "response") %>%
+                as_tibble())
 
 }
 
@@ -310,21 +307,21 @@ gains_table_modify <- function(data, decile_count) {
   residual <-
     data %>%
     nrow() %>%
-    magrittr::subtract((decile_count * 9))
+    subtract((decile_count * 9))
 
   data %>%
-    dplyr::select(response = value, prob = value1) %>%
-    dplyr::arrange(dplyr::desc(prob)) %>%
-    tibble::add_column(decile = c(rep(1:9, each = decile_count),
+    select(response = value, prob = value1) %>%
+    arrange(desc(prob)) %>%
+    add_column(decile = c(rep(1:9, each = decile_count),
                           rep(10, times = residual))) %>%
-    dplyr::group_by(decile) %>%
-    dplyr::summarise(total = n(), `1` = table(response)[[2]])
+    group_by(decile) %>%
+    summarise(total = n(), `1` = table(response)[[2]])
 }
 
 gains_table_mutate <- function(data) {
 
   data %>%
-    dplyr::mutate(
+    mutate(
       `0`           = total - `1`,
       cum_1s        = cumsum(`1`),
       cum_0s        = cumsum(`0`),
@@ -347,15 +344,15 @@ gains_table_mutate <- function(data) {
 gains_plot_data <- function(x) {
 
   x %>%
-    magrittr::use_series(gains_table) %>%
-    dplyr::select(`cum_total_%`, `cum_1s_%`) %>%
-    dplyr::mutate(
+    use_series(gains_table) %>%
+    select(`cum_total_%`, `cum_1s_%`) %>%
+    mutate(
       cum_total_per = `cum_total_%` / 100,
       cum_1s_per    = `cum_1s_%` / 100,
       cum_total_y   = cum_total_per
     ) %>%
-    dplyr::select(cum_total_per, cum_1s_per, cum_total_y) %>%
-    tibble::add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
+    select(cum_total_per, cum_1s_per, cum_total_y) %>%
+    add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
 
 }
 

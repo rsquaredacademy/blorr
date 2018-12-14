@@ -29,7 +29,10 @@
 #' # plot woe
 #' plot(k)
 #'
-#' @importFrom rlang !!
+#' @importFrom rlang enquo !!
+#' @importFrom dplyr select rename
+#' @importFrom tibble add_column
+#' @importFrom ggplot2 geom_hline
 #'
 #' @family bivariate analysis procedures
 #'
@@ -44,16 +47,16 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
 
   blr_check_data(data)
 
-  pred <- rlang::enquo(predictor)
-  resp <- rlang::enquo(response)
+  pred <- enquo(predictor)
+  resp <- enquo(response)
 
   dat <-
     data %>%
-    dplyr::select(!! pred, !! resp)
+    select(!! pred, !! resp)
 
   lev <-
     dat %>%
-    dplyr::pull(!! pred) %>%
+    pull(!! pred) %>%
     levels()
 
   f  <- table(dat)
@@ -93,13 +96,11 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
   }
 
   x %>%
-    magrittr::use_series(woe_iv_table) %>%
-    ggplot2::ggplot() +
-    ggplot2::geom_col(ggplot2::aes(x = levels, y = woe), fill = bar_color, width = 0.3) +
-    ggplot2::geom_hline(yintercept = 0, color = line_color) +
-    ggplot2::ggtitle(plot_title) + 
-    ggplot2::xlab(xaxis_title) + 
-    ggplot2::ylab(yaxis_title)
+    use_series(woe_iv_table) %>%
+    ggplot() +
+    geom_col(aes(x = levels, y = woe), fill = bar_color, width = 0.3) +
+    geom_hline(yintercept = 0, color = line_color) +
+    ggtitle(plot_title) + xlab(xaxis_title) + ylab(yaxis_title)
 }
 
 
@@ -121,12 +122,12 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #'
 blr_woe_iv_stats <- function(data, response, ...) {
 
-  resp       <- rlang::enquo(response)
-  predictors <- rlang::quos(...)
+  resp       <- enquo(response)
+  predictors <- quos(...)
 
   dat <-
     data %>%
-    dplyr::select(!! resp, !!! predictors)
+    select(!! resp, !!! predictors)
 
   varnames    <- names(dat)
   resp_name   <- varnames[1]
@@ -146,15 +147,15 @@ woe_data_prep <- function(f, f1) {
 
   rbind(f, f1) %>%
     unique() %>%
-    tibble::as_tibble() %>%
-    dplyr::select(no = `0`, yes = `1`)
+    as_tibble() %>%
+    select(no = `0`, yes = `1`)
 
 }
 
 woe_data_modify <- function(data, lev, digits) {
 
   data %>%
-    dplyr::mutate(
+    mutate(
       total        = no + yes,
       distribution = round((total / sum(total) * 100), digits = digits),
       approval     = round(((yes / total) * 100), digits = digits),
@@ -164,15 +165,15 @@ woe_data_modify <- function(data, lev, digits) {
       dist_diff    = dist_no - dist_yes,
       iv           = round((dist_diff * woe), digits = digits)
     ) %>%
-    tibble::add_column(levels = lev, .before = 1)
+    add_column(levels = lev, .before = 1)
 
 }
 
 woe_data_select <- function(data) {
 
   data %>%
-    dplyr::select(-distribution, -approval) %>%
-    dplyr::select(
+    select(-distribution, -approval) %>%
+    select(
       levels, `0s_count` = no, `1s_count` = yes, `0s_dist` = dist_no,
       `1s_dist` = dist_yes, woe = woe, iv = iv
     )

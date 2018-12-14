@@ -1,15 +1,15 @@
 context("test-forward-selection.R")
 
 test_that("output from forward variable selection is as expected", {
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_step_aic_forward() %>%
-    magrittr::use_series(predictors)
+    use_series(predictors)
 
   expected <- c("read", "female", "science")
 
@@ -17,15 +17,15 @@ test_that("output from forward variable selection is as expected", {
 })
 
 test_that("output from forward variable p selection is as expected", {
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   actual <-
     model %>%
     blr_step_p_forward() %>%
-    magrittr::use_series(predictors)
+    use_series(predictors)
 
   expected <- c("read", "female", "science")
 
@@ -35,9 +35,9 @@ test_that("output from forward variable p selection is as expected", {
 
 test_that("output from forward variable selection is as expected", {
 
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   x <- cat("Forward Selection Method 
@@ -71,9 +71,9 @@ Step    Variable       AIC        BIC      Deviance
 
 test_that("output from forward variable p selection is as expected", {
 
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   x <- cat("Forward Selection Method    
@@ -151,9 +151,9 @@ Step    Entered       AIC         BIC       Deviance
 
 test_that("output from forward variable selection is as expected", {
 
-  model <- stats::glm(
+  model <- glm(
     honcomp ~ female + read + science, data = hsb2,
-    family = stats::binomial(link = "logit")
+    family = binomial(link = "logit")
   )
 
   x <- cat("Forward Selection Method    

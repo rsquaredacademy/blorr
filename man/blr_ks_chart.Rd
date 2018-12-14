@@ -26,7 +26,8 @@ The gains table typically has % cumulative event and % cumulative non-event
 across score bands and can be used to find the KS for a model.
 }
 \examples{
-model <- glm(y ~ ., data = bank_marketing, family = binomial(link = 'logit'))
+model <- glm(honcomp ~ female + read + science, data = hsb2,
+             family = binomial(link = 'logit'))
 gt <- blr_gains_table(model)
 blr_ks_chart(gt)
 
@@ -48,4 +49,3 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_roc_curve}},
   \code{\link{blr_test_hosmer_lemeshow}}
 }
-\concept{model validation techniques}

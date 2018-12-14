@@ -21,6 +21,7 @@
 #' 
 #' @useDynLib blorr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom dplyr filter
 #'
 #' @family model fit statistics
 #'
@@ -31,8 +32,8 @@ blr_pairs <- function(model) {
   blr_check_model(model)
 
   resp    <- model$y
-  fit     <- stats::fitted(model)
-  pairs   <- tibble::tibble(response = resp, fit_val = fit)
+  fit     <- fitted(model)
+  pairs   <- tibble(response = resp, fit_val = fit)
   n       <- nrow(pairs)
   p_ones  <- pairs_one_zero(pairs, 1, fit_val)
   p_zeros <- pairs_one_zero(pairs, 0, fit_val)
@@ -44,17 +45,17 @@ blr_pairs <- function(model) {
 
 pairs_one_zero <- function(pairs, resp, column) {
 
-  cols <- rlang::enquo(column)
+  cols <- enquo(column)
 
   pairs %>%
-    dplyr::filter(response == resp) %>%
-    dplyr::pull(!! cols)
+    filter(response == resp) %>%
+    pull(!! cols)
 }
 
 pairs_compute <- function(compute_pairs, n) {
 
   compute_pairs %>%
-    dplyr::mutate(
+    mutate(
       concordance = concordant / pairs,
       discordance = discordant / pairs,
       tied        = ties / pairs,
@@ -63,7 +64,7 @@ pairs_compute <- function(compute_pairs, n) {
       tau         = (2 * (concordant - discordant)) / (n * (n - 1)),
       c           = concordance + (0.5 * tied)
     ) %>%
-    tibble::as_tibble() %>%
-    dplyr::select(-concordant, -discordant, -ties)
+    as_tibble() %>%
+    select(-concordant, -discordant, -ties)
 
 }

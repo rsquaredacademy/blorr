@@ -32,6 +32,8 @@
 #' k <- blr_gains_table(model)
 #' blr_roc_curve(k)
 #'
+#' @importFrom ggplot2 geom_point
+#'
 #' @family model validation techniques
 #'
 #' @export
@@ -48,16 +50,13 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
 
   gains_table %>%
     blr_prep_roc_data() %>%
-    ggplot2::ggplot(ggplot2::aes(x = `1 - specificity`, y = sensitivity_per)) +
-    ggplot2::geom_point(shape = point_shape, fill = point_fill, color = point_color) +
-    ggplot2::geom_line(color = roc_curve_col) + 
-    ggplot2::ggtitle(title) +
-    ggplot2::xlab(xaxis_title) +
-    ggplot2::ylab(yaxis_title) +
-    ggplot2::scale_x_continuous(labels = scales::percent) + 
-    ggplot2::scale_y_continuous(labels = scales::percent) + 
-    ggplot2::theme(plot.title = ggplot2::element_text(hjust = plot_title_justify)) +
-    ggplot2::geom_line(ggplot2::aes(x = `1 - specificity`, y = `1 - specificity`),
+    ggplot(aes(x = `1 - specificity`, y = sensitivity_per)) +
+    geom_point(shape = point_shape, fill = point_fill, color = point_color) +
+    geom_line(color = roc_curve_col) + ggtitle(title) +
+    scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
+    scale_y_continuous(labels = scales::percent) + ylab(yaxis_title) +
+    theme(plot.title = element_text(hjust = plot_title_justify)) +
+    geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
               color = diag_line_col)
 }
 

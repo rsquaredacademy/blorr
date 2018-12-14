@@ -1,3 +1,6 @@
+#' @importFrom cli cat_line
+#' @importFrom purrr map_int map map2_int
+#' @importFrom rlang prepend
 print_blr_reg <- function(x) {
   w1 <- max(nchar("Data Set"), nchar(x$dataname))
   w2 <- max(nchar("Resp Var"), nchar(x$resp_name))
@@ -24,7 +27,7 @@ print_blr_reg <- function(x) {
 
   w8 <- nchar("Outcome")
   w9 <- c("Frequency", x$resp_prof[[1]], x$resp_prof[[2]]) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w10 <- sum(w8, w9, w8, w9, 24)
 
@@ -42,20 +45,20 @@ print_blr_reg <- function(x) {
   cat(rep("-", w10), sep = "", "\n\n")
 
   w11 <- c("Parameter", x$parameter) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w12 <- 2
   w13 <- c("Estimate", format(round(x$est, 4), nsmall = 4)) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w14 <- c("Std.Error", format(round(x$se, 4), nsmall = 4)) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w15 <- c("z value", format(round(x$zval, 4), nsmall = 4)) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w16 <- c("Pr(>|z|)", format(round(x$pval, 4), nsmall = 4)) %>%
-    purrr::map_int(nchar) %>%
+    map_int(nchar) %>%
     max()
   w17 <- sum(w11, w12, w13, w14, w15, w16, 20)
 
@@ -90,15 +93,15 @@ print_blr_reg <- function(x) {
       nchar() %>%
       max()
     w20 <- x$blr_conf %>%
-      magrittr::use_series(`2.5 %`) %>%
+      use_series(`2.5 %`) %>%
       format(round(4), nsmall = 4) %>%
-      purrr::prepend("95% Wald") %>%
+      prepend("95% Wald") %>%
       nchar() %>%
       max()
     w21 <- x$blr_conf %>%
-      magrittr::use_series(`97.5 %`) %>%
+      use_series(`97.5 %`) %>%
       format(round(4), nsmall = 4) %>%
-      purrr::prepend("Conf. Limit") %>%
+      prepend("Conf. Limit") %>%
       nchar() %>%
       max()
 
@@ -128,14 +131,14 @@ print_blr_reg <- function(x) {
 
   w23 <- 12
   w24 <- x$blr_cord %>%
-    magrittr::extract(1:4) %>%
+    extract(1:4) %>%
     unlist(use.names = FALSE) %>%
     format(round(4), nsmall = 4) %>%
     nchar() %>%
     max()
   w25 <- 9
   w26 <- x$blr_cord %>%
-    magrittr::extract(5:8) %>%
+    extract(5:8) %>%
     unlist(use.names = FALSE) %>%
     format(round(4), nsmall = 4) %>%
     nchar() %>%
@@ -170,6 +173,44 @@ print_blr_reg <- function(x) {
   )
   cat(rep("-", w27), sep = "", "\n\n")
 
+  # model fit stats
+  # w28 <- 24
+  # w30 <- 27
+  # w29 <- c(x$modfit$loglik_null, x$modfit$m_deviance, x$modfit$m_bic) %>%
+  #   format(round(3), nsmall = 3) %>%
+  #   nchar %>%
+  #   max
+  # w31 <- c(x$modfit$loglik_model, x$modfit$lr_ratio, x$modfit$m_aic) %>%
+  #   format(round(3), nsmall = 3) %>%
+  #   nchar %>%
+  #   max
+  # w <- sum(w28, w29, w30, w31, 12)
+  #
+  # cat(fc('Model Fit Statistics', w), '\n')
+  # cat(rep("-", w), sep = "", '\n')
+  # col1names <- c('Log-Lik Intercept Only:', glue('Deviance(', x$modfit$dev_df, '):'), '',
+  #                "MCFadden's R2", 'ML (Cox-Snell) R2:',
+  #                "McKelvey & Zavoina's R2:", 'Count R2:', 'BIC:')
+  # col3names <- c('Log-Lik Full Model:', glue('LR(', x$modfit$lr_df, '):'), 'Prob > LR:',
+  #                "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
+  #                "Efron's R2:", "Adj Count R2:", "AIC:")
+  # col2vals <- c(x$modfit$loglik_null, x$modfit$m_deviance, x$modfit$mcfadden, x$modfit$cox_snell,
+  #               x$modfit$mckelvey, x$modfit$count_r2, x$modfit$m_bic) %>%
+  #   round(3) %>%
+  #   format(nsmall = 3) %>%
+  #   prepend(value = '', before = 3)
+  # col4vals <- c(x$modfit$loglik_model, x$modfit$lr_ratio, x$modfit$lr_pval, x$modfit$adj_mcfadden,
+  #               x$modfit$nagelkerke, x$modfit$effron, x$modfit$count_adj, x$modfit$m_aic) %>%
+  #   round(3) %>%
+  #   format(nsmall = 3)
+  # nlen <- length(col3names)
+  # for (i in seq_len(nlen)) {
+  #   cat(fl(col1names[i], w28), fs(),
+  #       fg(col2vals[i], w29), fs(),
+  #       fl(col3names[i], w30), fs(),
+  #       fg(col4vals[i], w31), '\n')
+  # }
+  # cat(rep("-", w), sep = "", '\n\n')
 }
 
 
@@ -189,12 +230,12 @@ print_model_fit_stats <- function(x) {
   cat(fc("Model Fit Statistics", w), "\n")
   cat(rep("-", w), sep = "", "\n")
   col1names <- c(
-    "Log-Lik Intercept Only:", glue::glue("Deviance(", x$dev_df, "):"), "",
+    "Log-Lik Intercept Only:", glue("Deviance(", x$dev_df, "):"), "",
     "MCFadden's R2", "ML (Cox-Snell) R2:",
     "McKelvey & Zavoina's R2:", "Count R2:", "BIC:"
   )
   col3names <- c(
-    "Log-Lik Full Model:", glue::glue("LR(", x$lr_df, "):"), "Prob > LR:",
+    "Log-Lik Full Model:", glue("LR(", x$lr_df, "):"), "Prob > LR:",
     "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
     "Efron's R2:", "Adj Count R2:", "AIC:"
   )
@@ -204,7 +245,7 @@ print_model_fit_stats <- function(x) {
   ) %>%
     round(3) %>%
     format(nsmall = 3) %>%
-    purrr::prepend(values = "", before = 3)
+    prepend(values = "", before = 3)
   col4vals <- c(
     x$loglik_model, x$lr_ratio, x$lr_pval, x$adj_mcfadden,
     x$nagelkerke, x$effron, x$count_adj, x$m_aic
@@ -260,43 +301,37 @@ print_bivariate_analysis <- function(x) {
 
 
 print_blr_segment <- function(x) {
-  
-  y1 <- 
-    x %>%
-    magrittr::use_series(segment_data) %>%
-    purrr::map(as.character) %>%
-    purrr::map(nchar) %>%
-    purrr::map_int(max) %>%
+  y1 <- x %>%
+    use_series(segment_data) %>%
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
     unname()
 
-  y2 <- 
-    x %>%
-    magrittr::use_series(segment_data) %>%
+  y2 <- x %>%
+    use_series(segment_data) %>%
     names() %>%
     nchar()
 
-  w <- purrr::map2_int(y1, y2, max)
+  w <- map2_int(y1, y2, max)
   wsum <- sum(w, 11)
 
-  rnames <- 
-    x %>%
-    magrittr::use_series(segment_data) %>%
+  rnames <- x %>%
+    use_series(segment_data) %>%
     names()
 
-  dtable <- 
-    x %>%
-    magrittr::use_series(segment_data)
+  dtable <- x %>%
+    use_series(segment_data)
 
-  c1 <- 
-    dtable %>%
-    dplyr::pull(rnames[1]) %>%
-    purrr::prepend(rnames[1])
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(rnames[1])
 
   c2 <- dtable %>%
-    dplyr::pull(rnames[2]) %>%
+    pull(rnames[2]) %>%
     round(2) %>%
     format(nsamll = 2) %>%
-    purrr::prepend(rnames[2])
+    prepend(rnames[2])
 
   clen <- length(c1)
 
@@ -313,62 +348,52 @@ print_blr_segment <- function(x) {
 
 
 print_blr_segment_dist <- function(x) {
-  
-  y1 <- 
-    x %>%
-    magrittr::use_series(dist_table) %>%
-    purrr::map(as.character) %>%
-    purrr::map(nchar) %>%
-    purrr::map_int(max) %>%
+  y1 <- x %>%
+    use_series(dist_table) %>%
+    map(as.character) %>%
+    map(nchar) %>%
+    map_int(max) %>%
     unname()
 
-  y2 <- 
-    x %>%
-    magrittr::use_series(dist_table) %>%
+  y2 <- x %>%
+    use_series(dist_table) %>%
     names() %>%
     nchar()
 
-  w <- purrr::map2_int(y1, y2, max)
+  w <- map2_int(y1, y2, max)
   wsum <- sum(w, 16)
 
-  rnames <- 
-    x %>%
-    magrittr::use_series(dist_table) %>%
+  rnames <- x %>%
+    use_series(dist_table) %>%
     names()
 
-  dtable <- 
-    x %>%
-    magrittr::use_series(dist_table)
+  dtable <- x %>%
+    use_series(dist_table)
 
-  c1 <- 
-    dtable %>%
-    dplyr::pull(rnames[1]) %>%
-    purrr::prepend(x %>%
-      magrittr::use_series(var_name))
+  c1 <- dtable %>%
+    pull(rnames[1]) %>%
+    prepend(x %>%
+      use_series(var_name))
 
-  c2 <- 
-    dtable %>%
-    dplyr::pull(rnames[2]) %>%
-    purrr::prepend(rnames[2])
+  c2 <- dtable %>%
+    pull(rnames[2]) %>%
+    prepend(rnames[2])
 
-  c3 <- 
-    dtable %>%
-    dplyr::pull(rnames[3]) %>%
-    purrr::prepend(rnames[3])
+  c3 <- dtable %>%
+    pull(rnames[3]) %>%
+    prepend(rnames[3])
 
-  c4 <- 
-    dtable %>%
-    dplyr::pull(rnames[4]) %>%
+  c4 <- dtable %>%
+    pull(rnames[4]) %>%
     round(2) %>%
     format(nsamll = 2) %>%
-    purrr::prepend(rnames[4])
+    prepend(rnames[4])
 
-  c5 <- 
-    dtable %>%
-    dplyr::pull(rnames[5]) %>%
+  c5 <- dtable %>%
+    pull(rnames[5]) %>%
     round(2) %>%
     format(nsamll = 2) %>%
-    purrr::prepend(rnames[5])
+    prepend(rnames[5])
 
   clen <- length(c1)
 
@@ -388,58 +413,46 @@ print_blr_segment_dist <- function(x) {
 }
 
 print_blr_test_hosmer_lemeshow <- function(x) {
-   
   w1 <- nchar("group")
-  
-  w2 <- 
-    x %>%
-    magrittr::use_series(partition_table) %>%
-    magrittr::use_series(n) %>%
-    purrr::prepend("Total") %>%
+  w2 <- x %>%
+    use_series(partition_table) %>%
+    use_series(n) %>%
+    prepend("Total") %>%
     nchar() %>%
     max()
-  
-  w3 <- 
-    x %>%
-    magrittr::use_series(partition_table) %>%
-    magrittr::use_series(`1s_observed`) %>%
-    purrr::prepend("Observed") %>%
+  w3 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`1s_observed`) %>%
+    prepend("Observed") %>%
     nchar() %>%
     max()
-  
-  w4 <- 
-    x %>%
-    magrittr::use_series(partition_table) %>%
-    magrittr::use_series(`1s_expected`) %>%
+  w4 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`1s_expected`) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend("Expected") %>%
+    prepend("Expected") %>%
     nchar() %>%
     max()
-  
-  w5 <- 
-    x %>%
-    magrittr::use_series(partition_table) %>%
-    magrittr::use_series(`0s_observed`) %>%
-    purrr::prepend("Observed") %>%
+  w5 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`0s_observed`) %>%
+    prepend("Observed") %>%
     nchar() %>%
     max()
-
-  w6 <- 
-    x %>%
-    magrittr::use_series(partition_table) %>%
-    magrittr::use_series(`0s_expected`) %>%
+  w6 <- x %>%
+    use_series(partition_table) %>%
+    use_series(`0s_expected`) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend("Expected") %>%
+    prepend("Expected") %>%
     nchar() %>%
     max()
-
   w7 <- w3 + w4 + 4
   w8 <- w5 + w6 + 4
   w <- sum(w1, w2, w3, w4, w5, w6, 20)
   j <- x %>%
-    magrittr::use_series(partition_table)
+    use_series(partition_table)
 
   cat(fc("Partition for the Hosmer & Lemeshow Test", w), "\n")
   cat(rep("-", w), sep = "", "\n")
@@ -462,12 +475,11 @@ print_blr_test_hosmer_lemeshow <- function(x) {
   }
   cat(rep("-", w), sep = "", "\n\n")
 
-  w9 <- 
-    x %>%
-    magrittr::use_series(chisq_stat) %>%
+  w9 <- x %>%
+    use_series(chisq_stat) %>%
     round(4) %>%
     format(nsmall = 4) %>%
-    purrr::prepend("Chi-Square") %>%
+    prepend("Chi-Square") %>%
     nchar() %>%
     max()
   w10 <- 2
@@ -491,30 +503,25 @@ print_blr_test_hosmer_lemeshow <- function(x) {
 
 
 print_blr_lr_test <- function(x) {
-
-  w9 <- 
-    x %>%
-    magrittr::use_series(test_result) %>%
-    dplyr::pull(lr_ratio) %>%
+  w9 <- x %>%
+    use_series(test_result) %>%
+    pull(lr_ratio) %>%
     round(4) %>%
     format(nsmall = 4) %>%
-    purrr::prepend("Chi-Square") %>%
+    prepend("Chi-Square") %>%
     nchar() %>%
     max()
-
-  w10 <- 
-    x %>%
-    magrittr::use_series(test_result) %>%
-    dplyr::pull(d_f) %>%
-    purrr::prepend("DF") %>%
+  w10 <- x %>%
+    use_series(test_result) %>%
+    pull(d_f) %>%
+    prepend("DF") %>%
     nchar() %>%
     max()
-
   w11 <- 10
   w12 <- sum(w9, w10, w11, 8)
 
   j <- x %>%
-    magrittr::use_series(test_result)
+    use_series(test_result)
 
   cat(fc("Likelihood Ratio Test", w12), "\n")
   cat(rep("-", w12), sep = "", "\n")
@@ -532,72 +539,61 @@ print_blr_lr_test <- function(x) {
 }
 
 print_blr_woe_iv <- function(x) {
-  
-  y1 <- 
-    x %>%
-    magrittr::use_series(woe_iv_table) %>%
-    purrr::map(nchar) %>%
-    purrr::map_int(max)
+  y1 <- x %>%
+    use_series(woe_iv_table) %>%
+    map(nchar) %>%
+    map_int(max)
 
-  y2 <- 
-    x %>%
-    magrittr::use_series(woe_iv_table) %>%
+  y2 <- x %>%
+    use_series(woe_iv_table) %>%
     names() %>%
     nchar()
 
-  w <- purrr::map2_int(y1, y2, max)
+  w <- map2_int(y1, y2, max)
   wsum <- sum(w, 24)
 
-  rnames <- 
-    x %>%
-    magrittr::use_series(woe_iv_table) %>%
+  rnames <- x %>%
+    use_series(woe_iv_table) %>%
     names()
 
   woe_iv <- x %>%
-    magrittr::use_series(woe_iv_table)
+    use_series(woe_iv_table)
 
-  c1 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[1]) %>%
-    purrr::prepend(rnames[1])
+  c1 <- woe_iv %>%
+    pull(rnames[1]) %>%
+    prepend(rnames[1])
 
-  c2 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[2]) %>%
-    purrr::prepend(rnames[2])
+  c2 <- woe_iv %>%
+    pull(rnames[2]) %>%
+    prepend(rnames[2])
 
-  c3 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[3]) %>%
-    purrr::prepend(rnames[3])
+  c3 <- woe_iv %>%
+    pull(rnames[3]) %>%
+    prepend(rnames[3])
 
-  c4 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[4]) %>%
+  c4 <- woe_iv %>%
+    pull(rnames[4]) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend(rnames[4])
+    prepend(rnames[4])
 
-  c5 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[5]) %>%
+  c5 <- woe_iv %>%
+    pull(rnames[5]) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend(rnames[5])
+    prepend(rnames[5])
 
-  c6 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[6]) %>%
+  c6 <- woe_iv %>%
+    pull(rnames[6]) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend(rnames[6])
+    prepend(rnames[6])
 
-  c7 <- 
-    woe_iv %>%
-    dplyr::pull(rnames[7]) %>%
+  c7 <- woe_iv %>%
+    pull(rnames[7]) %>%
     round(2) %>%
     format(nsmall = 2) %>%
-    purrr::prepend(rnames[7])
+    prepend(rnames[7])
 
   clen <- length(c1)
 
@@ -622,9 +618,8 @@ print_blr_woe_iv <- function(x) {
   l2 <- 17
   lsum <- sum(l1, l2, 4)
 
-  ivalue <- 
-    woe_iv %>%
-    dplyr::pull(iv) %>%
+  ivalue <- woe_iv %>%
+    pull(iv) %>%
     sum()
 
   cat(fc("Information Value", lsum), "\n")
@@ -651,6 +646,12 @@ print_forward_selection <- function(data) {
 
   ln <- length(data$aics)
 
+  # cat(format("Forward Selection Method", justify = "left", width = w), "\n")
+  # cat(rep("-", 24), sep = "", '\n\n')
+  # cat(format("Candidate Terms:", justify = "left", width = w), "\n\n")
+  # for (i in seq_len(length(data$candidates))) {
+  #     cat(format(paste(i, ".", data$candidates[i]), justify = "left", width = w), "\n")
+  # }
   cat("\n")
   cat(format("Selection Summary", justify = "centre", width = w), "\n")
   cat(rep("-", w), sep = "", "\n")
@@ -740,21 +741,18 @@ print_stepwise_selection <- function(data) {
 
 
 print_blr_twoway_segment <- function(x) {
-
-  cnames <- 
-    x %>%
-    magrittr::use_series(twoway_segment) %>%
+  cnames <- x %>%
+    use_series(twoway_segment) %>%
     colnames() %>%
-    purrr::prepend(x %>%
-      magrittr::use_series(varnames) %>%
-      magrittr::extract(1))
+    prepend(x %>%
+      use_series(varnames) %>%
+      extract(1))
 
-  k <- 
-    x %>%
-    magrittr::use_series(twoway_segment) %>%
+  k <- x %>%
+    use_series(twoway_segment) %>%
     rownames() %>%
     cbind(x %>%
-      magrittr::use_series(twoway_segment) %>%
+      use_series(twoway_segment) %>%
       round(3) %>%
       format(nsmall = 3))
 
@@ -765,10 +763,9 @@ print_blr_twoway_segment <- function(x) {
     nchar() %>%
     max()
 
-  vname <- 
-    x %>%
-    magrittr::use_series(varnames) %>%
-    magrittr::extract(2)
+  vname <- x %>%
+    use_series(varnames) %>%
+    extract(2)
 
   w <- (nc * wc) + (4 * (nc - 1))
   w2 <- w - wc - 4 - 3

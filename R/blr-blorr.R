@@ -29,7 +29,6 @@ if (getRversion() >= "2.15.1") {
     "dev_df", "difchisq", "difdev", "fitted", "hat", "lr_df", "mfit",
     "twoway_segment", "varnames", "color", "concordance", "concordant",
     "d_by_g_mean","dbetas", "decile_mean", "discordant", "gmean", "obs",
-    "pairs", "tied", "ties", "txt", "coefficients", "terms", "df.residual",
-    "deviance", "formula"
+    "pairs", "tied", "ties", "txt"
   ))
 }

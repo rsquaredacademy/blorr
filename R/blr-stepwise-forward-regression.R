@@ -51,6 +51,9 @@
 #'
 #' }
 #'
+#' @importFrom stats qt
+#' @importFrom car Anova
+#'
 #' @family variable selection procedures
 #'
 #' @export
@@ -70,7 +73,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   l        <- model$data
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
-  tenter   <- stats::qt(1 - (penter) / 2, df)
+  tenter   <- qt(1 - (penter) / 2, df)
   n        <- ncol(l)
   response <- names(model$model)[1]
   all_pred <- nam
@@ -105,18 +108,19 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- stats::glm(paste(response, "~", paste(predictors, collapse = " + ")),
-             l, family = stats::binomial(link = 'logit'))
-    m_sum <- car::Anova(m, test.statistic = "Wald")
+    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
+             l, family = binomial(link = 'logit'))
+    m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
   }
 
   minp   <- which(pvals == min(pvals))
+  # tvals  <- abs(tvals)
+  # maxt   <- which(tvals == max(tvals))
   preds  <- all_pred[minp]
   lpreds <- length(preds)
-  fr     <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), l, 
-            family = stats::binomial(link = 'logit'))
+  fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
   mfs    <- blr_model_fit_stats(fr)
   aic    <- mfs$m_aic
   bic    <- mfs$m_bic
@@ -127,7 +131,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat(paste("Forward Selection: Step", step), "\n\n")
   }
 
-  if (shiny::isRunning()) {
+  if (isRunning()) {
     cat(paste("-", dplyr::last(preds), "added"), "\n")
   } else if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -153,22 +157,30 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     for (i in seq_len(len_p)) {
 
       predictors <- c(preds, all_pred[i])
-      m <- stats::glm(paste(response, "~", paste(predictors, collapse = " + ")), l, 
-           family = stats::binomial(link = 'logit'))
-      m_sum <- car::Anova(m, test.statistic = "Wald")
+      m <- glm(paste(response, "~", paste(predictors, collapse = " + ")), l, family = binomial(link = 'logit'))
+      m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
+      # m_sum <- summary(m)
+      # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
+      # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
+      # m <- blr_regress(paste(response, "~",
+      #                        paste(predictors, collapse = " + ")), l)
+      # pvals[i] <- m$pval[ppos]
+      # tvals[i] <- m$zval[ppos]
     }
 
     minp  <- which(pvals == min(pvals))
-  
+    # tvals <- abs(tvals)
+    # maxt  <- which(tvals == max(tvals))
+
     if (pvals[minp] <= penter) {
 
       step   <- step + 1
       preds  <- c(preds, all_pred[minp])
       lpreds <- length(preds)
-      fr     <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), l, 
-        family = stats::binomial(link = 'logit'))
+      fr     <- glm(paste(response, "~",
+                                  paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
       mfs    <- blr_model_fit_stats(fr)
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
@@ -179,7 +191,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
         cat(paste("Forward Selection: Step", step), "\n\n")
       }
 
-      if (shiny::isRunning()) {
+      if (isRunning()) {
         cat(paste("-", dplyr::last(preds), "added"), "\n")
       } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
@@ -204,7 +216,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat("\n\n")
     cat("Variables Entered:", "\n\n")
     for (i in seq_len(length(preds))) {
-      if (shiny::isRunning()) {
+      if (isRunning()) {
         cat(paste("+", preds[i]), "\n")
       } else if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), "\n")
@@ -224,8 +236,8 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   )
   print(fi)
 
-  final_model <- stats::glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = stats::binomial(link = 'logit'))
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+    data = l, family = binomial(link = 'logit'))
 
   out <- list(predictors = preds,
               indvar     = cterms,
@@ -250,6 +262,7 @@ print.blr_step_p_forward <- function(x, ...) {
   }
 }
 
+#' @importFrom gridExtra marrangeGrob
 #' @export
 #' @rdname blr_step_p_forward
 #'
@@ -260,16 +273,17 @@ plot.blr_step_p_forward <- function(x, model = NA, ...) {
 
   y <- seq_len(length(x$aic))
 
-  d4 <- tibble::tibble(a = y, b = x$aic)
-  d5 <- tibble::tibble(a = y, b = x$bic)
-  d6 <- tibble::tibble(a = y, b = x$dev)
+  d4 <- tibble(a = y, b = x$aic)
+  d5 <- tibble(a = y, b = x$bic)
+  d6 <- tibble(a = y, b = x$dev)
 
   p4 <- plot_stepwise(d4, "AIC")
   p5 <- plot_stepwise(d5, "BIC")
   p6 <- plot_stepwise(d6, "Deviance")
 
+  # grid.arrange(p1, p2, p3, p4, p5, p6, ncol = 2, top = "Stepwise Forward Regression")
   myplots <- list(plot_4 = p4, plot_5 = p5, plot_6 = p6)
-  result <- gridExtra::marrangeGrob(myplots, nrow = 2, ncol = 2)
+  result <- marrangeGrob(myplots, nrow = 2, ncol = 2)
   result
 
 }

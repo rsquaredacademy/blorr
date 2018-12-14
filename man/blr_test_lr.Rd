@@ -49,4 +49,3 @@ Other model fit statistics: \code{\link{blr_model_fit_stats}},
   \code{\link{blr_rsq_mckelvey_zavoina}},
   \code{\link{blr_rsq_nagelkerke}}
 }
-\concept{model fit statistics}

@@ -11,6 +11,9 @@
 #'
 #' blr_plot_residual_fitted(model)
 #'
+#' @importFrom ggplot2 geom_hline
+#' @importFrom stats residuals rstandard hatvalues
+#'
 #' @export
 #'
 blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "red",
@@ -19,11 +22,11 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
                                      yaxis_title = "Standardized Pearson Residual") {
 
   blr_check_model(model)
-  fit_val <- stats::fitted(model)
-  res_val <- stats::rstandard(model, type = "pearson")
+  fit_val <- fitted(model)
+  res_val <- rstandard(model, type = "pearson")
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title) +
-    ggplot2::geom_hline(yintercept = 0, color = line_color)
+    geom_hline(yintercept = 0, color = line_color)
 
 }
 
@@ -51,7 +54,7 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
                                       yaxis_title = "Standardized Pearson Residuals") {
 
   blr_check_model(model)
-  res_val <- stats::rstandard(model, type = "pearson")
+  res_val <- rstandard(model, type = "pearson")
   id      <- plot_id(res_val)
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -79,11 +82,11 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
                                      yaxis_title = "Deviance Residual") {
 
   blr_check_model(model)
-  fit_val <- stats::fitted(model)
-  res_val <- stats::rstandard(model)
+  fit_val <- fitted(model)
+  res_val <- rstandard(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title) +
-    ggplot2::geom_hline(yintercept = 0, color = line_color)
+    geom_hline(yintercept = 0, color = line_color)
 }
 
 #' Deviance residual values
@@ -106,7 +109,7 @@ blr_plot_deviance_residual <- function(model, point_color = "blue",
                                        yaxis_title = "Deviance Residuals") {
 
   blr_check_model(model)
-  res_val <- stats::rstandard(model)
+  res_val <- rstandard(model)
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -134,8 +137,8 @@ blr_plot_leverage_fitted <- function(model, point_color = "blue",
                                      yaxis_title = "Leverage") {
 
   blr_check_model(model)
-  fit_val <- stats::fitted(model)
-  res_val <- stats::hatvalues(model)
+  fit_val <- fitted(model)
+  res_val <- hatvalues(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -162,7 +165,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
                               yaxis_title = "Leverage") {
 
   blr_check_model(model)
-  res_val <- stats::hatvalues(model)
+  res_val <- hatvalues(model)
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -193,10 +196,10 @@ blr_residual_diagnostics <- function(model) {
   blr_check_model(model)
   res_val <-
     model %>%
-    stats::residuals(type = "pearson") %>%
-    magrittr::raise_to_power(2)
+    residuals(type = "pearson") %>%
+    raise_to_power(2)
 
-  hat_val  <- stats::hatvalues(model)
+  hat_val  <- hatvalues(model)
   num      <- res_val * hat_val
   den      <- 1 - hat_val
   c        <- num / (den ^ 2)
@@ -205,11 +208,11 @@ blr_residual_diagnostics <- function(model) {
 
   difdev <-
     model %>%
-    stats::rstandard() %>%
-    magrittr::raise_to_power(2) %>%
-    magrittr::add(cbar)
+    rstandard() %>%
+    raise_to_power(2) %>%
+    add(cbar)
 
-  tibble::tibble(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
+  tibble(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
 
 }
 
@@ -360,13 +363,17 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' blr_plot_dfbetas_panel(model)
 #' }
 #'
+#' @importFrom stats dfbetas
+#' @importFrom ggplot2 geom_linerange geom_text annotate
+#' @importFrom gridExtra grid.arrange
+#'
 #' @export
 #'
 blr_plot_dfbetas_panel <- function(model) {
 
   blr_check_model(model)
 
-  dfb       <- stats::dfbetas(model)
+  dfb       <- dfbetas(model)
   n         <- nrow(dfb)
   np        <- ncol(dfb)
   threshold <- 2 / sqrt(n)
@@ -384,7 +391,7 @@ blr_plot_dfbetas_panel <- function(model) {
 
   }
 
-  suppressWarnings(do.call(gridExtra::grid.arrange, c(myplots, list(ncol = 2))))
+  suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
   names(outliers) <- model_coeff_names(model)
   result <- list(outliers = outliers, plots = myplots)
   invisible(result)
@@ -412,7 +419,7 @@ blr_plot_c_fitted <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, c)
-  fit_val <- stats::fitted(model)
+  fit_val <- fitted(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -439,7 +446,7 @@ blr_plot_difchisq_fitted <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, difchisq)
-  fit_val <- stats::fitted(model)
+  fit_val <- fitted(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -466,7 +473,7 @@ blr_plot_difdev_fitted <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, difdev)
-  fit_val <- stats::fitted(model)
+  fit_val <- fitted(model)
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -493,7 +500,7 @@ blr_plot_difdev_leverage <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, difdev)
-  hat_val <- stats::hatvalues(model)
+  hat_val <- hatvalues(model)
 
   create_plot(hat_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -520,7 +527,7 @@ blr_plot_difchisq_leverage <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, difchisq)
-  hat_val <- stats::hatvalues(model)
+  hat_val <- hatvalues(model)
 
   create_plot(hat_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -547,7 +554,7 @@ blr_plot_c_leverage <- function(model, point_color = "blue",
 
   blr_check_model(model)
   res_val <- extract_diag(model, c)
-  hat_val <- stats::hatvalues(model)
+  hat_val <- hatvalues(model)
 
   create_plot(hat_val, res_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -574,8 +581,8 @@ blr_plot_fitted_leverage <- function(model, point_color = "blue",
                                      yaxis_title = "Fitted Values") {
 
   blr_check_model(model)
-  fit_val <- stats::fitted(model)
-  hat_val <- stats::hatvalues(model)
+  fit_val <- fitted(model)
+  hat_val <- hatvalues(model)
 
   create_plot(hat_val, fit_val, point_color, title, xaxis_title, yaxis_title)
 
@@ -593,11 +600,11 @@ plot_id <- function(res_val) {
 
 extract_diag <- function(model, value) {
 
-  vals <- rlang::enquo(value)
+  vals <- enquo(value)
 
   model %>%
     blr_residual_diagnostics() %>%
-    dplyr::pull(!! vals)
+    pull(!! vals)
 
 }
 
@@ -605,8 +612,8 @@ extract_diag <- function(model, value) {
 dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
   dbetas <- dfb[, i]
-  tibble::tibble(obs = seq_len(n), dbetas = dbetas) %>%
-    dplyr::mutate(
+  tibble(obs = seq_len(n), dbetas = dbetas) %>%
+    mutate(
       color = ifelse(((dbetas >= threshold) | (dbetas <= -threshold)),
                       c("outlier"), c("normal")),
       fct_color = color %>%
@@ -619,16 +626,15 @@ dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
 dfbetas_plot <- function(d, threshold, dfb, i) {
 
-  ggplot2::ggplot(d, ggplot2::aes(x = obs, y = dbetas, label = txt, ymin = 0, ymax = dbetas)) +
-    ggplot2::geom_linerange(colour = "blue") +
-    ggplot2::geom_hline(yintercept = c(0, threshold, -threshold), colour = "red") +
-    ggplot2::geom_point(colour = "blue", shape = 1) +
-    ggplot2::xlab("Observation") + 
-    ggplot2::ylab("DFBETAS") +
-    ggplot2::ggtitle(paste("Influence Diagnostics for", colnames(dfb)[i])) +
-    ggplot2::geom_text(hjust = -0.2, nudge_x = 0.15, size = 2, family = "serif",
+  ggplot(d, aes(x = obs, y = dbetas, label = txt, ymin = 0, ymax = dbetas)) +
+    geom_linerange(colour = "blue") +
+    geom_hline(yintercept = c(0, threshold, -threshold), colour = "red") +
+    geom_point(colour = "blue", shape = 1) +
+    xlab("Observation") + ylab("DFBETAS") +
+    ggtitle(paste("Influence Diagnostics for", colnames(dfb)[i])) +
+    geom_text(hjust = -0.2, nudge_x = 0.15, size = 2, family = "serif",
               fontface = "italic", colour = "darkred", na.rm = TRUE) +
-    ggplot2::annotate(
+    annotate(
       "text", x = Inf, y = Inf, hjust = 1.5, vjust = 2,
       family = "serif", fontface = "italic", colour = "darkred",
       label = paste("Threshold:", round(threshold, 2))
@@ -639,26 +645,24 @@ dfbetas_plot <- function(d, threshold, dfb, i) {
 dfbetas_outlier_data <- function(d) {
 
   d %>%
-    dplyr:: filter(color == "outlier") %>%
-    dplyr::select(obs, dbetas)
+    filter(color == "outlier") %>%
+    select(obs, dbetas)
 }
 
 
 model_coeff_names <- function(model) {
 
   model %>%
-    stats::coefficients() %>%
+    coefficients() %>%
     names()
 }
 
 create_plot <- function(x, y, point_color, title, xaxis_title, yaxis_title) {
 
-  tibble::tibble(x = x, y = y) %>%
-    ggplot2::ggplot() +
-    ggplot2::geom_point(ggplot2::aes(x = x, y = y), color = point_color) +
-    ggplot2::ggtitle(title) + 
-    ggplot2::xlab(xaxis_title) + 
-    ggplot2::ylab(yaxis_title)
+  tibble(x = x, y = y) %>%
+    ggplot() +
+    geom_point(aes(x = x, y = y), color = point_color) +
+    ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 
 }
 
