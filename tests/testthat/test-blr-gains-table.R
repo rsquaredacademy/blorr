@@ -3,7 +3,10 @@ context("test-blr-gains-table.R")
 model <- stats::glm(y ~ ., data = bank_marketing, family = stats::binomial(link = 'logit'))
 
 test_that("output from blr_gains_table is as expected", {
+
   skip_on_cran()
+  skip_on_travis()
+  
   gtable <- blr_gains_table(model, data = bank_marketing)
   actual <- 
     gtable %>%
