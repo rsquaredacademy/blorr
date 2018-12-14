@@ -5,8 +5,8 @@
 \title{Delta chi square vs leverage plot}
 \usage{
 blr_plot_difchisq_leverage(model, point_color = "blue",
-  title = "Delta Chi Square vs Leverage Plot", xaxis_title = "Leverage",
-  yaxis_title = "Delta Chi Square")
+  title = "Delta Chi Square vs Leverage Plot",
+  xaxis_title = "Leverage", yaxis_title = "Delta Chi Square")
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

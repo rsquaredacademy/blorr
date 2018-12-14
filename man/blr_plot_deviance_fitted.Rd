@@ -4,8 +4,8 @@
 \alias{blr_plot_deviance_fitted}
 \title{Deviance vs fitted values plot}
 \usage{
-blr_plot_deviance_fitted(model, point_color = "blue", line_color = "red",
-  title = "Deviance Residual vs Fitted Values",
+blr_plot_deviance_fitted(model, point_color = "blue",
+  line_color = "red", title = "Deviance Residual vs Fitted Values",
   xaxis_title = "Fitted Values", yaxis_title = "Deviance Residual")
 }
 \arguments{

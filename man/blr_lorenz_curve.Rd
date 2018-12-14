@@ -44,3 +44,4 @@ Other model validation techniques: \code{\link{blr_confusion_matrix}},
   \code{\link{blr_roc_curve}},
   \code{\link{blr_test_hosmer_lemeshow}}
 }
+\concept{model validation techniques}

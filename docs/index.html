@@ -5,10 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>blorr • Tools for Developing Binary Logistic Regression Models</title>
 <meta name="description" content="Tools for building binary logistic regression models.">
 <meta name="author" content="Rsquared Academy">
@@ -57,7 +53,7 @@ concordant and discordant r, confusion matrix logistic regression, stepwise logi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -317,34 +313,31 @@ concordant and discordant r, confusion matrix logistic regression, stepwise logi
 <h3 class="hasAnchor">
 <a href="#gains-table" class="anchor"></a>Gains Table</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="reference/blr_gains_table.html">blr_gains_table</a></span>(model)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Warning: Calling `as_tibble()` on a vector is discouraged, because the</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; behavior is likely to change in the future. Use `enframe(name = NULL)`</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; instead.</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  1      1    20    14     6  22.3    14   141     6    39        26.4</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  2      2    20    13     7  42.1    27   134    13    26        50.9</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  3      3    20    10    10  54.2    37   124    23    16        69.8</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  4      4    20     7    13  58.5    44   111    36     9        83.0</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  5      5    20     3    17  52.6    47    94    53     6        88.7</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  6      6    20     3    17  46.7    50    77    70     3        94.3</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  7      7    20     1    19  35.7    51    58    89     2        96.2</span></a>
-<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt;  8      8    20     2    18  27.2    53    40   107     0       100  </span></a>
-<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt;  9      9    20     0    20  13.6    53    20   127     0       100  </span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt; 10     10    20     0    20   0      53     0   147     0       100  </span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;    specificity accuracy</span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt;  1        95.9     77.5</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt;  2        91.2     80.5</span></a>
-<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt;  3        84.4     80.5</span></a>
-<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt;  4        75.5     77.5</span></a>
-<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt;  5        63.9     70.5</span></a>
-<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt;  6        52.4     63.5</span></a>
-<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt;  7        39.5     54.5</span></a>
-<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="co">#&gt;  8        27.2     46.5</span></a>
-<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt;  9        13.6     36.5</span></a>
-<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co">#&gt; 10         0       26.5</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 10 x 12</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;     &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1      1    20    14     6  22.3    14   141     6    39        26.4</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2      2    20    13     7  42.1    27   134    13    26        50.9</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3      3    20    10    10  54.2    37   124    23    16        69.8</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4      4    20     7    13  58.5    44   111    36     9        83.0</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5      5    20     3    17  52.6    47    94    53     6        88.7</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6      6    20     3    17  46.7    50    77    70     3        94.3</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7      7    20     1    19  35.7    51    58    89     2        96.2</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8      8    20     2    18  27.2    53    40   107     0       100  </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9      9    20     0    20  13.6    53    20   127     0       100  </span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10     10    20     0    20   0      53     0   147     0       100  </span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt;    specificity accuracy</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt;          &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="co">#&gt;  1        95.9     77.5</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt;  2        91.2     80.5</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;  3        84.4     80.5</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt;  4        75.5     77.5</span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt;  5        63.9     70.5</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt;  6        52.4     63.5</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt;  7        39.5     54.5</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt;  8        27.2     46.5</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt;  9        13.6     36.5</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; 10         0       26.5</span></a></code></pre></div>
 </div>
 <div id="lift-chart" class="section level3">
 <h3 class="hasAnchor">

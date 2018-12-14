@@ -1,387 +1,213 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://blorr.rsquaredacademy.com/</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>1.00</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/index.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/articles/introduction.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/index.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/news/index.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_launch_app.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_bivariate_analysis.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_woe_iv.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_regress.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_model_fit_stats.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_confusion_matrix.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_test_hosmer_lemeshow.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_gains_table.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_roc_curve.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_ks_chart.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_lorenz_curve.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/conduct</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/license</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/license-text</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_woe_iv_stats.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_both.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_decile_lift_chart.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_decile_capture_rate.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_influence.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_fit.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_segment.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_segment_twoway.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_segment_dist.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_multi_model_fit_stats.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_test_lr.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mcfadden.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mcfadden_adj.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_cox_snell.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_nagelkerke.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mckelvey_zavoina.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_effron.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_count.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_adj_count.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_gini_index.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_pairs.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_forward.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_forward.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_backward.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_backward.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_both.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_roc_data.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_lorenz_data.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_dcrate_data.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_lchart_gmean.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_kschart_data.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_residual_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_pearson_residual.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_deviance_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_deviance_residual.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_leverage_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_residual_diagnostics.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_c.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_cbar.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_difchisq.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_difdev.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_dfbetas_panel.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_c_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difchisq_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difdev_fitted.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difchisq_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difdev_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_c_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_fitted_leverage.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_coll_diag.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/blr_linktest.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/hsb2.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/bank_marketing.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://blorr.rsquaredacademy.com/reference/stepwise.html</loc>
-  <lastmod>2018-09-29T18:24:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/index.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/bank_marketing.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blorr.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_bivariate_analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_coll_diag.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_confusion_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_decile_capture_rate.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_decile_lift_chart.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_gains_table.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_gini_index.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_ks_chart.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_launch_app.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_linktest.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_lorenz_curve.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_model_fit_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_multi_model_fit_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_pairs.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_c_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_c_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_deviance_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_deviance_residual.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_dfbetas_panel.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_c.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_cbar.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_difchisq.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_difdev.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_fit.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_influence.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_diag_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difchisq_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difchisq_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difdev_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_difdev_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_fitted_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_leverage.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_leverage_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_pearson_residual.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_plot_residual_fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_dcrate_data.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_kschart_data.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_lchart_gmean.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_lorenz_data.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_prep_roc_data.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_regress.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_residual_diagnostics.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_roc_curve.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_adj_count.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_count.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_cox_snell.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_effron.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mcfadden.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mcfadden_adj.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_mckelvey_zavoina.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_rsq_nagelkerke.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_segment.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_segment_dist.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_segment_twoway.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_backward.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_both.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_aic_forward.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_backward.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_both.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_step_p_forward.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_test_hosmer_lemeshow.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_test_lr.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_woe_iv.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/blr_woe_iv_stats.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/hsb2.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/reference/stepwise.html</loc>
+  </url>
+  <url>
+    <loc>https://blorr.rsquaredacademy.com/articles/introduction.html</loc>
+  </url>
 </urlset>
