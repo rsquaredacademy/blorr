@@ -158,7 +158,7 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
     ggplot2::geom_point(ggplot2::aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     ggplot2::geom_point(ggplot2::aes(y = cum_0s_per, color = "Cumulative 0s %")) +
     ggplot2::geom_segment(ggplot2::aes(x = ks_line[[1]], xend = ks_line[[1]], y = ks_line[[3]],
-      yend = ks_line[[2]], color = ks_line_color)) +
+      yend = ks_line[[2]]), color = ks_line_color) +
     ggplot2::annotate("text", x = annotate_x, y = annotate_y,
              label = paste0("KS: ", ks_stat, "%")) +
     ggplot2::ggtitle(title) + 
