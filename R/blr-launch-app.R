@@ -1,4 +1,3 @@
-#' @importFrom shiny runApp
 #' @title Launch shiny app
 #' @description Launches shiny app for interactive model building.
 #' @examples
@@ -8,5 +7,7 @@
 #' @export
 #'
 blr_launch_app <- function() {
-  runApp(appDir = system.file("application", package = "blorr"))
+  rlang::abort("The shiny app has been moved to a new package, `xplorerr`. To launch the app, run the below code:\n 
+	- install.packages('xplorerr')\n - xplorerr::app_logistic_regression()")
 }
+ 

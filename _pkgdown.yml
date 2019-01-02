@@ -42,11 +42,6 @@ home:
     href: https://www.rsquaredcomputing.com/shiny/blorr/
 
 reference:
-
-- title: Shiny App
-  contents:
-  - blr_launch_app
-
 - title: Bivariate Analysis
 
   contents:

@@ -131,9 +131,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat(paste("Forward Selection: Step", step), "\n\n")
   }
 
-  if (isRunning()) {
-    cat(paste("-", dplyr::last(preds), "added"), "\n")
-  } else if (interactive()) {
+  if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
   } else {
     cat(paste("-", dplyr::last(preds)), "\n")
@@ -191,9 +189,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
         cat(paste("Forward Selection: Step", step), "\n\n")
       }
 
-      if (isRunning()) {
-        cat(paste("-", dplyr::last(preds), "added"), "\n")
-      } else if (interactive()) {
+      if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
       } else {
         cat(paste("-", dplyr::last(preds)), "\n")
@@ -216,9 +212,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     cat("\n\n")
     cat("Variables Entered:", "\n\n")
     for (i in seq_len(length(preds))) {
-      if (isRunning()) {
-        cat(paste("+", preds[i]), "\n")
-      } else if (interactive()) {
+      if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(preds[i]), "\n")
       } else {
         cat(paste("+", preds[i]), "\n")

@@ -37,10 +37,6 @@ install.packages("blorr")
 devtools::install_github("rsquaredacademy/blorr")
 ```
 
-## Shiny App
-
-Use `blr_launch_app()` to explore the package using a shiny app.
-
 ## Articles
 
   - [A Short Introduction to the blorr
@@ -222,9 +218,6 @@ blr_test_hosmer_lemeshow(model)
 
 ``` r
 blr_gains_table(model)
-#> Warning: Calling `as_tibble()` on a vector is discouraged, because the
-#> behavior is likely to change in the future. Use `enframe(name = NULL)`
-#> instead.
 #> # A tibble: 10 x 12
 #>    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
 #>     <dbl> <int> <int> <int> <dbl> <int> <int> <int> <int>       <dbl>
