@@ -154,9 +154,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     cat(paste("Stepwise Selection: Step", step), "\n\n")
   }
 
-  if (isRunning()) {
-    cat(paste("-", dplyr::last(preds), "added"), "\n")
-  } else 
   if (interactive()) {
     cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
   } else {
@@ -236,9 +233,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         cat(paste("Stepwise Selection: Step", step), "\n\n")
       }
 
-      if (isRunning()) {
-        cat(paste("-", dplyr::last(preds), "added"), "\n")
-      } else if (interactive()) {
+      if (interactive()) {
         cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
       } else {
         cat(paste("-", dplyr::last(preds), "added"), "\n")
@@ -296,9 +291,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
           cat(paste("Stepwise Selection: Step", all_step), "\n\n")
         }
 
-        if (isRunning()) {
-          cat(paste("-", dplyr::last(var_index), "added"), "\n")
-        } else 
         if (interactive()) {
           cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(var_index)), "\n")
         } else {

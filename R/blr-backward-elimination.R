@@ -173,9 +173,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
       bics <- c()
       devs <- c()
 
-      if (isRunning()) {
-        cat(paste("-", dplyr::last(rpred)), "\n")
-      } else if (interactive()) {
+      if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
       } else {
         cat(paste("-", dplyr::last(rpred)), "\n")
@@ -242,9 +240,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
-      if (isRunning()) {
-        cat(paste("-", rpred[i]), "\n")
-      } else if (interactive()) {
+      if (interactive()) {
         cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
       } else {
         cat(paste("-", rpred[i]), "\n")
