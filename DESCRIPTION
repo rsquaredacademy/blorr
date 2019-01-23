@@ -29,7 +29,8 @@ Imports:
     scales,
     stats,
     tibble,
-    utils
+    utils,
+    xplorerr
 Suggests: 
     covr,
     ineq,
