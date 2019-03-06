@@ -39,14 +39,14 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
   blr_check_data(data)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
+  # k <- check_choice(quo_name(resp), choices = names(data))
   
-  if (k != TRUE) {
+  # if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+  #   cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
 
-    stop("", call. = FALSE)
-  }
+  #   stop("", call. = FALSE)
+  # }
 
   mdata <-
     data %>%
