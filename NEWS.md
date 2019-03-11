@@ -1,3 +1,7 @@
+# blorr 0.2.1
+
+This is a patch release to fix bugs in the app.
+
 # blorr 0.2.0
 
 This is a minor release to fix bugs and for other enhancements.
