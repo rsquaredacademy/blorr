@@ -120,8 +120,7 @@ model_bic <- function(model) {
 #' @return McFadden's r-squared.
 #' 
 #' @references
-#' McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
-#' Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
+#' \url{https://eml.berkeley.edu/reprints/mcfadden/zarembka.pdf}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -152,8 +151,7 @@ blr_rsq_mcfadden <- function(model) {
 #' @return McFadden's adjusted r-squared.
 #' 
 #' @references
-#' McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
-#' Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
+#' \url{https://eml.berkeley.edu/reprints/mcfadden/zarembka.pdf}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -218,7 +216,7 @@ blr_rsq_cox_snell <- function(model) {
 #' 
 #' Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
 #' 
-#' Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination. Biometrika, 78, 691–692. 
+#' Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination. 
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

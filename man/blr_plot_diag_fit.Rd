@@ -23,7 +23,7 @@ blr_plot_diag_fit(model)
 
 }
 \references{
-Pregibon, D. (1981), “Logistic Regression Diagnostics,” Annals of Statistics, 9, 705–724. 
+\url{https://www.jstor.org/stable/2240841}
 
 Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 

@@ -27,7 +27,7 @@ Cragg, S. G., & Uhler, R. (1970). The demand for automobiles. Canadian Journal o
 
 Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
 
-Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination. Biometrika, 78, 691–692.
+Nagelkerke, N. (1991). A note on a general definition of the coefficient of determination.
 }
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},

@@ -1,8 +1,7 @@
 #' ROC curve
 #'
 #' Receiver operating characteristic curve (ROC) curve is used for assessing
-#'   accuracy of the model classification. It depicts sensitivity on the Y axis
-#'   and 1 – specificity on the X axis.
+#'   accuracy of the model classification. 
 #'
 #' @param gains_table An object of class \code{blr_gains_table}.
 #' @param title Plot title.

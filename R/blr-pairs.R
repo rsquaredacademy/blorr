@@ -7,11 +7,9 @@
 #' @return A tibble.
 #' 
 #' @references
-#' Nelsen  RB  (1998):  Concordance  and  Gini’s  measure  of  association. Journal  of  Nonparametric  
-#' Statistics, 9(3):227–238. 
+#' \url{https://doi.org/10.1080/10485259808832744}
 #' 
-#' Newson  R  (2006):  Confidence  intervals  for  rank  statistics:  Somers'  D  and  extensions.  
-#' The  Stata Journal, 6(3):309–334. 
+#' \url{https://doi.org/10.1177/1536867X0600600302}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

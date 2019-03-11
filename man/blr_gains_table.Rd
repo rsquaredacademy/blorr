@@ -60,7 +60,7 @@ Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
 Oxford,  Oxford  Uni-versity Press.
 
 Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
-A  Valid-ation Methodology, Moody’s Investors Service.
+A  Validation Methodology, Moody’s Investors Service.
 }
 \seealso{
 Other model validation techniques: \code{\link{blr_confusion_matrix}},
