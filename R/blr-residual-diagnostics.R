@@ -7,7 +7,6 @@
 #' @return A panel of influence diagnostic plots.
 #' 
 #' @references
-#' \url{https://www.jstor.org/stable/2240841}
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 
@@ -51,7 +50,6 @@ blr_plot_diag_influence <- function(model) {
 #' @return A panel of diagnostic plots for fitted values.
 #' 
 #' @references
-#' \url{https://www.jstor.org/stable/2240841}
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 
@@ -92,7 +90,6 @@ blr_plot_diag_fit <- function(model) {
 #' @return A panel of diagnostic plots for leverage.
 #' 
 #' @references
-#' \url{https://www.jstor.org/stable/2240841}
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 

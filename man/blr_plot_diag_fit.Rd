@@ -23,8 +23,6 @@ blr_plot_diag_fit(model)
 
 }
 \references{
-\url{https://www.jstor.org/stable/2240841}
-
 Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 
 Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall.
