@@ -6,7 +6,7 @@
 > Tools for building binary logistic regression
 models
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
 [![cran
 checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
 [![Travis-CI Build
