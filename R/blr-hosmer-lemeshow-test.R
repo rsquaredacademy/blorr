@@ -32,8 +32,8 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
+    resp <- model$y
     data <- eval(model$call$data)
-    resp <- model$y 
   } else {
     namu <-
       model %>%
@@ -42,10 +42,8 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
     blr_check_data(data)
 
-    resp <- 
-      data %>% 
-      pull(!! namu) %>%
-      as.numeric()
+    resp_temp <- pull(data, !! namu)
+    resp <- as.numeric(levels(resp_temp))[resp_temp]
   }
 
   hoslem_data <- hoslem_data_prep(model, data, resp)

@@ -23,8 +23,7 @@ blr_rsq_mcfadden_adj(model)
 
 }
 \references{
-McFadden, D. (1974) “Conditional logit analysis of qualitative choice behavior.” 
-Pp. 105-142 in P. Zarembka (ed.), Frontiers in Econometrics. Academic Press.
+\url{https://eml.berkeley.edu/reprints/mcfadden/zarembka.pdf}
 }
 \seealso{
 Other model fit statistics: \code{\link{blr_model_fit_stats}},

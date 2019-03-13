@@ -9,9 +9,9 @@
 #' @references
 #' Pregibon,  D.  1979.  Data  analytic  methods  for  generalized  linear  models.  PhD  diss.,  University  of  Toronto.
 #' 
-#' Pregibon,  D.  1980.  Goodness  of  link  tests  for  generalized  linear  models. Applied  Statistics 29:  15–24.
+#' Pregibon,  D.  1980.  Goodness  of  link  tests  for  generalized  linear  models. 
 #' 
-#' Tukey,  J.  W.  1949.  One  degree  of  freedom  for  non-additivity. Biometrics 5:  232–242
+#' Tukey,  J.  W.  1949.  One  degree  of  freedom  for  non-additivity. 
 #'
 #' @examples
 #'

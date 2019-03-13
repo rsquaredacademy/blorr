@@ -7,7 +7,6 @@
 #' @return A panel of influence diagnostic plots.
 #' 
 #' @references
-#' Pregibon, D. (1981), “Logistic Regression Diagnostics,” Annals of Statistics, 9, 705–724. 
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 
@@ -51,7 +50,6 @@ blr_plot_diag_influence <- function(model) {
 #' @return A panel of diagnostic plots for fitted values.
 #' 
 #' @references
-#' Pregibon, D. (1981), “Logistic Regression Diagnostics,” Annals of Statistics, 9, 705–724. 
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 
@@ -92,7 +90,6 @@ blr_plot_diag_fit <- function(model) {
 #' @return A panel of diagnostic plots for leverage.
 #' 
 #' @references
-#' Pregibon, D. (1981), “Logistic Regression Diagnostics,” Annals of Statistics, 9, 705–724. 
 #' 
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
 #' 

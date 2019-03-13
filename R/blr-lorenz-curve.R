@@ -16,8 +16,7 @@
 #' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.):
 #' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
 #'
-#' Kočenda  E,  Vojtek  M  (2011):  Default  Predictors  in  Retail  Credit  Scoring:  Evidence  from  Czech
-#' Banking Data. Forthcoming in: Emerging Markets Finance and Trade.
+#' \url{https://doi.org/10.2753/REE1540-496X470605}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

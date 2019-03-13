@@ -25,7 +25,7 @@
 #' Oxford,  Oxford  Uni-versity Press.
 #'
 #' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
-#' A  Valid-ation Methodology, Moody’s Investors Service.
+#' A  Validation Methodology, Moody’s Investors Service.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -128,11 +128,9 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param ks_line_color Color of the line indicating maximum KS statistic.
 #'
 #' @references
-#' Tjur, T. (2009), "Coefficients of Determination in Logistic Regression Models — A New Proposal:
-#' The Coefficient of Discrimination," The American Statistician, 63(4), 366-372.
+#' \url{https://doi.org/10.1198/tast.2009.08210}
 #'
-#' Horn, S. D. (1977), Goodness-of-fit tests for discrete data: a review and an application to a
-#' health impairment scale, Biometrics, 33, 237–247.
+#' \url{https://www.ncbi.nlm.nih.gov/pubmed/843576}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

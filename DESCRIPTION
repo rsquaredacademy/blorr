@@ -1,7 +1,7 @@
 Package: blorr
 Type: Package
 Title: Tools for Developing Binary Logistic Regression Models
-Version: 0.2.0.9000
+Version: 0.2.1
 Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0001-9220-9669"))
 Description: Tools designed to make it easier for beginner and intermediate users to build and validate 
@@ -27,16 +27,26 @@ Imports:
     Rcpp,
     rlang,
     scales,
+    shiny,
     stats,
     tibble,
-    utils,
-    xplorerr
+    utils
 Suggests: 
     covr,
+    descriptr,
+    grid,
     ineq,
+    jsonlite, 
+    lubridate,
     knitr,
+    readr,
+    readxl,
     rmarkdown,
+    shinyBS,
+    shinythemes,
+    stringr,
     testthat,
+    tidyr,
     vdiffr
 License: MIT + file LICENSE
 URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr

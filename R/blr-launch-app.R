@@ -8,9 +8,6 @@
 #'
 blr_launch_app <- function() {
 
-	rlang::inform("`blr_launch_app()` has been soft-deprecated and will be removed in the next release. In future, to launch the app, run the below code:\n 
-	- install.packages('xplorerr')\n - xplorerr::app_logistic_regression()\n")
-
 	check_suggests('descriptr')
 	check_suggests('jsonlite')
 	check_suggests('haven')
@@ -23,7 +20,7 @@ blr_launch_app <- function() {
 	check_suggests('stringr')
 	check_suggests('tidyr')
 	
-	xplorerr::app_logistic_regression()
+	shiny::runApp(appDir = system.file("application", package = "blorr"))
 
 }
  

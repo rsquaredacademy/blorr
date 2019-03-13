@@ -39,14 +39,6 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
   blr_check_data(data)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
-  
-  if (k != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
 
   mdata <-
     data %>%
@@ -160,30 +152,12 @@ blr_segment <- function(data, response, predictor) UseMethod("blr_segment")
 blr_segment.default <- function(data, response, predictor) {
 
   blr_check_data(data)
-  # blr_check_varnames(data, response)
 
   resp <- enquo(response)
   pred <- enquo(predictor)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
   
-  if (k != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
-
-  k2 <- check_choice(quo_name(pred), choices = names(data))
-  
-  if (k2 != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
-
   segment_data <-
     data %>%
     select(!! pred, !! resp) %>%
@@ -232,44 +206,13 @@ blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod
 blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
 
   blr_check_data(data)
-  # blr_check_varnames(data, response)
-  # blr_check_varnames(data, variable_1)
-  # blr_check_varnames(data, variable_2)
-
+  
   resp  <- enquo(response)
   var_1 <- enquo(variable_1)
   var_2 <- enquo(variable_2)
 
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
   
-  if (k != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
-
-
-  k2 <- check_choice(quo_name(var_1), choices = names(data))
-  
-  if (k2 != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(var_1)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
-
-  k3 <- check_choice(quo_name(var_2), choices = names(data))
-  
-  if (k3 != TRUE) {
-
-    cat("Uh oh...", crayon::bold$red(quo_name(var_2)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
-
-    stop("", call. = FALSE)
-  }
-
-
   n     <- nrow(data)
 
   dat <-
