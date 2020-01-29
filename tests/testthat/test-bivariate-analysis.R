@@ -29,7 +29,7 @@ test_that("output from blr_segment is as expected", {
     use_series(segment_data) %>%
     pull(`1s%`)
 
-  expected <- c(0.01, 0.02, 0.01, 0.22)
+  expected <- c(0.01, 0.03, 0.01, 0.22)
 
   expect_equivalent(actual, expected)
 })
@@ -88,7 +88,7 @@ test_that("output from blr_segment_dist is as expected", {
     k %>%
     use_series(dist_table) %>%
     pull(`1s%`)
-  expected <- c(0.01, 0.02, 0.01, 0.22)
+  expected <- c(0.01, 0.03, 0.01, 0.22)
   expect_equivalent(actual, expected)
 })
 
