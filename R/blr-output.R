@@ -1,6 +1,6 @@
 #' @importFrom cli cat_line
 #' @importFrom purrr map_int map map2_int
-#' @importFrom rlang prepend
+#' @importFrom purrr prepend
 print_blr_reg <- function(x) {
   w1 <- max(nchar("Data Set"), nchar(x$dataname))
   w2 <- max(nchar("Resp Var"), nchar(x$resp_name))

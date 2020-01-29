@@ -325,7 +325,7 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
     x %>%
     use_series(aics) %>%
     min() %>%
-    add(1)
+    subtract(1)
 
   ymax <-
     x %>%
