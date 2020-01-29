@@ -28,7 +28,7 @@ test_that("output from blr_segment is as expected", {
     k %>%
     use_series(segment_data) %>%
     pull(`1s%`) %>%
-    last()
+    dplyr::last()
 
   expected <- c(0.22)
 
@@ -89,7 +89,7 @@ test_that("output from blr_segment_dist is as expected", {
     k %>%
     use_series(dist_table) %>%
     pull(`1s%`) %>%
-    last()
+    dplyr::last()
   expected <- c(0.22)
   expect_equivalent(actual, expected)
 })
