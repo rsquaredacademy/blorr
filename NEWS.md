@@ -1,3 +1,7 @@
+# blorr 0.2.2
+
+This is a patch release to fix CRAN errors.
+
 # blorr 0.2.1
 
 This is a patch release to fix bugs in the app.
