@@ -27,26 +27,17 @@ Imports:
     Rcpp,
     rlang,
     scales,
-    shiny,
     stats,
     tibble,
-    utils
+    utils,
+    xplorerr
 Suggests: 
     covr,
-    descriptr,
     grid,
     ineq,
-    jsonlite, 
-    lubridate,
     knitr,
-    readr,
-    readxl,
     rmarkdown,
-    shinyBS,
-    shinythemes,
-    stringr,
     testthat,
-    tidyr,
     vdiffr
 License: MIT + file LICENSE
 URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr

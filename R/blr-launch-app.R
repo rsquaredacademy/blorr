@@ -19,8 +19,8 @@ blr_launch_app <- function() {
 	check_suggests('shinythemes')
 	check_suggests('stringr')
 	check_suggests('tidyr')
-	
-	shiny::runApp(appDir = system.file("application", package = "blorr"))
+
+	xplorerr::app_logistic_regression()
 
 }
- 
+
