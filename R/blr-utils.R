@@ -2,7 +2,6 @@
 #' @importFrom dplyr mutate if_else pull slice
 #' @importFrom tibble tibble as_tibble
 #' @importFrom rlang sym eval_tidy !!
-#' @importFrom glue glue
 #' @importFrom stats coef confint binomial df.residual glm terms
 #' @importFrom utils data
 response_var <- function(model) {
@@ -186,10 +185,10 @@ i_model <- function(model) {
 
   dat <-
     model %>%
-    use_series(data) 
+    use_series(data)
 
   glm(
-    glue(dep, " ~ 1"), data = dat,
+    paste0(dep, " ~ 1"), data = dat,
     family = binomial(link = "logit")
   )
 
@@ -284,13 +283,13 @@ mod_sel_data <- function(model) {
 
 #' @importFrom utils packageVersion menu install.packages
 check_suggests <- function(pkg) {
-  
+
   pkg_flag <- tryCatch(utils::packageVersion(pkg), error = function(e) NA)
-  
+
   if (is.na(pkg_flag)) {
-    
+
     msg <- message(paste0('\n', pkg, ' must be installed for this functionality.'))
-    
+
     if (interactive()) {
       message(msg, "\nWould you like to install it?")
       if (utils::menu(c("Yes", "No")) == 1) {
@@ -300,7 +299,7 @@ check_suggests <- function(pkg) {
       }
     } else {
       stop(msg, call. = FALSE)
-    } 
+    }
   }
 
 }

@@ -135,7 +135,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
       } else {
         end <- TRUE
         cat("\n")
-        cat(crayon::bold$red(glue("No more variables satisfy the condition of p value = {prem}")))
+        cat(crayon::bold$red(paste0("No more variables satisfy the condition of p value = ", prem)))
         cat("\n")
       }
     )
@@ -163,7 +163,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   )
   print(fi)
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
     data = l, family = binomial(link = 'logit'))
 
   out <- list(removed    = rpred,

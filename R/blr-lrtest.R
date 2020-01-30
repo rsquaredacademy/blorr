@@ -81,10 +81,10 @@ lr_reduced_model <- function(full_model) {
 
   dat <-
     full_model %>%
-    use_series(data) 
+    use_series(data)
 
 
-  glm(glue(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
+  glm(paste0(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
 
 }
 

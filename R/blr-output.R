@@ -230,12 +230,12 @@ print_model_fit_stats <- function(x) {
   cat(fc("Model Fit Statistics", w), "\n")
   cat(rep("-", w), sep = "", "\n")
   col1names <- c(
-    "Log-Lik Intercept Only:", glue("Deviance(", x$dev_df, "):"), "",
+    "Log-Lik Intercept Only:", paste0("Deviance(", x$dev_df, "):"), "",
     "MCFadden's R2", "ML (Cox-Snell) R2:",
     "McKelvey & Zavoina's R2:", "Count R2:", "BIC:"
   )
   col3names <- c(
-    "Log-Lik Full Model:", glue("LR(", x$lr_df, "):"), "Prob > LR:",
+    "Log-Lik Full Model:", paste0("LR(", x$lr_df, "):"), "Prob > LR:",
     "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
     "Efron's R2:", "Adj Count R2:", "AIC:"
   )

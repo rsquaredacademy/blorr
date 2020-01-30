@@ -89,7 +89,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   pvals   <- c()
   tvals   <- c()
   step    <- 1
-  ppos    <- step 
+  ppos    <- step
   aic     <- c()
   bic     <- c()
   dev     <- c()
@@ -255,8 +255,8 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       #   cat("\n\n")
       # }
 
-      m2     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, 
-                  family = binomial(link = 'logit')) 
+      m2     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l,
+                  family = binomial(link = 'logit'))
       m_sum <- Anova(m2, test.statistic = "Wald")
       pvals_r <- m_sum$`Pr(>Chisq)`
       # tvals_r <- m_sum$Chisq[ppos]
@@ -310,7 +310,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       }
     } else {
       cat("\n")
-      cat(crayon::bold$red(glue("No more variables to be added/removed.")))
+      cat(crayon::bold$red(paste0("No more variables to be added/removed.")))
       cat("\n")
       break
     }
@@ -326,7 +326,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   )
   print(fi)
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
     data = l, family = binomial(link = 'logit'))
 
   out <- list(
