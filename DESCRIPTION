@@ -20,7 +20,6 @@ Imports:
     dplyr,
     e1071,  
     ggplot2,
-    glue,
     gridExtra,
     magrittr,
     purrr,

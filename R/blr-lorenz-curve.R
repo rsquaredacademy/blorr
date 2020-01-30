@@ -109,7 +109,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
     geom_line(aes(x = `cum_1s_per`, y = `cum_0s_per`),
                 color = lorenz_curve_col) +
     geom_line(aes(x = `cum_1s_per`, y = `cum_1s_per`), color = diag_line_col) +
-    ggtitle(label = title, subtitle = glue("Gini Index = ", {g_index})) +
+    ggtitle(label = title, subtitle = paste0("Gini Index = ", g_index)) +
     xlab(xaxis_title) + ylab(yaxis_title) +
     theme(plot.title = element_text(hjust = 0.5),
           plot.subtitle = element_text(hjust = 0.5))
