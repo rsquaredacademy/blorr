@@ -3,8 +3,7 @@
 
 # blorr
 
-> Tools for building binary logistic regression
-models
+> Tools for building binary logistic regression models
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
 [![cran
@@ -289,9 +288,3 @@ If you encounter a bug, please file a minimal reproducible example using
 [reprex](https://reprex.tidyverse.org/index.html) on github. For
 questions and clarifications, use
 [StackOverflow](https://stackoverflow.com/).
-
-## Code of Conduct
-
-Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to
-abide by its terms.
