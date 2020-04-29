@@ -4,7 +4,8 @@
 \name{bank_marketing}
 \alias{bank_marketing}
 \title{Bank marketing data set}
-\format{A tibble with 4521 rows and 17 variables:
+\format{
+A tibble with 4521 rows and 17 variables:
 \describe{
  \item{age}{age of the client}
  \item{job}{type of job}
@@ -22,7 +23,8 @@
  \item{previous}{number of contacts performed before this campaign and for this clien}
  \item{poutcome}{outcome of the previous marketing campaign}
  \item{y}{has the client subscribed a term deposit?}
-}}
+}
+}
 \source{
 [Moro et al., 2014] S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
 }

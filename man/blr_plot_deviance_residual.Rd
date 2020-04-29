@@ -4,9 +4,13 @@
 \alias{blr_plot_deviance_residual}
 \title{Deviance residual values}
 \usage{
-blr_plot_deviance_residual(model, point_color = "blue",
-  title = "Deviance Residuals Plot", xaxis_title = "id",
-  yaxis_title = "Deviance Residuals")
+blr_plot_deviance_residual(
+  model,
+  point_color = "blue",
+  title = "Deviance Residuals Plot",
+  xaxis_title = "id",
+  yaxis_title = "Deviance Residuals"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

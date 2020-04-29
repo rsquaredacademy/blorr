@@ -42,13 +42,15 @@ Long, J. Scott. Regression Models for Categorical and Limited Dependent Variable
 Thousand Oaks: Sage Publications, 1997.
 }
 \seealso{
-Other model fit statistics: \code{\link{blr_multi_model_fit_stats}},
-  \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
-  \code{\link{blr_rsq_cox_snell}},
-  \code{\link{blr_rsq_effron}},
-  \code{\link{blr_rsq_mcfadden_adj}},
-  \code{\link{blr_rsq_mckelvey_zavoina}},
-  \code{\link{blr_rsq_nagelkerke}},
-  \code{\link{blr_test_lr}}
+Other model fit statistics: 
+\code{\link{blr_multi_model_fit_stats}()},
+\code{\link{blr_pairs}()},
+\code{\link{blr_rsq_adj_count}()},
+\code{\link{blr_rsq_cox_snell}()},
+\code{\link{blr_rsq_effron}()},
+\code{\link{blr_rsq_mcfadden_adj}()},
+\code{\link{blr_rsq_mckelvey_zavoina}()},
+\code{\link{blr_rsq_nagelkerke}()},
+\code{\link{blr_test_lr}()}
 }
 \concept{model fit statistics}

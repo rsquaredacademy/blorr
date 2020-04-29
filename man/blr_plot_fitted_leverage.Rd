@@ -4,9 +4,13 @@
 \alias{blr_plot_fitted_leverage}
 \title{Fitted values vs leverage plot}
 \usage{
-blr_plot_fitted_leverage(model, point_color = "blue",
-  title = "Fitted Values vs Leverage Plot", xaxis_title = "Leverage",
-  yaxis_title = "Fitted Values")
+blr_plot_fitted_leverage(
+  model,
+  point_color = "blue",
+  title = "Fitted Values vs Leverage Plot",
+  xaxis_title = "Leverage",
+  yaxis_title = "Fitted Values"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

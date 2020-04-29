@@ -4,9 +4,13 @@
 \alias{blr_plot_difdev_fitted}
 \title{Delta deviance vs fitted values plot}
 \usage{
-blr_plot_difdev_fitted(model, point_color = "blue",
+blr_plot_difdev_fitted(
+  model,
+  point_color = "blue",
   title = "Delta Deviance vs Fitted Values Plot",
-  xaxis_title = "Fitted Values", yaxis_title = "Delta Deviance")
+  xaxis_title = "Fitted Values",
+  yaxis_title = "Delta Deviance"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

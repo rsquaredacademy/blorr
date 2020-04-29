@@ -28,13 +28,15 @@ Cox, D. R., & Snell, E. J. (1989). The analysis of binary data (2nd ed.).  Londo
 Maddala, G. S. (1983). Limited dependent and qualitative variables in economics. New York: Cambridge Press.
 }
 \seealso{
-Other model fit statistics: \code{\link{blr_model_fit_stats}},
-  \code{\link{blr_multi_model_fit_stats}},
-  \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
-  \code{\link{blr_rsq_effron}},
-  \code{\link{blr_rsq_mcfadden_adj}},
-  \code{\link{blr_rsq_mckelvey_zavoina}},
-  \code{\link{blr_rsq_nagelkerke}},
-  \code{\link{blr_test_lr}}
+Other model fit statistics: 
+\code{\link{blr_model_fit_stats}()},
+\code{\link{blr_multi_model_fit_stats}()},
+\code{\link{blr_pairs}()},
+\code{\link{blr_rsq_adj_count}()},
+\code{\link{blr_rsq_effron}()},
+\code{\link{blr_rsq_mcfadden_adj}()},
+\code{\link{blr_rsq_mckelvey_zavoina}()},
+\code{\link{blr_rsq_nagelkerke}()},
+\code{\link{blr_test_lr}()}
 }
 \concept{model fit statistics}

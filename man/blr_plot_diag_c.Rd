@@ -4,9 +4,13 @@
 \alias{blr_plot_diag_c}
 \title{CI Displacement C plot}
 \usage{
-blr_plot_diag_c(model, point_color = "blue",
-  title = "CI Displacement C Plot", xaxis_title = "id",
-  yaxis_title = "CI Displacement C")
+blr_plot_diag_c(
+  model,
+  point_color = "blue",
+  title = "CI Displacement C Plot",
+  xaxis_title = "id",
+  yaxis_title = "CI Displacement C"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

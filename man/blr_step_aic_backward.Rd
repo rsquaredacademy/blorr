@@ -68,9 +68,10 @@ k$model
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 }
 \seealso{
-Other variable selection procedures: \code{\link{blr_step_aic_both}},
-  \code{\link{blr_step_aic_forward}},
-  \code{\link{blr_step_p_backward}},
-  \code{\link{blr_step_p_forward}}
+Other variable selection procedures: 
+\code{\link{blr_step_aic_both}()},
+\code{\link{blr_step_aic_forward}()},
+\code{\link{blr_step_p_backward}()},
+\code{\link{blr_step_p_forward}()}
 }
 \concept{variable selection procedures}

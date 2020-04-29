@@ -40,13 +40,15 @@ blr_test_lr(model_1, model_2)
 \seealso{
 \code{\link[lmtest]{lrtest}}
 
-Other model fit statistics: \code{\link{blr_model_fit_stats}},
-  \code{\link{blr_multi_model_fit_stats}},
-  \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
-  \code{\link{blr_rsq_cox_snell}},
-  \code{\link{blr_rsq_effron}},
-  \code{\link{blr_rsq_mcfadden_adj}},
-  \code{\link{blr_rsq_mckelvey_zavoina}},
-  \code{\link{blr_rsq_nagelkerke}}
+Other model fit statistics: 
+\code{\link{blr_model_fit_stats}()},
+\code{\link{blr_multi_model_fit_stats}()},
+\code{\link{blr_pairs}()},
+\code{\link{blr_rsq_adj_count}()},
+\code{\link{blr_rsq_cox_snell}()},
+\code{\link{blr_rsq_effron}()},
+\code{\link{blr_rsq_mcfadden_adj}()},
+\code{\link{blr_rsq_mckelvey_zavoina}()},
+\code{\link{blr_rsq_nagelkerke}()}
 }
 \concept{model fit statistics}

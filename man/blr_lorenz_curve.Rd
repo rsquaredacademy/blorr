@@ -4,10 +4,15 @@
 \alias{blr_lorenz_curve}
 \title{Lorenz curve}
 \usage{
-blr_lorenz_curve(model, data = NULL, title = "Lorenz Curve",
+blr_lorenz_curve(
+  model,
+  data = NULL,
+  title = "Lorenz Curve",
   xaxis_title = "Cumulative Events \%",
-  yaxis_title = "Cumulative Non Events \%", diag_line_col = "red",
-  lorenz_curve_col = "blue")
+  yaxis_title = "Cumulative Non Events \%",
+  diag_line_col = "red",
+  lorenz_curve_col = "blue"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
@@ -36,12 +41,14 @@ blr_lorenz_curve(model)
 
 }
 \seealso{
-Other model validation techniques: \code{\link{blr_confusion_matrix}},
-  \code{\link{blr_decile_capture_rate}},
-  \code{\link{blr_decile_lift_chart}},
-  \code{\link{blr_gains_table}},
-  \code{\link{blr_gini_index}}, \code{\link{blr_ks_chart}},
-  \code{\link{blr_roc_curve}},
-  \code{\link{blr_test_hosmer_lemeshow}}
+Other model validation techniques: 
+\code{\link{blr_confusion_matrix}()},
+\code{\link{blr_decile_capture_rate}()},
+\code{\link{blr_decile_lift_chart}()},
+\code{\link{blr_gains_table}()},
+\code{\link{blr_gini_index}()},
+\code{\link{blr_ks_chart}()},
+\code{\link{blr_roc_curve}()},
+\code{\link{blr_test_hosmer_lemeshow}()}
 }
 \concept{model validation techniques}

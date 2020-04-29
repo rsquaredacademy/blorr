@@ -4,9 +4,13 @@
 \alias{blr_plot_diag_cbar}
 \title{CI Displacement CBAR plot}
 \usage{
-blr_plot_diag_cbar(model, point_color = "blue",
-  title = "CI Displacement CBAR Plot", xaxis_title = "id",
-  yaxis_title = "CI Displacement CBAR")
+blr_plot_diag_cbar(
+  model,
+  point_color = "blue",
+  title = "CI Displacement CBAR Plot",
+  xaxis_title = "id",
+  yaxis_title = "CI Displacement CBAR"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

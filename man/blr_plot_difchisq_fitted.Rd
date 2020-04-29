@@ -4,9 +4,13 @@
 \alias{blr_plot_difchisq_fitted}
 \title{Delta chi square vs fitted values plot}
 \usage{
-blr_plot_difchisq_fitted(model, point_color = "blue",
+blr_plot_difchisq_fitted(
+  model,
+  point_color = "blue",
   title = "Delta Chi Square vs Fitted Values Plot",
-  xaxis_title = "Fitted Values", yaxis_title = "Delta Chi Square")
+  xaxis_title = "Fitted Values",
+  yaxis_title = "Delta Chi Square"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

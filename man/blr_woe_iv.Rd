@@ -7,8 +7,15 @@
 \usage{
 blr_woe_iv(data, predictor, response, digits = 4, ...)
 
-\method{plot}{blr_woe_iv}(x, title = NA, xaxis_title = "Levels",
-  yaxis_title = "WoE", bar_color = "blue", line_color = "red", ...)
+\method{plot}{blr_woe_iv}(
+  x,
+  title = NA,
+  xaxis_title = "Levels",
+  yaxis_title = "WoE",
+  bar_color = "blue",
+  line_color = "red",
+  ...
+)
 }
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}
@@ -54,9 +61,11 @@ Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  i
 credit  scoring. New Jersey, Wiley.
 }
 \seealso{
-Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
-  \code{\link{blr_segment_dist}},
-  \code{\link{blr_segment_twoway}},
-  \code{\link{blr_segment}}, \code{\link{blr_woe_iv_stats}}
+Other bivariate analysis procedures: 
+\code{\link{blr_bivariate_analysis}()},
+\code{\link{blr_segment_dist}()},
+\code{\link{blr_segment_twoway}()},
+\code{\link{blr_segment}()},
+\code{\link{blr_woe_iv_stats}()}
 }
 \concept{bivariate analysis procedures}

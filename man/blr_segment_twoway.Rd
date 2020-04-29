@@ -7,8 +7,7 @@
 \usage{
 blr_segment_twoway(data, response, variable_1, variable_2)
 
-\method{blr_segment_twoway}{default}(data, response, variable_1,
-  variable_2)
+\method{blr_segment_twoway}{default}(data, response, variable_1, variable_2)
 }
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}
@@ -30,9 +29,11 @@ blr_segment_twoway(hsb2, honcomp, prog, female)
 
 }
 \seealso{
-Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
-  \code{\link{blr_segment_dist}},
-  \code{\link{blr_segment}},
-  \code{\link{blr_woe_iv_stats}}, \code{\link{blr_woe_iv}}
+Other bivariate analysis procedures: 
+\code{\link{blr_bivariate_analysis}()},
+\code{\link{blr_segment_dist}()},
+\code{\link{blr_segment}()},
+\code{\link{blr_woe_iv_stats}()},
+\code{\link{blr_woe_iv}()}
 }
 \concept{bivariate analysis procedures}

@@ -4,9 +4,13 @@
 \alias{blr_plot_diag_difchisq}
 \title{Delta chisquare plot}
 \usage{
-blr_plot_diag_difchisq(model, point_color = "blue",
-  title = "Delta Chisquare Plot", xaxis_title = "id",
-  yaxis_title = "Delta Chisquare")
+blr_plot_diag_difchisq(
+  model,
+  point_color = "blue",
+  title = "Delta Chisquare Plot",
+  xaxis_title = "id",
+  yaxis_title = "Delta Chisquare"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

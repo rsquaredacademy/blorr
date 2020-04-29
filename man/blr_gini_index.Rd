@@ -36,13 +36,14 @@ Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
 \url{https://doi.org/10.2753/REE1540-496X470605}
 }
 \seealso{
-Other model validation techniques: \code{\link{blr_confusion_matrix}},
-  \code{\link{blr_decile_capture_rate}},
-  \code{\link{blr_decile_lift_chart}},
-  \code{\link{blr_gains_table}},
-  \code{\link{blr_ks_chart}},
-  \code{\link{blr_lorenz_curve}},
-  \code{\link{blr_roc_curve}},
-  \code{\link{blr_test_hosmer_lemeshow}}
+Other model validation techniques: 
+\code{\link{blr_confusion_matrix}()},
+\code{\link{blr_decile_capture_rate}()},
+\code{\link{blr_decile_lift_chart}()},
+\code{\link{blr_gains_table}()},
+\code{\link{blr_ks_chart}()},
+\code{\link{blr_lorenz_curve}()},
+\code{\link{blr_roc_curve}()},
+\code{\link{blr_test_hosmer_lemeshow}()}
 }
 \concept{model validation techniques}
