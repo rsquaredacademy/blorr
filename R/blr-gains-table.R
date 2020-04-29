@@ -293,10 +293,14 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
       model.response()
   }
 
-  response %>%
-    as_tibble() %>%
-    bind_cols(predict.glm(model, newdata = data, type = "response") %>%
-                as_tibble())
+  resp_tib <- tibble::enframe(response, name = NULL)
+  prob_tib <- tibble::enframe(predict.glm(model, newdata = data, type = "response"),
+                              name = NULL)
+
+  colnames(resp_tib) <- c("response")
+  colnames(prob_tib) <- c("predicted")
+
+  bind_cols(resp_tib, prob_tib)
 
 }
 
@@ -308,7 +312,7 @@ gains_table_modify <- function(data, decile_count) {
     subtract((decile_count * 9))
 
   data %>%
-    select(response = value, prob = value1) %>%
+    select(response = response, prob = predicted) %>%
     arrange(desc(prob)) %>%
     add_column(decile = c(rep(1:9, each = decile_count),
                           rep(10, times = residual))) %>%

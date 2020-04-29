@@ -1,4 +1,3 @@
-#' @importFrom cli cat_line
 #' @importFrom purrr map_int map map2_int
 #' @importFrom purrr prepend
 print_blr_reg <- function(x) {
