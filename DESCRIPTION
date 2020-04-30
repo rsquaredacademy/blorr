@@ -27,8 +27,7 @@ Imports:
     scales,
     stats,
     tibble,
-    utils,
-    xplorerr
+    utils
 Suggests: 
     covr,
     grid,
@@ -36,7 +35,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    vdiffr
+    vdiffr,
+    xplorerr
 License: MIT + file LICENSE
 URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
