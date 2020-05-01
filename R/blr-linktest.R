@@ -26,18 +26,13 @@ blr_linktest <- function(model) {
 
   blr_check_model(model)
 
-  dat <-
-    model %>%
-    use_series(call) %>%
-    use_series(data) %>%
-    eval_tidy()
-
+  dat    <- eval(model$call$data)
   fit    <- predict.glm(model, newdata = dat)
   fit2   <- fit ^ 2
   resp   <- model$y
-  newdat <- tibble(fit = fit, fit2 = fit2, resp = resp)
+  newdat <- data.frame(fit = fit, fit2 = fit2, resp = resp)
 
-  glm(resp ~ fit + fit2, data = newdat, family = binomial(link = "logit")) %>%
-    summary()
+  link_model <- glm(resp ~ fit + fit2, data = newdat, family = binomial(link = "logit")) 
+  summary(link_model)
 
 }
