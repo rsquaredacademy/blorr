@@ -26,7 +26,7 @@ blr_linktest <- function(model) {
 
   blr_check_model(model)
 
-  dat    <- eval(model$call$data)
+  dat    <- model$model
   fit    <- predict.glm(model, newdata = dat)
   fit2   <- fit ^ 2
   resp   <- model$y
