@@ -122,7 +122,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   # da2 <- arrange(da, aics)
   da2 <- da[order(da[['aics']]), ]
 
-  if (details == TRUE) {
+  if (details) {
     w1 <- max(nchar("Predictor"), nchar(predictors))
     w2 <- 2
     w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
@@ -263,13 +263,18 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
     data = l, family = binomial(link = 'logit'))
 
+  vars <- c("Full Model", rpred)
+
+  step_result <- data.frame(variable = vars,
+                            aic = laic,
+                            bic = lbic,
+                            deviance = ldev)
+
   out <- list(
     candidates = nam,
     steps      = step,
     predictors = rpred,
-    aics       = laic,
-    bics       = lbic,
-    devs       = ldev,
+    result     = step_result,
     model      = final_model
   )
 
@@ -302,17 +307,17 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, print_plot = TRUE, ...)
 
   y    <- c(0, seq_len(x$steps))
   xloc <- y - 0.1
-  yloc <- x$aics - 0.2
+  yloc <- x$result$aic - 0.2
   xmin <- min(y) - 0.4
   xmax <- max(y) + 1
-  ymin <- min(x$aics) - 1
-  ymax <- max(x$aics) + 1
+  ymin <- min(x$result$aic) - 1
+  ymax <- max(x$result$aic) + 1
 
 
   predictors <- c("Full Model", x$predictors)
 
   d2 <- data.frame(x = xloc, y = yloc, tx = predictors)
-  d  <- data.frame(a = y, b = x$aics)
+  d  <- data.frame(a = y, b = x$result$aic)
 
   p <-
     ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
