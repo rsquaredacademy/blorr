@@ -8,23 +8,29 @@
 
 <title>KS chart — blr_ks_chart • blorr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,14 +38,14 @@
 
 
 
-<meta property="og:title" content="KS chart — blr_ks_chart" />
 
+<meta property="og:title" content="KS chart — blr_ks_chart" />
 <meta property="og:description" content="Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
 marketing or credit risk models. It is the maximum difference between 
 cumulative event and non-event distribution across score/probability bands.
 The gains table typically has 
 across score bands and can be used to find the KS for a model." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -56,7 +62,7 @@ across score bands and can be used to find the KS for a model." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -107,7 +113,6 @@ across score bands and can be used to find the KS for a model." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
@@ -134,18 +139,21 @@ across score bands and can be used to find the KS for a model." />
     </div>
 
     <div class="ref-description">
-    
     <p>Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for
 marketing or credit risk models. It is the maximum difference between <!-- % -->
 cumulative event and non-event distribution across score/probability bands.
 The gains table typically has <!-- % cumulative event and % cumulative non-event -->
 across score bands and can be used to find the KS for a model.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>blr_ks_chart</span>(<span class='no'>gains_table</span>, <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"KS Chart"</span>, <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>" "</span>,
-  <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"Cumulative Population %"</span>, <span class='kw'>ks_line_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>blr_ks_chart</span>(
+  <span class='no'>gains_table</span>,
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"KS Chart"</span>,
+  <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>" "</span>,
+  <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"Cumulative Population %"</span>,
+  <span class='kw'>ks_line_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -170,23 +178,22 @@ across score bands and can be used to find the KS for a model.</p>
       <td><p>Color of the line indicating maximum KS statistic.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><a href='https://doi.org/10.1198/tast.2009.08210'>https://doi.org/10.1198/tast.2009.08210</a></p>
 <p><a href='https://www.ncbi.nlm.nih.gov/pubmed/843576'>https://www.ncbi.nlm.nih.gov/pubmed/843576</a></p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other model validation techniques: <code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a></code>,
-  <code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a></code>,
-  <code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a></code>,
-  <code><a href='blr_gains_table.html'>blr_gains_table</a></code>,
-  <code><a href='blr_gini_index.html'>blr_gini_index</a></code>,
-  <code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a></code>,
-  <code><a href='blr_roc_curve.html'>blr_roc_curve</a></code>,
-  <code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a></code></p></div>
-    
+    <div class='dont-index'><p>Other model validation techniques: 
+<code><a href='blr_confusion_matrix.html'>blr_confusion_matrix</a>()</code>,
+<code><a href='blr_decile_capture_rate.html'>blr_decile_capture_rate</a>()</code>,
+<code><a href='blr_decile_lift_chart.html'>blr_decile_lift_chart</a>()</code>,
+<code><a href='blr_gains_table.html'>blr_gains_table</a>()</code>,
+<code><a href='blr_gini_index.html'>blr_gini_index</a>()</code>,
+<code><a href='blr_lorenz_curve.html'>blr_lorenz_curve</a>()</code>,
+<code><a href='blr_roc_curve.html'>blr_roc_curve</a>()</code>,
+<code><a href='blr_test_hosmer_lemeshow.html'>blr_test_hosmer_lemeshow</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
@@ -195,18 +202,10 @@ across score bands and can be used to find the KS for a model.</p>
 <span class='fu'>blr_ks_chart</span>(<span class='no'>gt</span>)</div><div class='img'><img src='blr_ks_chart-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -217,7 +216,7 @@ across score bands and can be used to find the KS for a model.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
