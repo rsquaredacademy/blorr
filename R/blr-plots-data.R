@@ -69,7 +69,7 @@ lorenz_table_modify <- function(data, decile_count) {
     subtract((decile_count * 9))
 
   data %>%
-    select(response = value, prob = value1) %>%
+    select(response = response, prob = predicted) %>%
     arrange(desc(prob)) %>%
     add_column(decile = c(rep(1:9, each = decile_count),
                           rep(10, times = residual))) %>%

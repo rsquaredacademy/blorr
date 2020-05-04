@@ -119,8 +119,8 @@ print_blr_reg <- function(x) {
       cat(
         fc(x$blr_effects[i], w18), fs(),
         fc(format(round(x$blr_odds_point[i], 4), nsmall = 4), w19), fs(),
-        fc(format(round(x$blr_conf$`2.5 %`[i], 4), nsmall = 4), w20),
-        fs(), fg(format(round(x$blr_conf$`97.5 %`[i], 4), nsmall = 4), w21), "\n"
+        fc(format(round(x$blr_conf[[1]][i], 4), nsmall = 4), w20),
+        fs(), fg(format(round(x$blr_conf[[2]][i], 4), nsmall = 4), w21), "\n"
       )
     }
     cat(rep("-", w22), sep = "", "\n\n")
