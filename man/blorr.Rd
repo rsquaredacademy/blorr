@@ -3,7 +3,6 @@
 \docType{package}
 \name{blorr}
 \alias{blorr}
-\alias{blorr-package}
 \title{\code{blorr} package}
 \description{
 Tools for developing binary logistic regression models

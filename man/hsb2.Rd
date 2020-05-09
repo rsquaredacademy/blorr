@@ -4,7 +4,8 @@
 \name{hsb2}
 \alias{hsb2}
 \title{High School and Beyond Data Set}
-\format{A data frame with 200 rows and 11 variables:
+\format{
+A data frame with 200 rows and 11 variables:
 \describe{
   \item{id}{id of the student}
   \item{female}{gender of the student}
@@ -18,7 +19,8 @@
   \item{science}{scores from test of science}
   \item{socst}{scores from test of social studies}
   \item{honcomp}{1 if write > 60, else 0}
-}}
+}
+}
 \source{
 \url{http://www.ats.ucla.edu/stat/spss/whatstat/whatstat.htm}
 }

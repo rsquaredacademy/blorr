@@ -27,9 +27,11 @@ blr_segment(hsb2, honcomp, prog)
 
 }
 \seealso{
-Other bivariate analysis procedures: \code{\link{blr_bivariate_analysis}},
-  \code{\link{blr_segment_dist}},
-  \code{\link{blr_segment_twoway}},
-  \code{\link{blr_woe_iv_stats}}, \code{\link{blr_woe_iv}}
+Other bivariate analysis procedures: 
+\code{\link{blr_bivariate_analysis}()},
+\code{\link{blr_segment_dist}()},
+\code{\link{blr_segment_twoway}()},
+\code{\link{blr_woe_iv_stats}()},
+\code{\link{blr_woe_iv}()}
 }
 \concept{bivariate analysis procedures}

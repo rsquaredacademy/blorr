@@ -4,9 +4,13 @@
 \alias{blr_plot_difdev_leverage}
 \title{Delta deviance vs leverage plot}
 \usage{
-blr_plot_difdev_leverage(model, point_color = "blue",
-  title = "Delta Deviance vs Leverage Plot", xaxis_title = "Leverage",
-  yaxis_title = "Delta Deviance")
+blr_plot_difdev_leverage(
+  model,
+  point_color = "blue",
+  title = "Delta Deviance vs Leverage Plot",
+  xaxis_title = "Leverage",
+  yaxis_title = "Delta Deviance"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

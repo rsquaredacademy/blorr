@@ -27,13 +27,15 @@ McKelvey, R. D., & Zavoina,  W. (1975). A statistical model for the  analysis  o
 variables. Journal of Mathematical Sociology, 4, 103-12.
 }
 \seealso{
-Other model fit statistics: \code{\link{blr_model_fit_stats}},
-  \code{\link{blr_multi_model_fit_stats}},
-  \code{\link{blr_pairs}}, \code{\link{blr_rsq_adj_count}},
-  \code{\link{blr_rsq_cox_snell}},
-  \code{\link{blr_rsq_effron}},
-  \code{\link{blr_rsq_mcfadden_adj}},
-  \code{\link{blr_rsq_nagelkerke}},
-  \code{\link{blr_test_lr}}
+Other model fit statistics: 
+\code{\link{blr_model_fit_stats}()},
+\code{\link{blr_multi_model_fit_stats}()},
+\code{\link{blr_pairs}()},
+\code{\link{blr_rsq_adj_count}()},
+\code{\link{blr_rsq_cox_snell}()},
+\code{\link{blr_rsq_effron}()},
+\code{\link{blr_rsq_mcfadden_adj}()},
+\code{\link{blr_rsq_nagelkerke}()},
+\code{\link{blr_test_lr}()}
 }
 \concept{model fit statistics}

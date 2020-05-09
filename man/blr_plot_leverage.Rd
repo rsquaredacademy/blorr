@@ -4,8 +4,13 @@
 \alias{blr_plot_leverage}
 \title{Leverage plot}
 \usage{
-blr_plot_leverage(model, point_color = "blue", title = "Leverage Plot",
-  xaxis_title = "id", yaxis_title = "Leverage")
+blr_plot_leverage(
+  model,
+  point_color = "blue",
+  title = "Leverage Plot",
+  xaxis_title = "id",
+  yaxis_title = "Leverage"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

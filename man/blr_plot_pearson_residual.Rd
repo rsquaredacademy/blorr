@@ -4,9 +4,13 @@
 \alias{blr_plot_pearson_residual}
 \title{Residual values plot}
 \usage{
-blr_plot_pearson_residual(model, point_color = "blue",
-  title = "Standardized Pearson Residuals", xaxis_title = "id",
-  yaxis_title = "Standardized Pearson Residuals")
+blr_plot_pearson_residual(
+  model,
+  point_color = "blue",
+  title = "Standardized Pearson Residuals",
+  xaxis_title = "id",
+  yaxis_title = "Standardized Pearson Residuals"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

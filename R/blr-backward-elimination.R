@@ -7,11 +7,13 @@
 #'
 #' @param model An object of class \code{glm}; the model should include all
 #'   candidate predictor variables.
+#' @param progress Logical; if \code{TRUE}, will display variable selection progress.
 #' @param details Logical; if \code{TRUE}, will print the regression result at
 #'   each step.
 #' @param ... Other arguments.
 #' @param x An object of class \code{blr_step_aic_backward}.
 #' @param text_size size of the text in the plot.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @return \code{blr_step_aic_backward} returns an object of class
 #' \code{"blr_step_aic_backward"}. An object of class
@@ -52,28 +54,27 @@
 #'
 #' @export
 #'
-blr_step_aic_backward <- function(model, details = FALSE, ...) UseMethod("blr_step_aic_backward")
+blr_step_aic_backward <- function(model, ...) UseMethod("blr_step_aic_backward")
 
 
 #' @export
 #' @rdname blr_step_aic_backward
 #'
-blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
-  
+blr_step_aic_backward.default <- function(model, progress = FALSE, details = FALSE, ...) {
+
+  if (details) {
+    progress <- TRUE
+  }
+
   blr_check_model(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
-  response <-
-    model %>%
-    use_series(model) %>%
-    names() %>%
-    extract(1)
-
-  l     <- mod_sel_data(model)
-  nam   <- coeff_names(model)
-  preds <- nam
-  aic_f <- model_aic(model)
+  response <- names(model$model)[1]
+  l        <- model$model
+  nam      <- coeff_names(model)
+  preds    <- nam
+  aic_f    <- model_aic(model)
 
     mi <- glm(
     paste(response, "~", paste(preds, collapse = " + ")),
@@ -84,15 +85,17 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
   lbic <- model_bic(mi)
   ldev <- model_deviance(mi)
 
-  cat(format("Backward Elimination Method", justify = "left", width = 27), "\n")
-  cat(rep("-", 27), sep = "", "\n\n")
-  cat(format("Candidate Terms:", justify = "left", width = 16), "\n\n")
-  for (i in seq_len(length(nam))) {
-    cat(paste(i, ".", nam[i]), "\n")
+  if (progress) {
+    cat(format("Backward Elimination Method", justify = "left", width = 27), "\n")
+    cat(rep("-", 27), sep = "", "\n\n")
+    cat(format("Candidate Terms:", justify = "left", width = 16), "\n\n")
+    for (i in seq_len(length(nam))) {
+      cat(paste(i, ".", nam[i]), "\n")
+    }
+    cat("\n")
   }
-  cat("\n")
 
-  if (details == TRUE) {
+  if (details) {
     cat(" Step 0: AIC =", aic_f, "\n", paste(response, "~", paste(preds, collapse = " + "), "\n\n"))
   }
 
@@ -115,10 +118,11 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     devs[i] <- model_deviance(m)
   }
 
-  da <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
-  da2 <- arrange(da, aics)
+  da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
+  # da2 <- arrange(da, aics)
+  da2 <- da[order(da[['aics']]), ]
 
-  if (details == TRUE) {
+  if (details) {
     w1 <- max(nchar("Predictor"), nchar(predictors))
     w2 <- 2
     w3 <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
@@ -146,9 +150,11 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     cat(rep("-", w), sep = "", "\n\n")
   }
 
-  cat("\n")
-  if (!details) {
-    cat("Variables Removed:", "\n\n")
+  if (progress) {
+    cat("\n")
+    if (!details) {
+      cat("Variables Removed:", "\n\n")
+    }
   }
 
   while (!end) {
@@ -173,12 +179,9 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
       bics <- c()
       devs <- c()
 
-      if (interactive()) {
-        cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
-      } else {
-        cat(paste("-", dplyr::last(rpred)), "\n")
+      if (progress) {
+        cat(paste("x", rev(rpred)[1], "\n"))
       }
-
 
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
@@ -192,7 +195,7 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
       }
 
 
-      if (details == TRUE) {
+      if (details) {
         cat("\n\n", " Step", step, ": AIC =", aic_f, "\n", paste(response, "~", paste(preds, collapse = " + "), "\n\n"))
 
 
@@ -200,7 +203,8 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
           predictors = preds, aics = aics, bics = bics,
           devs = devs
         )
-        da2 <- arrange(da, aics)
+        # da2 <- arrange(da, aics)
+        da2 <- da[order(da[['aics']]), ]
         w1  <- max(nchar("Predictor"), nchar(predictors))
         w2  <- 2
         w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))
@@ -230,23 +234,21 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     } else {
       end <- TRUE
 
-      if (details == TRUE) {
-        cat(crayon::bold$red("No more variables to be removed."))
+      if (details) {
+        cat("No more variables to be removed.")
       }
     }
   }
 
-  if (details == TRUE) {
+  if (details) {
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
-      if (interactive()) {
-        cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
-      } else {
-        cat(paste("-", rpred[i]), "\n")
-      }
+      cat(paste("-", rpred[i]), "\n")
     }
+  }
 
+  if (progress) {
     cat("\n\n")
     cat("Final Model Output", "\n")
     cat(rep("-", 18), sep = "", "\n\n")
@@ -258,16 +260,21 @@ blr_step_aic_backward.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
+  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
     data = l, family = binomial(link = 'logit'))
+
+  vars <- c("Full Model", rpred)
+
+  step_result <- data.frame(variable = vars,
+                            aic = laic,
+                            bic = lbic,
+                            deviance = ldev)
 
   out <- list(
     candidates = nam,
     steps      = step,
     predictors = rpred,
-    aics       = laic,
-    bics       = lbic,
-    devs       = ldev,
+    result     = step_result,
     model      = final_model
   )
 
@@ -290,7 +297,7 @@ print.blr_step_aic_backward <- function(x, ...) {
 #' @rdname blr_step_aic_backward
 #' @export
 #'
-plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
+plot.blr_step_aic_backward <- function(x, text_size = 3, print_plot = TRUE, ...) {
 
   steps <- NULL
   aics  <- NULL
@@ -298,54 +305,33 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
   a     <- NULL
   b     <- NULL
 
-  y <-
-    x %>%
-    use_series(steps) %>%
-    seq_len(.) %>%
-    prepend(0)
-
+  y    <- c(0, seq_len(x$steps))
   xloc <- y - 0.1
+  yloc <- x$result$aic - 0.2
+  xmin <- min(y) - 0.4
+  xmax <- max(y) + 1
+  ymin <- min(x$result$aic) - 1
+  ymax <- max(x$result$aic) + 1
 
-  yloc <-
-    x %>%
-    use_series(aics) %>%
-    subtract(0.2)
-
-  xmin <-
-    y %>%
-    min() %>%
-    subtract(0.4)
-
-  xmax <-
-    y %>%
-    max() %>%
-    add(1)
-
-  ymin <-
-    x %>%
-    use_series(aics) %>%
-    min() %>%
-    subtract(1)
-
-  ymax <-
-    x %>%
-    use_series(aics) %>%
-    max() %>%
-    add(1)
 
   predictors <- c("Full Model", x$predictors)
 
-  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
-  d  <- tibble(a = y, b = x$aics)
+  d2 <- data.frame(x = xloc, y = yloc, tx = predictors)
+  d  <- data.frame(a = y, b = x$result$aic)
 
-  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
+  p <-
+    ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
     geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
     ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
     ggtitle("Stepwise AIC Backward Elimination") +
     geom_text(data = d2, aes(x = x, y = y, label = tx),
               size = text_size, hjust = 0, nudge_x = 0.1)
 
-  print(p)
+  if (print_plot) {
+    print(p)
+  }
+
+  invisible(p)
 
 }
 
@@ -360,10 +346,5 @@ plot.blr_step_aic_backward <- function(x, text_size = 3, ...) {
 #' @noRd
 #'
 coeff_names <- function(model) {
-
-  model %>%
-    use_series(terms) %>%
-    attr(which = "factors") %>%
-    colnames()
-
+  colnames(attr(model$terms, which = "factors"))
 }

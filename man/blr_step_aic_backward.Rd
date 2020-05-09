@@ -6,24 +6,28 @@
 \alias{plot.blr_step_aic_backward}
 \title{Stepwise AIC backward elimination}
 \usage{
-blr_step_aic_backward(model, details = FALSE, ...)
+blr_step_aic_backward(model, ...)
 
-\method{blr_step_aic_backward}{default}(model, details = FALSE, ...)
+\method{blr_step_aic_backward}{default}(model, progress = FALSE, details = FALSE, ...)
 
-\method{plot}{blr_step_aic_backward}(x, text_size = 3, ...)
+\method{plot}{blr_step_aic_backward}(x, text_size = 3, print_plot = TRUE, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
 candidate predictor variables.}
 
+\item{...}{Other arguments.}
+
+\item{progress}{Logical; if \code{TRUE}, will display variable selection progress.}
+
 \item{details}{Logical; if \code{TRUE}, will print the regression result at
 each step.}
-
-\item{...}{Other arguments.}
 
 \item{x}{An object of class \code{blr_step_aic_backward}.}
 
 \item{text_size}{size of the text in the plot.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 \code{blr_step_aic_backward} returns an object of class
@@ -68,9 +72,10 @@ k$model
 Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 }
 \seealso{
-Other variable selection procedures: \code{\link{blr_step_aic_both}},
-  \code{\link{blr_step_aic_forward}},
-  \code{\link{blr_step_p_backward}},
-  \code{\link{blr_step_p_forward}}
+Other variable selection procedures: 
+\code{\link{blr_step_aic_both}()},
+\code{\link{blr_step_aic_forward}()},
+\code{\link{blr_step_p_backward}()},
+\code{\link{blr_step_p_forward}()}
 }
 \concept{variable selection procedures}

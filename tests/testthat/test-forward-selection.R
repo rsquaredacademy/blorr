@@ -6,11 +6,7 @@ test_that("output from forward variable selection is as expected", {
     family = binomial(link = "logit")
   )
 
-  actual <-
-    model %>%
-    blr_step_aic_forward() %>%
-    use_series(predictors)
-
+  actual   <- blr_step_aic_forward(model)$predictors 
   expected <- c("read", "female", "science")
 
   expect_equivalent(actual, expected)
@@ -22,11 +18,7 @@ test_that("output from forward variable p selection is as expected", {
     family = binomial(link = "logit")
   )
 
-  actual <-
-    model %>%
-    blr_step_p_forward() %>%
-    use_series(predictors)
-
+  actual   <- blr_step_p_forward(model)$predictors
   expected <- c("read", "female", "science")
 
   expect_equivalent(actual, expected)

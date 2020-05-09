@@ -14,10 +14,9 @@ Imports:
     car,
     caret,
     checkmate,
-    cli,
     clisymbols,
     crayon,
-    dplyr,
+    dplyr (>= 0.8.99.9002),
     e1071,  
     ggplot2,
     gridExtra,
@@ -28,8 +27,7 @@ Imports:
     scales,
     stats,
     tibble,
-    utils,
-    xplorerr
+    utils
 Suggests: 
     covr,
     grid,
@@ -37,12 +35,15 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    vdiffr
+    vdiffr,
+    xplorerr
 License: MIT + file LICENSE
 URL: URL: https://blorr.rsquaredacademy.com/, https://github.com/rsquaredacademy/blorr
 BugReports: https://github.com/rsquaredacademy/blorr/issues
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 LinkingTo: Rcpp
+Remotes:
+    tidyverse/dplyr

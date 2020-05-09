@@ -5,120 +5,69 @@
 #' @importFrom stats coef confint binomial df.residual glm terms
 #' @importFrom utils data
 response_var <- function(model) {
-
-  model %>%
-    use_series(terms) %>%
-    extract2(2)
-
+  model$terms[[2]]
 }
 
 # name of the data set
 data_name <- function(model) {
-
-  model %>%
-    use_series(call) %>%
-    extract2(4)
-
+  model$call[[4]]
 }
 
 # number of observations
 data_nrows <- function(model) {
-
-  model %>%
-    use_series(data) %>%
-    nrow()
-
+  nrow(model$data)
 }
 
 # model convergence status
 converge_status <- function(model) {
-
-  model %>%
-    use_series(converged)
-
+  model$converged
 }
 
 # residual degrees of freedom
 residual_df <- function(model) {
-
-  model %>%
-    use_series(df.residual)
-
+  model$df.residual
 }
 
 # model degrees of freedom
 model_df <- function(model) {
-
-  model %>%
-    use_series(df.null)
-
+  model$df.null
 }
 
 # response profile
 resp_profile <- function(model) {
-
-  resp <- model %>%
-    response_var()
-
-  model %>%
-    use_series(data) %>%
-    pull(!! resp) %>%
-    as.factor() %>%
-    table()
-
+  resp <- response_var(model)
+  table(as.factor(model$data[[resp]]))
 }
 
 
 # analysis of maximum likelihood estimates
 predictor_names <- function(model) {
-
-  model %>%
-    use_series(coefficients) %>%
-    names()
-
+  names(model$coefficients)
 }
 
 # model df
 predictor_df <- function(model) {
-
-  model %>%
-    use_series(rank) %>%
-    rep_len(x = 1)
-
+  rep_len(1, model$rank)
 }
 
 # model estimate
 predictor_est <- function(model) {
-
-  model %>%
-    use_series(coefficients) %>%
-    unname()
-
+  unname(model$coefficients)
 }
 
 # extract columns from model summary
 predictor_mine <- function(model, col_name = NULL) {
-
-  model %>%
-    summary() %>%
-    use_series(coefficients) %>%
-    extract(, col_name) %>%
-    unname()
-
+  unname(summary(model)$coefficients[, col_name])
 }
 
 # standard error
 predictor_se <- function(model) {
-
   predictor_mine(model, "Std. Error")
-
 }
 
 # z value
 predictor_zval <- function(model) {
-
   predictor_mine(model, "z value")
-
 }
 
 # p values
@@ -129,63 +78,39 @@ predictor_pval <- function(model) {
 # odds ratio estimate
 # odds ratio effects
 odds_effect <- function(model) {
-
-  model %>%
-    coef() %>%
-    names() %>%
-    extract(-1)
-
+  names(coef(model))[-1]
 }
 
 # odds ratio point estimates
 odds_point <- function(model) {
-
-  model %>%
-    coef() %>%
-    exp(.) %>%
-    extract(-1) %>%
-    unname()
-
+  unname(exp(coef(model))[-1])
 }
 
 # odds ratio confidence intervals
 odds_conf_limit <- function(model) {
 
-  model %>%
-    confint() %>%
-    as_tibble() %>%
-    slice(2:n()) %>%
-    exp(.)
+  n   <- length(model$coefficients)
+  out <- exp(data.frame(confint(model))[2:n, ])
+  colnames(out) <- c('`2.5 %`', '`97.5 %`')
+  return(out)
 
 }
 
 # -2 log likelihood
 mll <- function(model) {
-
-  model %>%
-    logLik() %>%
-    extract(1) %>%
-    multiply_by(-2)
-
+  (logLik(model)[1]) * -2
 }
 
 # model class
 model_class <- function(model) {
-
-  model %>%
-    class() %>%
-    extract(1)
-
+  class(model)[1]
 }
 
 # create intercept only model
 i_model <- function(model) {
 
   dep <- response_var(model)
-
-  dat <-
-    model %>%
-    use_series(data)
+  dat <- model$data
 
   glm(
     paste0(dep, " ~ 1"), data = dat,
@@ -196,35 +121,22 @@ i_model <- function(model) {
 
 # model dfs
 model_d_f <- function(model) {
-
-  model %>%
-    use_series(coefficients) %>%
-    length()
-
+  length(model$coefficients)
 }
 
 # extract log likelihood from blr_lr_test
 extract_ll <- function(model, n = 1) {
-
-  blr_test_lr(model) %>%
-    use_series(model_info) %>%
-    pull(log_lik) %>%
-    extract(n)
-
+  blr_test_lr(model)$model_info[['log_lik']][n]
 }
 
 # log likelihood
 model_ll <- function(model) {
-
-  model %>%
-    logLik() %>%
-    extract(1)
-
+  logLik(model)[1]
 }
 
 # output formatting
 fc <- function(x, w) {
-  x <- as.character(x)
+  x   <- as.character(x)
   ret <- format(x, width = w, justify = "centre")
   return(ret)
 }
@@ -271,14 +183,13 @@ fw <- function(x, w) {
 }
 
 fl <- function(x, w) {
-  x <- as.character(x)
+  x   <- as.character(x)
   ret <- format(x, width = w, justify = "left")
   return(ret)
 }
 
 mod_sel_data <- function(model) {
-  model %>%
-    use_series(data)
+  model$data
 }
 
 #' @importFrom utils packageVersion menu install.packages

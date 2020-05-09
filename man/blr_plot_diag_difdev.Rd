@@ -4,9 +4,13 @@
 \alias{blr_plot_diag_difdev}
 \title{Delta deviance plot}
 \usage{
-blr_plot_diag_difdev(model, point_color = "blue",
-  title = "Delta Deviance Plot", xaxis_title = "id",
-  yaxis_title = "Delta Deviance")
+blr_plot_diag_difdev(
+  model,
+  point_color = "blue",
+  title = "Delta Deviance Plot",
+  xaxis_title = "id",
+  yaxis_title = "Delta Deviance"
+)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}

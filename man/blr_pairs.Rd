@@ -28,14 +28,15 @@ blr_pairs(model)
 \url{https://doi.org/10.1177/1536867X0600600302}
 }
 \seealso{
-Other model fit statistics: \code{\link{blr_model_fit_stats}},
-  \code{\link{blr_multi_model_fit_stats}},
-  \code{\link{blr_rsq_adj_count}},
-  \code{\link{blr_rsq_cox_snell}},
-  \code{\link{blr_rsq_effron}},
-  \code{\link{blr_rsq_mcfadden_adj}},
-  \code{\link{blr_rsq_mckelvey_zavoina}},
-  \code{\link{blr_rsq_nagelkerke}},
-  \code{\link{blr_test_lr}}
+Other model fit statistics: 
+\code{\link{blr_model_fit_stats}()},
+\code{\link{blr_multi_model_fit_stats}()},
+\code{\link{blr_rsq_adj_count}()},
+\code{\link{blr_rsq_cox_snell}()},
+\code{\link{blr_rsq_effron}()},
+\code{\link{blr_rsq_mcfadden_adj}()},
+\code{\link{blr_rsq_mckelvey_zavoina}()},
+\code{\link{blr_rsq_nagelkerke}()},
+\code{\link{blr_test_lr}()}
 }
 \concept{model fit statistics}

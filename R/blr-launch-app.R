@@ -8,6 +8,7 @@
 #'
 blr_launch_app <- function() {
 
+	check_suggests('xplorerr')
 	check_suggests('descriptr')
 	check_suggests('jsonlite')
 	check_suggests('haven')

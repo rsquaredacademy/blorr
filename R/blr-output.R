@@ -1,4 +1,3 @@
-#' @importFrom cli cat_line
 #' @importFrom purrr map_int map map2_int
 #' @importFrom purrr prepend
 print_blr_reg <- function(x) {
@@ -120,8 +119,8 @@ print_blr_reg <- function(x) {
       cat(
         fc(x$blr_effects[i], w18), fs(),
         fc(format(round(x$blr_odds_point[i], 4), nsmall = 4), w19), fs(),
-        fc(format(round(x$blr_conf$`2.5 %`[i], 4), nsmall = 4), w20),
-        fs(), fg(format(round(x$blr_conf$`97.5 %`[i], 4), nsmall = 4), w21), "\n"
+        fc(format(round(x$blr_conf[[1]][i], 4), nsmall = 4), w20),
+        fs(), fg(format(round(x$blr_conf[[2]][i], 4), nsmall = 4), w21), "\n"
       )
     }
     cat(rep("-", w22), sep = "", "\n\n")
@@ -679,14 +678,14 @@ print_backward_elimination <- function(data) {
 
   # width
   w1 <- max(nchar("Full Model"), nchar(data$predictors))
-  w2 <- max(nchar("AIC"), nchar(format(round(data$aics, 3), nsmall = 3)))
-  w3 <- max(nchar("BIC"), nchar(format(round(data$bics, 3), nsmall = 3)))
-  w4 <- max(nchar("Deviance"), nchar(format(round(data$devs, 3), nsmall = 3)))
+  w2 <- max(nchar("AIC"), nchar(format(round(data$result$aic, 3), nsmall = 3)))
+  w3 <- max(nchar("BIC"), nchar(format(round(data$result$bic, 3), nsmall = 3)))
+  w4 <- max(nchar("Deviance"), nchar(format(round(data$result$deviance, 3), nsmall = 3)))
   w <- sum(w1, w2, w3, w4, 12)
 
   predictors <- c("Full Model", data$predictors)
 
-  ln <- length(data$aics)
+  ln <- length(data$result$aic)
 
   cat("\n\n", format("Backward Elimination Summary", width = w, justify = "centre"), "\n")
   cat(rep("-", w), sep = "", "\n")
@@ -697,9 +696,9 @@ print_backward_elimination <- function(data) {
   cat(rep("-", w), sep = "", "\n")
   for (i in seq_len(ln)) {
     cat(
-      fl(predictors[i], w1), fs(), fg(format(round(data$aics[i], 3), nsmall = 3), w2), fs(),
-      fg(format(round(data$bics[i], 3), nsmall = 3), w3), fs(),
-      fg(format(round(data$devs[i], 3), nsmall = 3), w4), "\n"
+      fl(predictors[i], w1), fs(), fg(format(round(data$result$aic[i], 3), nsmall = 3), w2), fs(),
+      fg(format(round(data$result$bic[i], 3), nsmall = 3), w3), fs(),
+      fg(format(round(data$result$deviance[i], 3), nsmall = 3), w4), "\n"
     )
   }
   cat(rep("-", w), sep = "", "\n\n")

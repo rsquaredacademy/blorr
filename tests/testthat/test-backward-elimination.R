@@ -6,11 +6,7 @@ test_that("output from backward variable elimination is as expected", {
     data = hsb2, family = binomial(link = "logit")
   )
 
-  actual <-
-    model %>%
-    blr_step_aic_backward() %>%
-    use_series(predictors)
-
+  actual   <- blr_step_aic_backward(model)$predictors
   expected <- c("prog", "socst")
 
   expect_equivalent(actual, expected)
@@ -22,11 +18,7 @@ test_that("output from backward variable p elimination is as expected", {
     data = hsb2, family = binomial(link = "logit")
   )
 
-  actual <-
-    model %>%
-    blr_step_p_backward() %>%
-    use_series(removed)
-
+  actual   <- blr_step_p_backward(model)$removed
   expected <- c("prog", "socst")
 
   expect_equivalent(actual, expected)

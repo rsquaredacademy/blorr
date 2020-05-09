@@ -8,8 +8,7 @@
 \usage{
 blr_step_p_forward(model, ...)
 
-\method{blr_step_p_forward}{default}(model, penter = 0.3,
-  details = FALSE, ...)
+\method{blr_step_p_forward}{default}(model, penter = 0.3, details = FALSE, ...)
 
 \method{plot}{blr_step_p_forward}(x, model = NA, ...)
 }
@@ -71,9 +70,10 @@ Kutner, MH, Nachtscheim CJ, Neter J and Li W., 2004, Applied Linear Statistical 
 Chicago, IL., McGraw Hill/Irwin.
 }
 \seealso{
-Other variable selection procedures: \code{\link{blr_step_aic_backward}},
-  \code{\link{blr_step_aic_both}},
-  \code{\link{blr_step_aic_forward}},
-  \code{\link{blr_step_p_backward}}
+Other variable selection procedures: 
+\code{\link{blr_step_aic_backward}()},
+\code{\link{blr_step_aic_both}()},
+\code{\link{blr_step_aic_forward}()},
+\code{\link{blr_step_p_backward}()}
 }
 \concept{variable selection procedures}

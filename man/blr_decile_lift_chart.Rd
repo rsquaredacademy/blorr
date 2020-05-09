@@ -4,10 +4,15 @@
 \alias{blr_decile_lift_chart}
 \title{Decile lift chart}
 \usage{
-blr_decile_lift_chart(gains_table, xaxis_title = "Decile",
+blr_decile_lift_chart(
+  gains_table,
+  xaxis_title = "Decile",
   yaxis_title = "Decile Mean / Global Mean",
-  title = "Decile Lift Chart", bar_color = "blue", text_size = 3.5,
-  text_vjust = -0.3)
+  title = "Decile Lift Chart",
+  bar_color = "blue",
+  text_size = 3.5,
+  text_vjust = -0.3
+)
 }
 \arguments{
 \item{gains_table}{An object of class \code{blr_gains_table}.}
@@ -35,12 +40,14 @@ blr_decile_lift_chart(gt)
 
 }
 \seealso{
-Other model validation techniques: \code{\link{blr_confusion_matrix}},
-  \code{\link{blr_decile_capture_rate}},
-  \code{\link{blr_gains_table}},
-  \code{\link{blr_gini_index}}, \code{\link{blr_ks_chart}},
-  \code{\link{blr_lorenz_curve}},
-  \code{\link{blr_roc_curve}},
-  \code{\link{blr_test_hosmer_lemeshow}}
+Other model validation techniques: 
+\code{\link{blr_confusion_matrix}()},
+\code{\link{blr_decile_capture_rate}()},
+\code{\link{blr_gains_table}()},
+\code{\link{blr_gini_index}()},
+\code{\link{blr_ks_chart}()},
+\code{\link{blr_lorenz_curve}()},
+\code{\link{blr_roc_curve}()},
+\code{\link{blr_test_hosmer_lemeshow}()}
 }
 \concept{model validation techniques}
