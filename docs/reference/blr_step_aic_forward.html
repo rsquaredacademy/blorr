@@ -142,13 +142,13 @@ entering predictors based on chi square statistic, in a stepwise manner
 until there is no variable left to enter any more.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_step_aic_forward</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>blr_step_aic_forward</span>(<span class='no'>model</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>blr_step_aic_forward</span>(<span class='no'>model</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>blr_step_aic_forward</span>(<span class='no'>model</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>details</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for blr_step_aic_forward</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>print_plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,13 +158,17 @@ until there is no variable left to enter any more.</p>
       <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>Other arguments.</p></td>
+    </tr>
+    <tr>
+      <th>progress</th>
+      <td><p>Logical; if <code>TRUE</code>, will display variable selection progress.</p></td>
+    </tr>
+    <tr>
       <th>details</th>
       <td><p>Logical; if <code>TRUE</code>, will print the regression result at
 each step.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Other arguments.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -173,6 +177,10 @@ each step.</p></td>
     <tr>
       <th>text_size</th>
       <td><p>size of the text in the plot.</p></td>
+    </tr>
+    <tr>
+      <th>print_plot</th>
+      <td><p>logical; if <code>TRUE</code>, prints the plot else returns a plot object.</p></td>
     </tr>
     </table>
 
