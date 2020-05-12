@@ -4,10 +4,12 @@
 \alias{blr_plot_dfbetas_panel}
 \title{DFBETAs panel}
 \usage{
-blr_plot_dfbetas_panel(model)
+blr_plot_dfbetas_panel(model, print_plot = TRUE)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 list; \code{blr_dfbetas_panel} returns a list of tibbles (for

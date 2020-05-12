@@ -4,10 +4,12 @@
 \alias{blr_plot_diag_influence}
 \title{Influence diagnostics plot}
 \usage{
-blr_plot_diag_influence(model)
+blr_plot_diag_influence(model, print_plot = TRUE)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 A panel of influence diagnostic plots.

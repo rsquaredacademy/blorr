@@ -207,7 +207,8 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
 
   decile_rate <- blr_prep_dcrate_data(gains_table)
 
-  p <- ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
+  p <- 
+  ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
     geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
     geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
       size = text_size) + ylab(yaxis_title)

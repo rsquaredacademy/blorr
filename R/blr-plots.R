@@ -334,6 +334,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' Panel of plots to detect influential observations using DFBETAs.
 #'
 #' @param model An object of class \code{glm}.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @details
 #' DFBETA measures the difference in each parameter estimate with and without
@@ -365,11 +366,10 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' @importFrom stats dfbetas
 #' @importFrom ggplot2 geom_linerange geom_text annotate
-#' @importFrom gridExtra grid.arrange
 #'
 #' @export
 #'
-blr_plot_dfbetas_panel <- function(model) {
+blr_plot_dfbetas_panel <- function(model, print_plot = TRUE) {
 
   blr_check_model(model)
 
@@ -391,7 +391,11 @@ blr_plot_dfbetas_panel <- function(model) {
 
   }
 
-  suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
+  if (print_plot) {
+    check_suggest('gridExtra')
+    suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
+  }
+  
   names(outliers) <- model_coeff_names(model)
   result <- list(outliers = outliers, plots = myplots)
   invisible(result)

@@ -19,7 +19,6 @@ Imports:
     dplyr (>= 0.8.99.9002),
     e1071,  
     ggplot2,
-    gridExtra,
     magrittr,
     purrr,
     Rcpp,
@@ -31,6 +30,7 @@ Imports:
 Suggests: 
     covr,
     grid,
+    gridExtra,
     ineq,
     knitr,
     rmarkdown,

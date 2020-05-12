@@ -10,7 +10,7 @@ blr_step_p_forward(model, ...)
 
 \method{blr_step_p_forward}{default}(model, penter = 0.3, details = FALSE, ...)
 
-\method{plot}{blr_step_p_forward}(x, model = NA, ...)
+\method{plot}{blr_step_p_forward}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
 \item{model}{An object of class \code{lm}; the model should include all
@@ -25,6 +25,8 @@ enter into the model}
 each step.}
 
 \item{x}{An object of class \code{blr_step_p_forward}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 \code{blr_step_p_forward} returns an object of class \code{"blr_step_p_forward"}.

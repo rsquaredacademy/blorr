@@ -10,7 +10,7 @@ blr_step_p_both(model, ...)
 
 \method{blr_step_p_both}{default}(model, pent = 0.1, prem = 0.3, details = FALSE, ...)
 
-\method{plot}{blr_step_p_both}(x, model = NA, ...)
+\method{plot}{blr_step_p_both}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
 \item{model}{An object of class \code{lm}; the model should include all
@@ -28,6 +28,8 @@ from the model.}
 each step.}
 
 \item{x}{An object of class \code{blr_step_p_both}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 \code{blr_step_p_both} returns an object of class \code{"blr_step_p_both"}.
