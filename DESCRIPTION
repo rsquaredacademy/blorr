@@ -20,6 +20,7 @@ Imports:
     dplyr (>= 0.8.99.9002),
     e1071,  
     ggplot2,
+    lest,
     magrittr,
     purrr,
     Rcpp,
