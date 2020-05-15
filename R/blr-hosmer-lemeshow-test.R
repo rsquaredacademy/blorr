@@ -110,25 +110,12 @@ hoslem_table_data <- function(data, resp) {
 
   d <- setDF(d)
   d$`0s_observed` <- d$n - d$`1s_observed`
-  d$`1s_expected` = d$n * d$avg_prob
-  d$`0s_expected` = d$n - d$`1s_expected`
-  d$positive      = ((d$`1s_observed` - d$`1s_expected`) ^ 2 / d$`1s_expected`)
-  d$negative      = ((d$`0s_observed` - d$`0s_expected`) ^ 2 / d$`0s_expected`)
+  d$`1s_expected` <- d$n * d$avg_prob
+  d$`0s_expected` <- d$n - d$`1s_expected`
+  d$positive      <- ((d$`1s_observed` - d$`1s_expected`) ^ 2 / d$`1s_expected`)
+  d$negative      <- ((d$`0s_observed` - d$`0s_expected`) ^ 2 / d$`0s_expected`)
 
   return(d)
-
-  # data %>%
-  #   group_by(group) %>%
-  #   summarise(
-  #     n             = n(),
-  #     `1s_observed` = sum(resp),
-  #     `0s_observed` = n - `1s_observed`,
-  #     avg_prob      = mean(prob),
-  #     `1s_expected` = n * avg_prob,
-  #     `0s_expected` = n - `1s_expected`,
-  #     positive      = ((`1s_observed` - `1s_expected`) ^ 2 / `1s_expected`),
-  #     negative      = ((`0s_observed` - `0s_expected`) ^ 2 / `0s_expected`)
-  #   )
 
 }
 

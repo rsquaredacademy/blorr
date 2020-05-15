@@ -13,7 +13,6 @@ Depends:
 Imports: 
     car,
     caret,
-    checkmate,
     clisymbols,
     crayon,
     data.table,

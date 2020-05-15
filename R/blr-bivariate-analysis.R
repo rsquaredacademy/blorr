@@ -253,12 +253,12 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
   blr_check_data(data)
 
-  resp <- deparse(substitute(response))
-  pred <- deparse(substitute(predictor))
+  resp      <- deparse(substitute(response))
+  pred      <- deparse(substitute(predictor))
   data_name <- deparse(substitute(data))
-  k <- check_choice(resp, choices = names(data))
+  k         <- resp %in% names(data)
 
-  if (k != TRUE) {
+  if (!k) {
 
     cat("Uh oh...", resp, "is not a column in", data_name, ". Please check the column names using: \n\n", "* names()", "\n", "* colnames()", "\n\n")
 
@@ -267,7 +267,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
   k2 <- check_choice(pred, choices = names(data))
 
-  if (k2 != TRUE) {
+  if (!k2) {
 
     cat("Uh oh...", pred, "is not a column in", data_name, ". Please check the column names using: \n\n", "* names()", "\n", "* colnames()", "\n\n")
 
