@@ -11,7 +11,8 @@ blr_decile_lift_chart(
   title = "Decile Lift Chart",
   bar_color = "blue",
   text_size = 3.5,
-  text_vjust = -0.3
+  text_vjust = -0.3,
+  print_plot = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ blr_decile_lift_chart(
 \item{text_size}{Size of the bar labels.}
 
 \item{text_vjust}{Vertical justification of the bar labels.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \description{
 Decile wise lift chart.

@@ -1,7 +1,7 @@
 #' Bivariate analysis
 #'
-#' Information value and likelihood ratio chi square test for initial 
-#'   variable/predictor selection. Currently avialable for categorical 
+#' Information value and likelihood ratio chi square test for initial
+#'   variable/predictor selection. Currently avialable for categorical
 #'   predictors only.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
@@ -25,30 +25,24 @@
 #'
 #' @export
 #'
-blr_bivariate_analysis <- function(data, response, ...)
-  UseMethod("blr_bivariate_analysis")
+blr_bivariate_analysis <- function(data, response, ...) UseMethod("blr_bivariate_analysis")
 
 #' @rdname blr_bivariate_analysis
 #' @export
 #'
 blr_bivariate_analysis.default <- function(data, response, ...) {
 
-  resp <- enquo(response)
-  predictors <- quos(...)
+  resp          <- deparse(substitute(response))
+  predictors    <- vapply(substitute(...()), deparse, NA_character_)
 
   blr_check_data(data)
 
-  data_name <- deparse(substitute(data))
-
-  mdata <-
-    data %>%
-    select(!! resp, !!! predictors)
-
+  mdata         <- data[c(resp, predictors)]
   varnames      <- names(mdata)
   resp_name     <- varnames[1]
   pred_name     <- varnames[-1]
   len_pred_name <- x_length(pred_name)
-  result        <- bivar_comp(len_pred_name, mdata, pred_name, resp_name)
+  result        <- bivar_comp(len_pred_name, mdata, pred_name, resp_name[1])
 
   result <- tibble(variable         = pred_name,
                    iv               = result$iv,
@@ -68,10 +62,7 @@ print.blr_bivariate_analysis <- function(x, ...) {
 }
 
 x_length <- function(x) {
-
-  x %>%
-    length() %>%
-    seq_len(.)
+  seq_len(length(x))
 }
 
 bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
@@ -83,7 +74,7 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
 
   for (i in len_pred_name) {
 
-    ivs[i] <- ivs_comp(mdata, pred_name, resp_name, i)
+    ivs[i] <- ivs_comp(mdata, pred_name, resp_name[1], i)
 
     model <- glm(
       as.formula(paste(resp_name, "~", pred_name[i])), data = mdata,
@@ -102,29 +93,21 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
 
   }
 
-  list(likelihood_ratio = map_dbl(lr_ratios, 1),
-       iv               = map_dbl(ivs, 1),
-       df               = map_dbl(lr_dfs, 1),
-       pval             = map_dbl(lr_pvals, 1))
+  list(likelihood_ratio = unlist(lr_ratios),
+       iv               = unlist(ivs),
+       df               = unlist(lr_dfs),
+       pval             = unlist(lr_pvals))
 
 }
 
 ivs_comp <- function(mdata, pred_name, resp_name, i) {
-
-  blr_woe_iv(mdata, !! sym(pred_name[i]), !! sym(resp_name)) %>%
-    use_series(woe_iv_table) %>%
-    pull(iv) %>%
-    sum()
-
+  sum(blr_woe_iv(mdata, pred_name[i], resp_name[1])$woe_iv_table[['iv']])
 }
 
 lr_extract <- function(lr, value) {
 
-  vals <- enquo(value)
-
-  lr %>%
-    use_series(test_result) %>%
-    pull(!! vals)
+  vals <- deparse(substitute(value))
+  lr$test_result[[vals]]
 
 }
 #' Event rate
@@ -153,22 +136,20 @@ blr_segment.default <- function(data, response, predictor) {
 
   blr_check_data(data)
 
-  resp <- enquo(response)
-  pred <- enquo(predictor)
+  resp    <- deparse(substitute(response))
+  pred    <- deparse(substitute(predictor))
+  d       <- data[c(resp, pred)]
+  colnames(d) <- c("resp", "pred")
+  d       <- data.table(d)
+  d       <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
 
-  data_name <- deparse(substitute(data))
-  
-  segment_data <-
-    data %>%
-    select(!! pred, !! resp) %>%
-    group_by(!! pred) %>%
-    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
-    mutate(
-      `1s%` = round((`1s` / sum(n)), 2)
-    ) %>%
-    select(-n, -`1s`)
+  setDF(d)
 
-  result <- list(segment_data = segment_data)
+  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d       <- d[c('pred', '1s%')]
+  d       <- d[order(d$pred), ]
+  result  <- list(segment_data = d)
+
   class(result) <- "blr_segment"
   return(result)
 
@@ -206,28 +187,17 @@ blr_segment_twoway <- function(data, response, variable_1, variable_2) UseMethod
 blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
 
   blr_check_data(data)
-  
-  resp  <- enquo(response)
-  var_1 <- enquo(variable_1)
-  var_2 <- enquo(variable_2)
 
-  data_name <- deparse(substitute(data))
-  
-  n     <- nrow(data)
-
-  dat <-
-    data %>%
-    filter((!! resp) == 1) %>%
-    select(!! var_1, !! var_2)
-
-  var_names <- names(dat)
-
-  twoway <-
-    dat %>%
-    table() %>%
-    divide_by(n)
-
-  result <- list(twoway_segment = twoway, varnames = var_names)
+  resp          <- deparse(substitute(response))
+  var_1         <- deparse(substitute(variable_1))
+  var_2         <- deparse(substitute(variable_2))
+  n             <- nrow(data)
+  d             <- data[c(resp, var_1, var_2)]
+  var_names     <- names(d)
+  colnames(d)   <- c("resp", "var_1", "var_2")
+  d             <- d[d$resp == 1, c('var_1', 'var_2')]
+  twoway        <- table(d) / n
+  result        <- list(twoway_segment = twoway, varnames = var_names)
   class(result) <- "blr_segment_twoway"
 
   return(result)
@@ -264,7 +234,7 @@ print.blr_segment_twoway <- function(x, ...) {
 #' @examples
 #' k <- blr_segment_dist(hsb2, honcomp, prog)
 #' k
-#' 
+#'
 #' # plot
 #' plot(k)
 #'
@@ -283,37 +253,30 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
   blr_check_data(data)
 
-  resp <- enquo(response)
-  pred <- enquo(predictor)
-
+  resp <- deparse(substitute(response))
+  pred <- deparse(substitute(predictor))
   data_name <- deparse(substitute(data))
-  k <- check_choice(quo_name(resp), choices = names(data))
-  
+  k <- check_choice(resp, choices = names(data))
+
   if (k != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(resp)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", resp, "is not a column in", data_name, ". Please check the column names using: \n\n", "* names()", "\n", "* colnames()", "\n\n")
 
     stop("", call. = FALSE)
   }
 
-  k2 <- check_choice(quo_name(pred), choices = names(data))
-  
+  k2 <- check_choice(pred, choices = names(data))
+
   if (k2 != TRUE) {
 
-    cat("Uh oh...", crayon::bold$red(quo_name(pred)), "is not a column in", crayon::bold$blue(data_name), ". Please check the column names using: \n\n", crayon::bold$blue("* names()"), "\n", crayon::bold$blue("* colnames()"), "\n\n")
+    cat("Uh oh...", pred, "is not a column in", data_name, ". Please check the column names using: \n\n", "* names()", "\n", "* colnames()", "\n\n")
 
     stop("", call. = FALSE)
   }
 
   dist_table <- segment_comp(data, pred, resp)
-
-  var_name <-
-    dist_table %>%
-    names() %>%
-    extract(1)
-
+  var_name <- names(dist_table)[1]
   names(dist_table)[1] <- "variable"
-
   result <- list(dist_table = dist_table, var_name = var_name)
   class(result) <- "blr_segment_dist"
 
@@ -323,14 +286,18 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
 segment_comp <- function(data, pred, resp) {
 
-  data %>%
-    select(!! pred, !! resp) %>%
-    group_by(!! pred) %>%
-    summarise(n = n(), `1s` = table(!! resp)[[2]]) %>%
-    mutate(
-      `n%` = round((n / sum(n)), 2),
-      `1s%` = round((`1s` / sum(n)), 2)
-    )
+  d <- data[c(pred, resp)]
+  colnames(d) <- c("pred", "resp")
+  d <- data.table(d)
+  d <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
+
+  setDF(d)
+
+  d$`n%`  <- round((d$n / sum(d$n)), 2)
+  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d <- d[order(d$pred), ]
+
+  return(d)
 
 }
 
@@ -350,20 +317,20 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
                                   ...) {
 
   sec_axis_scale <- secondary_axis_scale_comp(x)
+  vname <- x$var_name
 
   if (is.na(title)) {
-    plot_title <- x$var_name
+    plot_title <- vname
   } else {
     plot_title <- title
   }
 
-  vname <-
-    x %>%
-    use_series(var_name)
 
-  x %>%
-    use_series(dist_table) %>%
-    ggplot(aes(variable)) + geom_col(aes(y = `n%`), fill = bar_color) +
+  plot_data <- x$dist_table
+
+  p <-
+    ggplot(plot_data, aes(variable)) +
+    geom_col(aes(y = `n%`), fill = bar_color) +
     geom_line(aes(y = `1s%`, group = 1), color = line_color) +
     xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
     scale_y_continuous(labels = scales::percent,
@@ -374,12 +341,8 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
 
 secondary_axis_scale_comp <- function(x) {
 
-  x %>%
-    use_series(dist_table) %>%
-    mutate(
-      sec = `n%` / `1s%`
-    ) %>%
-    pull(sec) %>%
-    min()
+  d <- x$dist_table
+  d$sec <- d$`n%` / d$`1s%`
+  min(d$sec)
 
 }

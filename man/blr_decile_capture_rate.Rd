@@ -11,7 +11,8 @@ blr_decile_capture_rate(
   title = "Capture Rate by Decile",
   bar_color = "blue",
   text_size = 3.5,
-  text_vjust = -0.3
+  text_vjust = -0.3,
+  print_plot = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ blr_decile_capture_rate(
 \item{text_size}{Size of the bar labels.}
 
 \item{text_vjust}{Vertical justification of the bar labels.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \description{
 Visualize the decile wise event rate.

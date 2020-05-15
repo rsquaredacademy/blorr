@@ -119,7 +119,6 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   }
 
   da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
-  # da2 <- arrange(da, aics)
   da2 <- da[order(da[['aics']]), ]
 
   if (details) {
@@ -203,7 +202,6 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
           predictors = preds, aics = aics, bics = bics,
           devs = devs
         )
-        # da2 <- arrange(da, aics)
         da2 <- da[order(da[['aics']]), ]
         w1  <- max(nchar("Predictor"), nchar(predictors))
         w2  <- 2

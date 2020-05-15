@@ -53,8 +53,7 @@
 #'
 #' @export
 #'
-blr_step_aic_forward <- function(model, ...)
-  UseMethod("blr_step_aic_forward")
+blr_step_aic_forward <- function(model, ...) UseMethod("blr_step_aic_forward")
 
 #' @rdname blr_step_aic_forward
 #' @export
@@ -115,7 +114,6 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
     predictors = all_pred, aics = aics, bics = bics,
     devs = devs
   )
-  # da2 <- arrange(da, aics)
   da2 <- da[order(da[['aics']]), ]
 
   if (details) {
@@ -199,7 +197,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
         devs = devs
       )
 
-      da2 <- arrange(da, aics)
+      da2 <- da[order(da[['aics']]), ]
       w1  <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
       w2  <- 2
       w3  <- max(nchar("AIC"), nchar(format(round(aics, 3), nsmall = 3)))

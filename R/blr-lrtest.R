@@ -50,13 +50,11 @@ blr_test_lr.default <- function(full_model, reduced_model) {
   rm_class <- model_class(reduced_model)
 
   if (fm_class != "glm") {
-    stop(crayon::red("full_model must be an object of class glm."),
-         call. = FALSE)
+    stop("full_model must be an object of class glm.", call. = FALSE)
   }
 
   if (rm_class != "glm") {
-    stop(crayon::red("reduced_model must be an object of class glm."),
-      call. = FALSE)
+    stop("reduced_model must be an object of class glm.", call. = FALSE)
   }
 
   model_info <- lr_model_info(full_model, reduced_model)
@@ -65,7 +63,7 @@ blr_test_lr.default <- function(full_model, reduced_model) {
   result <- list(model_info = model_info, test_result = test_info)
   class(result) <- "blr_test_lr"
 
-  return(result)
+  invisible(result)
 
 }
 

@@ -13,6 +13,7 @@
 #' @param point_fill Fill of the points on the roc curve.
 #' @param point_color Color of the points on the roc curve.
 #' @param plot_title_justify Horizontal justification on the plot title.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @references
 #' Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition, New York: John Wiley & Sons.
@@ -43,13 +44,13 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
                           diag_line_col = "red",
                           point_shape = 18, point_fill = "blue",
                           point_color = "blue",
-                          plot_title_justify = 0.5) {
+                          plot_title_justify = 0.5, print_plot = TRUE) {
 
   blr_check_gtable(gains_table)
-
-  gains_table %>%
-    blr_prep_roc_data() %>%
-    ggplot(aes(x = `1 - specificity`, y = sensitivity_per)) +
+  plot_data <- blr_prep_roc_data(gains_table)
+  
+  p <- 
+    ggplot(plot_data, aes(x = `1 - specificity`, y = sensitivity_per)) +
     geom_point(shape = point_shape, fill = point_fill, color = point_color) +
     geom_line(color = roc_curve_col) + ggtitle(title) +
     scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
@@ -57,5 +58,11 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
     theme(plot.title = element_text(hjust = plot_title_justify)) +
     geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
               color = diag_line_col)
+
+  if (print_plot) {
+    print(p)
+  }
+
+  invisible(p)
 }
 

@@ -9,7 +9,8 @@ blr_ks_chart(
   title = "KS Chart",
   yaxis_title = " ",
   xaxis_title = "Cumulative Population \%",
-  ks_line_color = "black"
+  ks_line_color = "black",
+  print_plot = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ blr_ks_chart(
 \item{xaxis_title}{X axis title.}
 
 \item{ks_line_color}{Color of the line indicating maximum KS statistic.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \description{
 Kolmogorov-Smirnov (KS) statistics is used to assess predictive power for

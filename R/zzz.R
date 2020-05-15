@@ -2,15 +2,10 @@
 
   if (!interactive() || stats::runif(1) > 0.1) return()
 
-  pkgs <- utils::available.packages()
-  
-  cran_version <- 
-    pkgs %>%
-    extract("blorr", "Version") %>%
-    package_version()
-
+  pkgs          <- utils::available.packages()
+  cran_version  <- package_version(pkgs["rbin", "Version"])
   local_version <- utils::packageVersion("blorr")
-  behind_cran <- cran_version > local_version
+  behind_cran   <- cran_version > local_version
 
   tips <- c(
     "Learn more about blorr at https://github.com/rsquaredacademy/blorr/.",

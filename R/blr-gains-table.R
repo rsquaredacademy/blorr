@@ -12,6 +12,7 @@
 #' @param lift_curve_col Color of the lift curve.
 #' @param diag_line_col Diagonal line color.
 #' @param plot_title_justify Horizontal justification on the plot title.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #' @param ... Other inputs.
 #'
 #' @return A tibble.
@@ -57,21 +58,19 @@ blr_gains_table.default <- function(model, data = NULL) {
 
   if (is.null(data)) {
     test_data <- FALSE
-    data      <- eval(model$call$data)
+    data      <- model$model
   } else {
     test_data <- TRUE
     blr_check_data(data)
     data      <- data
   }
 
-  decile_count <- gains_decile_count(data)
+  dct <- gains_decile_count(data)
+  gtp <- gains_table_prep(model, data, test_data)
+  gtm <- gains_table_modify(gtp, decile_count = dct)
+  gt  <- gains_table_mutate(gtm)
 
-  gains_table <-
-    gains_table_prep(model, data, test_data) %>%
-    gains_table_modify(decile_count = decile_count) %>%
-    gains_table_mutate()
-
-  result <- list(gains_table = gains_table)
+  result <- list(gains_table = gt)
   class(result) <- c("blr_gains_table")
 
   return(result)
@@ -82,13 +81,9 @@ blr_gains_table.default <- function(model, data = NULL) {
 #'
 print.blr_gains_table <- function(x, ...) {
 
-  x %>%
-    use_series(gains_table) %>%
-    select(
-      -cum_1s, -cum_0s, -cum_total, -`cum_total_%`,
-      -`cum_1s_%`, -`cum_0s_%`
-    ) %>%
-    print()
+  cols_print <- c('decile', 'total', '1', '0', 'ks', 'tp', 'tn', 'fp', 'fn',
+    'sensitivity', 'specificity', 'accuracy')
+  print(x$gains_table[cols_print])
 
 }
 
@@ -97,12 +92,13 @@ print.blr_gains_table <- function(x, ...) {
 #'
 plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Population",
                                  yaxis_title = "% Cumulative 1s", diag_line_col = "red",
-                                 lift_curve_col = "blue", plot_title_justify = 0.5, ...) {
+                                 lift_curve_col = "blue", plot_title_justify = 0.5,
+                                 print_plot = TRUE, ...) {
 
   blr_check_gtable(x)
 
-  gains_plot_data(x) %>%
-    ggplot() +
+  p <-
+    ggplot(gains_plot_data(x)) +
     geom_line(aes(x = cum_total_per, y = cum_1s_per), color = lift_curve_col) +
     geom_line(aes(x = cum_total_per, y = cum_total_y), color = diag_line_col) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
@@ -110,6 +106,11 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
     scale_y_continuous(labels = scales::percent) +
     theme(plot.title = element_text(hjust = plot_title_justify))
 
+  if (print_plot) {
+    print(p)
+  }
+
+  invisible(p)
 }
 
 
@@ -126,6 +127,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param xaxis_title X axis title.
 #' @param yaxis_title Y axis title.
 #' @param ks_line_color Color of the line indicating maximum KS statistic.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @references
 #' \url{https://doi.org/10.1198/tast.2009.08210}
@@ -146,7 +148,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #'
 blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
                          xaxis_title = "Cumulative Population %",
-                         ks_line_color = "black") {
+                         ks_line_color = "black", print_plot = TRUE) {
 
   blr_check_gtable(gains_table)
 
@@ -155,9 +157,10 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
   ks_stat    <- blr_prep_kschart_stat(ks_line)
   annotate_x <- blr_prep_ksannotate_x(ks_line)
 
-  gains_table %>%
-    blr_prep_kschart_data() %>%
-    ggplot(aes(x = cum_total_per)) +
+  plot_data <- blr_prep_kschart_data(gains_table)
+
+  p <-
+    ggplot(plot_data, aes(x = cum_total_per)) +
     geom_line(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
     geom_line(aes(y = cum_0s_per, color = "Cumulative 0s %")) +
     geom_point(aes(y = cum_1s_per, color = "Cumulative 1s %")) +
@@ -171,6 +174,12 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
     scale_y_continuous(labels = scales::percent) +
     theme(plot.title = element_text(hjust = 0.5),
           legend.title = element_blank())
+
+  if (print_plot) {
+    print(p)
+  }
+
+  invisible(p)
 
 }
 
@@ -186,6 +195,7 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
 #' @param bar_color Bar color.
 #' @param text_size Size of the bar labels.
 #' @param text_vjust Vertical justification of the bar labels.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -201,19 +211,21 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
                                     yaxis_title = "Capture Rate",
                                     title = "Capture Rate by Decile",
                                     bar_color = "blue", text_size = 3.5,
-                                    text_vjust = -0.3) {
+                                    text_vjust = -0.3, print_plot = TRUE) {
 
   blr_check_gtable(gains_table)
 
   decile_rate <- blr_prep_dcrate_data(gains_table)
 
-  p <- 
-  ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
+  p <-
+    ggplot(data = decile_rate, aes(x = decile, y = decile_mean)) +
     geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
     geom_text(aes(label = round(decile_mean, 2)), vjust = text_vjust,
       size = text_size) + ylab(yaxis_title)
 
-  print(p)
+  if (print_plot) {
+    print(p)
+  }
 
   result <- list(plot = p, decile_rate = decile_rate)
   invisible(result)
@@ -231,6 +243,7 @@ blr_decile_capture_rate <- function(gains_table, xaxis_title = "Decile",
 #' @param bar_color Color of the bars.
 #' @param text_size Size of the bar labels.
 #' @param text_vjust Vertical justification of the bar labels.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -246,18 +259,21 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
                                   yaxis_title = "Decile Mean / Global Mean",
                                   title = "Decile Lift Chart",
                                   bar_color = "blue", text_size = 3.5,
-                                  text_vjust = -0.3) {
+                                  text_vjust = -0.3, print_plot = TRUE) {
 
   blr_check_gtable(gains_table)
   global_mean <- blr_prep_lchart_gmean(gains_table)
   lift_data   <- blr_prep_lchart_data(gains_table, global_mean)
 
-  p <- ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
+  p <-
+    ggplot(data = lift_data, aes(x = decile, y = d_by_g_mean)) +
     geom_col(fill = bar_color) + ggtitle(title) + xlab(xaxis_title) +
     geom_text(aes(label = round(d_by_g_mean, 2)), vjust = text_vjust,
       size = text_size) + ylab(yaxis_title)
 
-  print(p)
+  if (print_plot) {
+    print(p)
+  }
 
   result <- list(plot = p, decile_lift = lift_data, global_mean = global_mean)
   invisible(result)
@@ -266,96 +282,76 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
 
 
 gains_decile_count <- function(data) {
-
-  data %>%
-    nrow() %>%
-    divide_by(10) %>%
-    round()
-
+  round(nrow(data) / 10)
 }
 
 
 gains_table_prep <- function(model, data, test_data = FALSE) {
 
   if (test_data) {
-    namu <-
-      model %>%
-      formula() %>%
-      extract2(2)
-
-    response <-
-      data %>%
-      pull(!! namu)
-
+    namu <- names(model$model)[1]
+    response <- data[[namu]]
   } else {
-    response <-
-      model %>%
-      model.frame() %>%
-      model.response()
+    response <- model$model[1]
   }
 
-  resp_tib <- tibble::enframe(response, name = NULL)
-  prob_tib <- tibble::enframe(predict.glm(model, newdata = data, type = "response"),
-                              name = NULL)
-
-  colnames(resp_tib) <- c("response")
-  colnames(prob_tib) <- c("predicted")
-
-  bind_cols(resp_tib, prob_tib)
+  resp_tib <- data.frame(response = response)
+  prob_tib <- data.frame(predicted = predict.glm(model, newdata = data, type = "response"))
+  out <- cbind(resp_tib, prob_tib)
+  colnames(out) <- c('response', 'predicted')
+  return(out)
 
 }
 
+#' @importFrom data.table data.table setorder .N := setDF
 gains_table_modify <- function(data, decile_count) {
 
-  residual <-
-    data %>%
-    nrow() %>%
-    subtract((decile_count * 9))
+  residual <- nrow(data) - (decile_count * 9)
 
-  data %>%
-    select(response = response, prob = predicted) %>%
-    arrange(desc(prob)) %>%
-    add_column(decile = c(rep(1:9, each = decile_count),
-                          rep(10, times = residual))) %>%
-    group_by(decile) %>%
-    summarise(total = n(), `1` = table(response)[[2]])
+  d1 <- data[c('response', 'predicted')]
+  colnames(d1) <- c('response', 'prob')
+  d1 <- data.table(d1)
+  setorder(d1, -prob)
+  d1[, decile := c(rep(1:9, each = decile_count),
+                   rep(10, times = residual))]
+
+  out <- d1[, .(total = .N, `1` = table(response)[[2]]), by = decile]
+  setDF(out)
+  return(out)
+
 }
 
 gains_table_mutate <- function(data) {
 
-  data %>%
-    mutate(
-      `0`           = total - `1`,
-      cum_1s        = cumsum(`1`),
-      cum_0s        = cumsum(`0`),
-      cum_total     = cumsum(total),
-      `cum_total_%` = (cum_total / sum(total)) * 100,
-      `cum_1s_%`    = (cum_1s / sum(`1`)) * 100,
-      `cum_0s_%`    = (cum_0s / sum(`0`)) * 100,
-      ks            = `cum_1s_%` - `cum_0s_%`,
-      tp            = cum_1s,
-      tn            = cum_0s[10] - cum_0s,
-      fp            = cum_0s,
-      fn            = cum_1s[10] - cum_1s,
-      sensitivity   = (tp / (tp + fn)) * 100,
-      specificity   = (tn / (tn + fp)) * 100,
-      accuracy      = ((tp + tn) / cum_total[10]) * 100
-    )
+  data$`0`           <- data$total - data$`1`
+  data$cum_1s        <- cumsum(data$`1`)
+  data$cum_0s        <- cumsum(data$`0`)
+  data$cum_total     <- cumsum(data$total)
+  data$`cum_total_%` <- (data$cum_total / sum(data$total)) * 100
+  data$`cum_1s_%`    <- (data$cum_1s / sum(data$`1`)) * 100
+  data$`cum_0s_%`    <- (data$cum_0s / sum(data$`0`)) * 100
+  data$ks            <- data$`cum_1s_%` - data$`cum_0s_%`
+  data$tp            <- data$cum_1s
+  data$tn            <- data$cum_0s[10] - data$cum_0s
+  data$fp            <- data$cum_0s
+  data$fn            <- data$cum_1s[10] - data$cum_1s
+  data$sensitivity   <- (data$tp / (data$tp + data$fn)) * 100
+  data$specificity   <- (data$tn / (data$tn + data$fp)) * 100
+  data$accuracy      <- ((data$tp + data$tn) / data$cum_total[10]) * 100
+
+  return(data)
 
 }
 
 gains_plot_data <- function(x) {
 
-  x %>%
-    use_series(gains_table) %>%
-    select(`cum_total_%`, `cum_1s_%`) %>%
-    mutate(
-      cum_total_per = `cum_total_%` / 100,
-      cum_1s_per    = `cum_1s_%` / 100,
-      cum_total_y   = cum_total_per
-    ) %>%
-    select(cum_total_per, cum_1s_per, cum_total_y) %>%
-    add_row(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0, .before = 1)
+  x1 <- x$gains_table[c('cum_total_%', 'cum_1s_%')]
+  x1$cum_total_per <-  x1$`cum_total_%` / 100
+  x1$cum_1s_per    <-  x1$`cum_1s_%` / 100
+  x1$cum_total_y   <-  x1$cum_total_per
+  x2 <- x1[c('cum_total_per', 'cum_1s_per', 'cum_total_y')]
+  x3 <- data.frame(cum_total_per = 0, cum_1s_per = 0, cum_total_y = 0)
+  rbind(x3, x2)
 
 }
 

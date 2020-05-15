@@ -15,6 +15,7 @@ blr_gains_table(model, data = NULL)
   diag_line_col = "red",
   lift_curve_col = "blue",
   plot_title_justify = 0.5,
+  print_plot = TRUE,
   ...
 )
 }
@@ -36,6 +37,8 @@ blr_gains_table(model, data = NULL)
 \item{lift_curve_col}{Color of the lift curve.}
 
 \item{plot_title_justify}{Horizontal justification on the plot title.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 
 \item{...}{Other inputs.}
 }

@@ -11,7 +11,8 @@ blr_lorenz_curve(
   xaxis_title = "Cumulative Events \%",
   yaxis_title = "Cumulative Non Events \%",
   diag_line_col = "red",
-  lorenz_curve_col = "blue"
+  lorenz_curve_col = "blue",
+  print_plot = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ blr_lorenz_curve(
 \item{diag_line_col}{Diagonal line color.}
 
 \item{lorenz_curve_col}{Color of the lorenz curve.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \description{
 Lorenz curve is a visual representation of inequality. It is
