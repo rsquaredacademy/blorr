@@ -19,7 +19,6 @@
 #' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #'
 #' @importFrom rlang enquo !! quos !!!
-#' @importFrom purrr map_dbl
 #'
 #' @family bivariate analysis procedures
 #'

@@ -21,7 +21,6 @@ Imports:
     ggplot2,
     lest,
     magrittr,
-    purrr,
     Rcpp,
     rlang,
     scales,

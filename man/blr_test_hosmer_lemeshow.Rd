@@ -22,7 +22,7 @@ blr_test_hosmer_lemeshow(model)
 
 }
 \references{
-Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
+Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
 New  York:  John Wiley & Sons.
 }
 \seealso{
