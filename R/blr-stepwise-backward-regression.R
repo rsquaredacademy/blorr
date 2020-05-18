@@ -201,9 +201,9 @@ plot.blr_step_p_backward <- function(x, model = NA, print_plot = TRUE, ...) {
 
   y <- seq_len(x$steps)
 
-  d4 <- tibble(a = y, b = x$aic)
-  d5 <- tibble(a = y, b = x$bic)
-  d6 <- tibble(a = y, b = x$dev)
+  d4 <- data.frame(a = y, b = x$aic)
+  d5 <- data.frame(a = y, b = x$bic)
+  d6 <- data.frame(a = y, b = x$dev)
 
   p4 <- plot_stepwise(d4, "AIC")
   p5 <- plot_stepwise(d5, "BIC")
@@ -212,8 +212,7 @@ plot.blr_step_p_backward <- function(x, model = NA, print_plot = TRUE, ...) {
   myplots <- list(aic = p4, bic = p5, deviance = p6)
   
   if (print_plot) {
-    check_suggest('gridExtra')
-    marrangeGrob(myplots, nrow = 2, ncol = 2)
+    gridExtar::marrangeGrob(myplots, nrow = 2, ncol = 2)
   }
   
   invisible(myplots)

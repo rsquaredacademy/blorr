@@ -46,7 +46,7 @@ blr_check_data <- function(data) {
 
   if (!df) {
 
-    cat(data_name, "must either be a", "data.frame", "or a", "tibble", "but you have used a", data_class, "vector. Use the", "class()", "function to check the type of", crayon::bold$red(data_name), " as shown below:\n\n", crayon::bold$blue(paste0("class(", data_name, ")")), "\n\n If", crayon::bold$red(data_name), "is a column in a data set, use the name of the data set as the input.", "\n\n Type", "?data.frame", "or", "?tibble", "to learn how to create and use them.\n")
+    cat(data_name, "must either be a", "data.frame", "or a", "tibble", "but you have used a", data_class, "vector. Use the", "class()", "function to check the type of", data_name, " as shown below:\n\n", paste0("class(", data_name, ")"), "\n\n If", data_name, "is a column in a data set, use the name of the data set as the input.", "\n\n Type", "?data.frame", "or", "?tibble", "to learn how to create and use them.\n")
 
     stop("", call. = FALSE)
   }

@@ -384,7 +384,6 @@ blr_plot_dfbetas_panel <- function(model, print_plot = TRUE) {
   }
 
   if (print_plot) {
-    check_suggest('gridExtra')
     suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
   }
   
@@ -637,7 +636,7 @@ dfbetas_plot <- function(d, threshold, dfb, i) {
 
 
 dfbetas_outlier_data <- function(d) {
-  d[d$color == "outlier", c('obs', betas)]
+  d[d$color == "outlier", c('obs', 'betas')]
 }
 
 

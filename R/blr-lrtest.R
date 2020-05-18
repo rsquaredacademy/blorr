@@ -23,7 +23,6 @@
 #'
 #' blr_test_lr(model_1, model_2)
 #'
-#' @seealso \code{\link[lmtest]{lrtest}}
 #'
 #' @importFrom stats coefficients pchisq formula
 #'

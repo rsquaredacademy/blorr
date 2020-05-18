@@ -27,6 +27,7 @@ Suggests:
     grid,
     ineq,
     knitr,
+    magrittr,
     rmarkdown,
     testthat,
     vdiffr,
