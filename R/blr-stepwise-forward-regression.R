@@ -267,9 +267,9 @@ plot.blr_step_p_forward <- function(x, model = NA, print_plot = TRUE, ...) {
 
   y <- seq_len(length(x$aic))
 
-  d4 <- data.framr(a = y, b = x$aic)
-  d5 <- data.framr(a = y, b = x$bic)
-  d6 <- data.framr(a = y, b = x$dev)
+  d4 <- data.frame(a = y, b = x$aic)
+  d5 <- data.frame(a = y, b = x$bic)
+  d6 <- data.frame(a = y, b = x$dev)
 
   p4 <- plot_stepwise(d4, "AIC")
   p5 <- plot_stepwise(d5, "BIC")

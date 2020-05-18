@@ -212,7 +212,7 @@ plot.blr_step_p_backward <- function(x, model = NA, print_plot = TRUE, ...) {
   myplots <- list(aic = p4, bic = p5, deviance = p6)
   
   if (print_plot) {
-    gridExtar::marrangeGrob(myplots, nrow = 2, ncol = 2)
+    gridExtra::marrangeGrob(myplots, nrow = 2, ncol = 2)
   }
   
   invisible(myplots)
