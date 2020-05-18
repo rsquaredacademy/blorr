@@ -19,7 +19,6 @@
 #'
 #' @useDynLib blorr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
-#' @importFrom dplyr filter
 #'
 #' @family model fit statistics
 #'

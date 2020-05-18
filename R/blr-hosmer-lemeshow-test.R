@@ -18,7 +18,6 @@
 #' @family model validation techniques
 #'
 #' @importFrom stats quantile
-#' @importFrom dplyr case_when
 #'
 #' @export
 #'

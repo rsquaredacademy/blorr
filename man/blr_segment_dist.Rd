@@ -15,6 +15,7 @@ blr_segment_dist(data, response, predictor)
   sec_yaxis_title = "1s Distribution",
   bar_color = "blue",
   line_color = "red",
+  print_plot = TRUE,
   ...
 )
 }
@@ -38,6 +39,8 @@ blr_segment_dist(data, response, predictor)
 \item{bar_color}{Bar color.}
 
 \item{line_color}{Line color.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 
 \item{...}{Other inputs.}
 }

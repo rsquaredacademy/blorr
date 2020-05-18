@@ -18,8 +18,6 @@
 #' @examples
 #' blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 #'
-#' @importFrom rlang enquo !! quos !!!
-#'
 #' @family bivariate analysis procedures
 #'
 #' @export
@@ -43,11 +41,11 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
   len_pred_name <- x_length(pred_name)
   result        <- bivar_comp(len_pred_name, mdata, pred_name, resp_name[1])
 
-  result <- tibble(variable         = pred_name,
-                   iv               = result$iv,
-                   likelihood_ratio = result$likelihood_ratio,
-                   df               = result$df,
-                   pval             = result$pval)
+  result <- data.frame(variable         = pred_name,
+                       iv               = result$iv,
+                       likelihood_ratio = result$likelihood_ratio,
+                       df               = result$df,
+                       pval             = result$pval)
 
   class(result) <- "blr_bivariate_analysis"
   return(result)
@@ -226,6 +224,7 @@ print.blr_segment_twoway <- function(x, ...) {
 #' @param sec_yaxis_title Secondary y axis title.
 #' @param bar_color Bar color.
 #' @param line_color Line color.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #' @param ... Other inputs.
 #'
 #' @return A tibble.
@@ -264,7 +263,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
     stop("", call. = FALSE)
   }
 
-  k2 <- check_choice(pred, choices = names(data))
+  k2 <- pred %in% names(data)
 
   if (!k2) {
 
@@ -313,7 +312,7 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
                                   yaxis_title = "Sample Distribution",
                                   sec_yaxis_title = "1s Distribution",
                                   bar_color = "blue", line_color = "red",
-                                  ...) {
+                                  print_plot = TRUE, ...) {
 
   sec_axis_scale <- secondary_axis_scale_comp(x)
   vname <- x$var_name
@@ -335,6 +334,12 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
     scale_y_continuous(labels = scales::percent,
       sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
         labels = scales::percent))
+
+  if (print_plot) {
+    print(p)
+  } 
+
+  invisible(p)
 }
 
 

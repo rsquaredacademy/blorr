@@ -8,13 +8,13 @@ model <- glm(
 
 test_that("response_var extract response variable name from the model", {
   actual <- response_var(model)
-  expected <- sym("honcomp")
+  expected <- model$terms[[2]]
   expect_equal(actual, expected)
 })
 
 test_that("data_name extracts name of the data set from the model", {
   actual <- data_name(model)
-  expected <- sym("hsb2")
+  expected <- model$call[[4]]
   expect_equal(actual, expected)
 })
 
@@ -43,8 +43,7 @@ test_that("model_df returns the model degrees of freedom", {
 })
 
 test_that("output from resp_profile is as expected", {
-  actual <- resp_profile(model) %>%
-    extract2(1)
+  actual <- resp_profile(model)[[1]]
   expected <- 147
   expect_equal(actual, expected)
 })
@@ -64,29 +63,25 @@ test_that("output from model_df is as expected", {
 })
 
 test_that("output from predictor_est is as expected", {
-  actual <- predictor_est(model) %>%
-    round(2)
+  actual <- round(predictor_est(model), 2)
   expected <- c(-12.78, 1.48, 0.10, 0.09)
   expect_equivalent(actual, expected)
 })
 
 test_that("output from predictor_se is as expected", {
-  actual <- predictor_se(model) %>%
-    round(2)
+  actual <- round(predictor_se(model), 2)
   expected <- c(1.98, 0.45, 0.03, 0.03)
   expect_equivalent(actual, expected)
 })
 
 test_that("output from predictor_zval is as expected", {
-  actual <- predictor_zval(model) %>%
-    round(2)
+  actual <- round(predictor_zval(model), 2)
   expected <- c(-6.47, 3.31, 4.02, 3.11)
   expect_equivalent(actual, expected)
 })
 
 test_that("output from predictor_pval is as expected", {
-  actual <- predictor_pval(model) %>%
-    round(5)
+  actual <- round(predictor_pval(model), 5)
   expected <- c(0.00000, 0.00092, 0.00006, 0.00185)
   expect_equivalent(actual, expected)
 })
@@ -99,25 +94,13 @@ test_that("output from odds_effect is as expected", {
 })
 
 test_that("output from odds_point is as expected", {
-  actual <- odds_point(model) %>%
-    round(2)
+  actual <- round(odds_point(model), 2)
   expected <- c(4.40, 1.11, 1.10)
   expect_equivalent(actual, expected)
 })
 
-# test_that('output from odds_conf_limit is as expected', {
-#
-#   actual <- odds_conf_limit(model) %>%
-#     pull(`2.5 %`) %>%
-#     round(2)
-#   expected <- c(1.90, 1.06, 1.04)
-#   expect_equivalent(actual, expected)
-#
-# })
-
 test_that("output from mll is as expected", {
-  actual <- mll(model) %>%
-    round(4)
+  actual <- round(mll(model), 4)
   expected <- 160.2364
   expect_equivalent(actual, expected)
 })
@@ -135,8 +118,7 @@ test_that("output from model_d_f is as expected", {
 })
 
 test_that("output from extract_ll is as expected", {
-  actual <- extract_ll(model) %>%
-    round(4)
+  actual <- round(extract_ll(model), 4)
   expected <- 160.2364
   expect_equivalent(actual, expected)
 })

@@ -22,14 +22,9 @@ test_that("blr_bivariate_analysis prints the correct output", {
 })
 
 test_that("output from blr_segment is as expected", {
-  k <- blr_segment(hsb2, honcomp, race)
-
-  actual <-
-    k %>%
-    use_series(segment_data) %>%
-    pull(`1s%`) %>%
-    dplyr::last()
-
+  
+  k        <- blr_segment(hsb2, honcomp, race)
+  actual   <- rev(k$segment_data[['1s%']])[1]
   expected <- c(0.22)
 
   expect_equivalent(actual, expected)
@@ -53,8 +48,8 @@ test_that("blr_segment prints the correct output", {
 
 test_that("output from blr_twoway_segment is as expected", {
 
-  k <- blr_segment_twoway(hsb2, honcomp, prog, race)
-  actual <- unname(round(k$twoway_segment[, 4], 3))
+  k        <- blr_segment_twoway(hsb2, honcomp, prog, race)
+  actual   <- unname(round(k$twoway_segment[, 4], 3))
   expected <- c(0.035, 0.165, 0.020)
   expect_equivalent(actual, expected)
 })
@@ -79,12 +74,9 @@ test_that("blr_twoway_segment prints the correct output", {
 })
 
 test_that("output from blr_segment_dist is as expected", {
-  k <- blr_segment_dist(hsb2, honcomp, race)
-  actual <-
-    k %>%
-    use_series(dist_table) %>%
-    pull(`1s%`) %>%
-    dplyr::last()
+  
+  k        <- blr_segment_dist(hsb2, honcomp, race)
+  actual   <- rev(k$dist_table[['1s%']])[1]
   expected <- c(0.22)
   expect_equivalent(actual, expected)
 })
@@ -109,12 +101,8 @@ test_that("blr_twoway_segment prints the correct output", {
 
 
 test_that("output from blr_woe_iv is as expected", {
-  k <- blr_woe_iv(hsb2, prog, honcomp)
-  actual <-
-    k %>%
-    use_series(woe_iv_table) %>%
-    pull(iv) %>%
-    sum()
+  k        <- blr_woe_iv(hsb2, prog, honcomp)
+  actual   <- sum(k$woe_iv_table[['iv']])
   expected <- 0.4329
   expect_equal(actual, expected)
 })

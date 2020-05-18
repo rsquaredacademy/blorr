@@ -66,12 +66,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   blr_check_values(pent, 0, 1)
   blr_check_values(prem, 0, 1)
 
-  response <-
-    model %>%
-    use_series(model) %>%
-    names() %>%
-    extract(1)
-
+  response <- names(model$model)[1]
   l        <- model$data
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
@@ -103,7 +98,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   }
   cat("\n")
 
-  cat(crayon::bold$red("We are selecting variables based on p value..."))
+  cat("We are selecting variables based on p value...")
   cat("\n")
 
   cat("\n")
@@ -150,19 +145,19 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   # lbetas  <- append(lbetas, length(fr$betas))
   # pvalues <- append(pvalues, fr$pvalues)
 
-  if (details == TRUE) {
+  if (details) {
     cat("\n")
     cat(paste("Stepwise Selection: Step", step), "\n\n")
   }
 
   if (interactive()) {
-    cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
+    cat(paste("-", rev(preds)[1], "added"), "\n")
   } else {
-    cat(paste("-", dplyr::last(preds), "added"), "\n")
+    cat(paste("-", rev(preds)[1], "added"), "\n")
   }
 
 
-  if (details == TRUE) {
+  if (details) {
     cat("\n")
     m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
     print(m)
@@ -235,9 +230,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       }
 
       if (interactive()) {
-        cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
+        cat(paste("-", rev(preds)[1], "added"), "\n")
       } else {
-        cat(paste("-", dplyr::last(preds), "added"), "\n")
+        cat(paste("-", rev(preds)[1], "added"), "\n")
       }
 
 
@@ -287,19 +282,19 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         # lbetas    <- append(lbetas, length(fr$betas))
         # pvalues   <- append(pvalues, fr$pvalues)
 
-        if (details == TRUE) {
+        if (details) {
           cat("\n")
           cat(paste("Stepwise Selection: Step", all_step), "\n\n")
         }
 
         if (interactive()) {
-          cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(var_index)), "\n")
+          cat(paste("-", rev(var_index)[1], "added"), "\n")
         } else {
-          cat(paste("-", dplyr::last(var_index), "added"), "\n")
+          cat(paste("-", rev(var_index)[1], "added"), "\n")
         }
 
 
-        if (details == TRUE) {
+        if (details) {
           cat("\n")
           m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
           print(m)
@@ -311,7 +306,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       }
     } else {
       cat("\n")
-      cat(crayon::bold$red(paste0("No more variables to be added/removed.")))
+      cat("No more variables to be added/removed.")
       cat("\n")
       break
     }

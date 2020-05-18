@@ -17,7 +17,6 @@
 #' blr_multi_model_fit_stats(model, model2)
 #'
 #' @importFrom data.table rbindlist
-#' @importFrom magrittr set_colnames
 #'
 #' @family model fit statistics
 #'

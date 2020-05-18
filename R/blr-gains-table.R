@@ -39,8 +39,6 @@
 #' plot(k)
 #'
 #' @importFrom stats model.frame model.response predict.glm
-#' @importFrom dplyr bind_cols arrange group_by summarise n summarise_all desc
-#' @importFrom tibble add_column add_row
 #' @importFrom ggplot2 ggplot geom_line aes ggtitle xlab ylab
 #' scale_x_continuous scale_y_continuous theme element_text
 #'

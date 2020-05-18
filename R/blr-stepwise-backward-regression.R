@@ -48,7 +48,6 @@
 #'
 #' }
 #'
-#' @importFrom dplyr full_join select
 #'
 #' @family variable selection procedures
 #'
@@ -88,7 +87,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
   cat("\n")
 
-  cat(crayon::bold$red("We are eliminating variables based on p value..."))
+  cat("We are eliminating variables based on p value...")
   cat("\n")
 
   cat("\n")
@@ -121,12 +120,12 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         dev    <- c(dev, mfs$m_deviance)
 
         if (interactive()) {
-          cat(crayon::red(clisymbols::symbol$cross), crayon::bold(dplyr::last(rpred)), "\n")
+          cat(paste("-", rev(rpred)[1]), "\n")
         } else {
-          cat(paste("-", dplyr::last(rpred)), "\n")
+          cat(paste("-", rev(rpred)[1]), "\n")
         }
 
-        if (details == TRUE) {
+        if (details) {
           cat("\n")
           cat(paste("Backward Elimination: Step", step, "\n\n"), paste("Variable", rpred[lp], "Removed"), "\n\n")
           m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
@@ -136,18 +135,18 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
       } else {
         end <- TRUE
         cat("\n")
-        cat(crayon::bold$red(paste0("No more variables satisfy the condition of p value = ", prem)))
+        cat("No more variables satisfy the condition of p value = ", prem)
         cat("\n")
       }
     )
   }
 
-  if (details == TRUE) {
+  if (details) {
     cat("\n\n")
     cat("Variables Removed:", "\n\n")
     for (i in seq_len(length(rpred))) {
       if (interactive()) {
-        cat(crayon::red(clisymbols::symbol$cross), crayon::bold(rpred[i]), "\n")
+        cat(paste("-", rpred[i]), "\n")
       } else {
         cat(paste("-", rpred[i]), "\n")
       }

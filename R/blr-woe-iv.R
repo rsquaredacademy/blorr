@@ -30,9 +30,6 @@
 #' # plot woe
 #' plot(k)
 #'
-#' @importFrom rlang enquo !!
-#' @importFrom dplyr select rename
-#' @importFrom tibble add_column
 #' @importFrom ggplot2 geom_hline
 #'
 #' @family bivariate analysis procedures

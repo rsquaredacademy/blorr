@@ -49,7 +49,7 @@ blr_regress.glm <- function(object, odd_conf_limit = FALSE, ...) {
 	blr_check_logic(odd_conf_limit)
 
   formula <- formula(object)
-  data    <- model$model
+  data    <- object$model
 
   blr_regress.default(object = formula, data = data, odd_conf_limit = odd_conf_limit)
 }

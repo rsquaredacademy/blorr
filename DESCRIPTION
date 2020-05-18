@@ -13,19 +13,13 @@ Depends:
 Imports: 
     car,
     caret,
-    clisymbols,
-    crayon,
     data.table,
-    dplyr (>= 0.8.99.9002),
     e1071,  
     ggplot2,
     lest,
-    magrittr,
     Rcpp,
-    rlang,
     scales,
     stats,
-    tibble,
     utils
 Suggests: 
     covr,

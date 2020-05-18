@@ -1,4 +1,3 @@
-#' @importFrom rlang quo_name
 #' @importFrom stats family
 blr_check_model <- function(model) {
 

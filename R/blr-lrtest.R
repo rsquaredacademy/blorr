@@ -25,7 +25,6 @@
 #'
 #' @seealso \code{\link[lmtest]{lrtest}}
 #'
-#' @importFrom magrittr multiply_by subtract %<>%
 #' @importFrom stats coefficients pchisq formula
 #'
 #' @family model fit statistics

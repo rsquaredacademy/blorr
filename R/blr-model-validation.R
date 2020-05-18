@@ -16,7 +16,6 @@
 #'
 #' @importFrom caret confusionMatrix
 #' @importFrom e1071 classAgreement
-#' @importFrom magrittr is_greater_than
 #'
 #' @family model validation techniques
 #'

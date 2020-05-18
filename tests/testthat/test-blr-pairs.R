@@ -6,10 +6,7 @@ test_that("output from blr_pairs is as expected", {
     family = binomial(link = "logit")
   )
 
-  actual <- blr_pairs(model) %>%
-    pull(gamma) %>%
-    round(2)
-
+  actual   <- round(blr_pairs(model)[['gamma']], 2)
   expected <- 0.71
 
   expect_equal(actual, expected)

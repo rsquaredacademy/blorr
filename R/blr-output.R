@@ -322,9 +322,9 @@ print_blr_test_hosmer_lemeshow <- function(x) {
 
 print_blr_lr_test <- function(x) {
 
-  w9  <- max(nchar(c("Chi-Square", format(round(x$test_result[[lr_ratio]], 4),
+  w9  <- max(nchar(c("Chi-Square", format(round(x$test_result[['lr_ratio']], 4),
                                          nsmall = 4))))
-  w10 <- max(nchar(c("DF", x$test_result[[d_f]])))
+  w10 <- max(nchar(c("DF", x$test_result[['d_f']])))
   w11 <- 10
   w12 <- sum(w9, w10, w11, 8)
   j   <- x$test_result
@@ -379,7 +379,7 @@ print_blr_woe_iv <- function(x) {
   l1     <- max(nchar(c("Variable", x$var_name)))
   l2     <- 17
   lsum   <- sum(l1, l2, 4)
-  ivalue <- sum(woe_iv[[iv]])
+  ivalue <- sum(woe_iv[['iv']])
 
   cat(fc("Information Value", lsum), "\n")
   cat(rep("-", lsum), sep = "", "\n")

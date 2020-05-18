@@ -62,7 +62,6 @@
 #' blr_coll_diag(model)
 #'
 #' @importFrom stats lm as.formula model.matrix
-#' @importFrom tibble as_data_frame
 #'
 #' @export
 #'
@@ -178,7 +177,6 @@ cindx <- function(e) {
 
 }
 
-#' @importFrom magrittr multiply_by_matrix
 pveindex <- function(z) {
 
   d <- NULL

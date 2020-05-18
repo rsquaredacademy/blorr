@@ -12,7 +12,6 @@
 #' blr_model_fit_stats(model)
 #'
 #' @importFrom stats AIC BIC logLik deviance
-#' @importFrom magrittr divide_by raise_to_power add
 #' 
 #' @references
 #' Menard, S. (2000). Coefficients of determination for multiple logistic regression analysis. 
@@ -331,11 +330,11 @@ blr_rsq_count <- function(model) {
   blr_check_model(model)
 
   predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
 
-  sum(if_else(zero_one == resp, 1, 0)) / n
+  sum(ifelse(zero_one == resp, 1, 0)) / n
 
 }
 
@@ -365,10 +364,10 @@ blr_rsq_adj_count <- function(model) {
   n         <- length(resp)
   n2        <- max(table(resp))
   predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   den       <- n - n2
 
-  (sum(if_else(zero_one == resp, 1, 0)) - n2) / den 
+  (sum(ifelse(zero_one == resp, 1, 0)) - n2) / den 
   
 }
 
