@@ -19,6 +19,8 @@
 #'
 #' blr_plot_diag_influence(model)
 #'
+#' @importFrom gridExtra grid.arrange
+#'
 #' @family diagnostic plots
 #'
 #' @export
@@ -44,7 +46,6 @@ blr_plot_diag_influence <- function(model, print_plot = TRUE) {
                   leverage = p7)
 
   if (print_plot) {
-    check_suggests('gridExtra')
     do.call(grid.arrange, c(myplots, list(ncol = 2)))
   }
 
@@ -90,7 +91,6 @@ blr_plot_diag_fit <- function(model, print_plot = TRUE) {
                   c_fitted = p4)
 
   if (print_plot) {
-    check_suggests('gridExtra')
     do.call(grid.arrange, c(myplots, list(ncol = 2)))
   }
 
@@ -138,7 +138,6 @@ blr_plot_diag_leverage <- function(model, print_plot = TRUE) {
                   fitted_leverage = p4)
 
   if (print_plot) {
-    check_suggests('gridExtra')
     do.call(grid.arrange, c(myplots, list(ncol = 2)))
   }
 
