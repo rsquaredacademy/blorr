@@ -125,8 +125,7 @@ levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv
 Variable    Information Value 
 -----------------------------
   prog           0.4329       
------------------------------"
-  )
+-----------------------------")
 
   expect_output(print(k), x)
 })

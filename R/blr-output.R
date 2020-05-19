@@ -347,8 +347,8 @@ print_blr_lr_test <- function(x) {
 print_blr_woe_iv <- function(x) {
 
   woe_iv <- x$woe_iv_table
-  rnames <- names(x$woe_iv_table)
-  y1     <- sapply(lapply(woe_iv, nchar), max)
+  rnames <- names(woe_iv)
+  y1     <- sapply(lapply(lapply(woe_iv, as.character), nchar), max)
   y2     <- nchar(rnames)
   w      <- mapply(max, y1, y2)
   wsum   <- sum(w, 24)
