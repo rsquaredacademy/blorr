@@ -165,7 +165,7 @@ woe_data_modify <- function(data, lev, digits) {
 woe_data_select <- function(data) {
 
   cols_return   <- c('levels', 'no', 'yes', 'dist_no', 'dist_yes', 'woe', 'iv')
-  new_col_names <- c('levels', '0s_count', '1s_count', '0s_dist', '1s_dist', 'woe', 'iv')
+  new_col_names <- c('levels', 'count_0s', 'count_1s', 'dist_0s', 'dist_1s', 'woe', 'iv')
   d             <- data[cols_return]
   colnames(d)   <- new_col_names
 
