@@ -61,7 +61,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
-  l          <- mod_sel_data(model)
+  l          <- model$model
   nam        <- colnames(attr(model$terms, "factors"))
   response   <- names(model$model)[1]
   predictors <- nam
@@ -80,7 +80,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   }
   cat("\n")
 
-  if (details == TRUE) {
+  if (details) {
     cat(" Step 0: AIC =", aic_c, "\n", paste(response, "~", 1, "\n\n"))
   }
 
@@ -119,7 +119,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       predictors = predictors, aics = aics, bics = bics,
       devs = devs
     )
-    da2 <- arrange(da, aics)
+    da2 <- da[order(da[['aics']]), ]
 
     if (details == TRUE) {
       w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
@@ -131,7 +131,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       ln <- length(aics)
 
 
-      cat(fc(crayon::bold$green("  Enter New Variables"), w), sep = "", "\n")
+      cat(fc("  Enter New Variables", w), sep = "", "\n")
       cat(rep("-", w), sep = "", "\n")
       cat(
         fl("Variable", w1), fs(), fc("DF", w2), fs(), fc("AIC", w3), fs(),
@@ -173,9 +173,9 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       ldev       <- c(ldev, mdev)
 
       if (interactive()) {
-        cat(crayon::green(clisymbols::symbol$tick), crayon::bold(dplyr::last(preds)), "\n")
+        cat(paste("-", rev(preds)[1], "added"), "\n")
       } else {
-        cat(paste("-", dplyr::last(preds), "added"), "\n")
+        cat(paste("-", rev(preds)[1], "added"), "\n")
       }
 
 
@@ -203,7 +203,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           predictors = preds, aics = aics, bics = bics,
           devs = devs
         )
-        da2 <- arrange(da, aics)
+        da2 <- da[order(da[['aics']]), ]
 
         if (details == TRUE) {
           w1 <- max(nchar("Predictor"), nchar(as.character(da2$predictors)))
@@ -214,7 +214,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           w  <- sum(w1, w2, w3, w4, w5, 16)
           ln <- length(aics)
 
-          cat(fc(crayon::bold$red("Remove Existing Variables"), w), sep = "", "\n")
+          cat(fc("Remove Existing Variables", w), sep = "", "\n")
           cat(rep("-", w), sep = "", "\n")
           cat(
             fl("Variable", w1), fs(), fc("DF", w2), fs(), fc("AIC", w3), fs(),
@@ -252,7 +252,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
           all_step  <- all_step + 1
 
           if (interactive()) {
-            cat(crayon::red(clisymbols::symbol$cross), crayon::bold(preds[minc2]), "\n")
+            cat(paste("-", preds[minc2], "removed"), "\n")
           } else {
             cat(paste("-", preds[minc2], "removed"), "\n")
           }
@@ -271,7 +271,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
       }
     } else {
       cat("\n")
-      cat(crayon::bold$red("No more variables to be added or removed."))
+      cat("No more variables to be added or removed.")
       break
     }
   }
@@ -331,33 +331,18 @@ plot.blr_step_aic_both <- function(x, text_size = 3,  ...) {
 
   predictors <- x$predictors
 
-  y <-
-    x %>%
-    use_series(aic) %>%
-    length() %>%
-    seq_len(.)
-
+  y <- seq_len(length(x$aic))
   xloc  <- y - 0.1
   yloc  <- x$aic - 0.2
   xmin  <- min(y) - 0.4
   xmax  <- max(y) + 1
+  ymin <- min(x$aic) - 1
+  ymax <- max(x$aic) + 1
+  d2 <- data.frame(x = xloc, y = yloc, tx = predictors)
+  d  <- data.frame(a = y, b = x$aic)
 
-  ymin <-
-    x %>%
-    use_series(aic) %>%
-    min() %>%
-    subtract(1)
-
-  ymax <-
-    x %>%
-    use_series(aic) %>%
-    max() %>%
-    add(1)
-
-  d2 <- tibble(x = xloc, y = yloc, tx = predictors)
-  d  <- tibble(a = y, b = x$aic)
-
-  p <- ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
+  p <- 
+    ggplot(d, aes(x = a, y = b)) + geom_line(color = "blue") +
     geom_point(color = "blue", shape = 1, size = 2) + xlim(c(xmin, xmax)) +
     ylim(c(ymin, ymax)) + xlab("Step") + ylab("AIC") +
     ggtitle("Stepwise AIC Both Direction Selection") +

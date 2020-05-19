@@ -14,7 +14,7 @@ blr_woe_iv_stats(data, response, ...)
 \item{...}{Predictor variables; column in \code{data}.}
 }
 \description{
-Prints weight of evidence and information value for multiple variables. 
+Prints weight of evidence and information value for multiple variables.
   Currently avialable for categorical predictors only.
 }
 \examples{

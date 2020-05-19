@@ -5,10 +5,7 @@ test_that("output from blr_hosmer_lemeshow_test is as expected", {
     honcomp ~ race + read + science, data = hsb2,
     family = binomial(link = "logit")
   )
-  actual <- model %>%
-    blr_test_hosmer_lemeshow() %>%
-    use_series(pvalue) %>%
-    round(2)
+  actual   <-  round(blr_test_hosmer_lemeshow(model)$pvalue, 2)
   expected <- 0.66
   expect_equal(actual, expected)
 })

@@ -16,7 +16,6 @@
 #'
 #' @importFrom caret confusionMatrix
 #' @importFrom e1071 classAgreement
-#' @importFrom magrittr is_greater_than
 #'
 #' @family model validation techniques
 #'
@@ -27,30 +26,18 @@ blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL) {
   blr_check_model(model)
   blr_check_values(cutoff, 0, 1)
 
-  namu <-
-    model %>%
-    formula() %>%
-    extract2(2)
-
+  namu <- formula(model)[[2]]
+  
   if (is.null(data)) {
-    data <- eval(model$call$data)
-  	response <-
-  	  data %>%
-  	  pull(!! namu)
+    data     <- model$model
+  	response <- data[[1]]
   } else {
     blr_check_data(data)
-		response <-
-		  data %>%
-		  pull(!! namu)
+		response <- data[[as.character(namu)]]
   }
 
   p_data <- predict(model, newdata = data, type = "response")
-
-  c_data <-
-    p_data %>%
-    is_greater_than(cutoff) %>%
-    as.numeric() %>%
-    as.factor()
+  c_data <- as.factor(as.numeric(p_data > cutoff))
 
   confusionMatrix(data = c_data, reference = response, positive = '1')
 

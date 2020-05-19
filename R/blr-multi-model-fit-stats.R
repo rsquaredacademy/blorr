@@ -16,8 +16,7 @@
 #'
 #' blr_multi_model_fit_stats(model, model2)
 #'
-#' @importFrom purrr map_df
-#' @importFrom magrittr set_colnames
+#' @importFrom data.table rbindlist
 #'
 #' @family model fit statistics
 #'
@@ -32,17 +31,18 @@ blr_multi_model_fit_stats.default <- function(model, ...) {
   blr_check_model(model)
 
   k        <- list(model, ...)
-  j        <- map(k, blr_model_fit_stats)
+  j        <- lapply(k, blr_model_fit_stats)
   n        <- length(j)
-  names(j) <- letters[seq_len(n)]
+  names(j) <- seq_len(n)
 
   for (i in seq_len(n)) {
     class(j[[i]]) <- "list"
   }
 
-  result <- list(mfit = map_df(j, as_tibble))
-  class(result) <- "blr_multi_model_fit_stats"
+  output <- setDF(rbindlist(j))
+  result <- list(mfit = output)
 
+  class(result) <- "blr_multi_model_fit_stats"
   return(result)
 
 }
@@ -51,10 +51,7 @@ blr_multi_model_fit_stats.default <- function(model, ...) {
 #'
 print.blr_multi_model_fit_stats <- function(x, ...) {
 
-  df <-
-    x %>%
-    use_series(mfit) %>%
-    select(-lr_df, -dev_df)
+  df <- x$mfit[c(-7, -13)]
 
   measures <- c(
     "Log-Lik Intercept Only", "Log-Lik Full Model", "Deviance",
@@ -64,13 +61,9 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
     "Adj Count R2", "AIC", "BIC"
   )
 
-  model_id <-
-    x %>%
-    use_series(mfit) %>%
-    nrow() %>%
-    seq_len(.)
-
+  model_id  <- seq_len(nrow(x$mfit))
   col_names <- c(paste("Model", model_id))
+
   print(multi_fit_stats_table(df, measures, col_names))
 
 }
@@ -78,12 +71,8 @@ print.blr_multi_model_fit_stats <- function(x, ...) {
 
 multi_fit_stats_table <- function(df, measures, col_names) {
 
-	df %>%
-	  t() %>%
-	  round(3)  %>%
-	  magrittr::set_colnames(col_names) %>%
-	  tibble::as_tibble() %>%
-	  tibble::add_column(Measures = measures, .before = 1) %>%
-	  as.data.frame() 
+  y <- round(t(df), 3)
+  colnames(y) <- col_names
+  cbind(data.frame(Measures = measures), y)
 
 }

@@ -14,6 +14,7 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
   yaxis_title = "WoE",
   bar_color = "blue",
   line_color = "red",
+  print_plot = TRUE,
   ...
 )
 }
@@ -39,12 +40,14 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 \item{bar_color}{Color of the bar.}
 
 \item{line_color}{Color of the horizontal line.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 A tibble.
 }
 \description{
-Weight of evidence and information value. Currently avialable for categorical 
+Weight of evidence and information value. Currently avialable for categorical
   predictors only.
 }
 \examples{
@@ -57,7 +60,7 @@ plot(k)
 
 }
 \references{
-Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 credit  scoring. New Jersey, Wiley.
 }
 \seealso{

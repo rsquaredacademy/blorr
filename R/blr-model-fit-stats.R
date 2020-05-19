@@ -12,7 +12,6 @@
 #' blr_model_fit_stats(model)
 #'
 #' @importFrom stats AIC BIC logLik deviance
-#' @importFrom magrittr divide_by raise_to_power add
 #' 
 #' @references
 #' Menard, S. (2000). Coefficients of determination for multiple logistic regression analysis. 
@@ -80,25 +79,21 @@ print.blr_model_fit_stats <- function(x, ...) {
 }
 
 model_deviance <- function(model) {
-
-  model %>%
-    use_series(deviance)
-
+  model$deviance
 }
 
 null_ll <- function(model) {
 
-  i_model(model) %>%
-    logLik() %>%
-    extract2(1)
+  logLik(i_model(model))[[1]]
+  # i_model(model) %>%
+  #   logLik() %>%
+  #   extract2(1)
 
 }
 
 
 model_ll <- function(model) {
-
   logLik(model)[1]
-
 }
 
 
@@ -232,25 +227,9 @@ blr_rsq_nagelkerke <- function(model) {
 
   blr_check_model(model)
 
-  n <-
-    model %>%
-    use_series(data) %>%
-    nrow()
-
-  num <-
-    (model_ll(model) %>%
-          multiply_by(-2)) %>%
-    subtract(imodel(model) %>%
-      multiply_by(-2)) %>%
-    divide_by(n) %>%
-    exp(.)
-
-  den <- 
-    imodel(model) %>%
-    multiply_by(2) %>%
-    divide_by(n) %>%
-    exp(.)
-
+  n   <- nrow(model$data)
+  num <- exp(((model_ll(model) * -2) - (imodel(model) * -2)) / n)
+  den <- exp((imodel(model) * 2) / n )
   (1 - num) / (1 - den)
 
 }
@@ -284,24 +263,9 @@ blr_rsq_mckelvey_zavoina <- function(model) {
   predicted      <- predict(model)
   mean_predicted <- mean(predicted)
 
-  ess <-
-    predicted %>%
-    subtract(mean_predicted) %>%
-    raise_to_power(2) %>%
-    sum()
-
-  pi_val <-
-    pi %>%
-    raise_to_power(2) %>%
-    divide_by(3)
-
-  n <-
-    model %>%
-    use_series(y) %>%
-    length() %>%
-    multiply_by(pi_val) %>%
-    add(ess)
-
+  ess    <- sum((predicted - mean_predicted) ^ 2)
+  pi_val <- (pi ^ 2) / 3
+  n      <- (length(model$y) * pi_val) + ess
   ess / n
 
 }
@@ -336,20 +300,8 @@ blr_rsq_effron <- function(model) {
   predicted <- predict(model, type = "response")
   resp      <-model$y
   mean_resp <- mean(resp)
-
-  den <-
-    resp %>%
-    subtract(mean_resp) %>%
-    raise_to_power(2) %>%
-    sum()
-
-  num <-
-    resp %>%
-    subtract(predicted) %>%
-    raise_to_power(2) %>%
-    sum() %>%
-    divide_by(den)
-
+  den       <- sum((resp - mean_resp) ^ 2)
+  num       <- sum((resp - predicted) ^ 2) / den
   1 - num
 
 }
@@ -378,13 +330,11 @@ blr_rsq_count <- function(model) {
   blr_check_model(model)
 
   predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
+  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
 
-  if_else(zero_one == resp, 1, 0) %>%
-    sum() %>%
-    divide_by(n)
+  sum(ifelse(zero_one == resp, 1, 0)) / n
 
 }
 
@@ -410,40 +360,23 @@ blr_rsq_adj_count <- function(model) {
 
   blr_check_model(model)
 
-  n2 <-
-    model %>%
-    use_series(y) %>%
-    table() %>%
-    max()
-
-  predicted <- predict(model, type = "response")
-  zero_one  <- if_else(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
+  n2        <- max(table(resp))
+  predicted <- predict(model, type = "response")
+  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   den       <- n - n2
 
-  if_else(zero_one == resp, 1, 0) %>%
-    sum() %>%
-    subtract(n2) %>%
-    divide_by(den)
-
+  (sum(ifelse(zero_one == resp, 1, 0)) - n2) / den 
+  
 }
 
 fit_stat <- function(model) {
 
   lr <- blr_test_lr(model)
 
-  pred_n <-
-    model %>%
-    coefficients() %>%
-    length()
-
-  dev_df <-
-    model %>%
-    use_series(y) %>%
-    length() %>%
-    subtract(pred_n)
-
+  pred_n   <- length(model$coefficients)
+  dev_df   <- length(model$y) - pred_n
   lr_ratio <- extract_lr(lr, lr_ratio)
   lr_df    <- extract_lr(lr, d_f)
   lr_pval  <- extract_lr(lr, p_value)
@@ -457,33 +390,21 @@ fit_stat <- function(model) {
 
 extract_lr <- function(lr, value) {
 
-  vals <- enquo(value)
-
-  lr %>%
-    use_series(test_result) %>%
-    pull(!! vals)
+  vals <- deparse(substitute(value))
+  lr$test_result[[vals]]
+  # lr %>%
+  #   use_series(test_result) %>%
+  #   pull(!! vals)
 
 }
 
 cox_snell_comp <- function(model) {
 
-  n <-
-    model %>%
-    use_series(data) %>%
-    nrow()
-
-  imodel(model) %>%
-    subtract(model_ll(model)) %>%
-    multiply_by(2) %>%
-    divide_by(n) %>%
-    exp(.)  
+  n <- nrow(model$data)
+  exp(((imodel(model) - model_ll(model)) * 2) / n)
 
 }
 
 imodel <- function(model) {
-
-  model %>%
-    i_model() %>%
-    model_ll()
-
+  model_ll(i_model(model))
 }

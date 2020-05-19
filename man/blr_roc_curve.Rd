@@ -14,7 +14,8 @@ blr_roc_curve(
   point_shape = 18,
   point_fill = "blue",
   point_color = "blue",
-  plot_title_justify = 0.5
+  plot_title_justify = 0.5,
+  print_plot = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ blr_roc_curve(
 \item{point_color}{Color of the points on the roc curve.}
 
 \item{plot_title_justify}{Horizontal justification on the plot title.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \description{
 Receiver operating characteristic curve (ROC) curve is used for assessing

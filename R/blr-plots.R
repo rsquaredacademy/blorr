@@ -194,25 +194,17 @@ blr_plot_leverage <- function(model, point_color = "blue",
 blr_residual_diagnostics <- function(model) {
 
   blr_check_model(model)
-  res_val <-
-    model %>%
-    residuals(type = "pearson") %>%
-    raise_to_power(2)
 
+  res_val  <- residuals(model, type = "pearson") ^ 2
   hat_val  <- hatvalues(model)
   num      <- res_val * hat_val
   den      <- 1 - hat_val
   c        <- num / (den ^ 2)
   cbar     <- num / den
   difchisq <- cbar / hat_val
-
-  difdev <-
-    model %>%
-    rstandard() %>%
-    raise_to_power(2) %>%
-    add(cbar)
-
-  tibble(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
+  difdev   <- (rstandard(model) ^ 2) + cbar
+    
+  data.frame(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
 
 }
 
@@ -334,6 +326,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' Panel of plots to detect influential observations using DFBETAs.
 #'
 #' @param model An object of class \code{glm}.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @details
 #' DFBETA measures the difference in each parameter estimate with and without
@@ -365,11 +358,10 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' @importFrom stats dfbetas
 #' @importFrom ggplot2 geom_linerange geom_text annotate
-#' @importFrom gridExtra grid.arrange
 #'
 #' @export
 #'
-blr_plot_dfbetas_panel <- function(model) {
+blr_plot_dfbetas_panel <- function(model, print_plot = TRUE) {
 
   blr_check_model(model)
 
@@ -391,7 +383,10 @@ blr_plot_dfbetas_panel <- function(model) {
 
   }
 
-  suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
+  if (print_plot) {
+    suppressWarnings(do.call(grid.arrange, c(myplots, list(ncol = 2))))
+  }
+  
   names(outliers) <- model_coeff_names(model)
   result <- list(outliers = outliers, plots = myplots)
   invisible(result)
@@ -590,37 +585,35 @@ blr_plot_fitted_leverage <- function(model, point_color = "blue",
 }
 
 plot_id <- function(res_val) {
-
-  res_val %>%
-    length() %>%
-    seq_len(.)
-
+  seq_len(length(res_val))
 }
 
 
 extract_diag <- function(model, value) {
-
-  vals <- enquo(value)
-
-  model %>%
-    blr_residual_diagnostics() %>%
-    pull(!! vals)
-
+  vals <- deparse(substitute(value))
+  blr_residual_diagnostics(model)[[vals]] 
 }
 
 
 dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
-  dbetas <- dfb[, i]
-  tibble(obs = seq_len(n), dbetas = dbetas) %>%
-    mutate(
-      color = ifelse(((dbetas >= threshold) | (dbetas <= -threshold)),
-                      c("outlier"), c("normal")),
-      fct_color = color %>%
-        factor() %>%
-        ordered(levels = c("normal", "outlier")),
-      txt = ifelse(color == "outlier", obs, NA)
-    )
+  dbetas  <- dfb[, i]
+  d       <- data.frame(obs = seq_len(n), dbetas = dbetas)
+
+  d$color <- ifelse(((d$dbetas >= threshold) | (d$dbetas <= -threshold)), 
+    c("outlier"), c("normal"))
+  d$fct_color <- ordered(factor(color), levels = c("normal", "outlier"))
+  d$txt   <- ifelse(d$color == "outlier", obs, NA)
+
+  # tibble(obs = seq_len(n), dbetas = dbetas) %>%
+  #   mutate(
+  #     color = ifelse(((dbetas >= threshold) | (dbetas <= -threshold)),
+  #                     c("outlier"), c("normal")),
+  #     fct_color = color %>%
+  #       factor() %>%
+  #       ordered(levels = c("normal", "outlier")),
+  #     txt = ifelse(color == "outlier", obs, NA)
+  #   )
 
 }
 
@@ -643,24 +636,17 @@ dfbetas_plot <- function(d, threshold, dfb, i) {
 
 
 dfbetas_outlier_data <- function(d) {
-
-  d %>%
-    filter(color == "outlier") %>%
-    select(obs, dbetas)
+  d[d$color == "outlier", c('obs', 'betas')]
 }
 
 
 model_coeff_names <- function(model) {
-
-  model %>%
-    coefficients() %>%
-    names()
+  names(coefficients(model))
 }
 
 create_plot <- function(x, y, point_color, title, xaxis_title, yaxis_title) {
 
-  tibble(x = x, y = y) %>%
-    ggplot() +
+  ggplot(data.frame(x = x, y = y)) +
     geom_point(aes(x = x, y = y), color = point_color) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title)
 

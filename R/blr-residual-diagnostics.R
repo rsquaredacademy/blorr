@@ -3,14 +3,15 @@
 #' Reisudal diagnostic plots for detecting influential observations.
 #'
 #' @param model An object of class \code{glm}.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @return A panel of influence diagnostic plots.
-#' 
+#'
 #' @references
-#' 
+#'
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
-#' 
-#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall. 
+#'
+#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -18,11 +19,13 @@
 #'
 #' blr_plot_diag_influence(model)
 #'
+#' @importFrom gridExtra grid.arrange
+#'
 #' @family diagnostic plots
 #'
 #' @export
 #'
-blr_plot_diag_influence <- function(model) {
+blr_plot_diag_influence <- function(model, print_plot = TRUE) {
 
   blr_check_model(model)
 
@@ -34,11 +37,19 @@ blr_plot_diag_influence <- function(model) {
   p6 <- blr_plot_diag_difchisq(model)
   p7 <- blr_plot_leverage(model)
 
-  myplots <- list(p1, p2, p3, p4, p5, p6, p7)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  myplots <- list(pearson_residual = p1,
+                  deviance_residual = p2,
+                  diag_c = p3,
+                  diag_cbar = p4,
+                  diag_difdev = p5,
+                  diag_difchisq = p6,
+                  leverage = p7)
 
-  result <- list(plots = myplots)
-  invisible(result)
+  if (print_plot) {
+    do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  }
+
+  invisible(myplots)
 }
 
 #' Fitted values diagnostics plot
@@ -46,14 +57,15 @@ blr_plot_diag_influence <- function(model) {
 #' Diagnostic plots for fitted values.
 #'
 #' @param model An object of class \code{glm}.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @return A panel of diagnostic plots for fitted values.
-#' 
+#'
 #' @references
-#' 
+#'
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
-#' 
-#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall. 
+#'
+#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall.
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -64,7 +76,7 @@ blr_plot_diag_influence <- function(model) {
 #'
 #' @export
 #'
-blr_plot_diag_fit <- function(model) {
+blr_plot_diag_fit <- function(model, print_plot = TRUE) {
 
   blr_check_model(model)
 
@@ -73,11 +85,16 @@ blr_plot_diag_fit <- function(model) {
   p3 <- blr_plot_leverage_fitted(model)
   p4 <- blr_plot_c_fitted(model)
 
-  myplots <- list(p1, p2, p3, p4)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  myplots <- list(difdev_fitted = p1,
+                  difchisq_fitted = p2,
+                  leverage_fitted = p3,
+                  c_fitted = p4)
 
-  result <- list(plots = myplots)
-  invisible(result)
+  if (print_plot) {
+    do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  }
+
+  invisible(myplots)
 }
 
 
@@ -86,14 +103,15 @@ blr_plot_diag_fit <- function(model) {
 #' Diagnostic plots for leverage.
 #'
 #' @param model An object of class \code{glm}.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @return A panel of diagnostic plots for leverage.
-#' 
+#'
 #' @references
-#' 
+#'
 #' Fox, John (1991), Regression Diagnostics. Newbury Park, CA: Sage Publications.
-#' 
-#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall. 
+#'
+#' Cook, R. D. and Weisberg, S. (1982), Residuals and Influence in Regression, New York: Chapman & Hall.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -105,7 +123,7 @@ blr_plot_diag_fit <- function(model) {
 #'
 #' @export
 #'
-blr_plot_diag_leverage <- function(model) {
+blr_plot_diag_leverage <- function(model, print_plot = TRUE) {
 
   blr_check_model(model)
 
@@ -114,9 +132,14 @@ blr_plot_diag_leverage <- function(model) {
   p3 <- blr_plot_c_leverage(model)
   p4 <- blr_plot_fitted_leverage(model)
 
-  myplots <- list(p1, p2, p3, p4)
-  do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  myplots <- list(difdev_leverage = p1,
+                  difchisq_leverage = p2,
+                  c_leverage = p3,
+                  fitted_leverage = p4)
 
-  result <- list(plots = myplots)
-  invisible(result)
+  if (print_plot) {
+    do.call(grid.arrange, c(myplots, list(ncol = 2)))
+  }
+
+  invisible(myplots)
 }

@@ -4,10 +4,12 @@
 \alias{blr_plot_diag_fit}
 \title{Fitted values diagnostics plot}
 \usage{
-blr_plot_diag_fit(model)
+blr_plot_diag_fit(model, print_plot = TRUE)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 A panel of diagnostic plots for fitted values.

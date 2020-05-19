@@ -33,33 +33,18 @@ blr_gini_index <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
-    data <-
-      model %>%
-      use_series(data)
+    data <- model$data
   }
 
   blr_check_data(data)
 
-  prob <- predict.glm(model, newdata = data, type = "response")
-  n    <- length(prob)
+  data$prob   <- predict.glm(model, newdata = data, type = "response")
+  n           <- length(data$prob)
+  data        <- data[order(data[['prob']]), ]
+  data$n      <- seq_len(nrow(data))
+  data$prob_n <- data$prob * data$n
 
-  data %>%
-    mutate(
-      prob = predict.glm(model, newdata = ., type = "response")
-    ) %>%
-    arrange(prob) %>%
-    mutate(
-      n      = seq_len(n()),
-      prob_n = prob * n
-    ) %>%
-    pull(prob_n) %>%
-    sum() %>%
-    divide_by(prob %>%
-      sum()) %>%
-    multiply_by(2) %>%
-    subtract(n %>%
-      add(1)) %>%
-    divide_by(n)
+  (((sum(data$prob_n) / sum(data$prob)) * 2) - (n + 1)) / n
 
 }
 
@@ -75,6 +60,7 @@ blr_gini_index <- function(model, data = NULL) {
 #' @param yaxis_title Y axis title.
 #' @param lorenz_curve_col Color of the lorenz curve.
 #' @param diag_line_col Diagonal line color.
+#' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -90,7 +76,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
                              xaxis_title = "Cumulative Events %",
                              yaxis_title = "Cumulative Non Events %",
                              diag_line_col = "red",
-                             lorenz_curve_col = "blue") {
+                             lorenz_curve_col = "blue", print_plot = TRUE) {
 
   if (is.null(data)) {
     test_data <- FALSE
@@ -100,12 +86,10 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
     data      <- data
   }
 
-  g_index <-
-    blr_gini_index(model = model, data = data) %>%
-    round(2)
+  g_index <- round(blr_gini_index(model = model, data = data), 2)
 
-  blr_prep_lorenz_data(model, data, test_data) %>%
-    ggplot() +
+  p <-
+    ggplot(blr_prep_lorenz_data(model, data, test_data)) +
     geom_line(aes(x = `cum_1s_per`, y = `cum_0s_per`),
                 color = lorenz_curve_col) +
     geom_line(aes(x = `cum_1s_per`, y = `cum_1s_per`), color = diag_line_col) +
@@ -113,6 +97,12 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
     xlab(xaxis_title) + ylab(yaxis_title) +
     theme(plot.title = element_text(hjust = 0.5),
           plot.subtitle = element_text(hjust = 0.5))
+
+  if (print_plot) {
+    print(p)
+  }
+
+  invisible(p)
 
 }
 

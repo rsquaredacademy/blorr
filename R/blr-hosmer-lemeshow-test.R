@@ -4,10 +4,10 @@
 #'
 #' @param model An object of class \code{glm}.
 #' @param data a \code{tibble} or \code{data.frame}.
-#' 
+#'
 #' @references
-#' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).  
-#' New  York:  John Wiley & Sons. 
+#' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
+#' New  York:  John Wiley & Sons.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -18,7 +18,6 @@
 #' @family model validation techniques
 #'
 #' @importFrom stats quantile
-#' @importFrom dplyr case_when
 #'
 #' @export
 #'
@@ -33,26 +32,19 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   if (is.null(data)) {
     resp <- model$y
-    data <- eval(model$call$data)
+    data <- model$model
   } else {
-    namu <-
-      model %>%
-      formula() %>%
-      extract2(2)
-
+    namu <- formula(model)[[2]]
     blr_check_data(data)
-
-    resp_temp <- pull(data, !! namu)
+    resp_temp <- data[[namu]]
     resp <- as.numeric(levels(resp_temp))[resp_temp]
   }
 
   hoslem_data <- hoslem_data_prep(model, data, resp)
   int_limits  <- hoslem_int_limits(hoslem_data)
 
-  hoslem_table <-
-    hoslem_data %>%
-    hoslem_data_mutate(int_limits = int_limits) %>%
-    hoslem_table_data(resp = resp)
+  h1 <- hoslem_data_mutate(hoslem_data, int_limits = int_limits)
+  hoslem_table <- hoslem_table_data(h1, resp = resp)
 
   chisq_stat  <- hoslem_chisq_stat(hoslem_table)
   hoslem_df   <- 8
@@ -76,64 +68,59 @@ print.blr_test_hosmer_lemeshow <- function(x, ...) {
 
 hoslem_data_prep <- function(model, data, resp) {
 
-  data %>%
-    mutate(
-      prob = predict.glm(model, newdata = data, type = "response")
-    ) %>%
-    add_column(resp) %>%
-    arrange(prob)
+  data$prob <- predict.glm(model, newdata = data, type = "response")
+  data$resp <- resp
+  data[order(data$prob), ]
 
 }
 
 hoslem_int_limits <- function(hoslem_data) {
-
-  hoslem_data %>%
-    use_series(prob) %>%
-    quantile(probs = seq(0, 1, 0.1)) %>%
-    unname()
+  unname(quantile(hoslem_data$prob, probs = seq(0, 1, 0.1)))
 }
 
 hoslem_data_mutate <- function(hoslem_data, int_limits) {
 
-  hoslem_data %>%
-    mutate(
-      group = case_when(
-        prob <= int_limits[2] ~ 1,
-        prob > int_limits[2] & prob <= int_limits[3] ~ 2,
-        prob > int_limits[3] & prob <= int_limits[4] ~ 3,
-        prob > int_limits[4] & prob <= int_limits[5] ~ 4,
-        prob > int_limits[5] & prob <= int_limits[6] ~ 5,
-        prob > int_limits[6] & prob <= int_limits[7] ~ 6,
-        prob > int_limits[7] & prob <= int_limits[8] ~ 7,
-        prob > int_limits[8] & prob <= int_limits[9] ~ 8,
-        prob > int_limits[9] & prob <= int_limits[10] ~ 9,
-        prob > int_limits[10] ~ 10
-      )
-    )
+  d <- hoslem_data
+  d$group <- lest::case_when(
+    d$prob <= int_limits[2] ~ 1,
+    d$prob > int_limits[2] & d$prob <= int_limits[3] ~ 2,
+    d$prob > int_limits[3] & d$prob <= int_limits[4] ~ 3,
+    d$prob > int_limits[4] & d$prob <= int_limits[5] ~ 4,
+    d$prob > int_limits[5] & d$prob <= int_limits[6] ~ 5,
+    d$prob > int_limits[6] & d$prob <= int_limits[7] ~ 6,
+    d$prob > int_limits[7] & d$prob <= int_limits[8] ~ 7,
+    d$prob > int_limits[8] & d$prob <= int_limits[9] ~ 8,
+    d$prob > int_limits[9] & d$prob <= int_limits[10] ~ 9,
+    d$prob > int_limits[10] ~ 10
+  )
+
+  return(d)
+
 
 }
 
-hoslem_table_data <- function(data,resp) {
+hoslem_table_data <- function(data, resp) {
 
-  data %>%
-    group_by(group) %>%
-    summarise(
-      n             = n(),
-      `1s_observed` = sum(resp),
-      `0s_observed` = n - `1s_observed`,
-      avg_prob      = mean(prob),
-      `1s_expected` = n * avg_prob,
-      `0s_expected` = n - `1s_expected`,
-      positive      = ((`1s_observed` - `1s_expected`) ^ 2 / `1s_expected`),
-      negative      = ((`0s_observed` - `0s_expected`) ^ 2 / `0s_expected`)
-    )
+  d <- data.table(data)
+  d <- d[, .(n = .N,
+             `1s_observed` = sum(resp),
+             avg_prob      = mean(prob)),
+         by = group]
+
+  d <- setDF(d)
+  d$`0s_observed` <- d$n - d$`1s_observed`
+  d$`1s_expected` <- d$n * d$avg_prob
+  d$`0s_expected` <- d$n - d$`1s_expected`
+  d$positive      <- ((d$`1s_observed` - d$`1s_expected`) ^ 2 / d$`1s_expected`)
+  d$negative      <- ((d$`0s_observed` - d$`0s_expected`) ^ 2 / d$`0s_expected`)
+
+  return(d)
 
 }
 
 hoslem_chisq_stat <- function(hoslem_table) {
 
-  hoslem_table %>%
-    select(positive, negative) %>%
-    summarise_all(sum) %>%
-    sum()
+  d <- hoslem_table[c('positive', 'negative')]
+  sum(unlist((lapply(d, sum))))
+
 }

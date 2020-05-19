@@ -36,10 +36,9 @@ model_2 <- glm(honcomp ~ female + read, data = hsb2,
 
 blr_test_lr(model_1, model_2)
 
+
 }
 \seealso{
-\code{\link[lmtest]{lrtest}}
-
 Other model fit statistics: 
 \code{\link{blr_model_fit_stats}()},
 \code{\link{blr_multi_model_fit_stats}()},

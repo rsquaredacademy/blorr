@@ -10,7 +10,7 @@ blr_step_p_backward(model, ...)
 
 \method{blr_step_p_backward}{default}(model, prem = 0.3, details = FALSE, ...)
 
-\method{plot}{blr_step_p_backward}(x, model = NA, ...)
+\method{plot}{blr_step_p_backward}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
 \item{model}{An object of class \code{lm}; the model should include all
@@ -25,6 +25,8 @@ from the model.}
 each step.}
 
 \item{x}{An object of class \code{blr_step_p_backward}.}
+
+\item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
 \value{
 \code{blr_step_p_backward} returns an object of class \code{"blr_step_p_backward"}.
@@ -61,6 +63,7 @@ plot(k)
 k$model
 
 }
+
 
 }
 \references{

@@ -6,14 +6,11 @@ model <- glm(
 )
 
 test_that("output from blr_gains_table is as expected", {
-  gtable <- blr_gains_table(model, hsb2)
-  actual <- gtable %>%
-    use_series(gains_table) %>%
-    select(sensitivity, specificity, accuracy) %>%
-    summarise_all(mean) %>%
-    unlist() %>%
-    unname() %>%
-    round(2)
+  gtable   <- blr_gains_table(model, hsb2)
+  sens     <- round(mean(gtable$gains_table$sensitivity), 2)
+  spec     <- round(mean(gtable$gains_table$specificity), 2)
+  accu     <- round(mean(gtable$gains_table$accuracy), 2)
+  actual   <- c(sens, spec, accu)
   expected <- c(80.94, 54.35, 61.40)
   expect_equivalent(actual, expected)
 })

@@ -4,12 +4,9 @@ blr_reg_comp <- function(formula, data, odd_conf_limit) {
                family = binomial(link = "logit"))
 
   if (interactive()) {
-    cat(crayon::green(clisymbols::symbol$tick),
-        crayon::bold("Creating model overview."), "\n")
-  } else {
     cat(paste("-", "Creating model overview."), "\n")
   }
-
+  
   dataname       <- data_name(model)
   resp_name      <- response_var(model)
   n_obs          <- data_nrows(model)
@@ -18,18 +15,12 @@ blr_reg_comp <- function(formula, data, odd_conf_limit) {
   mod_df         <- model_df(model)
 
   if (interactive()) {
-    cat(crayon::green(clisymbols::symbol$tick),
-        crayon::bold("Creating response profile."), "\n")
-  } else {
     cat(paste("-", "Creating response profile."), "\n")
   }
-
+  
   resp_prof      <- resp_profile(model)
 
   if (interactive()) {
-    cat(crayon::green(clisymbols::symbol$tick),
-        crayon::bold("Extracting maximum likelihood estimates."), "\n")
-  } else {
     cat(paste("-", "Extracting maximum likelihood estimates."), "\n")
   }
 
@@ -43,9 +34,6 @@ blr_reg_comp <- function(formula, data, odd_conf_limit) {
   if (odd_conf_limit) {
 
     if (interactive()) {
-      cat(crayon::green(clisymbols::symbol$tick),
-          crayon::bold("Computing odds ratio estimates."), "\n")
-    } else {
       cat(paste("-", "Computing odds ratio estimates."), "\n")
     }
 
@@ -56,9 +44,6 @@ blr_reg_comp <- function(formula, data, odd_conf_limit) {
   }
 
   if (interactive()) {
-    cat(crayon::green(clisymbols::symbol$tick),
-        crayon::bold("Estimating concordant and discordant pairs."), "\n\n")
-  } else {
     cat(paste("-", "Estimating concordant and discordant pairs."), "\n")
   }
 
