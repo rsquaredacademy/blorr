@@ -12,9 +12,7 @@ Depends:
     R(>= 3.3)
 Imports: 
     car,
-    caret,
     data.table,
-    e1071,  
     ggplot2,
     gridExtra,
     lest,

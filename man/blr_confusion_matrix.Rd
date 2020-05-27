@@ -2,9 +2,12 @@
 % Please edit documentation in R/blr-model-validation.R
 \name{blr_confusion_matrix}
 \alias{blr_confusion_matrix}
+\alias{blr_confusion_matrix.default}
 \title{Confusion matrix}
 \usage{
-blr_confusion_matrix(model, cutoff = 0.5, data = NULL)
+blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
+
+\method{blr_confusion_matrix}{default}(model, cutoff = 0.5, data = NULL, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}.}
@@ -12,12 +15,16 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL)
 \item{cutoff}{Cutoff for classification.}
 
 \item{data}{A \code{tibble} or a \code{data.frame}.}
+
+\item{...}{Other arguments.}
+
+\item{x}{An object of class \code{blr_confusion_matrix}.}
 }
 \value{
 Confusion matix.
 }
 \description{
-Wrapper for \code{confMatrix} from the caret package.
+Confusion matrix and statistics.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
