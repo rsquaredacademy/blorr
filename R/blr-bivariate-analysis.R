@@ -331,13 +331,18 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
     geom_col(aes(y = `n%`), fill = bar_color) +
     geom_line(aes(y = `1s%`, group = 1), color = line_color) +
     xlab(xaxis_title) + ggtitle(plot_title) + ylab(yaxis_title) +
-    scale_y_continuous(labels = scales::percent,
-      sec.axis = sec_axis(~. / sec_axis_scale, name = sec_yaxis_title,
-        labels = scales::percent))
+    scale_y_continuous(
+      breaks   = seq(0, 1, by = 0.1),
+      labels   = paste0(seq(0, 1, by = 0.1) * 100, '%'),
+      sec.axis = sec_axis(
+        trans  = ~.,
+        breaks = seq(0, 1, by = 0.1),
+        labels = paste0(seq(0, 1, by = 0.1) * 100, '%'),
+        name   = sec_yaxis_title))
 
   if (print_plot) {
     print(p)
-  } 
+  }
 
   invisible(p)
 }
@@ -347,6 +352,6 @@ secondary_axis_scale_comp <- function(x) {
 
   d <- x$dist_table
   d$sec <- d$`n%` / d$`1s%`
-  min(d$sec)
+  max(d$sec)
 
 }

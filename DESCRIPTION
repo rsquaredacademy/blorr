@@ -19,7 +19,6 @@ Imports:
     gridExtra,
     lest,
     Rcpp,
-    scales,
     stats,
     utils
 Suggests: 

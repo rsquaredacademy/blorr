@@ -53,8 +53,9 @@ blr_roc_curve <- function(gains_table, title = "ROC Curve",
     ggplot(plot_data, aes(x = `1 - specificity`, y = sensitivity_per)) +
     geom_point(shape = point_shape, fill = point_fill, color = point_color) +
     geom_line(color = roc_curve_col) + ggtitle(title) +
-    scale_x_continuous(labels = scales::percent) + xlab(xaxis_title) +
-    scale_y_continuous(labels = scales::percent) + ylab(yaxis_title) +
+    scale_x_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) + 
+    scale_y_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) + 
+    xlab(xaxis_title) + ylab(yaxis_title) +
     theme(plot.title = element_text(hjust = plot_title_justify)) +
     geom_line(aes(x = `1 - specificity`, y = `1 - specificity`),
               color = diag_line_col)
