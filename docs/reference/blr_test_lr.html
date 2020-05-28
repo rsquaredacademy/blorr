@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -162,8 +162,7 @@ you are comparing the <code>full_model</code> with an intercept only model.</p><
     <p>Two tibbles with model information and test results.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/lmtest/man/lrtest.html'>lrtest</a></code></p>
-<p>Other model fit statistics: 
+    <div class='dont-index'><p>Other model fit statistics: 
 <code><a href='blr_model_fit_stats.html'>blr_model_fit_stats</a>()</code>,
 <code><a href='blr_multi_model_fit_stats.html'>blr_multi_model_fit_stats</a>()</code>,
 <code><a href='blr_pairs.html'>blr_pairs</a>()</code>,
@@ -180,24 +179,14 @@ you are comparing the <code>full_model</code> with an intercept only model.</p><
 <span class='no'>model_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_test_lr</span>(<span class='no'>model_1</span>)</div><div class='output co'>#&gt;     Likelihood Ratio Test      
-#&gt; ------------------------------
-#&gt; Chi-Square    DF    Pr &gt; ChiSq 
-#&gt; ------------------------------
-#&gt;  71.0525      3       0.0000   
-#&gt; ------------------------------</div><div class='input'>
+<span class='fu'>blr_test_lr</span>(<span class='no'>model_1</span>)
+
 <span class='co'># compare full model with nested model</span>
 <span class='co'># nested model</span>
 <span class='no'>model_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_test_lr</span>(<span class='no'>model_1</span>, <span class='no'>model_2</span>)</div><div class='output co'>#&gt;     Likelihood Ratio Test      
-#&gt; ------------------------------
-#&gt; Chi-Square    DF    Pr &gt; ChiSq 
-#&gt; ------------------------------
-#&gt;  10.6511      3       0.0138   
-#&gt; ------------------------------</div><div class='input'>
-</div></pre>
+<span class='fu'>blr_test_lr</span>(<span class='no'>model_1</span>, <span class='no'>model_2</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

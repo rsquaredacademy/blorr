@@ -8,23 +8,29 @@
 
 <title>Residual diagnostics — blr_residual_diagnostics • blorr</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,11 +38,11 @@
 
 
 
-<meta property="og:title" content="Residual diagnostics — blr_residual_diagnostics" />
 
+<meta property="og:title" content="Residual diagnostics — blr_residual_diagnostics" />
 <meta property="og:description" content="Diagnostics for confidence interval displacement and detecting ill fitted
 observations." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -53,7 +59,7 @@ observations." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -67,7 +73,7 @@ observations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -104,7 +110,6 @@ observations." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
@@ -131,14 +136,12 @@ observations." />
     </div>
 
     <div class="ref-description">
-    
     <p>Diagnostics for confidence interval displacement and detecting ill fitted
 observations.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>blr_residual_diagnostics</span>(<span class='no'>model</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -147,42 +150,222 @@ observations.</p>
       <td><p>An object of class <code>glm</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>C, CBAR, DIFDEV and DIFCHISQ.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
 <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_residual_diagnostics</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 200 x 4</span><span>
-#&gt;             c       cbar  difdev difchisq
-#&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 0.001</span><span style='text-decoration: underline;'>71</span><span>    0.001</span><span style='text-decoration: underline;'>68</span><span>    0.175    0.090</span><span style='text-decoration: underline;'>6</span><span> 
-#&gt; </span><span style='color: #555555;'> 2</span><span> 0.143      0.139      4.00     5.71   
-#&gt; </span><span style='color: #555555;'> 3</span><span> 0.000</span><span style='text-decoration: underline;'>996</span><span>   0.000</span><span style='text-decoration: underline;'>981</span><span>   0.130    0.066</span><span style='text-decoration: underline;'>6</span><span> 
-#&gt; </span><span style='color: #555555;'> 4</span><span> 0.009</span><span style='text-decoration: underline;'>02</span><span>    0.008</span><span style='text-decoration: underline;'>76</span><span>    0.537    0.301  
-#&gt; </span><span style='color: #555555;'> 5</span><span> 0.000</span><span style='text-decoration: underline;'>598</span><span>   0.000</span><span style='text-decoration: underline;'>592</span><span>   0.110    0.056</span><span style='text-decoration: underline;'>3</span><span> 
-#&gt; </span><span style='color: #555555;'> 6</span><span> 0.002</span><span style='text-decoration: underline;'>88</span><span>    0.002</span><span style='text-decoration: underline;'>80</span><span>    0.209    0.108  
-#&gt; </span><span style='color: #555555;'> 7</span><span> 0.000</span><span style='text-decoration: underline;'>900</span><span>   0.000</span><span style='text-decoration: underline;'>889</span><span>   0.149    0.076</span><span style='text-decoration: underline;'>9</span><span> 
-#&gt; </span><span style='color: #555555;'> 8</span><span> 0.000</span><span style='text-decoration: underline;'>009</span><span>90 0.000</span><span style='text-decoration: underline;'>009</span><span>88 0.007</span><span style='text-decoration: underline;'>71</span><span>  0.003</span><span style='text-decoration: underline;'>86</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span> 0.012</span><span style='text-decoration: underline;'>2</span><span>     0.011</span><span style='text-decoration: underline;'>9</span><span>     0.801    0.481  
-#&gt; </span><span style='color: #555555;'>10</span><span> 0.002</span><span style='text-decoration: underline;'>16</span><span>    0.002</span><span style='text-decoration: underline;'>13</span><span>    0.229    0.120  
-#&gt; </span><span style='color: #555555;'># ... with 190 more rows</span><span></div><div class='input'>
-</div></span></pre>
+<span class='fu'>blr_residual_diagnostics</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;                c         cbar      difdev     difchisq
+#&gt; 1   1.714775e-03 1.682909e-03 0.175200955  0.090559751
+#&gt; 2   1.429214e-01 1.394315e-01 3.998937227  5.710209661
+#&gt; 3   9.959732e-04 9.813000e-04 0.130007342  0.066607468
+#&gt; 4   9.023852e-03 8.761106e-03 0.536722606  0.300894248
+#&gt; 5   5.980764e-04 5.917929e-04 0.110220460  0.056328100
+#&gt; 6   2.876007e-03 2.801553e-03 0.208574176  0.108218735
+#&gt; 7   8.995744e-04 8.891766e-04 0.149175691  0.076927702
+#&gt; 8   9.902361e-06 9.877010e-06 0.007711173  0.003858052
+#&gt; 9   1.219551e-02 1.189404e-02 0.800918692  0.481155824
+#&gt; 10  2.163331e-03 2.125096e-03 0.229423218  0.120235791
+#&gt; 11  4.832076e-03 4.727697e-03 0.401357308  0.218861551
+#&gt; 12  6.191650e-02 6.043716e-02 2.609131129  2.529552930
+#&gt; 13  2.995002e-02 2.852142e-02 0.975083831  0.597941207
+#&gt; 14  1.048892e-01 1.034023e-01 4.369886254  7.294114623
+#&gt; 15  2.555955e-05 2.544456e-05 0.011305342  0.005655812
+#&gt; 16  1.890339e-04 1.876253e-04 0.049929085  0.025180243
+#&gt; 17  3.927621e-04 3.891513e-04 0.083321991  0.042330035
+#&gt; 18  4.470660e-03 4.394080e-03 0.461923138  0.256523888
+#&gt; 19  8.222657e-02 7.856862e-02 2.147893802  1.766130095
+#&gt; 20  1.922340e-03 1.894221e-03 0.245647296  0.129496817
+#&gt; 21  3.360228e-02 3.254494e-02 1.465662476  1.034273716
+#&gt; 22  3.070469e-02 2.919663e-02 0.971586410  0.594457116
+#&gt; 23  1.187856e-03 1.172889e-03 0.179275765  0.093083875
+#&gt; 24  1.024315e-02 1.002336e-02 0.779442376  0.467132920
+#&gt; 25  1.666718e-05 1.661460e-05 0.010522075  0.005266506
+#&gt; 26  9.902361e-06 9.877010e-06 0.007711173  0.003858052
+#&gt; 27  3.868987e-02 3.760510e-02 1.754720088  1.341233680
+#&gt; 28  1.397582e-03 1.376421e-03 0.175507244  0.090907237
+#&gt; 29  5.883201e-05 5.851604e-05 0.021732193  0.010895452
+#&gt; 30  1.538551e-03 1.518165e-03 0.218615492  0.114575242
+#&gt; 31  1.206777e-04 1.199131e-04 0.037621469  0.018926550
+#&gt; 32  1.582197e-01 1.510534e-01 3.149359572  3.334983697
+#&gt; 33  2.790231e-02 2.700378e-02 1.254920166  0.838561702
+#&gt; 34  1.832472e-02 1.690403e-02 0.414238978  0.218036836
+#&gt; 35  4.199876e-03 4.115064e-03 0.375701229  0.203778702
+#&gt; 36  4.902223e-02 4.797035e-02 2.417385169  2.235629715
+#&gt; 37  6.184782e-02 5.972581e-02 2.102207404  1.740757786
+#&gt; 38  2.790231e-02 2.700378e-02 1.254920166  0.838561702
+#&gt; 39  7.221982e-05 7.175699e-05 0.022341692  0.011196792
+#&gt; 40  2.371239e-05 2.362595e-05 0.012944686  0.006481368
+#&gt; 41  1.484749e-04 1.473695e-04 0.039352793  0.019794657
+#&gt; 42  3.430254e-03 3.374692e-03 0.382426519  0.208346373
+#&gt; 43  1.538551e-03 1.518165e-03 0.218615492  0.114575242
+#&gt; 44  1.890339e-04 1.876253e-04 0.049929085  0.025180243
+#&gt; 45  3.282110e-02 3.187881e-02 1.538424442  1.110378773
+#&gt; 46  3.133334e-02 2.980554e-02 0.993508264  0.611278393
+#&gt; 47  5.583226e-04 5.524581e-04 0.103098442  0.052595923
+#&gt; 48  2.821714e-02 2.740703e-02 1.378342821  0.954620784
+#&gt; 49  5.980764e-04 5.917929e-04 0.110220460  0.056328100
+#&gt; 50  1.714775e-03 1.682909e-03 0.175200955  0.090559751
+#&gt; 51  1.007565e-01 9.926312e-02 4.216014793  6.697126795
+#&gt; 52  7.587586e-05 7.546277e-05 0.027607615  0.013860744
+#&gt; 53  2.523756e-04 2.503371e-04 0.061302700  0.030993042
+#&gt; 54  1.005310e-02 9.782114e-03 0.631353787  0.362895817
+#&gt; 55  1.049232e-02 1.010920e-02 0.500933885  0.276855002
+#&gt; 56  3.884597e-06 3.876617e-06 0.003774610  0.001887141
+#&gt; 57  7.089019e-06 7.072193e-06 0.005957749  0.002979759
+#&gt; 58  5.314174e-04 5.251688e-04 0.087936379  0.044663202
+#&gt; 59  1.219551e-02 1.189404e-02 0.800918692  0.481155824
+#&gt; 60  2.250623e-04 2.231714e-04 0.052660204  0.026562307
+#&gt; 61  1.937427e-03 1.907634e-03 0.235987514  0.124050481
+#&gt; 62  2.447935e-01 2.312153e-01 3.612373822  4.168455201
+#&gt; 63  3.099590e-05 3.085479e-05 0.013539849  0.006777256
+#&gt; 64  6.322787e-06 6.309041e-06 0.005801949  0.002902014
+#&gt; 65  1.324601e-04 1.313238e-04 0.030518715  0.015308706
+#&gt; 66  2.523756e-04 2.503371e-04 0.061302700  0.030993042
+#&gt; 67  5.521616e-03 5.408598e-03 0.475398199  0.264241258
+#&gt; 68  1.484749e-04 1.473695e-04 0.039352793  0.019794657
+#&gt; 69  2.843505e-02 2.759905e-02 1.362233451  0.938735201
+#&gt; 70  3.258439e-04 3.226311e-04 0.064728136  0.032721649
+#&gt; 71  5.883201e-05 5.851604e-05 0.021732193  0.010895452
+#&gt; 72  7.100426e-03 6.959611e-03 0.610177412  0.350928915
+#&gt; 73  2.223940e-02 2.127829e-02 0.828148303  0.492362786
+#&gt; 74  1.711199e-01 1.636562e-01 3.349721185  3.752139610
+#&gt; 75  3.430254e-03 3.374692e-03 0.382426519  0.208346373
+#&gt; 76  2.115485e-04 2.098617e-04 0.052173679  0.026319642
+#&gt; 77  1.778370e-01 1.751576e-01 5.295761642 11.625223156
+#&gt; 78  4.554600e-02 4.401450e-02 1.736019169  1.308970340
+#&gt; 79  5.923198e-06 5.910812e-06 0.005651206  0.002826627
+#&gt; 80  1.484749e-04 1.473695e-04 0.039352793  0.019794657
+#&gt; 81  1.005310e-02 9.782114e-03 0.631353787  0.362895817
+#&gt; 82  6.867317e-04 6.747790e-04 0.076771905  0.038768758
+#&gt; 83  6.184782e-02 5.972581e-02 2.102207404  1.740757786
+#&gt; 84  3.683128e-02 3.586186e-02 1.770358544  1.362493836
+#&gt; 85  8.739224e-04 8.603094e-04 0.108422252  0.055230101
+#&gt; 86  7.733278e-02 7.545805e-02 2.935899226  3.112646806
+#&gt; 87  1.199785e-03 1.184777e-03 0.182277117  0.094717594
+#&gt; 88  1.568983e-05 1.564199e-05 0.010248659  0.005129580
+#&gt; 89  1.040428e-04 1.031947e-04 0.025264629  0.012659537
+#&gt; 90  5.648486e-03 5.535976e-03 0.497125122  0.277928055
+#&gt; 91  2.296646e-01 2.269371e-01 6.278388092 19.108468289
+#&gt; 92  3.360228e-02 3.254494e-02 1.465662476  1.034273716
+#&gt; 93  2.507119e-03 2.448154e-03 0.200719009  0.104092427
+#&gt; 94  4.620611e-04 4.574798e-04 0.090692860  0.046140576
+#&gt; 95  1.279493e-03 1.263815e-03 0.197703474  0.103142180
+#&gt; 96  5.656904e-02 5.404523e-02 1.663597494  1.211374960
+#&gt; 97  2.249922e-03 2.200995e-03 0.195221725  0.101213040
+#&gt; 98  5.683130e-03 5.505435e-03 0.330657695  0.176077827
+#&gt; 99  1.101009e-04 1.093947e-04 0.033936548  0.017056493
+#&gt; 100 9.143496e-03 8.924746e-03 0.645164254  0.373044051
+#&gt; 101 2.507119e-03 2.448154e-03 0.200719009  0.104092427
+#&gt; 102 7.065249e-02 6.554781e-02 1.382022263  0.907229749
+#&gt; 103 5.496769e-04 5.417171e-04 0.074013559  0.037409012
+#&gt; 104 3.606158e-02 3.480992e-02 1.437638887  1.002911024
+#&gt; 105 2.946148e-02 2.853544e-02 1.331287766  0.907840313
+#&gt; 106 5.676501e-03 5.522539e-03 0.377058254  0.203613395
+#&gt; 107 3.826369e-02 3.727759e-02 1.842392766  1.446484548
+#&gt; 108 9.579393e-04 9.427774e-04 0.116711853  0.059565092
+#&gt; 109 2.558035e-03 2.523557e-03 0.346142203  0.187228311
+#&gt; 110 6.989810e-03 6.772784e-03 0.402548738  0.218132880
+#&gt; 111 3.907660e-02 3.809320e-02 1.897852151  1.513681841
+#&gt; 112 5.546298e-04 5.483299e-04 0.094862141  0.048273447
+#&gt; 113 5.299547e-02 4.993601e-02 1.315205267  0.864984721
+#&gt; 114 7.541574e-03 7.336359e-03 0.486192864  0.269608174
+#&gt; 115 1.021654e-02 9.796266e-03 0.438780016  0.238142198
+#&gt; 116 2.294176e-04 2.275486e-04 0.055328822  0.027930516
+#&gt; 117 4.649203e-03 4.543908e-03 0.370955406  0.200632248
+#&gt; 118 5.889263e-03 5.700167e-03 0.333349523  0.177527665
+#&gt; 119 1.501761e-02 1.469141e-02 1.052883879  0.676357480
+#&gt; 120 3.333480e-04 3.302306e-04 0.069748542  0.035312784
+#&gt; 121 1.926803e-02 1.877147e-02 1.119684321  0.728390444
+#&gt; 122 3.469276e-03 3.422783e-03 0.458987480  0.255407134
+#&gt; 123 1.706084e-03 1.674517e-03 0.175082379  0.090500084
+#&gt; 124 2.023481e-03 1.997373e-03 0.290115157  0.154804754
+#&gt; 125 3.696036e-01 3.642264e-01 6.950796928 25.035516433
+#&gt; 126 1.838113e-02 1.802134e-02 1.330233919  0.920702469
+#&gt; 127 2.330179e-03 2.293319e-03 0.273338950  0.144976356
+#&gt; 128 1.215048e-03 1.197280e-03 0.158677951  0.081875583
+#&gt; 129 2.763419e-03 2.724278e-03 0.354973148  0.192339395
+#&gt; 130 2.783763e-05 2.772063e-05 0.013175835  0.006595622
+#&gt; 131 1.039078e-02 1.019111e-02 0.864222041  0.530342453
+#&gt; 132 2.214178e-02 2.178123e-02 1.729127087  1.337620342
+#&gt; 133 3.552271e-02 3.367987e-02 1.045504661  0.649215871
+#&gt; 134 1.019456e-03 1.007207e-03 0.162085818  0.083830337
+#&gt; 135 2.219997e-02 2.119220e-02 0.793356119  0.466837321
+#&gt; 136 9.896093e-04 9.720041e-04 0.107415754  0.054637523
+#&gt; 137 1.163020e-02 1.130601e-02 0.695134995  0.405593537
+#&gt; 138 1.217273e-03 1.201953e-03 0.183728947  0.095501951
+#&gt; 139 3.521794e-04 3.489574e-04 0.075228440  0.038142864
+#&gt; 140 3.359504e-03 3.297549e-03 0.332778538  0.178807876
+#&gt; 141 1.033954e-04 1.026746e-04 0.029347552  0.014729117
+#&gt; 142 1.626688e-03 1.603332e-03 0.213484010  0.111669095
+#&gt; 143 9.542028e-04 9.406140e-04 0.128917831  0.066049834
+#&gt; 144 1.418413e-03 1.399681e-03 0.203004768  0.105986475
+#&gt; 145 5.989086e-03 5.904450e-03 0.705683222  0.417816515
+#&gt; 146 2.023481e-03 1.997373e-03 0.290115157  0.154804754
+#&gt; 147 4.364463e-02 4.289970e-02 2.574734358  2.513440758
+#&gt; 148 9.098518e-04 8.993024e-04 0.150363722  0.077561516
+#&gt; 149 1.035674e-03 1.021108e-03 0.141267367  0.072604021
+#&gt; 150 4.072810e-04 4.023678e-04 0.066034991  0.033354067
+#&gt; 151 1.213217e-03 1.196667e-03 0.169461679  0.087721966
+#&gt; 152 6.738631e-02 6.568886e-02 2.660468673  2.607750122
+#&gt; 153 1.783288e-03 1.757971e-03 0.235429953  0.123830352
+#&gt; 154 4.078075e-03 4.012484e-03 0.450196915  0.249471329
+#&gt; 155 1.798284e-02 1.763743e-02 1.327136586  0.918244408
+#&gt; 156 9.586315e-02 9.257885e-02 2.750869718  2.702220617
+#&gt; 157 6.920782e-03 6.818132e-03 0.765144454  0.459685870
+#&gt; 158 1.019456e-03 1.007207e-03 0.162085818  0.083830337
+#&gt; 159 5.468997e-04 5.412187e-04 0.102147214  0.052101738
+#&gt; 160 6.956322e-03 6.783894e-03 0.491955607  0.273683670
+#&gt; 161 6.768584e-02 6.659719e-02 3.367956058  4.140599894
+#&gt; 162 1.068424e-02 1.049175e-02 0.931617433  0.582360803
+#&gt; 163 9.161703e-02 8.684071e-02 2.085772458  1.665733364
+#&gt; 164 1.794676e-02 1.749512e-02 1.079052614  0.695190763
+#&gt; 165 8.183569e-03 8.053310e-03 0.829246770  0.505948870
+#&gt; 166 6.112573e-04 6.042976e-04 0.104062462  0.053074637
+#&gt; 167 2.691798e-02 2.597419e-02 1.143807429  0.740814692
+#&gt; 168 7.248779e-04 7.164235e-04 0.119983373  0.061425852
+#&gt; 169 2.032750e-02 1.999351e-02 1.620327724  1.216833025
+#&gt; 170 2.470070e-02 2.429277e-02 1.843798016  1.470963397
+#&gt; 171 1.626688e-03 1.603332e-03 0.213484010  0.111669095
+#&gt; 172 1.832056e-03 1.808523e-03 0.265475697  0.140796573
+#&gt; 173 1.628309e-04 1.613977e-04 0.036505512  0.018336703
+#&gt; 174 5.031675e-02 4.911828e-02 2.308866824  2.062197192
+#&gt; 175 3.718687e-04 3.677289e-04 0.065376651  0.033032492
+#&gt; 176 1.932064e-02 1.881967e-02 1.116748565  0.725807280
+#&gt; 177 1.580237e-02 1.535157e-02 0.881118321  0.538126313
+#&gt; 178 2.184174e-03 2.141404e-03 0.209906333  0.109356853
+#&gt; 179 1.353245e-02 1.320813e-02 0.895192843  0.551116791
+#&gt; 180 3.295260e-02 3.237871e-02 2.147516973  1.859195000
+#&gt; 181 3.826369e-02 3.727759e-02 1.842392766  1.446484548
+#&gt; 182 5.546298e-04 5.483299e-04 0.094862141  0.048273447
+#&gt; 183 4.059106e-02 3.897641e-02 1.420184895  0.979840258
+#&gt; 184 3.989745e-02 3.924613e-02 2.506277005  2.404079826
+#&gt; 185 6.050690e-02 5.680204e-02 1.391329501  0.927678395
+#&gt; 186 1.042797e-02 1.016529e-02 0.690776927  0.403546839
+#&gt; 187 5.989086e-03 5.904450e-03 0.705683222  0.417816515
+#&gt; 188 1.213217e-03 1.196667e-03 0.169461679  0.087721966
+#&gt; 189 1.666544e-02 1.625457e-02 1.034466544  0.659304844
+#&gt; 190 5.036356e-03 4.962806e-03 0.591189342  0.339831218
+#&gt; 191 5.468997e-04 5.412187e-04 0.102147214  0.052101738
+#&gt; 192 8.813239e-04 8.685670e-04 0.117465633  0.060005835
+#&gt; 193 7.150669e-03 7.028620e-03 0.698578733  0.411798254
+#&gt; 194 1.897529e-04 1.881278e-04 0.043648756  0.021966086
+#&gt; 195 7.498085e-02 7.397022e-02 3.841734514  5.488016022
+#&gt; 196 5.676501e-03 5.522539e-03 0.377058254  0.203613395
+#&gt; 197 2.848621e-04 2.821357e-04 0.058393203  0.029477645
+#&gt; 198 1.419097e-02 1.395780e-02 1.248919982  0.849491713
+#&gt; 199 2.255815e-02 2.211660e-02 1.543189126  1.129927516
+#&gt; 200 2.267186e-02 2.204654e-02 1.204840140  0.799328652</div><div class='input'>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -193,7 +376,7 @@ observations.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

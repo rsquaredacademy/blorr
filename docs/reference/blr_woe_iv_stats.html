@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Multi variable WOE &amp; IV — blr_woe_iv_stats" />
-<meta property="og:description" content="Prints weight of evidence and information value for multiple variables. 
+<meta property="og:description" content="Prints weight of evidence and information value for multiple variables.
   Currently avialable for categorical predictors only." />
 
 
@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Prints weight of evidence and information value for multiple variables. 
+    <p>Prints weight of evidence and information value for multiple variables.
   Currently avialable for categorical predictors only.</p>
     </div>
 
@@ -169,11 +169,11 @@
 <code><a href='blr_woe_iv.html'>blr_woe_iv</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_woe_iv_stats</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>, <span class='no'>race</span>, <span class='no'>female</span>, <span class='no'>schtyp</span>)</div><div class='output co'>#&gt; <span style='color: #BB0000;font-weight: bold;text-decoration: underline;'>Variable: prog</span><span>
+    <pre class="examples"><div class='input'><span class='fu'>blr_woe_iv_stats</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>, <span class='no'>race</span>, <span class='no'>female</span>, <span class='no'>schtyp</span>)</div><div class='output co'>#&gt; Variable: prog
 #&gt; 
 #&gt;                            Weight of Evidence                             
 #&gt; -------------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
 #&gt; -------------------------------------------------------------------------
 #&gt;   1          38          7           0.26       0.13       0.67     0.08  
 #&gt;   2          65          40          0.44       0.75      -0.53     0.17  
@@ -188,11 +188,11 @@
 #&gt; -----------------------------
 #&gt; 
 #&gt; 
-#&gt; </span><span style='color: #BB0000;font-weight: bold;text-decoration: underline;'>Variable: race</span><span>
+#&gt; Variable: race
 #&gt; 
 #&gt;                            Weight of Evidence                             
 #&gt; -------------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
 #&gt; -------------------------------------------------------------------------
 #&gt;   1          22          2           0.15       0.04       1.38     0.15  
 #&gt;   2          6           5           0.04       0.09      -0.84     0.04  
@@ -208,11 +208,11 @@
 #&gt; -----------------------------
 #&gt; 
 #&gt; 
-#&gt; </span><span style='color: #BB0000;font-weight: bold;text-decoration: underline;'>Variable: female</span><span>
+#&gt; Variable: female
 #&gt; 
 #&gt;                            Weight of Evidence                             
 #&gt; -------------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
 #&gt; -------------------------------------------------------------------------
 #&gt;   0          73          18          0.50       0.34       0.38     0.06  
 #&gt;   1          74          35          0.50       0.66      -0.27     0.04  
@@ -226,11 +226,11 @@
 #&gt; -----------------------------
 #&gt; 
 #&gt; 
-#&gt; </span><span style='color: #BB0000;font-weight: bold;text-decoration: underline;'>Variable: schtyp</span><span>
+#&gt; Variable: schtyp
 #&gt; 
 #&gt;                            Weight of Evidence                            
 #&gt; ------------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe     iv   
+#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe     iv   
 #&gt; ------------------------------------------------------------------------
 #&gt;   1         123          45          0.84       0.85      -0.01    0.00  
 #&gt;   2          24          8           0.16       0.15       0.08    0.00  
@@ -244,7 +244,7 @@
 #&gt; -----------------------------
 #&gt; 
 #&gt; </div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

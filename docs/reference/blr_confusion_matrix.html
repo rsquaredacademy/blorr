@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Confusion matrix — blr_confusion_matrix" />
-<meta property="og:description" content="Wrapper for confMatrix from the caret package." />
+<meta property="og:description" content="Confusion matrix and statistics." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -135,10 +135,13 @@
     </div>
 
     <div class="ref-description">
-    <p>Wrapper for <code>confMatrix</code> from the caret package.</p>
+    <p>Confusion matrix and statistics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,6 +157,10 @@
     <tr>
       <th>data</th>
       <td><p>A <code>tibble</code> or a <code>data.frame</code>.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments.</p></td>
     </tr>
     </table>
 
@@ -176,33 +183,33 @@
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 
-<span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Confusion Matrix and Statistics
+<span class='fu'>blr_confusion_matrix</span>(<span class='no'>model</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)</div><div class='output co'>#&gt; Confusion Matrix and Statistics 
 #&gt; 
 #&gt;           Reference
 #&gt; Prediction   0   1
 #&gt;          0 125  16
 #&gt;          1  22  37
-#&gt;                                           
-#&gt;                Accuracy : 0.81            
-#&gt;                  95% CI : (0.7487, 0.8619)
-#&gt;     No Information Rate : 0.735           
-#&gt;     P-Value [Acc &gt; NIR] : 0.008453        
-#&gt;                                           
-#&gt;                   Kappa : 0.5293          
-#&gt;                                           
-#&gt;  Mcnemar's Test P-Value : 0.417304        
-#&gt;                                           
-#&gt;             Sensitivity : 0.6981          
-#&gt;             Specificity : 0.8503          
-#&gt;          Pos Pred Value : 0.6271          
-#&gt;          Neg Pred Value : 0.8865          
-#&gt;              Prevalence : 0.2650          
-#&gt;          Detection Rate : 0.1850          
-#&gt;    Detection Prevalence : 0.2950          
-#&gt;       Balanced Accuracy : 0.7742          
-#&gt;                                           
-#&gt;        'Positive' Class : 1               
-#&gt;                                           </div><div class='input'>
+#&gt; 
+#&gt; 
+#&gt;                 Accuracy : 0.8100 
+#&gt;      No Information Rate : 0.7350 
+#&gt; 
+#&gt;                    Kappa : 0.5293 
+#&gt; 
+#&gt; McNemars's Test P-Value  : 0.4173 
+#&gt; 
+#&gt;              Sensitivity : 0.6981 
+#&gt;              Specificity : 0.8503 
+#&gt;           Pos Pred Value : 0.6271 
+#&gt;           Neg Pred Value : 0.8865 
+#&gt;               Prevalence : 0.2650 
+#&gt;           Detection Rate : 0.1850 
+#&gt;     Detection Prevalence : 0.2950 
+#&gt;        Balanced Accuracy : 0.7742 
+#&gt;                Precision : 0.6271 
+#&gt;                   Recall : 0.6981 
+#&gt; 
+#&gt;         'Positive' Class : 1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
