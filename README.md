@@ -5,17 +5,15 @@
 
 > Tools for building binary logistic regression models
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
 [![cran
 checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
 [![Travis-CI Build
 Status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/blorr?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/blorr)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr)
 [![Coverage
 status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
 ![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![status](https://tinyverse.netlify.com/badge/blorr)](https://CRAN.R-project.org/package=blorr)
 
 ## Overview
 
@@ -71,7 +69,7 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 blr_woe_iv(hsb2, prog, honcomp)
 #>                            Weight of Evidence                             
 #> -------------------------------------------------------------------------
-#> levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
 #> -------------------------------------------------------------------------
 #>   1          38          7           0.26       0.13       0.67     0.08  
 #>   2          65          40          0.44       0.75      -0.53     0.17  
@@ -98,10 +96,6 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 
 ``` r
 blr_regress(model)
-#> - Creating model overview. 
-#> - Creating response profile. 
-#> - Extracting maximum likelihood estimates. 
-#> - Estimating concordant and discordant pairs.
 #>                              Model Overview                              
 #> ------------------------------------------------------------------------
 #> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
@@ -156,32 +150,33 @@ blr_model_fit_stats(model)
 
 ``` r
 blr_confusion_matrix(model)
-#> Confusion Matrix and Statistics
+#> Confusion Matrix and Statistics 
 #> 
 #>           Reference
 #> Prediction   0   1
 #>          0 135  26
 #>          1  12  27
-#>                                           
-#>                Accuracy : 0.81            
-#>                  95% CI : (0.7487, 0.8619)
-#>     No Information Rate : 0.735           
-#>     P-Value [Acc > NIR] : 0.008453        
-#>                                           
-#>                   Kappa : 0.4673          
-#>  Mcnemar's Test P-Value : 0.034955        
-#>                                           
-#>             Sensitivity : 0.5094          
-#>             Specificity : 0.9184          
-#>          Pos Pred Value : 0.6923          
-#>          Neg Pred Value : 0.8385          
-#>              Prevalence : 0.2650          
-#>          Detection Rate : 0.1350          
-#>    Detection Prevalence : 0.1950          
-#>       Balanced Accuracy : 0.7139          
-#>                                           
-#>        'Positive' Class : 1               
 #> 
+#> 
+#>                 Accuracy : 0.8100 
+#>      No Information Rate : 0.7350 
+#> 
+#>                    Kappa : 0.4673 
+#> 
+#> McNemars's Test P-Value  : 0.0350 
+#> 
+#>              Sensitivity : 0.5094 
+#>              Specificity : 0.9184 
+#>           Pos Pred Value : 0.6923 
+#>           Neg Pred Value : 0.8385 
+#>               Prevalence : 0.2650 
+#>           Detection Rate : 0.1350 
+#>     Detection Prevalence : 0.1950 
+#>        Balanced Accuracy : 0.7139 
+#>                Precision : 0.6923 
+#>                   Recall : 0.5094 
+#> 
+#>         'Positive' Class : 1
 ```
 
 ### Hosmer Lemeshow Test
@@ -217,31 +212,17 @@ blr_test_hosmer_lemeshow(model)
 
 ``` r
 blr_gains_table(model)
-#> # A tibble: 10 x 12
-#>    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
-#>     <dbl> <int> <int> <int> <dbl> <int> <int> <int> <int>       <dbl>
-#>  1      1    20    14     6  22.3    14   141     6    39        26.4
-#>  2      2    20    13     7  42.1    27   134    13    26        50.9
-#>  3      3    20    10    10  54.2    37   124    23    16        69.8
-#>  4      4    20     7    13  58.5    44   111    36     9        83.0
-#>  5      5    20     3    17  52.6    47    94    53     6        88.7
-#>  6      6    20     3    17  46.7    50    77    70     3        94.3
-#>  7      7    20     1    19  35.7    51    58    89     2        96.2
-#>  8      8    20     2    18  27.2    53    40   107     0       100  
-#>  9      9    20     0    20  13.6    53    20   127     0       100  
-#> 10     10    20     0    20   0      53     0   147     0       100  
-#>    specificity accuracy
-#>          <dbl>    <dbl>
-#>  1        95.9     77.5
-#>  2        91.2     80.5
-#>  3        84.4     80.5
-#>  4        75.5     77.5
-#>  5        63.9     70.5
-#>  6        52.4     63.5
-#>  7        39.5     54.5
-#>  8        27.2     46.5
-#>  9        13.6     36.5
-#> 10         0       26.5
+#>    decile total  1  0       ks tp  tn  fp fn sensitivity specificity accuracy
+#> 1       1    20 14  6 22.33346 14 141   6 39    26.41509    95.91837     77.5
+#> 2       2    20 13  7 42.09986 27 134  13 26    50.94340    91.15646     80.5
+#> 3       3    20 10 10 54.16506 37 124  23 16    69.81132    84.35374     80.5
+#> 4       4    20  7 13 58.52907 44 111  36  9    83.01887    75.51020     77.5
+#> 5       5    20  3 17 52.62482 47  94  53  6    88.67925    63.94558     70.5
+#> 6       6    20  3 17 46.72058 50  77  70  3    94.33962    52.38095     63.5
+#> 7       7    20  1 19 35.68220 51  58  89  2    96.22642    39.45578     54.5
+#> 8       8    20  2 18 27.21088 53  40 107  0   100.00000    27.21088     46.5
+#> 9       9    20  0 20 13.60544 53  20 127  0   100.00000    13.60544     36.5
+#> 10     10    20  0 20  0.00000 53   0 147  0   100.00000     0.00000     26.5
 ```
 
 ### Lift Chart

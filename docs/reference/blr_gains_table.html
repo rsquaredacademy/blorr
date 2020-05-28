@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -151,6 +151,7 @@
   <span class='kw'>diag_line_col</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
   <span class='kw'>lift_curve_col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>plot_title_justify</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
+  <span class='kw'>print_plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -194,6 +195,10 @@
       <td><p>Horizontal justification on the plot title.</p></td>
     </tr>
     <tr>
+      <th>print_plot</th>
+      <td><p>logical; if <code>TRUE</code>, prints the plot else returns a plot object.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Other inputs.</p></td>
     </tr>
@@ -226,24 +231,21 @@ A  Validation Methodology, Moody’s Investors Service.</p>
     <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
              <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
 <span class='co'># gains table</span>
-<span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 12</span><span>
-#&gt;    decile total   `1`   `0`    ks    tp    tn    fp    fn sensitivity
-#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>      1    20    14     6  22.3    14   141     6    39        26.4
-#&gt; </span><span style='color: #555555;'> 2</span><span>      2    20    13     7  42.1    27   134    13    26        50.9
-#&gt; </span><span style='color: #555555;'> 3</span><span>      3    20    10    10  54.2    37   124    23    16        69.8
-#&gt; </span><span style='color: #555555;'> 4</span><span>      4    20     7    13  58.5    44   111    36     9        83.0
-#&gt; </span><span style='color: #555555;'> 5</span><span>      5    20     3    17  52.6    47    94    53     6        88.7
-#&gt; </span><span style='color: #555555;'> 6</span><span>      6    20     3    17  46.7    50    77    70     3        94.3
-#&gt; </span><span style='color: #555555;'> 7</span><span>      7    20     1    19  35.7    51    58    89     2        96.2
-#&gt; </span><span style='color: #555555;'> 8</span><span>      8    20     2    18  27.2    53    40   107     0       100  
-#&gt; </span><span style='color: #555555;'> 9</span><span>      9    20     0    20  13.6    53    20   127     0       100  
-#&gt; </span><span style='color: #555555;'>10</span><span>     10    20     0    20   0      53     0   147     0       100  
-#&gt; </span><span style='color: #555555;'># ... with 2 more variables: specificity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, accuracy </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+<span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;    decile total  1  0       ks tp  tn  fp fn sensitivity specificity accuracy
+#&gt; 1       1    20 14  6 22.33346 14 141   6 39    26.41509    95.91837     77.5
+#&gt; 2       2    20 13  7 42.09986 27 134  13 26    50.94340    91.15646     80.5
+#&gt; 3       3    20 10 10 54.16506 37 124  23 16    69.81132    84.35374     80.5
+#&gt; 4       4    20  7 13 58.52907 44 111  36  9    83.01887    75.51020     77.5
+#&gt; 5       5    20  3 17 52.62482 47  94  53  6    88.67925    63.94558     70.5
+#&gt; 6       6    20  3 17 46.72058 50  77  70  3    94.33962    52.38095     63.5
+#&gt; 7       7    20  1 19 35.68220 51  58  89  2    96.22642    39.45578     54.5
+#&gt; 8       8    20  2 18 27.21088 53  40 107  0   100.00000    27.21088     46.5
+#&gt; 9       9    20  0 20 13.60544 53  20 127  0   100.00000    13.60544     36.5
+#&gt; 10     10    20  0 20  0.00000 53   0 147  0   100.00000     0.00000     26.5</div><div class='input'>
 <span class='co'># lift chart</span>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_gains_table</span>(<span class='no'>model</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_gains_table-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

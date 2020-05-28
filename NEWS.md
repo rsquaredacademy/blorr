@@ -1,3 +1,7 @@
+# blorr 0.3.0
+
+This is a minor release to reduce package dependencies and fix bugs.
+
 # blorr 0.2.2
 
 This is a patch release to fix CRAN errors.

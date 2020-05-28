@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -149,6 +149,7 @@
   <span class='kw'>sec_yaxis_title</span> <span class='kw'>=</span> <span class='st'>"1s Distribution"</span>,
   <span class='kw'>bar_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+  <span class='kw'>print_plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -196,6 +197,10 @@
       <td><p>Line color.</p></td>
     </tr>
     <tr>
+      <th>print_plot</th>
+      <td><p>logical; if <code>TRUE</code>, prints the plot else returns a plot object.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Other inputs.</p></td>
     </tr>
@@ -217,7 +222,7 @@
     <pre class="examples"><div class='input'><span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_segment_dist</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)
 <span class='no'>k</span></div><div class='output co'>#&gt;          Event Segmentation           
 #&gt; -------------------------------------
-#&gt;   prog       n     1s     n%     1s%  
+#&gt;   pred       n     1s     n%     1s%  
 #&gt; -------------------------------------
 #&gt;    1        45     7     0.22    0.04 
 #&gt;    2        105    40    0.52    0.20 

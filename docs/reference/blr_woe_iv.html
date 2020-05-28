@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="WoE &amp; IV — blr_woe_iv" />
-<meta property="og:description" content="Weight of evidence and information value. Currently avialable for categorical 
+<meta property="og:description" content="Weight of evidence and information value. Currently avialable for categorical
   predictors only." />
 
 
@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">blorr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Weight of evidence and information value. Currently avialable for categorical 
+    <p>Weight of evidence and information value. Currently avialable for categorical
   predictors only.</p>
     </div>
 
@@ -150,6 +150,7 @@
   <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>"WoE"</span>,
   <span class='kw'>bar_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
   <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+  <span class='kw'>print_plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='no'>...</span>
 )</pre>
 
@@ -200,6 +201,10 @@
       <th>line_color</th>
       <td><p>Color of the horizontal line.</p></td>
     </tr>
+    <tr>
+      <th>print_plot</th>
+      <td><p>logical; if <code>TRUE</code>, prints the plot else returns a plot object.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -207,7 +212,7 @@
     <p>A tibble.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent  
+    <p>Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 credit  scoring. New Jersey, Wiley.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -223,7 +228,7 @@ credit  scoring. New Jersey, Wiley.</p>
 <span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_woe_iv</span>(<span class='no'>hsb2</span>, <span class='no'>female</span>, <span class='no'>honcomp</span>)
 <span class='no'>k</span></div><div class='output co'>#&gt;                            Weight of Evidence                             
 #&gt; -------------------------------------------------------------------------
-#&gt; levels    0s_count    1s_count    0s_dist    1s_dist        woe      iv   
+#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
 #&gt; -------------------------------------------------------------------------
 #&gt;   0          73          18          0.50       0.34       0.38     0.06  
 #&gt;   1          74          35          0.50       0.66      -0.27     0.04  

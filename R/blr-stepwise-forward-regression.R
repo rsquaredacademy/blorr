@@ -160,18 +160,9 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
       m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
-      # m_sum <- summary(m)
-      # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-      # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
-      # m <- blr_regress(paste(response, "~",
-      #                        paste(predictors, collapse = " + ")), l)
-      # pvals[i] <- m$pval[ppos]
-      # tvals[i] <- m$zval[ppos]
     }
 
     minp  <- which(pvals == min(pvals))
-    # tvals <- abs(tvals)
-    # maxt  <- which(tvals == max(tvals))
 
     if (pvals[minp] <= penter) {
 

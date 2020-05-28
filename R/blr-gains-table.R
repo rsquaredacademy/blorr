@@ -100,8 +100,8 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
     geom_line(aes(x = cum_total_per, y = cum_1s_per), color = lift_curve_col) +
     geom_line(aes(x = cum_total_per, y = cum_total_y), color = diag_line_col) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
-    scale_x_continuous(labels = scales::percent) +
-    scale_y_continuous(labels = scales::percent) +
+    scale_x_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
+    scale_y_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
     theme(plot.title = element_text(hjust = plot_title_justify))
 
   if (print_plot) {
@@ -168,8 +168,8 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
     annotate("text", x = annotate_x, y = annotate_y,
              label = paste0("KS: ", ks_stat, "%")) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
-    scale_x_continuous(labels = scales::percent) +
-    scale_y_continuous(labels = scales::percent) +
+    scale_x_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
+    scale_y_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
     theme(plot.title = element_text(hjust = 0.5),
           legend.title = element_blank())
 
