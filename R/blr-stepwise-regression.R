@@ -114,17 +114,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
-    # m_sum <- summary(m)
-    # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-    # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
-    # m <- ols_regress(paste(response, "~", paste(predictors, collapse = " + ")), l)
-    # pvals[i] <- m$pvalues[ppos]
-    # tvals[i] <- m$tvalues[ppos]
   }
 
   minp    <- which(pvals == min(pvals))
-  # tvals   <- abs(tvals)
-  # maxt    <- which(tvals == max(tvals))
   preds   <- all_pred[minp]
   lpreds  <- length(preds)
   fr      <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
@@ -132,18 +124,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   aic     <- mfs$m_aic
   bic     <- mfs$m_bic
   dev     <- mfs$m_deviance
-  # fr      <- ols_regress(paste(response, "~",
-  #                              paste(preds, collapse = " + ")), l)
-  # rsq     <- fr$rsq
-  # adjrsq  <- fr$adjr
-  # cp      <- ols_mallows_cp(fr$model, model)
-  # aic     <- ols_aic(fr$model)
-  # sbc     <- ols_sbc(fr$model)
-  # sbic    <- ols_sbic(fr$model, model)
-  # rmse    <- sqrt(fr$ems)
-  # betas   <- append(betas, fr$betas)
-  # lbetas  <- append(lbetas, length(fr$betas))
-  # pvalues <- append(pvalues, fr$pvalues)
 
   if (details) {
     cat("\n")
@@ -186,18 +166,9 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
-      # m_sum <- summary(m)
-      # pvals[i] <- unname(m_sum$coefficients[, 4])[ppos]
-      # tvals[i] <- unname(m_sum$coefficients[, 3])[ppos]
-      # m          <- ols_regress(paste(response, "~",
-      #                                 paste(predictors, collapse = " + ")), l)
-      # pvals[i]   <- m$pvalues[ppos]
-      # tvals[i]   <- m$tvalues[ppos]
     }
 
     minp  <- which(pvals == min(pvals))
-    # tvals <- abs(tvals)
-    # maxt  <- which(tvals == max(tvals))
 
     if (pvals[minp] <= pent) {
 
@@ -211,18 +182,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
       dev    <- c(dev, mfs$m_deviance)
-      # fr        <- ols_regress(paste(response, "~",
-      #                                paste(preds, collapse = " + ")), l)
-      # rsq       <- c(rsq, fr$rsq)
-      # adjrsq    <- c(adjrsq, fr$adjr)
-      # aic       <- c(aic, ols_aic(fr$model))
-      # sbc       <- c(sbc, ols_sbc(fr$model))
-      # sbic      <- c(sbic, ols_sbic(fr$model, model))
-      # cp        <- c(cp, ols_mallows_cp(fr$model, model))
-      # rmse      <- c(rmse, sqrt(fr$ems))
-      # betas     <- append(betas, fr$betas)
-      # lbetas    <- append(lbetas, length(fr$betas))
-      # pvalues   <- append(pvalues, fr$pvalues)
 
       if (details == TRUE) {
         cat("\n")
@@ -255,8 +214,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
                   family = binomial(link = 'logit'))
       m_sum <- Anova(m2, test.statistic = "Wald")
       pvals_r <- m_sum$`Pr(>Chisq)`
-      # tvals_r <- m_sum$Chisq[ppos]
-      # tvals_r <- abs(unname(m_sum$coefficients[, 3])[-1])
       maxp    <- which(pvals_r == max(pvals_r))
       if (pvals_r[maxp] > prem) {
 
@@ -271,16 +228,6 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         aic       <- c(aic, mfs$m_aic)
         bic       <- c(bic, mfs$m_bic)
         dev       <- c(dev, mfs$m_deviance)
-        # rsq       <- c(rsq, fr$rsq)
-        # adjrsq    <- c(adjrsq, fr$adjr)
-        # aic       <- c(aic, ols_aic(fr$model))
-        # sbc       <- c(sbc, ols_sbc(fr$model))
-        # sbic      <- c(sbic, ols_sbic(fr$model, model))
-        # cp        <- c(cp, ols_mallows_cp(fr$model, model))
-        # rmse      <- c(rmse, sqrt(fr$ems))
-        # betas     <- append(betas, fr$betas)
-        # lbetas    <- append(lbetas, length(fr$betas))
-        # pvalues   <- append(pvalues, fr$pvalues)
 
         if (details) {
           cat("\n")
