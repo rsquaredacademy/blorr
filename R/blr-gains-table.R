@@ -168,8 +168,8 @@ blr_ks_chart <- function(gains_table, title = "KS Chart", yaxis_title = " ",
     annotate("text", x = annotate_x, y = annotate_y,
              label = paste0("KS: ", ks_stat, "%")) +
     ggtitle(title) + xlab(xaxis_title) + ylab(yaxis_title) +
-    scale_x_continuous(labels = scales::percent) +
-    scale_y_continuous(labels = scales::percent) +
+    scale_x_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
+    scale_y_continuous(labels = c('0%', '25%', '50%', '75%', '100%')) +
     theme(plot.title = element_text(hjust = 0.5),
           legend.title = element_blank())
 

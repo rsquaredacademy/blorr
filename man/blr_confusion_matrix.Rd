@@ -17,8 +17,6 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 \item{data}{A \code{tibble} or a \code{data.frame}.}
 
 \item{...}{Other arguments.}
-
-\item{x}{An object of class \code{blr_confusion_matrix}.}
 }
 \value{
 Confusion matix.

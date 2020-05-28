@@ -5,7 +5,6 @@
 #' @param model An object of class \code{glm}.
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param cutoff Cutoff for classification.
-#' @param x An object of class \code{blr_confusion_matrix}.
 #' @param ... Other arguments.
 #'
 #' @return Confusion matix.
@@ -60,7 +59,7 @@ blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL, ...) 
   precision    <- a / (a + b)
   recall       <- a / (a + c)
   kappa        <- blr_kappa(out)
-  mcnemar_p    <- mcnemar.test(out)$p.value
+  mcnemar_p    <- stats::mcnemar.test(out)$p.value
 
   ppv <- (sensitivity * prevalence) / ((sensitivity * prevalence) +
                                          ((1 - specificity) * (1 - prevalence)))
