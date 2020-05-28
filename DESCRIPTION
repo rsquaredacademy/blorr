@@ -9,7 +9,7 @@ Description: Tools designed to make it easier for beginner and intermediate user
     model fit statistics, variable selection procedures, model validation techniques and a 'shiny' 
     app for interactive model building.
 Depends:
-    R(>= 3.3)
+    R(>= 3.5)
 Imports: 
     car,
     data.table,
