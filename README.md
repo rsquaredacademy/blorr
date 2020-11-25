@@ -5,15 +5,19 @@
 
 > Tools for building binary logistic regression models
 
+<!-- badges: start -->
+
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
 [![cran
 checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
-[![Travis-CI Build
-Status](https://travis-ci.org/rsquaredacademy/blorr.svg?branch=master)](https://travis-ci.org/rsquaredacademy/blorr)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr)
+[![R build
+status](https://github.com/rsquaredacademy/blorr/workflows/R-CMD-check/badge.svg)](https://github.com/rsquaredacademy/blorr/actions)
 [![Coverage
 status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
-![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
 [![status](https://tinyverse.netlify.com/badge/blorr)](https://CRAN.R-project.org/package=blorr)
+![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr)
+<!-- badges: end -->
 
 ## Overview
 
