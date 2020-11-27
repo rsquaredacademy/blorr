@@ -81,17 +81,18 @@ hoslem_int_limits <- function(hoslem_data) {
 hoslem_data_mutate <- function(hoslem_data, int_limits) {
 
   d <- hoslem_data
-  d$group <- lest::case_when(
-    d$prob <= int_limits[2] ~ 1,
-    d$prob > int_limits[2] & d$prob <= int_limits[3] ~ 2,
-    d$prob > int_limits[3] & d$prob <= int_limits[4] ~ 3,
-    d$prob > int_limits[4] & d$prob <= int_limits[5] ~ 4,
-    d$prob > int_limits[5] & d$prob <= int_limits[6] ~ 5,
-    d$prob > int_limits[6] & d$prob <= int_limits[7] ~ 6,
-    d$prob > int_limits[7] & d$prob <= int_limits[8] ~ 7,
-    d$prob > int_limits[8] & d$prob <= int_limits[9] ~ 8,
-    d$prob > int_limits[9] & d$prob <= int_limits[10] ~ 9,
-    d$prob > int_limits[10] ~ 10
+
+  d$group <- data.table::fcase(
+    d$prob <= int_limits[2], 1,
+    d$prob > int_limits[2] & d$prob <= int_limits[3], 2,
+    d$prob > int_limits[3] & d$prob <= int_limits[4], 3,
+    d$prob > int_limits[4] & d$prob <= int_limits[5], 4,
+    d$prob > int_limits[5] & d$prob <= int_limits[6], 5,
+    d$prob > int_limits[6] & d$prob <= int_limits[7], 6,
+    d$prob > int_limits[7] & d$prob <= int_limits[8], 7,
+    d$prob > int_limits[8] & d$prob <= int_limits[9], 8,
+    d$prob > int_limits[9] & d$prob <= int_limits[10], 9,
+    d$prob > int_limits[10], 10
   )
 
   return(d)
