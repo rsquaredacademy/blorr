@@ -15,7 +15,6 @@ Imports:
     data.table,
     ggplot2,
     gridExtra,
-    lest,
     Rcpp,
     stats,
     utils
