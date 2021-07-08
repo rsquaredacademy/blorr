@@ -85,9 +85,6 @@ model_deviance <- function(model) {
 null_ll <- function(model) {
 
   logLik(i_model(model))[[1]]
-  # i_model(model) %>%
-  #   logLik() %>%
-  #   extract2(1)
 
 }
 
@@ -392,9 +389,6 @@ extract_lr <- function(lr, value) {
 
   vals <- deparse(substitute(value))
   lr$test_result[[vals]]
-  # lr %>%
-  #   use_series(test_result) %>%
-  #   pull(!! vals)
 
 }
 
