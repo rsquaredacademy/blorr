@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@
     <p>Model fit statistics.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_model_fit_stats</span>(<span class='no'>model</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_model_fit_stats</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,22 +182,24 @@ Thousand Oaks: Sage Publications, 1997.</p>
 <code><a href='blr_test_lr.html'>blr_test_lr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-            <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-
-<span class='fu'>blr_model_fit_stats</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;                               Model Fit Statistics                                
-#&gt; ---------------------------------------------------------------------------------
-#&gt; Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118 
-#&gt; Deviance(196):                160.236    LR(3):                            71.052 
-#&gt;                                          Prob &gt; LR:                         0.000 
-#&gt; MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273 
-#&gt; ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436 
-#&gt; McKelvey &amp; Zavoina's R2:        0.518    Efron's R2:                        0.330 
-#&gt; Count R2:                       0.810    Adj Count R2:                      0.283 
-#&gt; BIC:                          181.430    AIC:                             168.236 
-#&gt; ---------------------------------------------------------------------------------
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>            family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>blr_model_fit_stats</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                               Model Fit Statistics                                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deviance(196):                160.236    LR(3):                            71.052 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                          Prob &gt; LR:                         0.000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> McKelvey &amp; Zavoina's R2:        0.518    Efron's R2:                        0.330 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Count R2:                       0.810    Adj Count R2:                      0.283 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> BIC:                          181.430    AIC:                             168.236 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -213,7 +215,7 @@ Thousand Oaks: Sage Publications, 1997.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

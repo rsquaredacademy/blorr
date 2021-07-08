@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@
     <p>Hosmer lemeshow goodness of fit test.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_test_hosmer_lemeshow</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_test_hosmer_lemeshow</span><span class='op'>(</span><span class='va'>model</span>, data <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,33 +170,35 @@ New  York:  John Wiley &amp; Sons.</p>
 <code><a href='blr_roc_curve.html'>blr_roc_curve</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-
-<span class='fu'>blr_test_hosmer_lemeshow</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;            Partition for the Hosmer &amp; Lemeshow Test            
-#&gt; --------------------------------------------------------------
-#&gt;                         def = 1                 def = 0        
-#&gt; Group    Total    Observed    Expected    Observed    Expected 
-#&gt; --------------------------------------------------------------
-#&gt;   1       20         0          0.16         20        19.84   
-#&gt;   2       20         0          0.53         20        19.47   
-#&gt;   3       20         2          0.99         18        19.01   
-#&gt;   4       20         1          1.64         19        18.36   
-#&gt;   5       21         3          2.72         18        18.28   
-#&gt;   6       19         3          4.05         16        14.95   
-#&gt;   7       20         7          6.50         13        13.50   
-#&gt;   8       20         10         8.90         10        11.10   
-#&gt;   9       20         13        11.49         7          8.51   
-#&gt;  10       20         14        16.02         6          3.98   
-#&gt; --------------------------------------------------------------
-#&gt; 
-#&gt;      Goodness of Fit Test      
-#&gt; ------------------------------
-#&gt; Chi-Square    DF    Pr &gt; ChiSq 
-#&gt; ------------------------------
-#&gt;   4.4998      8       0.8095   
-#&gt; ------------------------------</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>             family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>blr_test_hosmer_lemeshow</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            Partition for the Hosmer &amp; Lemeshow Test            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                         def = 1                 def = 0        </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Group    Total    Observed    Expected    Observed    Expected </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1       20         0          0.16         20        19.84   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2       20         0          0.53         20        19.47   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3       20         2          0.99         18        19.01   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4       20         1          1.64         19        18.36   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   5       21         3          2.72         18        18.28   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   6       19         3          4.05         16        14.95   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   7       20         7          6.50         13        13.50   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   8       20         10         8.90         10        11.10   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   9       20         13        11.49         7          8.51   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  10       20         14        16.02         6          3.98   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      Goodness of Fit Test      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Chi-Square    DF    Pr &gt; ChiSq </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4.4998      8       0.8095   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -212,7 +214,7 @@ New  York:  John Wiley &amp; Sons.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

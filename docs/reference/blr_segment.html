@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,10 +138,10 @@
     <p>Event rate by segements/levels of a qualitative variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_segment</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)
+    <pre class="usage"><span class='fu'>blr_segment</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictor</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>blr_segment</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)</pre>
+<span class='fu'>blr_segment</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictor</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,16 +173,18 @@
 <code><a href='blr_woe_iv.html'>blr_woe_iv</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_segment</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)</div><div class='output co'>#&gt; Event By Attributes 
-#&gt; -------------------
-#&gt; pred           1s%  
-#&gt; -------------------
-#&gt;  1             0.04 
-#&gt;  2             0.20 
-#&gt;  3             0.03 
-#&gt; -------------------
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>blr_segment</span><span class='op'>(</span><span class='va'>hsb2</span>, <span class='va'>honcomp</span>, <span class='va'>prog</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Event By Attributes </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> pred           1s%  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1             0.04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2             0.20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  3             0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -198,7 +200,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

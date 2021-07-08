@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -85,7 +85,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="introduction_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Short Introduction to the blorr Package</h1>
@@ -107,15 +107,17 @@
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
 <p>You can install <strong>blorr</strong> using:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"blorr"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"blorr"</span><span class="op">)</span></code></pre></div>
 <p>The documentation of the package can be found at <a href="https://blorr.rsquaredacademy.com" class="uri">https://blorr.rsquaredacademy.com</a>. This vignette gives a quick tour of the package.</p>
 </div>
 <div id="libraries" class="section level3">
 <h3 class="hasAnchor">
 <a href="#libraries" class="anchor"></a>Libraries</h3>
 <p>The following libraries are used in the examples in the vignette:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">blorr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magrittr</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://blorr.rsquaredacademy.com/">blorr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="data" class="section level2">
@@ -127,8 +129,9 @@
 <h2 class="hasAnchor">
 <a href="#bivariate-analysis" class="anchor"></a>Bivariate Analysis</h2>
 <p>Let us begin with careful bivariate analysis of each possible variable and the outcome variable. We will use information value and likelihood ratio chi square test for selecting the initial set of predictors for our model. The bivariate analysis is currently avialable for categorical predictors only.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span>(<span class="no">bank_marketing</span>, <span class="no">y</span>, <span class="no">job</span>, <span class="no">marital</span>, <span class="no">education</span>, <span class="no">default</span>,
-  <span class="no">housing</span>, <span class="no">loan</span>, <span class="no">contact</span>, <span class="no">poutcome</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_bivariate_analysis.html">blr_bivariate_analysis</a></span><span class="op">(</span><span class="va">bank_marketing</span>, <span class="va">y</span>, <span class="va">job</span>, <span class="va">marital</span>, <span class="va">education</span>, <span class="va">default</span>, 
+  <span class="va">housing</span>, <span class="va">loan</span>, <span class="va">contact</span>, <span class="va">poutcome</span><span class="op">)</span>
 <span class="co">#&gt;                           Bivariate Analysis                           </span>
 <span class="co">#&gt; ----------------------------------------------------------------------</span>
 <span class="co">#&gt; Variable     Information Value    LR Chi Square    LR DF    LR p-value </span>
@@ -141,13 +144,14 @@
 <span class="co">#&gt;   loan             0.06              26.6615         1        0.0000   </span>
 <span class="co">#&gt;  contact           0.31             124.3834         2        0.0000   </span>
 <span class="co">#&gt; poutcome           0.53             270.6450         3        0.0000   </span>
-<span class="co">#&gt; ----------------------------------------------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ----------------------------------------------------------------------</span></code></pre></div>
 <div id="weight-of-evidence-information-value" class="section level3">
 <h3 class="hasAnchor">
 <a href="#weight-of-evidence-information-value" class="anchor"></a>Weight of Evidence &amp; Information Value</h3>
 <p>Weight of evidence (WoE) is used to assess the relative risk of di¤erent attributes for a characteristic and as a means to transform characteristics into variables. It is also a very useful tool for binning. The WoE for any group with average odds is zero. A negative WoE indicates that the proportion of defaults is higher for that attribute than the overall proportion and indicates higher risk.</p>
 <p>The information value is used to rank order variables in terms of their predictive power. A high information value indicates a high ability to discriminate. Values for the information value will always be positive and may be above 3 when assessing highly predictive characteristics. Characteristics with information values less than 0:10 are typically viewed as weak, while values over 0.30 are sought after.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(<span class="no">bank_marketing</span>, <span class="no">job</span>, <span class="no">y</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span><span class="op">(</span><span class="va">bank_marketing</span>, <span class="va">job</span>, <span class="va">y</span><span class="op">)</span>
 <span class="co">#&gt;                                Weight of Evidence                                </span>
 <span class="co">#&gt; --------------------------------------------------------------------------------</span>
 <span class="co">#&gt;    levels        count_0s    count_1s    dist_0s    dist_1s        woe      iv   </span>
@@ -171,19 +175,21 @@
 <span class="co">#&gt; Variable    Information Value </span>
 <span class="co">#&gt; -----------------------------</span>
 <span class="co">#&gt;   job            0.1594       </span>
-<span class="co">#&gt; -----------------------------</span></pre></body></html></div>
+<span class="co">#&gt; -----------------------------</span></code></pre></div>
 <div id="plot" class="section level4">
 <h4 class="hasAnchor">
 <a href="#plot" class="anchor"></a>Plot</h4>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">k</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span>(<span class="no">bank_marketing</span>, <span class="no">job</span>, <span class="no">y</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">k</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/blr_woe_iv.html">blr_woe_iv</a></span><span class="op">(</span><span class="va">bank_marketing</span>, <span class="va">job</span>, <span class="va">y</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/woeplot-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="multiple-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#multiple-variables" class="anchor"></a>Multiple Variables</h4>
 <p>We can generate the weight of evidence and information value for multiple variables using <code><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats()</a></code>.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span>(<span class="no">bank_marketing</span>, <span class="no">y</span>, <span class="no">job</span>, <span class="no">marital</span>, <span class="no">education</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats</a></span><span class="op">(</span><span class="va">bank_marketing</span>, <span class="va">y</span>, <span class="va">job</span>, <span class="va">marital</span>, <span class="va">education</span><span class="op">)</span>
 <span class="co">#&gt; Variable: job</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;                                Weight of Evidence                                </span>
@@ -248,7 +254,7 @@
 <span class="co">#&gt; Variable     Information Value </span>
 <span class="co">#&gt; ------------------------------</span>
 <span class="co">#&gt; education         0.0539       </span>
-<span class="co">#&gt; ------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ------------------------------</span></code></pre></div>
 <p><code><a href="../reference/blr_woe_iv.html">blr_woe_iv()</a></code> and <code><a href="../reference/blr_woe_iv_stats.html">blr_woe_iv_stats()</a></code> are currently avialable for categorical predictors only.</p>
 </div>
 </div>
@@ -260,11 +266,13 @@
 <div id="model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#model" class="anchor"></a>Model</h3>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">y</span> ~ <span class="no">.</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">bank_marketing</span>, <span class="kw">family</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>(<span class="kw">link</span> <span class="kw">=</span> <span class="st">'logit'</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">bank_marketing</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">'logit'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div id="selection-summary" class="section level4">
 <h4 class="hasAnchor">
 <a href="#selection-summary" class="anchor"></a>Selection Summary</h4>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_step_aic_both.html">blr_step_aic_both</a></span>(<span class="no">model</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_step_aic_both.html">blr_step_aic_both</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
 <span class="co">#&gt; Stepwise Selection Method </span>
 <span class="co">#&gt; -------------------------</span>
 <span class="co">#&gt; </span>
@@ -318,14 +326,15 @@
 <span class="co">#&gt; marital      addition    2158.524    2306.103    2112.524 </span>
 <span class="co">#&gt; education    addition    2155.837    2322.666    2103.837 </span>
 <span class="co">#&gt; age          addition    2154.272    2327.517    2100.272 </span>
-<span class="co">#&gt; ---------------------------------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ---------------------------------------------------------</span></code></pre></div>
 </div>
 <div id="plot-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#plot-1" class="anchor"></a>Plot</h4>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_step_aic_both.html">blr_step_aic_both</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>()
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_step_aic_both.html">blr_step_aic_both</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Stepwise Selection Method </span>
 <span class="co">#&gt; -------------------------</span>
 <span class="co">#&gt; </span>
@@ -362,7 +371,7 @@
 <span class="co">#&gt; - education added </span>
 <span class="co">#&gt; - age added </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; No more variables to be added or removed.</span></pre></body></html></div>
+<span class="co">#&gt; No more variables to be added or removed.</span></code></pre></div>
 <p><img src="introduction_files/figure-html/stepwise3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -374,9 +383,10 @@
 <h3 class="hasAnchor">
 <a href="#model-1" class="anchor"></a>Model</h3>
 <p>We can use bivariate analysis and stepwise selection procedure to shortlist predictors and build the model using the <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>. The predictors used in the below model are for illustration purposes and not necessarily shortlisted from the bivariate analysis and variable selection procedures.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">y</span> ~  <span class="no">age</span> + <span class="no">duration</span> + <span class="no">previous</span> + <span class="no">housing</span> + <span class="no">default</span> +
-             <span class="no">loan</span> + <span class="no">poutcome</span> + <span class="no">job</span> + <span class="no">marital</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">bank_marketing</span>,
-             <span class="kw">family</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>(<span class="kw">link</span> <span class="kw">=</span> <span class="st">'logit'</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span>  <span class="va">age</span> <span class="op">+</span> <span class="va">duration</span> <span class="op">+</span> <span class="va">previous</span> <span class="op">+</span> <span class="va">housing</span> <span class="op">+</span> <span class="va">default</span> <span class="op">+</span>
+             <span class="va">loan</span> <span class="op">+</span> <span class="va">poutcome</span> <span class="op">+</span> <span class="va">job</span> <span class="op">+</span> <span class="va">marital</span>, data <span class="op">=</span> <span class="va">bank_marketing</span>, 
+             family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">'logit'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use <code><a href="../reference/blr_regress.html">blr_regress()</a></code> to generate comprehensive regression output. It accepts either of the following</p>
 <ul>
 <li>model built using <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>
@@ -387,7 +397,8 @@
 <h4 class="hasAnchor">
 <a href="#using-model" class="anchor"></a>Using Model</h4>
 <p>Let us look at the output generated from <code><a href="../reference/blr_regress.html">blr_regress()</a></code>:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_regress.html">blr_regress</a></span>(<span class="no">model</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_regress.html">blr_regress</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
 <span class="co">#&gt;                              Model Overview                              </span>
 <span class="co">#&gt; ------------------------------------------------------------------------</span>
 <span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span>
@@ -437,15 +448,16 @@
 <span class="co">#&gt; % Discordant          0.1114          Gamma            0.7773   </span>
 <span class="co">#&gt; % Tied                0.0000          Tau-a            0.1575   </span>
 <span class="co">#&gt; Pairs                2070068          c                0.8886   </span>
-<span class="co">#&gt; ---------------------------------------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ---------------------------------------------------------------</span></code></pre></div>
 <p>If you want to examine the odds ratio estimates, set <code>odd_conf_limit</code> to <code>TRUE</code>. The odds ratio estimates are not explicitly computed as we observed considerable increase in computation time when dealing with large data sets.</p>
 </div>
 <div id="using-formula" class="section level4">
 <h4 class="hasAnchor">
 <a href="#using-formula" class="anchor"></a>Using Formula</h4>
 <p>Let us use the model formula and the data set to generate the above results.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_regress.html">blr_regress</a></span>(<span class="no">y</span> ~  <span class="no">age</span> + <span class="no">duration</span> + <span class="no">previous</span> + <span class="no">housing</span> + <span class="no">default</span> +
-             <span class="no">loan</span> + <span class="no">poutcome</span> + <span class="no">job</span> + <span class="no">marital</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">bank_marketing</span>)
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_regress.html">blr_regress</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span>  <span class="va">age</span> <span class="op">+</span> <span class="va">duration</span> <span class="op">+</span> <span class="va">previous</span> <span class="op">+</span> <span class="va">housing</span> <span class="op">+</span> <span class="va">default</span> <span class="op">+</span>
+             <span class="va">loan</span> <span class="op">+</span> <span class="va">poutcome</span> <span class="op">+</span> <span class="va">job</span> <span class="op">+</span> <span class="va">marital</span>, data <span class="op">=</span> <span class="va">bank_marketing</span><span class="op">)</span>
 <span class="co">#&gt;                              Model Overview                              </span>
 <span class="co">#&gt; ------------------------------------------------------------------------</span>
 <span class="co">#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span>
@@ -495,7 +507,7 @@
 <span class="co">#&gt; % Discordant          0.1114          Gamma            0.7773   </span>
 <span class="co">#&gt; % Tied                0.0000          Tau-a            0.1575   </span>
 <span class="co">#&gt; Pairs                2070068          c                0.8886   </span>
-<span class="co">#&gt; ---------------------------------------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ---------------------------------------------------------------</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -506,7 +518,8 @@
 <div id="single-model" class="section level4">
 <h4 class="hasAnchor">
 <a href="#single-model" class="anchor"></a>Single Model</h4>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_model_fit_stats.html">blr_model_fit_stats</a></span>(<span class="no">model</span>)
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_model_fit_stats.html">blr_model_fit_stats</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
 <span class="co">#&gt;                                Model Fit Statistics                                </span>
 <span class="co">#&gt; ----------------------------------------------------------------------------------</span>
 <span class="co">#&gt; Log-Lik Intercept Only:     -1607.330    Log-Lik Full Model:             -1123.340 </span>
@@ -517,7 +530,7 @@
 <span class="co">#&gt; McKelvey &amp; Zavoina's R2:        0.388    Efron's R2:                         0.278 </span>
 <span class="co">#&gt; Count R2:                       0.904    Adj Count R2:                       0.157 </span>
 <span class="co">#&gt; BIC:                         2440.259    AIC:                             2292.679 </span>
-<span class="co">#&gt; ----------------------------------------------------------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ----------------------------------------------------------------------------------</span></code></pre></div>
 </div>
 </div>
 <div id="model-validation" class="section level2">
@@ -527,7 +540,8 @@
 <h3 class="hasAnchor">
 <a href="#confusion-matrix" class="anchor"></a>Confusion Matrix</h3>
 <p>In the event of deciding a cut-off point on the probability scores of a logistic regression model, a confusion matrix is created corresponding to a particular cut-off. The observations with probability scores above the cut-off score are predicted to be events and those below the cut-off score, as non-events. The confusion matrix, a 2X2 table, then calculates the number of correctly classified and miss-classified observations.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span>(<span class="no">model</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">0.5</span>)
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_confusion_matrix.html">blr_confusion_matrix</a></span><span class="op">(</span><span class="va">model</span>, cutoff <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 <span class="co">#&gt; Confusion Matrix and Statistics </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;           Reference</span>
@@ -554,7 +568,7 @@
 <span class="co">#&gt;                Precision : 0.6627 </span>
 <span class="co">#&gt;                   Recall : 0.3191 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;         'Positive' Class : 1</span></pre></body></html></div>
+<span class="co">#&gt;         'Positive' Class : 1</span></code></pre></div>
 <p>The validity of a cut-off is measured using sensitivity, specificity and accuracy.</p>
 <ul>
 <li><p><strong>Sensitivity</strong>: The % of correctly classified events out of all events = TP / (TP + FN)</p></li>
@@ -571,7 +585,8 @@
 <h3 class="hasAnchor">
 <a href="#hosmer-lemeshow-test" class="anchor"></a>Hosmer Lemeshow Test</h3>
 <p>Hosmer and Lemeshow developed a goodness-of-fit test for logistic regression models with binary responses. The test involves dividing the data into approximately ten groups of roughly equal size based on the percentiles of the estimated probabilities. The observations are sorted in increasing order of their estimated probability of having an even outcome. The discrepancies between the observed and expected number of observations in these groups are summarized by the Pearson chi-square statistic, which is then compared to chi-square distribution with t degrees of freedom, where t is the number of groups minus 2. Lower values of Goodness-of-fit are preferred.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_test_hosmer_lemeshow.html">blr_test_hosmer_lemeshow</a></span>(<span class="no">model</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_test_hosmer_lemeshow.html">blr_test_hosmer_lemeshow</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
 <span class="co">#&gt;            Partition for the Hosmer &amp; Lemeshow Test            </span>
 <span class="co">#&gt; --------------------------------------------------------------</span>
 <span class="co">#&gt;                         def = 1                 def = 0        </span>
@@ -594,13 +609,14 @@
 <span class="co">#&gt; Chi-Square    DF    Pr &gt; ChiSq </span>
 <span class="co">#&gt; ------------------------------</span>
 <span class="co">#&gt;  52.9942      8       0.0000   </span>
-<span class="co">#&gt; ------------------------------</span></pre></body></html></div>
+<span class="co">#&gt; ------------------------------</span></code></pre></div>
 </div>
 <div id="gains-table-lift-chart" class="section level3">
 <h3 class="hasAnchor">
 <a href="#gains-table-lift-chart" class="anchor"></a>Gains Table &amp; Lift Chart</h3>
 <p>A lift curve is a graphical representation of the % of cumulative events captured at a specific cut-off. The cut-off can be a particular decile or a percentile. Similar, to rank ordering procedure, the data is in descending order of the scores and is then grouped into deciles/percentiles. The cumulative number of observations and events are then computed for each decile/percentile. The lift curve is the created using the cumulative % population as the x-axis and the cumulative percentage of events as the y-axis.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>(<span class="no">model</span>)
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
 <span class="co">#&gt;    decile total   1   0       ks  tp   tn   fp  fn sensitivity specificity</span>
 <span class="co">#&gt; 1       1   452 256 196 44.62134 256 3808  196 261    49.51644    95.10490</span>
 <span class="co">#&gt; 2       2   452 128 324 61.28765 384 3484  520 133    74.27466    87.01299</span>
@@ -622,13 +638,14 @@
 <span class="co">#&gt; 7  41.05286</span>
 <span class="co">#&gt; 8  31.23203</span>
 <span class="co">#&gt; 9  21.36695</span>
-<span class="co">#&gt; 10 11.43552</span></pre></body></html></div>
+<span class="co">#&gt; 10 11.43552</span></code></pre></div>
 <div id="lift-chart" class="section level4">
 <h4 class="hasAnchor">
 <a href="#lift-chart" class="anchor"></a>Lift Chart</h4>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val7-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -636,43 +653,48 @@
 <h3 class="hasAnchor">
 <a href="#roc-curve" class="anchor"></a>ROC Curve</h3>
 <p>ROC curve is a graphical representation of the validity of cut-offs for a logistic regression model. The ROC curve is plotted using the sensitivity and specificity for all possible cut-offs, i.e., all the probability scores. The graph is plotted using sensitivity on the y-axis and 1-specificity on the x-axis. Any point on the ROC curve represents a sensitivity X (1-specificity) measure corresponding to a cut-off. The area under the ROC curve is used as a validation measure for the model – the bigger the area the better is the model.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_roc_curve.html">blr_roc_curve</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_roc_curve.html">blr_roc_curve</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val2-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="ks-chart" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ks-chart" class="anchor"></a>KS Chart</h3>
 <p>The KS Statistic is again a measure of model efficiency, and it is created using the lift curve. The lift curve is created to plot % events. If we also plot % non-events on the same scale, with % population at x-axis, we would get another curve. The maximum distance between the lift curve for events and that for non-events is termed as KS. For a good model, KS should be big (&gt;=0.3) and should occur as close to the event rate as possible.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_ks_chart.html">blr_ks_chart</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_ks_chart.html">blr_ks_chart</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val3-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="decile-lift-chart" class="section level3">
 <h3 class="hasAnchor">
 <a href="#decile-lift-chart" class="anchor"></a>Decile Lift Chart</h3>
 <p>The decile lift chart displays the lift over the global mean event rate for each decile. For a model with good discriminatory power, the top deciles should have an event/conversion rate greater than the global mean.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_decile_lift_chart.html">blr_decile_lift_chart</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_decile_lift_chart.html">blr_decile_lift_chart</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val9-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="capture-rate-by-decile" class="section level3">
 <h3 class="hasAnchor">
 <a href="#capture-rate-by-decile" class="anchor"></a>Capture Rate by Decile</h3>
 <p>If the model has good discriminatory power, the top deciles should have a higher event/conversion rate compared to the bottom deciles.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">model</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/blr_decile_capture_rate.html">blr_decile_capture_rate</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_gains_table.html">blr_gains_table</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/blr_decile_capture_rate.html">blr_decile_capture_rate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val8-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="lorenz-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lorenz-curve" class="anchor"></a>Lorenz Curve</h3>
 <p>The Lorenz curve is a simple graphic device which illustrates the degree of inequality in the distribution of thevariable concerned. It is a visual representation of inequality used to measure the discriminatory power of the predictive model.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span>(<span class="no">model</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_lorenz_curve.html">blr_lorenz_curve</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/val4-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -683,19 +705,22 @@
 <div id="influence-diagnostics" class="section level4">
 <h4 class="hasAnchor">
 <a href="#influence-diagnostics" class="anchor"></a>Influence Diagnostics</h4>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_plot_diag_influence.html">blr_plot_diag_influence</a></span>(<span class="no">model</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_plot_diag_influence.html">blr_plot_diag_influence</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/infl-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div id="leverage-diagnostics" class="section level4">
 <h4 class="hasAnchor">
 <a href="#leverage-diagnostics" class="anchor"></a>Leverage Diagnostics</h4>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></span>(<span class="no">model</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/lev-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 <div id="fitted-values-diagnostics" class="section level4">
 <h4 class="hasAnchor">
 <a href="#fitted-values-diagnostics" class="anchor"></a>Fitted Values Diagnostics</h4>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="../reference/blr_plot_diag_fit.html">blr_plot_diag_fit</a></span>(<span class="no">model</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/blr_plot_diag_fit.html">blr_plot_diag_fit</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></code></pre></div>
 <p><img src="introduction_files/figure-html/fit-1.png" width="672" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -716,7 +741,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
