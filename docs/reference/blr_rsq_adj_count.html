@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@
     <p>Adjusted count r-squared.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_rsq_adj_count</span>(<span class='no'>model</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_rsq_adj_count</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,11 +166,13 @@
 <code><a href='blr_test_lr.html'>blr_test_lr</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-            <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-
-<span class='fu'>blr_rsq_adj_count</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; [1] 0.2830189</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>            family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>blr_rsq_adj_count</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.2830189</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -186,7 +188,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

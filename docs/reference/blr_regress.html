@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,10 +138,10 @@
     <p>Binary logistic regression.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_regress</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>blr_regress</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for glm</span>
-<span class='fu'>blr_regress</span>(<span class='no'>object</span>, <span class='kw'>odd_conf_limit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>blr_regress</span><span class='op'>(</span><span class='va'>object</span>, odd_conf_limit <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,118 +164,124 @@ that class): a symbolic description of the model to be fitted or class
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># using formula</span>
-<span class='fu'>blr_regress</span>(<span class='kw'>object</span> <span class='kw'>=</span> <span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>)</div><div class='output co'>#&gt;                              Model Overview                              
-#&gt; ------------------------------------------------------------------------
-#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     200        199           196            TRUE     
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;                     Response Summary                     
-#&gt; --------------------------------------------------------
-#&gt; Outcome        Frequency        Outcome        Frequency 
-#&gt; --------------------------------------------------------
-#&gt;    0              147              1              53     
-#&gt; --------------------------------------------------------
-#&gt; 
-#&gt;                   Maximum Likelihood Estimates                    
-#&gt; -----------------------------------------------------------------
-#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
-#&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
-#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 
-#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 
-#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 
-#&gt; -----------------------------------------------------------------
-#&gt; 
-#&gt;  Association of Predicted Probabilities and Observed Responses  
-#&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8561          Somers' D        0.7147   
-#&gt; % Discordant          0.1425          Gamma            0.7136   
-#&gt; % Tied                0.0014          Tau-a            0.2794   
-#&gt; Pairs                  7791           c                0.8568   
-#&gt; ---------------------------------------------------------------
-#&gt; </div><div class='input'>
-<span class='co'># using a model built with glm</span>
-<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-
-<span class='fu'>blr_regress</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;                              Model Overview                              
-#&gt; ------------------------------------------------------------------------
-#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     200        199           196            TRUE     
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;                     Response Summary                     
-#&gt; --------------------------------------------------------
-#&gt; Outcome        Frequency        Outcome        Frequency 
-#&gt; --------------------------------------------------------
-#&gt;    0              147              1              53     
-#&gt; --------------------------------------------------------
-#&gt; 
-#&gt;                   Maximum Likelihood Estimates                    
-#&gt; -----------------------------------------------------------------
-#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
-#&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
-#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 
-#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 
-#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 
-#&gt; -----------------------------------------------------------------
-#&gt; 
-#&gt;  Association of Predicted Probabilities and Observed Responses  
-#&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8561          Somers' D        0.7147   
-#&gt; % Discordant          0.1425          Gamma            0.7136   
-#&gt; % Tied                0.0014          Tau-a            0.2794   
-#&gt; Pairs                  7791           c                0.8568   
-#&gt; ---------------------------------------------------------------
-#&gt; </div><div class='input'>
-<span class='co'># odds ratio estimates</span>
-<span class='fu'>blr_regress</span>(<span class='no'>model</span>, <span class='kw'>odd_conf_limit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;                              Model Overview                              
-#&gt; ------------------------------------------------------------------------
-#&gt; Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#&gt; ------------------------------------------------------------------------
-#&gt;   data      honcomp     200        199           196            TRUE     
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;                     Response Summary                     
-#&gt; --------------------------------------------------------
-#&gt; Outcome        Frequency        Outcome        Frequency 
-#&gt; --------------------------------------------------------
-#&gt;    0              147              1              53     
-#&gt; --------------------------------------------------------
-#&gt; 
-#&gt;                   Maximum Likelihood Estimates                    
-#&gt; -----------------------------------------------------------------
-#&gt;  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) 
-#&gt; -----------------------------------------------------------------
-#&gt; (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
-#&gt;   female1      1      1.4825        0.4474     3.3139       9e-04 
-#&gt;    read        1      0.1035        0.0258     4.0186       1e-04 
-#&gt;   science      1      0.0948        0.0305     3.1129      0.0019 
-#&gt; -----------------------------------------------------------------
-#&gt; 
-#&gt;                   Odds Ratio Estimates                    
-#&gt; ---------------------------------------------------------
-#&gt;  Effects          Estimate          95% Wald Conf. Limit 
-#&gt; ---------------------------------------------------------
-#&gt;  female1           4.4039          1.8955         11.0521 
-#&gt;    read            1.1091          1.0569          1.1699 
-#&gt;  science           1.0994          1.0377          1.1702 
-#&gt; ---------------------------------------------------------
-#&gt; 
-#&gt;  Association of Predicted Probabilities and Observed Responses  
-#&gt; ---------------------------------------------------------------
-#&gt; % Concordant          0.8561          Somers' D        0.7147   
-#&gt; % Discordant          0.1425          Gamma            0.7136   
-#&gt; % Tied                0.0014          Tau-a            0.2794   
-#&gt; Pairs                  7791           c                0.8568   
-#&gt; ---------------------------------------------------------------
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># using formula</span></span>
+<span class='r-in'><span class='fu'>blr_regress</span><span class='op'>(</span>object <span class='op'>=</span> <span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Model Overview                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   data      honcomp     200        199           196            TRUE     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     Response Summary                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Outcome        Frequency        Outcome        Frequency </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    0              147              1              53     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   Maximum Likelihood Estimates                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   female1      1      1.4825        0.4474     3.3139       9e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    read        1      0.1035        0.0258     4.0186       1e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   science      1      0.0948        0.0305     3.1129      0.0019 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Association of Predicted Probabilities and Observed Responses  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Concordant          0.8561          Somers' D        0.7147   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Discordant          0.1425          Gamma            0.7136   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Tied                0.0014          Tau-a            0.2794   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Pairs                  7791           c                0.8568   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># using a model built with glm</span></span>
+<span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>             family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>blr_regress</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Model Overview                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   data      honcomp     200        199           196            TRUE     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     Response Summary                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Outcome        Frequency        Outcome        Frequency </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    0              147              1              53     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   Maximum Likelihood Estimates                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   female1      1      1.4825        0.4474     3.3139       9e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    read        1      0.1035        0.0258     4.0186       1e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   science      1      0.0948        0.0305     3.1129      0.0019 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Association of Predicted Probabilities and Observed Responses  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Concordant          0.8561          Somers' D        0.7147   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Discordant          0.1425          Gamma            0.7136   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Tied                0.0014          Tau-a            0.2794   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Pairs                  7791           c                0.8568   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># odds ratio estimates</span></span>
+<span class='r-in'><span class='fu'>blr_regress</span><span class='op'>(</span><span class='va'>model</span>, odd_conf_limit <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                              Model Overview                              </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   data      honcomp     200        199           196            TRUE     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                     Response Summary                     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Outcome        Frequency        Outcome        Frequency </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    0              147              1              53     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> --------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   Maximum Likelihood Estimates                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     DF    Estimate    Std. Error    z value    Pr(&gt;|z|) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   female1      1      1.4825        0.4474     3.3139       9e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    read        1      0.1035        0.0258     4.0186       1e-04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   science      1      0.0948        0.0305     3.1129      0.0019 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                   Odds Ratio Estimates                    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Effects          Estimate          95% Wald Conf. Limit </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  female1           4.4039          1.8955         11.0521 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    read            1.1091          1.0569          1.1699 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  science           1.0994          1.0377          1.1702 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Association of Predicted Probabilities and Observed Responses  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Concordant          0.8561          Somers' D        0.7147   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Discordant          0.1425          Gamma            0.7136   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> % Tied                0.0014          Tau-a            0.2794   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Pairs                  7791           c                0.8568   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -291,7 +297,7 @@ that class): a symbolic description of the model to be fitted or class
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

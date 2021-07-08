@@ -113,7 +113,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -140,7 +140,7 @@
   Currently avialable for categorical predictors only.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_woe_iv_stats</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_woe_iv_stats</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,82 +169,84 @@
 <code><a href='blr_woe_iv.html'>blr_woe_iv</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_woe_iv_stats</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>, <span class='no'>race</span>, <span class='no'>female</span>, <span class='no'>schtyp</span>)</div><div class='output co'>#&gt; Variable: prog
-#&gt; 
-#&gt;                            Weight of Evidence                             
-#&gt; -------------------------------------------------------------------------
-#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
-#&gt; -------------------------------------------------------------------------
-#&gt;   1          38          7           0.26       0.13       0.67     0.08  
-#&gt;   2          65          40          0.44       0.75      -0.53     0.17  
-#&gt;   3          44          6           0.30       0.11       0.97     0.18  
-#&gt; -------------------------------------------------------------------------
-#&gt; 
-#&gt;       Information Value       
-#&gt; -----------------------------
-#&gt; Variable    Information Value 
-#&gt; -----------------------------
-#&gt;   prog           0.4329       
-#&gt; -----------------------------
-#&gt; 
-#&gt; 
-#&gt; Variable: race
-#&gt; 
-#&gt;                            Weight of Evidence                             
-#&gt; -------------------------------------------------------------------------
-#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
-#&gt; -------------------------------------------------------------------------
-#&gt;   1          22          2           0.15       0.04       1.38     0.15  
-#&gt;   2          6           5           0.04       0.09      -0.84     0.04  
-#&gt;   3          18          2           0.12       0.04       1.18     0.10  
-#&gt;   4         101          44          0.69       0.83      -0.19     0.03  
-#&gt; -------------------------------------------------------------------------
-#&gt; 
-#&gt;       Information Value       
-#&gt; -----------------------------
-#&gt; Variable    Information Value 
-#&gt; -----------------------------
-#&gt;   race            0.326       
-#&gt; -----------------------------
-#&gt; 
-#&gt; 
-#&gt; Variable: female
-#&gt; 
-#&gt;                            Weight of Evidence                             
-#&gt; -------------------------------------------------------------------------
-#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
-#&gt; -------------------------------------------------------------------------
-#&gt;   0          73          18          0.50       0.34       0.38     0.06  
-#&gt;   1          74          35          0.50       0.66      -0.27     0.04  
-#&gt; -------------------------------------------------------------------------
-#&gt; 
-#&gt;       Information Value       
-#&gt; -----------------------------
-#&gt; Variable    Information Value 
-#&gt; -----------------------------
-#&gt;  female          0.1023       
-#&gt; -----------------------------
-#&gt; 
-#&gt; 
-#&gt; Variable: schtyp
-#&gt; 
-#&gt;                            Weight of Evidence                            
-#&gt; ------------------------------------------------------------------------
-#&gt; levels    count_0s    count_1s    dist_0s    dist_1s        woe     iv   
-#&gt; ------------------------------------------------------------------------
-#&gt;   1         123          45          0.84       0.85      -0.01    0.00  
-#&gt;   2          24          8           0.16       0.15       0.08    0.00  
-#&gt; ------------------------------------------------------------------------
-#&gt; 
-#&gt;       Information Value       
-#&gt; -----------------------------
-#&gt; Variable    Information Value 
-#&gt; -----------------------------
-#&gt;  schtyp          0.0012       
-#&gt; -----------------------------
-#&gt; 
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>blr_woe_iv_stats</span><span class='op'>(</span><span class='va'>hsb2</span>, <span class='va'>honcomp</span>, <span class='va'>prog</span>, <span class='va'>race</span>, <span class='va'>female</span>, <span class='va'>schtyp</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable: prog</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            Weight of Evidence                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1          38          7           0.26       0.13       0.67     0.08  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2          65          40          0.44       0.75      -0.53     0.17  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3          44          6           0.30       0.11       0.97     0.18  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Information Value       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable    Information Value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   prog           0.4329       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable: race</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            Weight of Evidence                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1          22          2           0.15       0.04       1.38     0.15  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2          6           5           0.04       0.09      -0.84     0.04  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   3          18          2           0.12       0.04       1.18     0.10  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   4         101          44          0.69       0.83      -0.19     0.03  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Information Value       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable    Information Value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   race            0.326       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable: female</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            Weight of Evidence                             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   0          73          18          0.50       0.34       0.38     0.06  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1          74          35          0.50       0.66      -0.27     0.04  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Information Value       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable    Information Value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  female          0.1023       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable: schtyp</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                            Weight of Evidence                            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> levels    count_0s    count_1s    dist_0s    dist_1s        woe     iv   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   1         123          45          0.84       0.85      -0.01    0.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   2          24          8           0.16       0.15       0.08    0.00  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ------------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Information Value       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable    Information Value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  schtyp          0.0012       </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -----------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -260,7 +262,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

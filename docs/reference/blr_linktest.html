@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@
     <p>Test for model specification error.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_linktest</span>(<span class='no'>model</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_linktest</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,36 +159,38 @@
 <p>Tukey,  J.  W.  1949.  One  degree  of  freedom  for  non-additivity.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-<span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-
-<span class='fu'>blr_linktest</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; 
-#&gt; Call:
-#&gt; glm(formula = resp ~ fit + fit2, family = binomial(link = "logit"), 
-#&gt;     data = newdat)
-#&gt; 
-#&gt; Deviance Residuals: 
-#&gt;     Min       1Q   Median       3Q      Max  
-#&gt; -1.8578  -0.6168  -0.2987   0.5102   2.6096  
-#&gt; 
-#&gt; Coefficients:
-#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)  0.03569    0.23399   0.153    0.879    
-#&gt; fit          0.93715    0.20767   4.513  6.4e-06 ***
-#&gt; fit2        -0.03920    0.08970  -0.437    0.662    
-#&gt; ---
-#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#&gt; 
-#&gt; (Dispersion parameter for binomial family taken to be 1)
-#&gt; 
-#&gt;     Null deviance: 231.29  on 199  degrees of freedom
-#&gt; Residual deviance: 160.04  on 197  degrees of freedom
-#&gt; AIC: 166.04
-#&gt; 
-#&gt; Number of Fisher Scoring iterations: 6
-#&gt; </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>blr_linktest</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Call:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> glm(formula = resp ~ fit + fit2, family = binomial(link = "logit"), </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     data = newdat)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Deviance Residuals: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -1.8578  -0.6168  -0.2987   0.5102   2.6096  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>             Estimate Std. Error z value Pr(&gt;|z|)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)  0.03569    0.23399   0.153    0.879    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fit          0.93715    0.20767   4.513  6.4e-06 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fit2        -0.03920    0.08970  -0.437    0.662    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Null deviance: 231.29  on 199  degrees of freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residual deviance: 160.04  on 197  degrees of freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC: 166.04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of Fisher Scoring iterations: 6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -204,7 +206,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

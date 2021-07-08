@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,20 +138,20 @@
     <p>Distribution of response variable by segements/levels of a qualitative variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_segment_dist</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>predictor</span>)
+    <pre class="usage"><span class='fu'>blr_segment_dist</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictor</span><span class='op'>)</span>
 
 <span class='co'># S3 method for blr_segment_dist</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(
-  <span class='no'>x</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>xaxis_title</span> <span class='kw'>=</span> <span class='st'>"Levels"</span>,
-  <span class='kw'>yaxis_title</span> <span class='kw'>=</span> <span class='st'>"Sample Distribution"</span>,
-  <span class='kw'>sec_yaxis_title</span> <span class='kw'>=</span> <span class='st'>"1s Distribution"</span>,
-  <span class='kw'>bar_color</span> <span class='kw'>=</span> <span class='st'>"blue"</span>,
-  <span class='kw'>line_color</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>print_plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  title <span class='op'>=</span> <span class='cn'>NA</span>,
+  xaxis_title <span class='op'>=</span> <span class='st'>"Levels"</span>,
+  yaxis_title <span class='op'>=</span> <span class='st'>"Sample Distribution"</span>,
+  sec_yaxis_title <span class='op'>=</span> <span class='st'>"1s Distribution"</span>,
+  bar_color <span class='op'>=</span> <span class='st'>"blue"</span>,
+  line_color <span class='op'>=</span> <span class='st'>"red"</span>,
+  print_plot <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -219,19 +219,23 @@
 <code><a href='blr_woe_iv.html'>blr_woe_iv</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>k</span> <span class='kw'>&lt;-</span> <span class='fu'>blr_segment_dist</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>prog</span>)
-<span class='no'>k</span></div><div class='output co'>#&gt;          Event Segmentation           
-#&gt; -------------------------------------
-#&gt;   pred       n     1s     n%     1s%  
-#&gt; -------------------------------------
-#&gt;    1        45     7     0.22    0.04 
-#&gt;    2        105    40    0.52    0.20 
-#&gt;    3        50     6     0.25    0.03 
-#&gt; -------------------------------------
-#&gt; </div><div class='input'>
-<span class='co'># plot</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>k</span>)</div><div class='img'><img src='blr_segment_dist-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>k</span> <span class='op'>&lt;-</span> <span class='fu'>blr_segment_dist</span><span class='op'>(</span><span class='va'>hsb2</span>, <span class='va'>honcomp</span>, <span class='va'>prog</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>k</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Event Segmentation           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   pred       n     1s     n%     1s%  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    1        45     7     0.22    0.04 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    2        105    40    0.52    0.20 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    3        50     6     0.25    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># plot</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>k</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='blr_segment_dist-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -247,7 +251,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

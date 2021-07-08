@@ -112,7 +112,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@
     <p>Data for generating Lorenz curve.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_prep_lorenz_data</span>(<span class='no'>model</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>test_data</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>blr_prep_lorenz_data</span><span class='op'>(</span><span class='va'>model</span>, data <span class='op'>=</span> <span class='cn'>NULL</span>, test_data <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,23 +159,25 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span>(<span class='no'>honcomp</span> ~ <span class='no'>female</span> + <span class='no'>read</span> + <span class='no'>science</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>hsb2</span>,
-             <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>'logit'</span>))
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>model</span>$<span class='no'>data</span>
-<span class='fu'>blr_prep_lorenz_data</span>(<span class='no'>model</span>, <span class='no'>data</span>, <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;    cum_0s_per cum_1s_per
-#&gt; 1  0.00000000  0.0000000
-#&gt; 2  0.04081633  0.2641509
-#&gt; 3  0.08843537  0.5094340
-#&gt; 4  0.15646259  0.6981132
-#&gt; 5  0.24489796  0.8301887
-#&gt; 6  0.36054422  0.8867925
-#&gt; 7  0.47619048  0.9433962
-#&gt; 8  0.60544218  0.9622642
-#&gt; 9  0.72789116  1.0000000
-#&gt; 10 0.86394558  1.0000000
-#&gt; 11 1.00000000  1.0000000
-#&gt; 12 1.00000000  1.0000000</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/glm.html'>glm</a></span><span class='op'>(</span><span class='va'>honcomp</span> <span class='op'>~</span> <span class='va'>female</span> <span class='op'>+</span> <span class='va'>read</span> <span class='op'>+</span> <span class='va'>science</span>, data <span class='op'>=</span> <span class='va'>hsb2</span>,</span>
+<span class='r-in'>             family <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/family.html'>binomial</a></span><span class='op'>(</span>link <span class='op'>=</span> <span class='st'>'logit'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>model</span><span class='op'>$</span><span class='va'>data</span></span>
+<span class='r-in'><span class='fu'>blr_prep_lorenz_data</span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>data</span>, <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    cum_0s_per cum_1s_per</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  0.00000000  0.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  0.04081633  0.2641509</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  0.08843537  0.5094340</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  0.15646259  0.6981132</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  0.24489796  0.8301887</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  0.36054422  0.8867925</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7  0.47619048  0.9433962</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8  0.60544218  0.9622642</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9  0.72789116  1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10 0.86394558  1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11 1.00000000  1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12 1.00000000  1.0000000</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -191,7 +193,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

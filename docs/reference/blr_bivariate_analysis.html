@@ -114,7 +114,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rsquaredacademy/blorr">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
   </a>
 </li>
@@ -142,10 +142,10 @@
   predictors only.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>blr_bivariate_analysis</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>blr_bivariate_analysis</span>(<span class='no'>data</span>, <span class='no'>response</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>blr_bivariate_analysis</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,16 +183,18 @@
 <code><a href='blr_woe_iv.html'>blr_woe_iv</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>blr_bivariate_analysis</span>(<span class='no'>hsb2</span>, <span class='no'>honcomp</span>, <span class='no'>female</span>, <span class='no'>prog</span>, <span class='no'>race</span>, <span class='no'>schtyp</span>)</div><div class='output co'>#&gt;                          Bivariate Analysis                           
-#&gt; ---------------------------------------------------------------------
-#&gt; Variable    Information Value    LR Chi Square    LR DF    LR p-value 
-#&gt; ---------------------------------------------------------------------
-#&gt;  female           0.10              3.9350          1        0.0473   
-#&gt;   prog            0.43              16.1450         2        3e-04    
-#&gt;   race            0.33              11.3694         3        0.0099   
-#&gt;  schtyp           0.00              0.0445          1        0.8330   
-#&gt; ---------------------------------------------------------------------</div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>blr_bivariate_analysis</span><span class='op'>(</span><span class='va'>hsb2</span>, <span class='va'>honcomp</span>, <span class='va'>female</span>, <span class='va'>prog</span>, <span class='va'>race</span>, <span class='va'>schtyp</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                          Bivariate Analysis                           </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Variable    Information Value    LR Chi Square    LR DF    LR p-value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------------</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  female           0.10              3.9350          1        0.0473   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   prog            0.43              16.1450         2        3e-04    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   race            0.33              11.3694         3        0.0099   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  schtyp           0.00              0.0445          1        0.8330   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---------------------------------------------------------------------</span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -208,7 +210,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
