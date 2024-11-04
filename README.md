@@ -7,18 +7,11 @@
 
 <!-- badges: start -->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
-[![cran
-checks](https://cranchecks.info/badges/summary/blorr)](https://cran.r-project.org/web/checks/check_results_blorr.html)
-![r-universe](https://rsquaredacademy.r-universe.dev/badges/blorr) [![R
-build
-status](https://github.com/rsquaredacademy/blorr/workflows/R-CMD-check/badge.svg)](https://github.com/rsquaredacademy/blorr/actions)
-[![Lifecycle:
-stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
+[![R-CMD-check](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml)
 [![Coverage
 status](https://codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://codecov.io/github/rsquaredacademy/blorr?branch=master)
-[![status](https://tinyverse.netlify.com/badge/blorr)](https://CRAN.R-project.org/package=blorr)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/blorr)](https://cran.r-project.org/package=blorr)
+
 <!-- badges: end -->
 
 ## Overview
@@ -45,8 +38,8 @@ install.packages("blorr", repos = "https://rsquaredacademy.r-universe.dev")
 
 ## Articles
 
--   [A Short Introduction to the blorr
-    Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
+- [A Short Introduction to the blorr
+  Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
 
 ## Usage
 
