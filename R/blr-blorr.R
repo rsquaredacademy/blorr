@@ -5,8 +5,11 @@
 #' See the README on
 #' \href{https://github.com/rsquaredacademy/blorr}{GitHub}
 #'
+#' @keywords internal
 #' @docType package
 #' @name blorr
+#' @aliases blorr-package
+"_PACKAGE"
 NULL
 
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
