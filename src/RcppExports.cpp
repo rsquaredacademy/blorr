@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // blr_pairs_cpp
 DataFrame blr_pairs_cpp(NumericVector x, NumericVector y);
 RcppExport SEXP _blorr_blr_pairs_cpp(SEXP xSEXP, SEXP ySEXP) {
