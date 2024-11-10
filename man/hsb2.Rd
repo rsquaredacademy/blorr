@@ -22,7 +22,7 @@ A data frame with 200 rows and 11 variables:
 }
 }
 \source{
-\url{http://www.ats.ucla.edu/stat/spss/whatstat/whatstat.htm}
+\url{https://www.openintro.org/data/index.php?data=hsb}
 }
 \usage{
 hsb2
