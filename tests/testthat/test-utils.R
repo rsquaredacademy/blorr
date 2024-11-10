@@ -1,5 +1,3 @@
-context("test-utils.R")
-
 # regression
 model <- glm(
   honcomp ~ female + read + science, data = hsb2,
@@ -52,57 +50,57 @@ test_that("output from resp_profile is as expected", {
 test_that("predictor_names returns names of the predictors", {
   actual <- predictor_names(model)
   expected <- c("(Intercept)", "female1", "read", "science")
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 
 test_that("output from model_df is as expected", {
   actual <- predictor_df(model)
   expected <- c(1, 1, 1, 1)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from predictor_est is as expected", {
   actual <- round(predictor_est(model), 2)
   expected <- c(-12.78, 1.48, 0.10, 0.09)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from predictor_se is as expected", {
   actual <- round(predictor_se(model), 2)
   expected <- c(1.98, 0.45, 0.03, 0.03)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from predictor_zval is as expected", {
   actual <- round(predictor_zval(model), 2)
   expected <- c(-6.47, 3.31, 4.02, 3.11)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from predictor_pval is as expected", {
   actual <- round(predictor_pval(model), 5)
   expected <- c(0.00000, 0.00092, 0.00006, 0.00185)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 
 test_that("output from odds_effect is as expected", {
   actual <- odds_effect(model)
   expected <- c("female1", "read", "science")
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from odds_point is as expected", {
   actual <- round(odds_point(model), 2)
   expected <- c(4.40, 1.11, 1.10)
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from mll is as expected", {
   actual <- round(mll(model), 4)
   expected <- 160.2364
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
 
 test_that("output from model_class is as expected", {
@@ -120,5 +118,5 @@ test_that("output from model_d_f is as expected", {
 test_that("output from extract_ll is as expected", {
   actual <- round(extract_ll(model), 4)
   expected <- 160.2364
-  expect_equivalent(actual, expected)
+  expect_equal(actual, expected)
 })
