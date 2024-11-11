@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>02 - Coercion between model objects and restriction matrices in ‘pbkrtest’</title>
+<style type="text/css">
+/**
+ * Prism.s theme ported from highlight.js's xcode style
+ */
+pre code {
+  padding: 1em;
+}
+.token.comment {
+  color: #007400;
+}
+.token.punctuation {
+  color: #999;
+}
+.token.tag,
+.token.selector {
+  color: #aa0d91;
+}
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #1c00cf;
+}
+.token.property,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #c41a16;
+}
+.token.inserted {
+  background-color: #ccffd8;
+}
+.token.deleted {
+  background-color: #ffebe9;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #9a6e3a;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #836c28;
+}
+.token.function,
+.token.class-name {
+  color: #DD4A68;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #5c2699;
+}
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+</style>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>02 - Coercion between model objects and restriction matrices in ‘pbkrtest’</h1></div>
+<div class="author"><h2>Søren Højsgaard and Ulrich Halekoh</h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p><strong>Package version: 0.5.3</strong></p>
+<p>Consider two linear models; the smaller is a submodel of the large:</p>
+<pre><code class="language-r">N &lt;- 4
+dat &lt;- data.frame(int=rep(1, N), x=1:N, y=rnorm(N))
+</code></pre>
+<pre><code class="language-r">lg &lt;- lm(y ~ x + I(x^2), data=dat)
+sm &lt;- lm(y ~ x, data=dat)
+lg
+</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x + I(x^2), data = dat)
+## 
+## Coefficients:
+## (Intercept)            x       I(x^2)  
+##      0.3787      -0.6150       0.1657
+</code></pre>
+<pre><code class="language-r">sm
+</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x, data = dat)
+## 
+## Coefficients:
+## (Intercept)            x  
+##     -0.4496       0.2132
+</code></pre>
+<p>The corresponding model matrices are</p>
+<pre><code class="language-r">Xlg &lt;- model.matrix(lg)
+Xsm &lt;- model.matrix(sm)
+Xlg
+</code></pre>
+<pre><code>##   (Intercept) x I(x^2)
+## 1           1 1      1
+## 2           1 2      4
+## 3           1 3      9
+## 4           1 4     16
+## attr(,&quot;assign&quot;)
+## [1] 0 1 2
+</code></pre>
+<pre><code class="language-r">Xsm
+</code></pre>
+<pre><code>##   (Intercept) x
+## 1           1 1
+## 2           1 2
+## 3           1 3
+## 4           1 4
+## attr(,&quot;assign&quot;)
+## [1] 0 1
+</code></pre>
+<p>Given the two model matrices, the restriction matrix which
+describes the restrictions that should be made to the model matrix of
+the large model to produce the model matrix of the small model:</p>
+<pre><code class="language-r">L &lt;- make_restriction_matrix(Xlg, Xsm)
+L 
+</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    0    0   -1
+</code></pre>
+<p>Given the model matrix of the large model and the restriction matrix, the model matrix of
+the small model can be constructed as:</p>
+<pre><code class="language-r">Xsm_2 &lt;- make_model_matrix(Xlg, L)
+Xsm_2
+</code></pre>
+<pre><code>##   [,1] [,2]
+## 1    1    1
+## 2    2    1
+## 3    3    1
+## 4    4    1
+</code></pre>
+<p>The same operation can be made directly on model objects:</p>
+<pre><code class="language-r">L &lt;- model2restriction_matrix(lg, sm)
+L
+</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    0    0   -1
+</code></pre>
+<p>Likewise, given the large model and the restriction matrix, the small model can be constructed:</p>
+<pre><code class="language-r">sm_2 &lt;- restriction_matrix2model(lg, L)
+sm_2
+</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ .X1 + .X2 - 1, data = structure(list(.X1 = c(1, 
+## 2, 3, 4), .X2 = c(1, 1, 1, 1), y = c(-0.157227493163303, 0.0709138988526763, 
+## -0.235156057045762, 0.655594685725414), x = 1:4, `I(x^2)` = structure(c(1, 
+## 4, 9, 16), class = &quot;AsIs&quot;)), class = &quot;data.frame&quot;, row.names = c(NA, 
+## 4L)))
+## 
+## Coefficients:
+##     .X1      .X2  
+##  0.2132  -0.4496
+</code></pre>
+<pre><code class="language-r">sm_2 |&gt; model.matrix()
+</code></pre>
+<pre><code>##   .X1 .X2
+## 1   1   1
+## 2   2   1
+## 3   3   1
+## 4   4   1
+## attr(,&quot;assign&quot;)
+## [1] 1 2
+</code></pre>
+<p>Lastly, model matrices can be compared</p>
+<pre><code class="language-r">## The first column space contains the second
+compare_column_space(Xlg, Xsm)
+</code></pre>
+<pre><code>## [1] 1
+</code></pre>
+<pre><code class="language-r">## The second column space contains the first
+compare_column_space(Xsm, Xlg)
+</code></pre>
+<pre><code>## [1] 0
+</code></pre>
+<pre><code class="language-r">## The two column spaces are identical
+compare_column_space(Xlg, Xlg) 
+</code></pre>
+<pre><code>## [1] -1
+</code></pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" defer></script>
+</body>
+</html>

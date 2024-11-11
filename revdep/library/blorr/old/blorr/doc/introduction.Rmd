@@ -1,0 +1,348 @@
+---
+title: "A Short Introduction to the blorr Package"
+author: "Aravind Hebbali"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A Short Introduction to the blorr Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The blorr package offers tools for building and validating binary logistic regression models. It 
+is most suitable for beginner/intermediate R users and those who teach statistics using R. The API
+is very simple and most of the functions take either a `data.frame`/`tibble` or a `model` as input. **blorr** use
+consistent prefix **blr_** for easy tab completion.
+
+### Installation
+
+You can install **blorr** using:
+
+```{r install, eval=FALSE}
+install.packages("blorr")
+```
+
+The documentation of the package can be found at https://blorr.rsquaredacademy.com. 
+This vignette gives a quick tour of the package.
+
+### Libraries
+
+The following libraries are used in the examples in the vignette:
+
+```{r libs}
+library(blorr)
+library(magrittr)
+```
+
+## Data
+
+To demonstrate the features of blorr, we will use the bank marketing data set. 
+The data is related with direct marketing campaigns of a Portuguese banking 
+institution. The marketing campaigns were based on phone calls. Often, more 
+than one contact to the same client was required, in order to access if the 
+product (bank term deposit) would be ('yes') or not ('no') subscribed. It 
+contains a random sample (~4k) of the original data set which can be found 
+at https://archive.ics.uci.edu/ml/datasets/bank+marketing.
+
+## Bivariate Analysis
+
+Let us begin with careful bivariate analysis of each possible variable and the 
+outcome variable. We will use information value and likelihood ratio chi square 
+test for selecting the initial set of predictors for our model. The bivariate
+analysis is currently avialable for categorical predictors only.
+
+```{r bivar1}
+blr_bivariate_analysis(bank_marketing, y, job, marital, education, default, 
+  housing, loan, contact, poutcome)
+```
+
+### Weight of Evidence & Information Value
+
+Weight of evidence (WoE) is used to assess the relative risk of di¤erent 
+attributes for a characteristic and as a means to transform characteristics 
+into variables. It is also a very useful tool for binning. The WoE for any 
+group with average odds is zero. A negative WoE indicates that the proportion 
+of defaults is higher for that attribute than the overall proportion and 
+indicates higher risk.
+
+The information value is used to rank order variables in terms of their 
+predictive power. A high information value indicates a high ability to 
+discriminate. Values for the information value will always be positive and may 
+be above 3 when assessing highly predictive characteristics. Characteristics 
+with information values less than 0:10 are typically viewed as weak, while 
+values over 0.30 are sought after.
+
+```{r woe1}
+blr_woe_iv(bank_marketing, job, y)
+```
+#### Plot
+
+```{r woeplot, fig.align='center', fig.width=7, fig.height=5}
+k <- blr_woe_iv(bank_marketing, job, y)
+plot(k)
+```
+
+#### Multiple Variables
+
+We can generate the weight of evidence and information value for multiple 
+variables using `blr_woe_iv_stats()`.
+
+```{r woe2}
+blr_woe_iv_stats(bank_marketing, y, job, marital, education)
+```
+
+`blr_woe_iv()` and `blr_woe_iv_stats()` are currently avialable for categorical 
+predictors only.
+
+## Stepwise Selection
+
+For the initial/ first cut model, all the independent variables are put into 
+the model. Our goal is to include a limited number of independent variables 
+(5-15) which are all significant, without sacrificing too much on the model 
+performance. The rationale behind not-including too many variables is that the 
+model would be over fitted and would become unstable when tested on the 
+validation sample. The variable reduction is done using forward or backward 
+or stepwise variable selection procedures. We will use `blr_step_aic_both()` 
+to shortlist predictors for our model.
+
+### Model
+
+```{r mod1}
+model <- glm(y ~ ., data = bank_marketing, family = binomial(link = 'logit'))
+```
+
+#### Selection Summary
+
+```{r stepwise1}
+blr_step_aic_both(model)
+```
+
+#### Plot
+
+```{r stepwise3, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+  blr_step_aic_both() %>%
+  plot()
+```
+
+## Regression Output
+
+### Model
+
+We can use bivariate analysis and stepwise selection procedure to shortlist 
+predictors and build the model using the `glm()`. The predictors used in the
+below model are for illustration purposes and not necessarily shortlisted 
+from the bivariate analysis and variable selection procedures.
+
+```{r model}
+model <- glm(y ~  age + duration + previous + housing + default +
+             loan + poutcome + job + marital, data = bank_marketing, 
+             family = binomial(link = 'logit'))
+```
+
+Use `blr_regress()` to generate comprehensive regression output. It accepts 
+either of the following
+
+- model built using `glm()`
+- model formula and data 
+
+#### Using Model
+
+Let us look at the output generated from `blr_regress()`:
+
+```{r reg1}
+blr_regress(model)
+```
+
+If you want to examine the odds ratio estimates, set `odd_conf_limit` to `TRUE`. 
+The odds ratio estimates are not explicitly computed as we observed considerable 
+increase in computation time when dealing with large data sets.
+
+#### Using Formula
+
+Let us use the model formula and the data set to generate the above results.
+
+```{r reg2}
+blr_regress(y ~  age + duration + previous + housing + default +
+             loan + poutcome + job + marital, data = bank_marketing)
+```
+
+## Model Fit Statistics
+
+Model fit statistics are available to assess how well the model fits the data 
+and to compare two different models.The output includes likelihood ratio test, 
+AIC, BIC and a host of pseudo r-squared measures. You can read more about 
+pseudo r-squared at https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/.
+
+#### Single Model
+
+```{r mfs}
+blr_model_fit_stats(model)
+```
+
+## Model Validation
+
+### Confusion Matrix
+
+In the event of deciding a cut-off point on the probability scores of a 
+logistic regression model, a confusion matrix is created corresponding to a 
+particular cut-off. The observations with probability scores above the cut-off 
+score are predicted to be events and those below the cut-off score, as 
+non-events. The confusion matrix, a 2X2 table, then calculates the number of 
+correctly classified and miss-classified observations.
+
+```{r val5}
+blr_confusion_matrix(model, cutoff = 0.5)
+```
+
+The validity of a cut-off is measured using sensitivity, specificity and accuracy.
+
+- **Sensitivity**: The % of correctly classified events out of all events = TP / (TP + FN)
+- **Specificity**: The % of correctly classified non-events out of all non-events = TN / (TN + FP)
+- **Accuracy**: The % of correctly classified observation over all observations = (TP + TN) / (TP + FP + TN + FN)
+
+- *True Positive (TP)* : Events correctly classified as events.
+- *True Negative (TN)* : Non-Events correctly classified as non-events.
+- *False Positive (FP)*: Non-events miss-classified as events.
+- *False Negative (FN)*: Events miss-classified as non-events.
+
+For a standard logistic model, the higher is the cut-off, the lower will be the 
+sensitivity and the higher would be the specificity. As the cut-off is 
+decreased, sensitivity will go up, as then more events would be captured. Also, 
+specificity will go down, as more non-events would miss-classified as events. 
+Hence a trade-off is done based on the requirements. For example, if we are 
+looking to capture as many events as possible, and we can afford to have 
+miss-classified non-events, then a low cut-off is taken.
+
+### Hosmer Lemeshow Test
+
+Hosmer and Lemeshow developed a goodness-of-fit test for logistic regression 
+models with binary responses. The test involves dividing the data into 
+approximately ten groups of roughly equal size based on the percentiles of the 
+estimated probabilities. The observations are sorted in increasing order of 
+their estimated probability of having an even outcome. The discrepancies 
+between the observed and expected number of observations in these groups are 
+summarized by the Pearson chi-square statistic, which is then compared to 
+chi-square distribution with t degrees of freedom, where t is the number of 
+groups minus 2. Lower values of Goodness-of-fit are preferred.
+
+```{r val6}
+blr_test_hosmer_lemeshow(model)
+```
+
+### Gains Table & Lift Chart
+
+A lift curve is a graphical representation of the % of cumulative events 
+captured at a specific cut-off. The cut-off can be a particular decile or a 
+percentile. Similar, to rank ordering procedure, the data is in descending 
+order of the scores and is then grouped into deciles/percentiles. The 
+cumulative number of observations and events are then computed for each 
+decile/percentile. The lift curve is the created using the cumulative % 
+population as the x-axis and the cumulative percentage of events as the y-axis. 
+
+```{r val1}
+blr_gains_table(model)
+```
+
+#### Lift Chart
+
+```{r val7, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+	blr_gains_table() %>%
+	plot()
+```
+
+### ROC Curve
+
+ROC curve is a graphical representation of the validity of cut-offs for a 
+logistic regression model. The ROC curve is plotted using the sensitivity and 
+specificity for all possible cut-offs, i.e., all the probability scores. The 
+graph is plotted using sensitivity on the y-axis and 1-specificity on the 
+x-axis. Any point on the ROC curve represents a sensitivity X (1-specificity) 
+measure corresponding to a cut-off. The area under the ROC curve is used as a 
+validation measure for the model – the bigger the area the better is the model.
+
+```{r val2, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+	blr_gains_table() %>%
+  blr_roc_curve()
+```
+
+### KS Chart
+
+The KS Statistic is again a measure of model efficiency, and it is created 
+using the lift curve. The lift curve is created to plot % events. If we also 
+plot % non-events on the same scale, with % population at x-axis, we would get 
+another curve. The maximum distance between the lift curve for events and that 
+for non-events is termed as KS. For a good model, KS should be big (>=0.3) and 
+should occur as close to the event rate as possible.
+
+```{r val3, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+	blr_gains_table() %>%
+  blr_ks_chart()
+```
+
+### Decile Lift Chart
+
+The decile lift chart displays the lift over the global mean event rate for 
+each decile. For a model with good discriminatory power, the top deciles should 
+have an event/conversion rate greater than the global mean.
+
+```{r val9, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+  blr_gains_table() %>%
+  blr_decile_lift_chart()
+```
+
+### Capture Rate by Decile
+
+If the model has good discriminatory power, the top deciles should have a higher 
+event/conversion rate compared to the bottom deciles.  
+
+```{r val8, fig.align='center', fig.width=7, fig.height=5}
+model %>%
+  blr_gains_table() %>%
+  blr_decile_capture_rate()
+```
+
+### Lorenz Curve
+
+The Lorenz curve is a simple graphic device which illustrates the degree of 
+inequality in the distribution of thevariable concerned. It is a visual 
+representation of inequality used to measure the discriminatory power of the 
+predictive model.
+
+```{r val4, fig.align='center', fig.width=7, fig.height=5}
+blr_lorenz_curve(model)
+```
+
+## Residual & Influence Diagnostics
+
+**blorr** can generate 22 plots for residual, influence and leverage diagnostics.
+
+#### Influence Diagnostics
+
+```{r infl, fig.align='center', fig.height=10, fig.width=8}
+blr_plot_diag_influence(model)
+```
+
+#### Leverage Diagnostics
+
+```{r lev, fig.align='center', fig.height=7, fig.width=7}
+blr_plot_diag_leverage(model)
+```
+
+#### Fitted Values Diagnostics
+
+```{r fit, fig.align='center', fig.height=7, fig.width=7}
+blr_plot_diag_fit(model)
+```

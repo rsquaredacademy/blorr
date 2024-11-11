@@ -1,0 +1,31 @@
+Package: blorr
+Type: Package
+Title: Tools for Developing Binary Logistic Regression Models
+Version: 0.3.0
+Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0001-9220-9669"))
+Description: Tools designed to make it easier for beginner and intermediate users to build and validate 
+    binary logistic regression models. Includes bivariate analysis, comprehensive regression output, 
+    model fit statistics, variable selection procedures, model validation techniques and a 'shiny' 
+    app for interactive model building.
+Depends: R(>= 3.5)
+Imports: car, data.table, ggplot2, gridExtra, lest, Rcpp, stats, utils
+Suggests: covr, grid, ineq, knitr, magrittr, rmarkdown, testthat,
+        vdiffr, xplorerr
+License: MIT + file LICENSE
+URL: URL: https://blorr.rsquaredacademy.com/,
+        https://github.com/rsquaredacademy/blorr
+BugReports: https://github.com/rsquaredacademy/blorr/issues
+VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+LinkingTo: Rcpp
+NeedsCompilation: yes
+Packaged: 2020-05-28 11:13:12 UTC; HP
+Author: Aravind Hebbali [aut, cre] (<https://orcid.org/0000-0001-9220-9669>)
+Maintainer: Aravind Hebbali <hebbali.aravind@gmail.com>
+Repository: CRAN
+Date/Publication: 2020-05-28 12:20:08 UTC
+Built: R 4.4.1; x86_64-w64-mingw32; 2024-11-04 04:24:29 UTC; windows
+Archs: x64

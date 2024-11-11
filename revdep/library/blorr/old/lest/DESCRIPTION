@@ -1,0 +1,50 @@
+Type: Package
+Package: lest
+Title: Vectorised Nested if-else Statements Similar to CASE WHEN in
+        'SQL'
+Version: 1.1.0
+Authors@R: 
+    c(person(given = "Stefan",
+             family = "Fleck",
+             role = c("aut", "cre"),
+             email = "stefan.b.fleck@gmail.com",
+             comment = c(ORCID = "0000-0003-3344-9851")),
+      person(given = "Hadley",
+             family = "Wickham",
+             role = "aut",
+             email = "hadley@rstudio.com",
+             comment = c(ORCID = "0000-0003-4757-117X")),
+      person(given = "Romain",
+             family = "François",
+             role = "aut",
+             comment = c(ORCID = "0000-0002-2444-4226")),
+      person(given = "Lionel",
+             family = "Henry",
+             role = "aut"),
+      person(given = "Kirill",
+             family = "Müller",
+             role = "aut",
+             comment = c(ORCID = "0000-0002-1416-3412")))
+Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
+Description: Functions for vectorised conditional recoding of
+    variables. case_when() enables you to vectorise multiple if and else
+    statements (like 'CASE WHEN' in 'SQL'). if_else() is a stricter and
+    more predictable version of ifelse() in 'base' that preserves
+    attributes. These functions are forked from 'dplyr' with all package
+    dependencies removed and behave identically to the originals.
+License: MIT + file LICENSE
+Suggests: testthat
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.1.9000
+NeedsCompilation: yes
+Packaged: 2019-11-29 07:23:52 UTC; fleck
+Author: Stefan Fleck [aut, cre] (<https://orcid.org/0000-0003-3344-9851>),
+  Hadley Wickham [aut] (<https://orcid.org/0000-0003-4757-117X>),
+  Romain François [aut] (<https://orcid.org/0000-0002-2444-4226>),
+  Lionel Henry [aut],
+  Kirill Müller [aut] (<https://orcid.org/0000-0002-1416-3412>)
+Repository: CRAN
+Date/Publication: 2019-11-29 07:30:02 UTC
+Built: R 4.4.1; x86_64-w64-mingw32; 2024-10-21 00:52:27 UTC; windows
+Archs: x64

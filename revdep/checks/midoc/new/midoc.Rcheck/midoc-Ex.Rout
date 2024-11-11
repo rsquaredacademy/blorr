@@ -1,0 +1,509 @@
+
+R version 4.4.1 (2024-06-14 ucrt) -- "Race for Your Life"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "midoc"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> library('midoc')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("checkCRA")
+> ### * checkCRA
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: checkCRA
+> ### Title: Inspect complete records analysis model
+> ### Aliases: checkCRA
+> 
+> ### ** Examples
+> 
+> # Example DAG for which complete records analysis is not valid, but could be
+> ## valid for a different set of covariates
+> checkCRA(y="bmi7", covs="matage", r_cra="r",
++          mdag="matage -> bmi7 mated -> matage mated -> bmi7
++                sep_unmeas -> mated sep_unmeas -> r")
+Based on the proposed directed acyclic graph (DAG), the analysis model
+outcome and complete record indicator are not independent given
+analysis model covariates. Hence, in general, complete records analysis
+is not valid.
+
+In special cases, depending on the type of analysis model and estimand
+of interest, complete records analysis may still be valid. See, for
+example, Bartlett et al. (2015) (https://doi.org/10.1093/aje/kwv114)
+for further details.
+
+Consider using a different analysis model and/or strategy, e.g.
+multiple imputation.
+
+For example, the analysis model outcome and complete record indicator
+are independent if, in addition to the specified covariates, the
+following sets of variables are included as covariates in the analysis
+model (note that this list is not necessarily exhaustive, particularly
+if your DAG is complex):
+
+mated
+
+c("mated", "sep_unmeas")
+> # For the DAG in the example above, complete records analysis is valid
+> ## if a different set of covariates is used
+> checkCRA(y="bmi7", covs="matage mated", r_cra="r",
++          mdag="matage -> bmi7 mated -> matage mated -> bmi7
++                sep_unmeas -> mated sep_unmeas -> r")
+Based on the proposed directed acyclic graph (DAG), the analysis model
+outcome and complete record indicator are independent given analysis
+model covariates. Hence, complete records analysis is valid.
+> 
+> # Example DAG for which complete records is not valid, but could be valid
+> ## for a different estimand
+> checkCRA(y="bmi7", covs="matage mated", r_cra="r",
++          mdag="matage -> bmi7 mated -> matage mated -> bmi7
++                sep_unmeas -> mated sep_unmeas -> r matage -> bmi3
++                mated -> bmi3 bmi3 -> bmi7 bmi3 -> r")
+Based on the proposed directed acyclic graph (DAG), the analysis model
+outcome and complete record indicator are not independent given
+analysis model covariates. Hence, in general, complete records analysis
+is not valid.
+
+In special cases, depending on the type of analysis model and estimand
+of interest, complete records analysis may still be valid. See, for
+example, Bartlett et al. (2015) (https://doi.org/10.1093/aje/kwv114)
+for further details.
+
+There are no other variables which could be added to the model to make
+the analysis model outcome and complete record indicator conditionally
+independent, without changing the estimand of interest. Consider using
+a different strategy e.g. multiple imputation.
+
+Alternatively, consider whether a different estimand could be of
+interest. For example, the analysis model outcome and complete record
+indicator are independent given each of the following sets of
+variables:
+
+c("bmi3", "mated")
+
+c("bmi3", "matage", "mated")
+
+c("bmi3", "sep_unmeas")
+
+c("bmi3", "matage", "sep_unmeas")
+
+c("bmi3", "mated", "sep_unmeas")
+
+c("bmi3", "matage", "mated", "sep_unmeas")
+> 
+> # Example DAG for which complete records analysis is never valid
+> checkCRA(y="bmi7", covs="matage mated", r_cra="r",
++          mdag="matage -> bmi7 mated -> matage mated -> bmi7
++                sep_unmeas -> mated sep_unmeas -> r bmi7 -> r")
+Based on the proposed directed acyclic graph (DAG), the analysis model
+outcome and complete record indicator are not independent given
+analysis model covariates. Hence, in general, complete records analysis
+is not valid.
+
+In special cases, depending on the type of analysis model and estimand
+of interest, complete records analysis may still be valid. See, for
+example, Bartlett et al. (2015) (https://doi.org/10.1093/aje/kwv114)
+for further details.
+
+There are no other variables which could be added to the model to make
+the analysis model outcome and complete record indicator conditionally
+independent. Consider using a different strategy e.g. multiple
+imputation.
+> 
+> 
+> 
+> cleanEx()
+> nameEx("checkMI")
+> ### * checkMI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: checkMI
+> ### Title: Inspect multiple imputation model
+> ### Aliases: checkMI
+> 
+> ### ** Examples
+> 
+> # Example DAG for which multiple imputation is valid
+> checkMI(dep="bmi7", preds="matage mated pregsize", r_dep="r",
++         mdag="matage -> bmi7 mated -> matage mated -> bmi7
++               sep_unmeas -> mated sep_unmeas -> r pregsize -> bmi7
++               pregsize -> bwt sep_unmeas -> bwt")
+Based on the proposed directed acyclic graph (DAG), the incomplete
+variable and its missingness indicator are independent given imputation
+model predictors. Hence, multiple imputation methods which assume data
+are missing at random are valid in principle.
+> 
+> # Example DAG for which multiple imputation is not valid, due to a collider
+> checkMI(dep="bmi7", preds="matage mated bwt", r_dep="r",
++         mdag="matage -> bmi7 mated -> matage mated -> bmi7
++               sep_unmeas -> mated sep_unmeas -> r pregsize -> bmi7
++               pregsize -> bwt sep_unmeas -> bwt")
+Based on the proposed directed acyclic graph (DAG), the incomplete
+variable and its missingness indicator are not independent given
+imputation model predictors. Hence, multiple imputation methods which
+assume data are missing at random are not valid.
+
+Consider using a different imputation model and/or strategy (e.g.
+not-at-random fully conditional specification).  For example, the
+incomplete variable and its missingness indicator are independent if,
+in addition to the specified predictors, the following sets of
+variables are included as predictors in the imputation model (note that
+this list is not necessarily exhaustive, particularly if your DAG is
+complex):
+
+pregsize
+
+c("pregsize", "sep_unmeas")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("checkModSpec")
+> ### * checkModSpec
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: checkModSpec
+> ### Title: Inspect parametric model specification
+> ### Aliases: checkModSpec
+> 
+> ### ** Examples
+> 
+> # Example (incorrectly) assuming a linear relationship
+> checkModSpec(formula="bmi7~matage+mated+pregsize",
++              family="gaussian(identity)", data=bmi)
+Model mis-specification method: regression of model residuals on a
+fractional polynomial of the fitted values
+
+P-value: 0
+
+A small p-value means the model may be mis-specified. Check the
+specification of each relationship in your model.
+>   ## For the example above, (correctly) assuming a quadratic relationship
+> checkModSpec(formula="bmi7~matage+I(matage^2)+mated+pregsize",
++              family="gaussian(identity)", data=bmi)
+Model mis-specification method: regression of model residuals on a
+fractional polynomial of the fitted values
+
+P-value: 1
+
+A large p-value means there is little evidence of model
+mis-specification.
+> 
+> 
+> 
+> cleanEx()
+> nameEx("descMissData")
+> ### * descMissData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: descMissData
+> ### Title: Lists missing data patterns in the specified dataset
+> ### Aliases: descMissData
+> 
+> ### ** Examples
+> 
+> descMissData(y="bmi7", covs="matage mated", data=bmi)
+  pattern bmi7 matage mated   n pct
+1       1    1      1     1 592  59
+2       2    0      1     1 408  41
+> descMissData(y="bmi7", covs="matage mated pregsize bwt", data=bmi, plot=TRUE)
+  pattern bmi7 matage mated pregsize bwt   n pct
+1       1    1      1     1        1   1 592  59
+2       2    0      1     1        1   1 408  41
+> 
+> 
+> 
+> cleanEx()
+> nameEx("doMImice")
+> ### * doMImice
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: doMImice
+> ### Title: Performs multiple imputation
+> ### Aliases: doMImice
+> 
+> ### ** Examples
+> 
+> # First specify the imputation model as a 'mimod' object
+> ## (suppressing the message)
+> mimod_bmi7 <- checkModSpec(formula="bmi7~matage+I(matage^2)+mated+pregsize",
++                            family="gaussian(identity)",
++                            data=bmi,
++                            message=FALSE)
+> # Save the proposed 'mice' options as a 'miprop' object
+> ## (suppressing the message)
+> miprop <- proposeMI(mimodobj=mimod_bmi7,
++                     data=bmi,
++                     message=FALSE,
++                     plot = FALSE)
+> # Create the set of imputed datasets using the proposed 'mice' options
+> imp <- doMImice(miprop,123)
+Now you have created your multiply imputed datasets, you can perform
+your analysis and pool the results using the 'mice' functions 'with()'
+and 'pool()'
+> 
+> # Additionally, fit the substantive model to each imputed dataset and display
+> ## the pooled results
+> doMImice(miprop, 123, substmod="lm(bmi7 ~ matage + I(matage^2) + mated)")
+Given the substantive model: lm(bmi7 ~ matage + I(matage^2) + mated) ,
+multiple imputation estimates are as follows:
+
+         term   estimate  std.error  statistic       df       p.value
+
+1 (Intercept) 17.6607324 0.07126548 247.816079 233.1668 2.116834e-284
+
+2      matage  1.1504545 0.05230345  21.995769 184.5081  1.863532e-53
+
+3 I(matage^2)  0.8414975 0.03231752  26.038433 257.1270  4.754845e-74
+
+4      mated1 -1.0026194 0.10787751  -9.294054 159.1101  1.094881e-16
+
+       2.5 %     97.5 %
+
+1 17.5203258 17.8011389
+
+2  1.0472648  1.2536442
+
+3  0.7778567  0.9051382
+
+4 -1.2156760 -0.7895629
+> 
+> 
+> 
+> cleanEx()
+> nameEx("exploreDAG")
+> ### * exploreDAG
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: exploreDAG
+> ### Title: Compares data with proposed DAG
+> ### Aliases: exploreDAG
+> 
+> ### ** Examples
+> 
+> exploreDAG(mdag="matage -> bmi7 mated -> matage mated -> bmi7
++                  sep_unmeas -> mated sep_unmeas -> r",
++            data=bmi)
+The proposed directed acyclic graph (DAG) implies the following
+conditional independencies (where, for example, 'X _||_ Y | Z' should
+be read as 'X is independent of Y conditional on Z'). Note that
+variable names are abbreviated:
+
+bmi7 _||_ r | sp_n
+
+bmi7 _||_ r | matd
+
+bmi7 _||_ sp_n | matd
+
+matg _||_ r | sp_n
+
+matg _||_ r | matd
+
+matg _||_ sp_n | matd
+
+matd _||_ r | sp_n
+
+These (conditional) independence statements are explored below using
+the canonical correlations approach for mixed data. See
+??dagitty::localTests for further details.  Results are shown for
+variables that are fully observed in the specified dataset. The null
+hypothesis is that the stated variables are (conditionally)
+independent.
+
+                        estimate  p.value        2.5%      97.5%
+
+matage _||_ r | mated 0.02998323 0.343547 -0.03206946 0.09180567
+
+Interpretation: A small p-value means the stated variables may not be
+(conditionally) independent in the specified dataset: your data may not
+be consistent with the proposed DAG. A large p-value means there is
+little evidence of inconsistency between your data and the proposed
+DAG.
+
+Note that these results assume that relationships between variables are
+linear. Consider exploring the specification of each relationship in
+your model.  Also consider whether it is valid and possible to explore
+relationships between partially observed variables using the observed
+data, e.g. avoiding perfect prediction.
+> 
+> 
+> 
+> cleanEx()
+> nameEx("midocVignette")
+> ### * midocVignette
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: midocVignette
+> ### Title: Run an interactive vignette for the midoc package
+> ### Aliases: midocVignette
+> 
+> ### ** Examples
+> 
+> ## Don't show: 
+> if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)({ # examplesIf
++ ## End(Don't show)
++ # Run the interactive vignette
++ midocVignette()
++ ## Don't show: 
++ }) # examplesIf
+> ## End(Don't show)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("proposeMI")
+> ### * proposeMI
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: proposeMI
+> ### Title: Suggests multiple imputation options
+> ### Aliases: proposeMI
+> 
+> ### ** Examples
+> 
+> # First specify each imputation model as a 'mimod' object
+> ## (suppressing the message)
+> mimod_bmi7 <- checkModSpec(formula="bmi7~matage+I(matage^2)+mated+pregsize",
++                            family="gaussian(identity)",
++                            data=bmi,
++                            message=FALSE)
+> mimod_pregsize <- checkModSpec(
++                            formula="pregsize~bmi7+matage+I(matage^2)+mated",
++                            family="binomial(logit)",
++                            data=bmi,
++                            message=FALSE)
+> 
+> # Display the proposed 'mice' options (suppressing the plot prompt)
+> ## When specifying a single imputation model
+> proposeMI(mimodobj=mimod_bmi7,
++           data=bmi,
++           plotprompt = FALSE)
+Based on your proposed imputation model and dataset, your mice() call
+should be as follows:
+
+mice(data = bmi , # You may need to specify a subset of the columns in
+your dataset
+
+m = 41 , # You should use at least this number of imputations based on
+the proportion of complete records in your dataset
+
+method = c( 'norm' ) # Specify a method for each incomplete variable.
+If displayed, the box-and-whisker plots can be used to inform your
+choice of method(s): for example, if the imputation model does not
+predict extreme values appropriately, consider a different imputation
+model/method e.g. PMM. Note the distribution of imputed and observed
+values is displayed for numeric variables only. The distribution may
+differ if data are missing at random or missing not at random. If you
+suspect data are missing not at random, the plots can also inform your
+choice of sensitivity parameter.
+
+formulas = formulas_list , # Note that you do not additionally need to
+specify a 'predmatrix'
+
+# The formulas_list specifies the conditional imputation models, which
+are as follows:
+
+'bmi7 ~ matage + I(matage^2) + mated + pregsize'
+
+maxit = 10 , # If you have more than one incomplete variable, you
+should check this number of iterations is sufficient by inspecting the
+trace plots, if displayed. Consider increasing the number of iterations
+if there is a trend that does not stabilise by the 10th iteration. Note
+that iteration is not performed when only one variable is partially
+observed.
+
+printFlag = FALSE , # Change to printFlag=TRUE to display the history
+as imputation is performed
+
+seed = NA) # It is good practice to choose a seed so your results are
+reproducible
+> ## When specifying more than one imputation model (suppressing the plots)
+> proposeMI(mimodobj=list(mimod_bmi7,mimod_pregsize),
++           data=bmi,
++           plot = FALSE)
+Based on your proposed imputation model and dataset, your mice() call
+should be as follows:
+
+mice(data = bmi , # You may need to specify a subset of the columns in
+your dataset
+
+m = 41 , # You should use at least this number of imputations based on
+the proportion of complete records in your dataset
+
+method = c( 'norm', 'logreg' ) # Specify a method for each incomplete
+variable.  If displayed, the box-and-whisker plots can be used to
+inform your choice of method(s): for example, if the imputation model
+does not predict extreme values appropriately, consider a different
+imputation model/method e.g. PMM. Note the distribution of imputed and
+observed values is displayed for numeric variables only. The
+distribution may differ if data are missing at random or missing not at
+random. If you suspect data are missing not at random, the plots can
+also inform your choice of sensitivity parameter.
+
+formulas = formulas_list , # Note that you do not additionally need to
+specify a 'predmatrix'
+
+# The formulas_list specifies the conditional imputation models, which
+are as follows:
+
+'bmi7 ~ matage + I(matage^2) + mated + pregsize'
+
+'pregsize ~ bmi7 + matage + I(matage^2) + mated'
+
+maxit = 10 , # If you have more than one incomplete variable, you
+should check this number of iterations is sufficient by inspecting the
+trace plots, if displayed. Consider increasing the number of iterations
+if there is a trend that does not stabilise by the 10th iteration. Note
+that iteration is not performed when only one variable is partially
+observed.
+
+printFlag = FALSE , # Change to printFlag=TRUE to display the history
+as imputation is performed
+
+seed = NA) # It is good practice to choose a seed so your results are
+reproducible
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  39.2 3.68 55.2 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

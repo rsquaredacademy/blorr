@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: Tools for Developing Binary Logistic Regression Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+<h1> Tools for Developing Binary Logistic Regression Models
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;blorr&rsquo; version 0.3.0</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="bank_marketing.html">bank_marketing</a></td>
+<td>Bank marketing data set</td></tr>
+<tr><td style="width: 25%;"><a href="blorr.html">blorr</a></td>
+<td>'blorr' package</td></tr>
+<tr><td style="width: 25%;"><a href="blr_bivariate_analysis.html">blr_bivariate_analysis</a></td>
+<td>Bivariate analysis</td></tr>
+<tr><td style="width: 25%;"><a href="blr_bivariate_analysis.html">blr_bivariate_analysis.default</a></td>
+<td>Bivariate analysis</td></tr>
+<tr><td style="width: 25%;"><a href="blr_coll_diag.html">blr_coll_diag</a></td>
+<td>Collinearity diagnostics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_confusion_matrix.html">blr_confusion_matrix</a></td>
+<td>Confusion matrix</td></tr>
+<tr><td style="width: 25%;"><a href="blr_confusion_matrix.html">blr_confusion_matrix.default</a></td>
+<td>Confusion matrix</td></tr>
+<tr><td style="width: 25%;"><a href="blr_decile_capture_rate.html">blr_decile_capture_rate</a></td>
+<td>Event rate by decile</td></tr>
+<tr><td style="width: 25%;"><a href="blr_decile_lift_chart.html">blr_decile_lift_chart</a></td>
+<td>Decile lift chart</td></tr>
+<tr><td style="width: 25%;"><a href="blr_coll_diag.html">blr_eigen_cindex</a></td>
+<td>Collinearity diagnostics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_gains_table.html">blr_gains_table</a></td>
+<td>Gains table &amp; lift chart</td></tr>
+<tr><td style="width: 25%;"><a href="blr_gini_index.html">blr_gini_index</a></td>
+<td>Gini index</td></tr>
+<tr><td style="width: 25%;"><a href="blr_ks_chart.html">blr_ks_chart</a></td>
+<td>KS chart</td></tr>
+<tr><td style="width: 25%;"><a href="blr_launch_app.html">blr_launch_app</a></td>
+<td>Launch shiny app</td></tr>
+<tr><td style="width: 25%;"><a href="blr_linktest.html">blr_linktest</a></td>
+<td>Model specification error</td></tr>
+<tr><td style="width: 25%;"><a href="blr_lorenz_curve.html">blr_lorenz_curve</a></td>
+<td>Lorenz curve</td></tr>
+<tr><td style="width: 25%;"><a href="blr_model_fit_stats.html">blr_model_fit_stats</a></td>
+<td>Model fit statistics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_multi_model_fit_stats.html">blr_multi_model_fit_stats</a></td>
+<td>Multi model fit statistics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_multi_model_fit_stats.html">blr_multi_model_fit_stats.default</a></td>
+<td>Multi model fit statistics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_pairs.html">blr_pairs</a></td>
+<td>Concordant &amp; discordant pairs</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_c_fitted.html">blr_plot_c_fitted</a></td>
+<td>CI Displacement C vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_c_leverage.html">blr_plot_c_leverage</a></td>
+<td>CI Displacement C vs leverage plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_deviance_fitted.html">blr_plot_deviance_fitted</a></td>
+<td>Deviance vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_deviance_residual.html">blr_plot_deviance_residual</a></td>
+<td>Deviance residual values</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_dfbetas_panel.html">blr_plot_dfbetas_panel</a></td>
+<td>DFBETAs panel</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_c.html">blr_plot_diag_c</a></td>
+<td>CI Displacement C plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_cbar.html">blr_plot_diag_cbar</a></td>
+<td>CI Displacement CBAR plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_difchisq.html">blr_plot_diag_difchisq</a></td>
+<td>Delta chisquare plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_difdev.html">blr_plot_diag_difdev</a></td>
+<td>Delta deviance plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_fit.html">blr_plot_diag_fit</a></td>
+<td>Fitted values diagnostics plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_influence.html">blr_plot_diag_influence</a></td>
+<td>Influence diagnostics plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_diag_leverage.html">blr_plot_diag_leverage</a></td>
+<td>Leverage diagnostics plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_difchisq_fitted.html">blr_plot_difchisq_fitted</a></td>
+<td>Delta chi square vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_difchisq_leverage.html">blr_plot_difchisq_leverage</a></td>
+<td>Delta chi square vs leverage plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_difdev_fitted.html">blr_plot_difdev_fitted</a></td>
+<td>Delta deviance vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_difdev_leverage.html">blr_plot_difdev_leverage</a></td>
+<td>Delta deviance vs leverage plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_fitted_leverage.html">blr_plot_fitted_leverage</a></td>
+<td>Fitted values vs leverage plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_leverage.html">blr_plot_leverage</a></td>
+<td>Leverage plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_leverage_fitted.html">blr_plot_leverage_fitted</a></td>
+<td>Leverage vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_pearson_residual.html">blr_plot_pearson_residual</a></td>
+<td>Residual values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_plot_residual_fitted.html">blr_plot_residual_fitted</a></td>
+<td>Residual vs fitted values plot</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_dcrate_data.html">blr_prep_dcrate_data</a></td>
+<td>Decile capture rate data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_kschart_data.html">blr_prep_ksannotate_x</a></td>
+<td>KS Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_kschart_data.html">blr_prep_ksannotate_y</a></td>
+<td>KS Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_kschart_data.html">blr_prep_kschart_data</a></td>
+<td>KS Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_kschart_data.html">blr_prep_kschart_line</a></td>
+<td>KS Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_kschart_data.html">blr_prep_kschart_stat</a></td>
+<td>KS Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_lchart_gmean.html">blr_prep_lchart_data</a></td>
+<td>Lift Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_lchart_gmean.html">blr_prep_lchart_gmean</a></td>
+<td>Lift Chart data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_lorenz_data.html">blr_prep_lorenz_data</a></td>
+<td>Lorenz curve data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_prep_roc_data.html">blr_prep_roc_data</a></td>
+<td>ROC curve data</td></tr>
+<tr><td style="width: 25%;"><a href="blr_regress.html">blr_regress</a></td>
+<td>Binary logistic regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_regress.html">blr_regress.glm</a></td>
+<td>Binary logistic regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_residual_diagnostics.html">blr_residual_diagnostics</a></td>
+<td>Residual diagnostics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_roc_curve.html">blr_roc_curve</a></td>
+<td>ROC curve</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_adj_count.html">blr_rsq_adj_count</a></td>
+<td>Adjusted count R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_count.html">blr_rsq_count</a></td>
+<td>Count R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_cox_snell.html">blr_rsq_cox_snell</a></td>
+<td>Cox Snell R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_effron.html">blr_rsq_effron</a></td>
+<td>Effron R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_mcfadden.html">blr_rsq_mcfadden</a></td>
+<td>McFadden's R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_mcfadden_adj.html">blr_rsq_mcfadden_adj</a></td>
+<td>McFadden's adjusted R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_mckelvey_zavoina.html">blr_rsq_mckelvey_zavoina</a></td>
+<td>McKelvey Zavoina R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_rsq_nagelkerke.html">blr_rsq_nagelkerke</a></td>
+<td>Cragg-Uhler (Nagelkerke) R2</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment.html">blr_segment</a></td>
+<td>Event rate</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment.html">blr_segment.default</a></td>
+<td>Event rate</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment_dist.html">blr_segment_dist</a></td>
+<td>Response distribution</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment_twoway.html">blr_segment_twoway</a></td>
+<td>Two way event rate</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment_twoway.html">blr_segment_twoway.default</a></td>
+<td>Two way event rate</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_backward.html">blr_step_aic_backward</a></td>
+<td>Stepwise AIC backward elimination</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_backward.html">blr_step_aic_backward.default</a></td>
+<td>Stepwise AIC backward elimination</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_both.html">blr_step_aic_both</a></td>
+<td>Stepwise AIC selection</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_forward.html">blr_step_aic_forward</a></td>
+<td>Stepwise AIC forward selection</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_forward.html">blr_step_aic_forward.default</a></td>
+<td>Stepwise AIC forward selection</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_backward.html">blr_step_p_backward</a></td>
+<td>Stepwise backward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_backward.html">blr_step_p_backward.default</a></td>
+<td>Stepwise backward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_both.html">blr_step_p_both</a></td>
+<td>Stepwise regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_both.html">blr_step_p_both.default</a></td>
+<td>Stepwise regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_forward.html">blr_step_p_forward</a></td>
+<td>Stepwise forward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_forward.html">blr_step_p_forward.default</a></td>
+<td>Stepwise forward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_test_hosmer_lemeshow.html">blr_test_hosmer_lemeshow</a></td>
+<td>Hosmer lemeshow test</td></tr>
+<tr><td style="width: 25%;"><a href="blr_test_lr.html">blr_test_lr</a></td>
+<td>Likelihood ratio test</td></tr>
+<tr><td style="width: 25%;"><a href="blr_test_lr.html">blr_test_lr.default</a></td>
+<td>Likelihood ratio test</td></tr>
+<tr><td style="width: 25%;"><a href="blr_coll_diag.html">blr_vif_tol</a></td>
+<td>Collinearity diagnostics</td></tr>
+<tr><td style="width: 25%;"><a href="blr_woe_iv.html">blr_woe_iv</a></td>
+<td>WoE &amp; IV</td></tr>
+<tr><td style="width: 25%;"><a href="blr_woe_iv_stats.html">blr_woe_iv_stats</a></td>
+<td>Multi variable WOE &amp; IV</td></tr>
+<tr><td style="width: 25%;"><a href="hsb2.html">hsb2</a></td>
+<td>High School and Beyond Data Set</td></tr>
+<tr><td style="width: 25%;"><a href="blr_gains_table.html">plot.blr_gains_table</a></td>
+<td>Gains table &amp; lift chart</td></tr>
+<tr><td style="width: 25%;"><a href="blr_segment_dist.html">plot.blr_segment_dist</a></td>
+<td>Response distribution</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_backward.html">plot.blr_step_aic_backward</a></td>
+<td>Stepwise AIC backward elimination</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_both.html">plot.blr_step_aic_both</a></td>
+<td>Stepwise AIC selection</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_aic_forward.html">plot.blr_step_aic_forward</a></td>
+<td>Stepwise AIC forward selection</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_backward.html">plot.blr_step_p_backward</a></td>
+<td>Stepwise backward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_both.html">plot.blr_step_p_both</a></td>
+<td>Stepwise regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_step_p_forward.html">plot.blr_step_p_forward</a></td>
+<td>Stepwise forward regression</td></tr>
+<tr><td style="width: 25%;"><a href="blr_woe_iv.html">plot.blr_woe_iv</a></td>
+<td>WoE &amp; IV</td></tr>
+<tr><td style="width: 25%;"><a href="stepwise.html">stepwise</a></td>
+<td>Dummy Data Set</td></tr>
+</table>
+</div></body></html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Sectioning a function</title>
+<style type="text/css">
+/**
+ * Prism.s theme ported from highlight.js's xcode style
+ */
+pre code {
+  padding: 1em;
+}
+.token.comment {
+  color: #007400;
+}
+.token.punctuation {
+  color: #999;
+}
+.token.tag,
+.token.selector {
+  color: #aa0d91;
+}
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #1c00cf;
+}
+.token.property,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #c41a16;
+}
+.token.inserted {
+  background-color: #ccffd8;
+}
+.token.deleted {
+  background-color: #ffebe9;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #9a6e3a;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #836c28;
+}
+.token.function,
+.token.class-name {
+  color: #DD4A68;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #5c2699;
+}
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+</style>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Sectioning a function</h1></div>
+<div class="author"><h2>Søren Højsgaard</h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<h2 id="section-a-functions-domain-with-section-fun">Section a functions domain: with <code>section_fun()</code></h2>
+<p>The function <code>section_fun</code> is used to create a new function that is a section of the original function. The section is defined by fixing some of the arguments of the original function. The new function is defined on the remaining arguments.</p>
+<p>For example, let \(f(x,y)=x+y\). Then \(f_x(y)=f(10, y)\) is a
+section of \(f\) to be a function of \(y\) alone.</p>
+<p>More generally, let \(E\) be a subset of the cartesian product \(X \times Y\) where \(X\)
+and \(Y\) are some sets. Consider a function \(f(x,y)\) defined on
+\(E\). Then for any \(x \in X\), the section of \(E\) defined by \(x\)
+(denoted \(E_x\)) is the set of \(y\)’s in \(Y\) such that \((x, y)\) is in
+\(E\), i.e.
+$$
+E_x = { y \in Y | (x,y) \in E}
+$$</p>
+<p>Correspondingly, the section of \(f(x,y)\) defined by \(x\) is the
+function \(f_x\) defined on \(E_x\) given by \(f_x(y)=f(x,y)\).</p>
+<h2 id="the-section-fun-function-in-doby">The <code>section_fun</code> function in <code>doBy</code></h2>
+<p>The function <code>section_fun</code> is used to create a new function that is a section of the original function. The section is defined by fixing some of the arguments of the original function. The new function is defined on the remaining arguments.
+There are the following approaches:</p>
+<ol>
+<li>insert the section values as default values in the function definition (default),</li>
+<li>insert the section values in the function body,</li>
+<li>store the section values in an auxillary environment.</li>
+</ol>
+<p>Consider this function:</p>
+<pre><code class="language-r">fun  &lt;- function(a, b, c=4, d=9){
+    a + b + c + d
+}
+</code></pre>
+<pre><code class="language-r">fun_def &lt;- section_fun(fun, list(b=7, d=10))
+fun_def
+#&gt; function (a, c = 4, b = 7, d = 10) 
+#&gt; {
+#&gt;     a + b + c + d
+#&gt; }
+fun_body &lt;- section_fun(fun, list(b=7, d=10), method=&quot;sub&quot;)
+fun_body
+#&gt; function (a, c = 4) 
+#&gt; {
+#&gt;     b = 7
+#&gt;     d = 10
+#&gt;     a + b + c + d
+#&gt; }
+fun_env &lt;- section_fun(fun, list(b=7, d=10), method = &quot;env&quot;)
+fun_env
+#&gt; function (a, c = 4) 
+#&gt; {
+#&gt;     . &lt;- &quot;use get_section(function_name) to see section&quot;
+#&gt;     . &lt;- &quot;use get_fun(function_name) to see original function&quot;
+#&gt;     args &lt;- arg_getter()
+#&gt;     do.call(fun, args)
+#&gt; }
+#&gt; &lt;environment: 0x5932076e2240&gt;
+</code></pre>
+<p>In the last case, we can see the section and the original function definition as:</p>
+<pre><code class="language-r">get_section(fun_env) 
+#&gt; $b
+#&gt; [1] 7
+#&gt; 
+#&gt; $d
+#&gt; [1] 10
+## same as: attr(fun_env, &quot;arg_env&quot;)$args 
+get_fun(fun_env) 
+#&gt; &lt;srcref: file &quot;&quot; chars 1:9 to 3:1&gt;
+## same as: environment(fun_env)$fun
+</code></pre>
+<p>We get:</p>
+<pre><code class="language-r">fun(a=10, b=7, c=5, d=10)
+#&gt; [1] 32
+fun_def(a=10, c=5)
+#&gt; [1] 32
+fun_body(a=10, c=5)
+#&gt; [1] 32
+fun_env(a=10, c=5)
+#&gt; [1] 32
+</code></pre>
+<h2 id="example-benchmarking">Example: benchmarking</h2>
+<p>Consider a simple task: Creating and inverting Toeplitz matrices for increasing dimensions:</p>
+<pre><code class="language-r">n &lt;- 4
+toeplitz(1:n)
+#&gt;      [,1] [,2] [,3] [,4]
+#&gt; [1,]    1    2    3    4
+#&gt; [2,]    2    1    2    3
+#&gt; [3,]    3    2    1    2
+#&gt; [4,]    4    3    2    1
+</code></pre>
+<p>An implementation is</p>
+<pre><code class="language-r">inv_toep &lt;- function(n) {
+    solve(toeplitz(1:n))
+}
+inv_toep(4)
+#&gt;      [,1] [,2] [,3] [,4]
+#&gt; [1,] -0.4  0.5  0.0  0.1
+#&gt; [2,]  0.5 -1.0  0.5  0.0
+#&gt; [3,]  0.0  0.5 -1.0  0.5
+#&gt; [4,]  0.1  0.0  0.5 -0.4
+</code></pre>
+<p>We can benchmark timing for different values of \(n\) as</p>
+<pre><code class="language-r">library(microbenchmark)
+microbenchmark(
+    inv_toep(4), inv_toep(8), inv_toep(16),
+    inv_toep(32), inv_toep(64),
+    times=5
+)
+#&gt; Unit: microseconds
+#&gt;          expr   min    lq  mean median    uq    max neval cld
+#&gt;   inv_toep(4)  13.9  14.1  14.5   14.2  14.3   15.9     5   a
+#&gt;   inv_toep(8)  16.5  17.3  17.8   17.4  18.2   19.4     5   a
+#&gt;  inv_toep(16)  22.6  22.8  25.5   23.5  24.6   34.1     5   a
+#&gt;  inv_toep(32)  51.3  51.5 399.8   52.1  56.8 1787.4     5   a
+#&gt;  inv_toep(64) 156.8 159.4 164.2  162.4 164.4  178.2     5   a
+</code></pre>
+<p>However, it is tedious (and hence error prone) to write these function calls.</p>
+<p>A programmatic approach using \code{section_fun} is as follows: First create a list of sectioned functions:</p>
+<pre><code class="language-r">n.vec  &lt;- c(3, 4, 5)
+fun_list &lt;- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni))}
+                  )
+</code></pre>
+<p>We can inspect and evaluate each / all functions as:</p>
+<pre><code class="language-r">fun_list[[1]]
+#&gt; function (n = 3) 
+#&gt; {
+#&gt;     solve(toeplitz(1:n))
+#&gt; }
+fun_list[[1]]()
+#&gt;        [,1] [,2]   [,3]
+#&gt; [1,] -0.375  0.5  0.125
+#&gt; [2,]  0.500 -1.0  0.500
+#&gt; [3,]  0.125  0.5 -0.375
+</code></pre>
+<p>To use the list of functions in connection with microbenchmark we bquote all functions using</p>
+<pre><code class="language-r">bquote_list &lt;- function(fnlist){
+    lapply(fnlist, function(g) {
+        bquote(.(g)())
+    }
+    )
+}
+</code></pre>
+<p>We get:</p>
+<pre><code class="language-r">bq_fun_list &lt;- bquote_list(fun_list)
+bq_fun_list[[1]]
+#&gt; (function (n = 3) 
+#&gt; {
+#&gt;     solve(toeplitz(1:n))
+#&gt; })()
+## Evaluate one:
+eval(bq_fun_list[[1]])
+#&gt;        [,1] [,2]   [,3]
+#&gt; [1,] -0.375  0.5  0.125
+#&gt; [2,]  0.500 -1.0  0.500
+#&gt; [3,]  0.125  0.5 -0.375
+## Evaluate all:
+## lapply(bq_fun_list, eval)
+</code></pre>
+<p>To use microbenchmark we must name the elements of the list:</p>
+<pre><code class="language-r">names(bq_fun_list) &lt;- n.vec
+microbenchmark(
+  list  = bq_fun_list,
+  times = 5
+)
+#&gt; Unit: microseconds
+#&gt;  expr  min   lq mean median   uq  max neval cld
+#&gt;     3 13.2 13.3 28.2   13.5 13.9 87.0     5   a
+#&gt;     4 13.2 13.6 16.7   13.8 17.9 25.0     5   a
+#&gt;     5 13.6 14.2 16.8   14.9 17.6 23.5     5   a
+</code></pre>
+<p>Running the code below provides a benchmark of the different ways of sectioning in terms of speed.</p>
+<pre><code class="language-r">n.vec  &lt;- seq(20, 80, by=20)
+fun_def &lt;- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method=&quot;def&quot;)}
+                  )
+fun_body &lt;- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method=&quot;sub&quot;)}
+                  )
+fun_env &lt;- lapply(n.vec,
+                  function(ni){
+                      section_fun(inv_toep, list(n=ni), method=&quot;env&quot;)}
+                  )
+
+bq_fun_list &lt;- bquote_list(c(fun_def, fun_body, fun_env))
+names(bq_fun_list) &lt;- paste0(rep(c(&quot;def&quot;, &quot;body&quot;, &quot;env&quot;), each=length(n.vec)), rep(n.vec, 3))
+
+mb &lt;- microbenchmark(
+  list  = bq_fun_list,
+  times = 2
+)
+</code></pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+</body>
+</html>
