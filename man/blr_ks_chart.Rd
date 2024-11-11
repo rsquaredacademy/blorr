@@ -41,8 +41,6 @@ blr_ks_chart(gt)
 
 }
 \references{
-\doi{doi.org/10.1198/tast.2009.08210}
-
 \url{https://pubmed.ncbi.nlm.nih.gov/843576/}
 }
 \seealso{

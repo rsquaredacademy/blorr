@@ -15,6 +15,7 @@ See the README on
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://blorr.rsquaredacademy.com/}
   \item \url{https://github.com/rsquaredacademy/blorr}
   \item Report bugs at \url{https://github.com/rsquaredacademy/blorr/issues}
 }
