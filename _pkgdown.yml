@@ -1,4 +1,6 @@
 url: https://blorr.rsquaredacademy.com
+template:
+  bootstrap: 5
 
 authors:
   Aravind Hebbali:
@@ -6,11 +8,7 @@ authors:
 
 templates:
   params:
-    bootswatch: cosmo
-    ganalytics: UA-57270671-33
-    docsearch:
-      api_key:
-      index_name: blorr
+    bootswatch: cerulean 
 
 navbar:
   title: "blorr"
@@ -34,13 +32,16 @@ navbar:
    - icon: fa-github
      href: https://github.com/rsquaredacademy/blorr
 
-
 home:
   links:
-  - text: Learn more
-    href: https://www.rsquaredacademy.com
-  - text: Try shiny app
-    href: https://www.rsquaredcomputing.com/shiny/blorr/
+    - text: Our R packages
+      href: https://pkgs.rsquaredacademy.com
+    - text: Read our blog
+      href: https://blog.rsquaredacademy.com
+    - text: Our ebooks
+      href: https://ebooks.rsquaredacademy.com
+    - text: Online courses
+      href: https://www.rsquaredacademy.com
 
 reference:
 - title: Shiny App 
