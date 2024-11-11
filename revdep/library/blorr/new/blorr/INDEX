@@ -1,0 +1,87 @@
+bank_marketing          Bank marketing data set
+blr_bivariate_analysis
+                        Bivariate analysis
+blr_coll_diag           Collinearity diagnostics
+blr_confusion_matrix    Confusion matrix
+blr_decile_capture_rate
+                        Event rate by decile
+blr_decile_lift_chart   Decile lift chart
+blr_gains_table         Gains table & lift chart
+blr_gini_index          Gini index
+blr_ks_chart            KS chart
+blr_launch_app          Launch shiny app
+blr_linktest            Model specification error
+blr_lorenz_curve        Lorenz curve
+blr_model_fit_stats     Model fit statistics
+blr_multi_model_fit_stats
+                        Multi model fit statistics
+blr_pairs               Concordant & discordant pairs
+blr_plot_c_fitted       CI Displacement C vs fitted values plot
+blr_plot_c_leverage     CI Displacement C vs leverage plot
+blr_plot_deviance_fitted
+                        Deviance vs fitted values plot
+blr_plot_deviance_residual
+                        Deviance residual values
+blr_plot_dfbetas_panel
+                        DFBETAs panel
+blr_plot_diag_c         CI Displacement C plot
+blr_plot_diag_cbar      CI Displacement CBAR plot
+blr_plot_diag_difchisq
+                        Delta chisquare plot
+blr_plot_diag_difdev    Delta deviance plot
+blr_plot_diag_fit       Fitted values diagnostics plot
+blr_plot_diag_influence
+                        Influence diagnostics plot
+blr_plot_diag_leverage
+                        Leverage diagnostics plot
+blr_plot_difchisq_fitted
+                        Delta chi square vs fitted values plot
+blr_plot_difchisq_leverage
+                        Delta chi square vs leverage plot
+blr_plot_difdev_fitted
+                        Delta deviance vs fitted values plot
+blr_plot_difdev_leverage
+                        Delta deviance vs leverage plot
+blr_plot_fitted_leverage
+                        Fitted values vs leverage plot
+blr_plot_leverage       Leverage plot
+blr_plot_leverage_fitted
+                        Leverage vs fitted values plot
+blr_plot_pearson_residual
+                        Residual values plot
+blr_plot_residual_fitted
+                        Residual vs fitted values plot
+blr_prep_dcrate_data    Decile capture rate data
+blr_prep_kschart_data   KS Chart data
+blr_prep_lchart_gmean   Lift Chart data
+blr_prep_lorenz_data    Lorenz curve data
+blr_prep_roc_data       ROC curve data
+blr_regress             Binary logistic regression
+blr_residual_diagnostics
+                        Residual diagnostics
+blr_roc_curve           ROC curve
+blr_rsq_adj_count       Adjusted count R2
+blr_rsq_count           Count R2
+blr_rsq_cox_snell       Cox Snell R2
+blr_rsq_effron          Effron R2
+blr_rsq_mcfadden        McFadden's R2
+blr_rsq_mcfadden_adj    McFadden's adjusted R2
+blr_rsq_mckelvey_zavoina
+                        McKelvey Zavoina R2
+blr_rsq_nagelkerke      Cragg-Uhler (Nagelkerke) R2
+blr_segment             Event rate
+blr_segment_dist        Response distribution
+blr_segment_twoway      Two way event rate
+blr_step_aic_backward   Stepwise AIC backward elimination
+blr_step_aic_both       Stepwise AIC selection
+blr_step_aic_forward    Stepwise AIC forward selection
+blr_step_p_backward     Stepwise backward regression
+blr_step_p_both         Stepwise regression
+blr_step_p_forward      Stepwise forward regression
+blr_test_hosmer_lemeshow
+                        Hosmer lemeshow test
+blr_test_lr             Likelihood ratio test
+blr_woe_iv              WoE & IV
+blr_woe_iv_stats        Multi variable WOE & IV
+hsb2                    High School and Beyond Data Set
+stepwise                Dummy Data Set

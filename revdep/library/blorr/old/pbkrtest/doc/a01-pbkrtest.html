@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>01 - Introduction to ‘pbkrtest’</title>
+<style type="text/css">
+/**
+ * Prism.s theme ported from highlight.js's xcode style
+ */
+pre code {
+  padding: 1em;
+}
+.token.comment {
+  color: #007400;
+}
+.token.punctuation {
+  color: #999;
+}
+.token.tag,
+.token.selector {
+  color: #aa0d91;
+}
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+  color: #1c00cf;
+}
+.token.property,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
+  color: #c41a16;
+}
+.token.inserted {
+  background-color: #ccffd8;
+}
+.token.deleted {
+  background-color: #ffebe9;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #9a6e3a;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #836c28;
+}
+.token.function,
+.token.class-name {
+  color: #DD4A68;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #5c2699;
+}
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+</style>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>01 - Introduction to ‘pbkrtest’</h1></div>
+<div class="author"><h2>Søren Højsgaard and Ulrich Halekoh</h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<pre><code>## Loading required package: pbkrtest
+</code></pre>
+<pre><code>## Loading required package: lme4
+</code></pre>
+<pre><code>## Loading required package: Matrix
+</code></pre>
+<p><strong>Package version: 0.5.3</strong></p>
+<h1 id="introduction">Introduction</h1>
+<p>The \code{shoes} data is a list of two vectors, giving the wear of
+shoes of materials A and B for one foot each of ten boys.</p>
+<pre><code class="language-r">data(shoes, package=&quot;MASS&quot;)
+shoes
+</code></pre>
+<pre><code>## $A
+##  [1] 13.2  8.2 10.9 14.3 10.7  6.6  9.5 10.8  8.8 13.3
+## 
+## $B
+##  [1] 14.0  8.8 11.2 14.2 11.8  6.4  9.8 11.3  9.3 13.6
+</code></pre>
+<p>A plot  reveals that boys wear their shoes differently.</p>
+<pre><code class="language-r">plot(A ~ 1, data=shoes, col=&quot;red&quot;,lwd=2, pch=1, ylab=&quot;wear&quot;, xlab=&quot;boy&quot;)
+points(B ~ 1, data=shoes, col=&quot;blue&quot;, lwd=2, pch=2)
+points(I((A + B) / 2) ~ 1, data=shoes, pch=&quot;-&quot;, lwd=2)
+</code></pre>
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-3" /></p>
+<p>One option for testing the effect of materials is to make a paired
+\(t\)–test, e.g.\ as:</p>
+<pre><code class="language-r">r1 &lt;- t.test(shoes$A, shoes$B, paired=T)
+r1 |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic p.value parameter conf.low conf.high method     alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
+## 1    -0.41     -3.35 0.00854         9   -0.687    -0.133 Paired t-… two.sided
+</code></pre>
+<p>To work with data in a mixed model setting we create a dataframe, and
+for later use we also create an imbalanced version of data:</p>
+<pre><code class="language-r">boy &lt;- rep(1:10, 2)
+boyf&lt;- factor(letters[boy])
+material &lt;- factor(c(rep(&quot;A&quot;, 10), rep(&quot;B&quot;, 10)))
+## Balanced data:
+shoe.bal &lt;- data.frame(wear=unlist(shoes), boy=boy, boyf=boyf, material=material)
+head(shoe.bal)
+</code></pre>
+<pre><code>##    wear boy boyf material
+## A1 13.2   1    a        A
+## A2  8.2   2    b        A
+## A3 10.9   3    c        A
+## A4 14.3   4    d        A
+## A5 10.7   5    e        A
+## A6  6.6   6    f        A
+</code></pre>
+<pre><code class="language-r">## Imbalanced data; delete (boy=1, material=1) and (boy=2, material=b)
+shoe.imbal &lt;-  shoe.bal[-c(1, 12),]
+</code></pre>
+<p>We fit models to the two datasets:</p>
+<pre><code class="language-r">lmm1.bal  &lt;- lmer( wear ~ material + (1|boyf), data=shoe.bal)
+lmm0.bal  &lt;- update(lmm1.bal, .~. - material)
+lmm1.imbal  &lt;- lmer(wear ~ material + (1|boyf), data=shoe.imbal)
+lmm0.imbal  &lt;- update(lmm1.imbal, .~. - material)
+</code></pre>
+<p>The asymptotic likelihood ratio test shows stronger significance than
+the \(t\)–test:</p>
+<pre><code class="language-r">anova(lmm1.bal, lmm0.bal, test=&quot;Chisq&quot;)  |&gt; tidy()
+</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)
+</code></pre>
+<pre><code>## # A tibble: 2 × 9
+##   term      npar   AIC   BIC logLik deviance statistic    df  p.value
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;
+## 1 lmm0.bal     3  67.9  70.9  -31.0     61.9     NA       NA NA      
+## 2 lmm1.bal     4  61.8  65.8  -26.9     53.8      8.09     1  0.00445
+</code></pre>
+<pre><code class="language-r">anova(lmm1.imbal, lmm0.imbal, test=&quot;Chisq&quot;)  |&gt; tidy()
+</code></pre>
+<pre><code>## refitting model(s) with ML (instead of REML)
+</code></pre>
+<pre><code>## # A tibble: 2 × 9
+##   term        npar   AIC   BIC logLik deviance statistic    df p.value
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 lmm0.imbal     3  63.9  66.5  -28.9     57.9     NA       NA NA     
+## 2 lmm1.imbal     4  60.8  64.3  -26.4     52.8      5.09     1  0.0240
+</code></pre>
+<h1 id="kenward-roger-approach">Kenward–Roger approach</h1>
+<p>The Kenward–Roger approximation is exact in certain balanced designs in the
+sense that the approximation produces the same result as the paired \(t\)–test.</p>
+<pre><code class="language-r">kr.bal &lt;- KRmodcomp(lmm1.bal, lmm0.bal)
+kr.bal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   type   stat   ndf   ddf p.value
+##   &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest  11.2     1  9.00 0.00854
+</code></pre>
+<pre><code class="language-r">summary(kr.bal) |&gt; tidy() 
+</code></pre>
+<pre><code>## F-test with Kenward-Roger approximation; time: 0.04 sec
+## large : wear ~ material + (1 | boyf)
+## small : wear ~ (1 | boyf)
+##          stat    ndf    ddf F.scaling  p.value   
+## Ftest  11.215  1.000  9.000         1 0.008539 **
+## FtestU 11.215  1.000  9.000           0.008539 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+<pre><code>## # A tibble: 2 × 6
+##   type    stat   ndf   ddf F.scaling p.value
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest   11.2     1  9.00         1 0.00854
+## 2 FtestU  11.2     1  9.00        NA 0.00854
+</code></pre>
+<p>For the imbalanced data we get</p>
+<pre><code class="language-r">kr.imbal &lt;- KRmodcomp(lmm1.imbal, lmm0.imbal)
+kr.imbal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   type   stat   ndf   ddf p.value
+##   &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest  5.99     1  7.02  0.0442
+</code></pre>
+<pre><code class="language-r">summary(kr.imbal) |&gt; tidy()
+</code></pre>
+<pre><code>## F-test with Kenward-Roger approximation; time: 0.02 sec
+## large : wear ~ material + (1 | boyf)
+## small : wear ~ (1 | boyf)
+##          stat    ndf    ddf F.scaling p.value  
+## Ftest  5.9893 1.0000 7.0219         1 0.04418 *
+## FtestU 5.9893 1.0000 7.0219           0.04418 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+<pre><code>## # A tibble: 2 × 6
+##   type    stat   ndf   ddf F.scaling p.value
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest   5.99     1  7.02         1  0.0442
+## 2 FtestU  5.99     1  7.02        NA  0.0442
+</code></pre>
+<p>Estimated degrees of freedom can be found with</p>
+<pre><code class="language-r">c(bal_ddf = getKR(kr.bal, &quot;ddf&quot;), imbal_ddf = getKR(kr.imbal, &quot;ddf&quot;))
+</code></pre>
+<pre><code>##   bal_ddf imbal_ddf 
+##  9.000000  7.021904
+</code></pre>
+<p>Notice that the Kenward-Roger approximation gives results  similar to but not identical to the paired
+\(t\)–test when the two boys are removed:</p>
+<pre><code class="language-r">shoes2 &lt;- list(A=shoes$A[-(1:2)], B=shoes$B[-(1:2)])
+t.test(shoes2$A, shoes2$B, paired=T) |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic p.value parameter conf.low conf.high method     alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      
+## 1   -0.337     -2.39  0.0483         7   -0.672  -0.00328 Paired t-… two.sided
+</code></pre>
+<h1 id="satterthwaite-approach">Satterthwaite approach</h1>
+<p>The Satterthwaite approximation is exact in certain balanced designs in the
+sense that the approximation produces the same result as the paired \(t\)–test.</p>
+<pre><code class="language-r">sat.bal &lt;- SATmodcomp(lmm1.bal, lmm0.bal)
+sat.bal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   type  statistic   ndf   ddf p.value
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest      11.2     1  9.00 0.00854
+</code></pre>
+<pre><code class="language-r">sat.imbal &lt;- SATmodcomp(lmm1.imbal, lmm0.imbal)
+sat.imbal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 1 × 5
+##   type  statistic   ndf   ddf p.value
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Ftest      6.00     1  7.01  0.0441
+</code></pre>
+<p>Estimated degrees of freedom can be found with</p>
+<pre><code class="language-r">c(bal_ddf = getSAT(sat.bal, &quot;ddf&quot;), imbal_ddf = getSAT(sat.imbal, &quot;ddf&quot;))
+</code></pre>
+<pre><code>##   bal_ddf imbal_ddf 
+##  9.000000  7.010863
+</code></pre>
+<h1 id="parametric-bootstrap">Parametric bootstrap</h1>
+<p>Parametric bootstrap provides an alternative but many simulations are
+often needed to provide credible results (also many more than shown
+here; in this connection it can be useful to exploit that computations
+can be made en parallel, see the documentation):</p>
+<pre><code class="language-r">pb.bal &lt;- PBmodcomp(lmm1.bal, lmm0.bal, nsim=500, cl=2)
+pb.bal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   type    stat    df p.value
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 LRT     8.09     1 0.00445
+## 2 PBtest  8.09    NA 0.0220
+</code></pre>
+<pre><code class="language-r">summary(pb.bal) |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   type      stat    df   ddf p.value
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 LRT       8.09     1 NA    0.00445
+## 2 PBtest    8.09    NA NA    0.0220 
+## 3 Gamma     8.09    NA NA    0.0156 
+## 4 Bartlett  6.29     1 NA    0.0121 
+## 5 F         8.09     1  8.99 0.0193
+</code></pre>
+<p>For the imbalanced data, the result is similar to the result from the
+paired \(t\)–test.</p>
+<pre><code class="language-r">pb.imbal &lt;- PBmodcomp(lmm1.imbal, lmm0.imbal, nsim=500, cl=2)
+pb.imbal |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   type    stat    df p.value
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 LRT     5.09     1  0.0240
+## 2 PBtest  5.09    NA  0.0439
+</code></pre>
+<pre><code class="language-r">summary(pb.imbal)  |&gt; tidy()
+</code></pre>
+<pre><code>## # A tibble: 5 × 5
+##   type      stat    df   ddf p.value
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+## 1 LRT       5.09     1 NA     0.0240
+## 2 PBtest    5.09    NA NA     0.0439
+## 3 Gamma     5.09    NA NA     0.0442
+## 4 Bartlett  3.98     1 NA     0.0462
+## 5 F         5.09     1  9.12  0.0501
+</code></pre>
+<h1 id="matrices-for-random-effects">Matrices for random effects</h1>
+<p>The matrices involved in the random effects can be obtained with</p>
+<pre><code class="language-r">shoe3 &lt;- subset(shoe.bal, boy&lt;=5)
+shoe3 &lt;- shoe3[order(shoe3$boy), ]
+lmm1  &lt;- lmer( wear ~ material + (1|boyf), data=shoe3 )
+str( SG &lt;- get_SigmaG( lmm1 ), max=2)
+</code></pre>
+<pre><code>## List of 3
+##  $ Sigma   :Formal class 'dgCMatrix' [package &quot;Matrix&quot;] with 6 slots
+##  $ G       :List of 2
+##   ..$ :Formal class 'dgCMatrix' [package &quot;Matrix&quot;] with 6 slots
+##   ..$ :Formal class 'dgCMatrix' [package &quot;Matrix&quot;] with 6 slots
+##  $ n.ggamma: int 2
+</code></pre>
+<pre><code class="language-r">round( SG$Sigma*10 )
+</code></pre>
+<pre><code>## 10 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
+</code></pre>
+<pre><code>##   [[ suppressing 10 column names 'A1', 'B1', 'A2' ... ]]
+</code></pre>
+<pre><code>##                                 
+## A1 53 52  .  .  .  .  .  .  .  .
+## B1 52 53  .  .  .  .  .  .  .  .
+## A2  .  . 53 52  .  .  .  .  .  .
+## B2  .  . 52 53  .  .  .  .  .  .
+## A3  .  .  .  . 53 52  .  .  .  .
+## B3  .  .  .  . 52 53  .  .  .  .
+## A4  .  .  .  .  .  . 53 52  .  .
+## B4  .  .  .  .  .  . 52 53  .  .
+## A5  .  .  .  .  .  .  .  . 53 52
+## B5  .  .  .  .  .  .  .  . 52 53
+</code></pre>
+<pre><code class="language-r">SG$G
+</code></pre>
+<pre><code>## [[1]]
+## 10 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
+</code></pre>
+<pre><code>##   [[ suppressing 10 column names 'A1', 'B1', 'A2' ... ]]
+</code></pre>
+<pre><code>##                       
+## A1 1 1 . . . . . . . .
+## B1 1 1 . . . . . . . .
+## A2 . . 1 1 . . . . . .
+## B2 . . 1 1 . . . . . .
+## A3 . . . . 1 1 . . . .
+## B3 . . . . 1 1 . . . .
+## A4 . . . . . . 1 1 . .
+## B4 . . . . . . 1 1 . .
+## A5 . . . . . . . . 1 1
+## B5 . . . . . . . . 1 1
+## 
+## [[2]]
+## 10 x 10 sparse Matrix of class &quot;dgCMatrix&quot;
+##                          
+##  [1,] 1 . . . . . . . . .
+##  [2,] . 1 . . . . . . . .
+##  [3,] . . 1 . . . . . . .
+##  [4,] . . . 1 . . . . . .
+##  [5,] . . . . 1 . . . . .
+##  [6,] . . . . . 1 . . . .
+##  [7,] . . . . . . 1 . . .
+##  [8,] . . . . . . . 1 . .
+##  [9,] . . . . . . . . 1 .
+## [10,] . . . . . . . . . 1
+</code></pre>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+</body>
+</html>

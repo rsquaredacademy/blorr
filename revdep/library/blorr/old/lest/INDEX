@@ -1,0 +1,5 @@
+case_when               A general vectorised if
+cumall                  Cumulative all and any
+exceeds_tumbling_sum    Check When the Tumbling Sum of a Vector Exceeds
+                        a Threshold
+if_else                 Vectorised if
