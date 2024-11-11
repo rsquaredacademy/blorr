@@ -335,10 +335,10 @@ plot.blr_segment_dist <- function(x, title = NA, xaxis_title = "Levels",
       breaks   = seq(0, 1, by = 0.1),
       labels   = paste0(seq(0, 1, by = 0.1) * 100, '%'),
       sec.axis = sec_axis(
-        trans  = ~.,
-        breaks = seq(0, 1, by = 0.1),
-        labels = paste0(seq(0, 1, by = 0.1) * 100, '%'),
-        name   = sec_yaxis_title))
+        transform = ~.,
+        breaks    = seq(0, 1, by = 0.1),
+        labels    = paste0(seq(0, 1, by = 0.1) * 100, '%'),
+        name      = sec_yaxis_title))
 
   if (print_plot) {
     print(p)

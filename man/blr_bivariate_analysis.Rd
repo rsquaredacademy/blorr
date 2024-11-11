@@ -35,10 +35,10 @@ blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
 }
 \seealso{
 Other bivariate analysis procedures: 
+\code{\link{blr_segment}()},
 \code{\link{blr_segment_dist}()},
 \code{\link{blr_segment_twoway}()},
-\code{\link{blr_segment}()},
-\code{\link{blr_woe_iv_stats}()},
-\code{\link{blr_woe_iv}()}
+\code{\link{blr_woe_iv}()},
+\code{\link{blr_woe_iv_stats}()}
 }
 \concept{bivariate analysis procedures}

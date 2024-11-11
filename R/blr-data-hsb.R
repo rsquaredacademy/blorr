@@ -19,6 +19,6 @@
 #'   \item{honcomp}{1 if write > 60, else 0}
 #' }
 #'
-#' @source \url{http://www.ats.ucla.edu/stat/spss/whatstat/whatstat.htm}
+#' @source \url{https://www.openintro.org/data/index.php?data=hsb}
 #'
 "hsb2"

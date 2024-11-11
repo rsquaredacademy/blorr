@@ -16,8 +16,6 @@
 #' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.):
 #' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
 #'
-#' \url{https://doi.org/10.2753/REE1540-496X470605}
-#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))

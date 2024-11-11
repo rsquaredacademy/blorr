@@ -1,5 +1,3 @@
-context("test-blr-plots.R")
-
 model <- glm(
   honcomp ~ female + read + science, data = hsb2,
   family = binomial(link = "logit")

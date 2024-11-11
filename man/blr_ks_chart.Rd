@@ -41,9 +41,7 @@ blr_ks_chart(gt)
 
 }
 \references{
-\url{https://doi.org/10.1198/tast.2009.08210}
-
-\url{https://www.ncbi.nlm.nih.gov/pubmed/843576}
+\url{https://pubmed.ncbi.nlm.nih.gov/843576/}
 }
 \seealso{
 Other model validation techniques: 

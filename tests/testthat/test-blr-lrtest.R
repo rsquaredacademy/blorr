@@ -1,6 +1,4 @@
-context("test-blr-lrtest.R")
-
-test_that("blr_test_lr throws an error when the model is not an object of\n          class glm", {
+test_that("blr_test_lr throws an error when the model is not an object of class glm", {
 
   model1 <- glm(
     honcomp ~ 1, data = hsb2,

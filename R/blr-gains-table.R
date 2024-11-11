@@ -128,9 +128,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @references
-#' \url{https://doi.org/10.1198/tast.2009.08210}
-#'
-#' \url{https://www.ncbi.nlm.nih.gov/pubmed/843576}
+#' \url{https://pubmed.ncbi.nlm.nih.gov/843576/}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

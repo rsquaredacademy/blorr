@@ -1,5 +1,3 @@
-context("test-model-fit-stats.R")
-
 # regression
 model <- glm(
   honcomp ~ female + read + science, data = hsb2,
@@ -89,26 +87,9 @@ test_that("output from blr_effron_rsq is as expected", {
   expect_equal(actual, expected)
 })
 
-
-
 test_that("blr_model_fit_stats prints the correct output", {
   k <- blr_model_fit_stats(model)
-
-  x <- cat(
-    "                              Model Fit Statistics
----------------------------------------------------------------------------------
-    Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118
-    Deviance(196):                160.236    LR(3):                            71.052
-    Prob > LR:                         0.000
-    MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273
-    ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436
-    McKelvey & Zavoina's R2:        0.518    Efron's R2:                        0.330
-    Count R2:                       0.810    Adj Count R2:                      0.283
-    BIC:                          181.430    AIC:                             168.236
-    ---------------------------------------------------------------------------------"
-  )
-
-  expect_output(print(k), x)
+  expect_snapshot(k)
 })
 
 test_that("blr_multi_model_fit_stats prints the correct output", {
@@ -118,41 +99,11 @@ test_that("blr_multi_model_fit_stats prints the correct output", {
   )
 
   k <- blr_multi_model_fit_stats(model, model1)
-
-  x <- cat(
-    "                      Measures  Model 1  Model 2
-1       Log-Lik Intercept Only -115.644 -115.644
-    2          Log-Lik Full Model:  -80.118  -84.570
-    3                     Deviance  160.236  169.141
-    4                           LR   71.052   62.148
-    5                   Prob > LR:    0.000    0.000
-    6                MCFadden's R2    0.307    0.269
-    7           McFadden's Adj R2:    0.273    0.225
-    8           ML (Cox-Snell) R2:    0.299    0.267
-    9  Cragg-Uhler(Nagelkerke) R2:    0.436    0.390
-    10    McKelvey & Zavoina's R2:    0.518    0.440
-    11                 Efron's R2:    0.330    0.281
-    12                   Count R2:    0.810    0.785
-    13               Adj Count R2:    0.283    0.189
-    14                        AIC:  168.236  179.141
-    15                        BIC:  181.430  195.632"
-  )
-
-  expect_output(print(k), x)
+  expect_snapshot(k)
 })
 
 
 test_that("blr_lr_test prints the correct output", {
   k <- blr_test_lr(model)
-
-  x <- cat(
-    "    Likelihood Ratio Test
-------------------------------
-    Chi-Square    DF    Pr > ChiSq
-    ------------------------------
-    71.0525      3       0.0000
-    ------------------------------"
-  )
-
-  expect_output(print(k), x)
+  expect_snapshot(k)
 })

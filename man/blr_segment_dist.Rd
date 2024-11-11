@@ -61,9 +61,9 @@ plot(k)
 \seealso{
 Other bivariate analysis procedures: 
 \code{\link{blr_bivariate_analysis}()},
-\code{\link{blr_segment_twoway}()},
 \code{\link{blr_segment}()},
-\code{\link{blr_woe_iv_stats}()},
-\code{\link{blr_woe_iv}()}
+\code{\link{blr_segment_twoway}()},
+\code{\link{blr_woe_iv}()},
+\code{\link{blr_woe_iv_stats}()}
 }
 \concept{bivariate analysis procedures}

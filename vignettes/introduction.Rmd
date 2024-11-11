@@ -180,7 +180,7 @@ blr_regress(y ~  age + duration + previous + housing + default +
 Model fit statistics are available to assess how well the model fits the data 
 and to compare two different models.The output includes likelihood ratio test, 
 AIC, BIC and a host of pseudo r-squared measures. You can read more about 
-pseudo r-squared at https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/.
+pseudo r-squared [here](https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/).
 
 #### Single Model
 

@@ -6,11 +6,6 @@
 #'
 #' @return A tibble.
 #'
-#' @references
-#' \url{https://doi.org/10.1080/10485259808832744}
-#'
-#' \url{https://doi.org/10.1177/1536867X0600600302}
-#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))

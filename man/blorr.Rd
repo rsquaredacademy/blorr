@@ -3,6 +3,7 @@
 \docType{package}
 \name{blorr}
 \alias{blorr}
+\alias{blorr-package}
 \title{\code{blorr} package}
 \description{
 Tools for developing binary logistic regression models
@@ -11,3 +12,17 @@ Tools for developing binary logistic regression models
 See the README on
 \href{https://github.com/rsquaredacademy/blorr}{GitHub}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://blorr.rsquaredacademy.com/}
+  \item \url{https://github.com/rsquaredacademy/blorr}
+  \item Report bugs at \url{https://github.com/rsquaredacademy/blorr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Aravind Hebbali \email{hebbali.aravind@gmail.com} (\href{https://orcid.org/0000-0001-9220-9669}{ORCID})
+
+}
+\keyword{internal}

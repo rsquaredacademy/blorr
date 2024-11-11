@@ -1,5 +1,3 @@
-context("test-gini-index.R")
-
 test_that("output from blr_gini_index is as expected", {
   model <- glm(
     honcomp ~ female + read + science, data = blorr::hsb2,
