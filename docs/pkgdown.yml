@@ -1,10 +1,9 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1
+pandoc: '3.2'
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   introduction: introduction.html
-last_built: 2021-07-08T10:11Z
+last_built: 2024-11-11T14:59Z
 urls:
   reference: https://blorr.rsquaredacademy.com/reference
   article: https://blorr.rsquaredacademy.com/articles
-
