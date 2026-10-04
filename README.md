@@ -265,6 +265,17 @@ blr_lorenz_curve(model)
 
 ![](tools/README-unnamed-chunk-2-1.png)<!-- -->
 
+## Related Reading
+
+[Data Visualization with R](https://viz-base.rsquaredacademy.com) is a free
+book on base R graphics — the zero-dependency layer of R's own graphics
+system, and the place to start if you want to understand what the plotting
+calls in this package's examples are actually doing.
+
+The plots in this package are drawn with ggplot2. [Appendix
+A](https://viz-base.rsquaredacademy.com/rosetta.html) of the book maps base R
+graphics onto ggplot2 argument by argument, in both directions.
+
 ## Getting Help
 
 If you encounter a bug, please file a minimal reproducible example using
