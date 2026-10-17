@@ -29,6 +29,8 @@ navbar:
           href: news/index.html
 
   right:
+   - text: 'Rsquared Academy'
+     href: https://www.rsquaredacademy.com
    - icon: fa-github
      href: https://github.com/rsquaredacademy/blorr
 
@@ -158,3 +160,10 @@ reference:
   - stepwise
 
 
+
+footer:
+  structure:
+    left: developed_by
+    right: [built_with, privacy]
+  components:
+    privacy: '[Privacy](https://www.rsquaredacademy.com/privacy-policy.html) · <a href="#" data-rsa-analytics-optout>Turn off analytics</a>'
