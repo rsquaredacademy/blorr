@@ -3,6 +3,9 @@ model <- glm(
   family = binomial(link = "logit")
 )
 
+# R 4.6 changed glm residuals, so these plots have one snapshot per R version.
+r_variant <- if (getRversion() >= "4.6.0") "R-4.6" else "R-pre-4.6"
+
 test_that("event segmentation distribution plot is as expected", {
   skip_on_cran()
 
@@ -72,7 +75,7 @@ test_that("deviance vs fitted plot is as expected", {
 
   p <- blr_plot_deviance_fitted(model)
 
-  vdiffr::expect_doppelganger("deviance fitted plot", p)
+  vdiffr::expect_doppelganger("deviance fitted plot", p, variant = r_variant)
 })
 
 test_that("deviance residual plot is as expected", {
@@ -80,7 +83,7 @@ test_that("deviance residual plot is as expected", {
 
   p <- blr_plot_deviance_residual(model)
 
-  vdiffr::expect_doppelganger("deviance residual plot", p)
+  vdiffr::expect_doppelganger("deviance residual plot", p, variant = r_variant)
 })
 
 
@@ -129,7 +132,7 @@ test_that("difdev plot is as expected", {
 
   p <- blr_plot_diag_difdev(model)
 
-  vdiffr::expect_doppelganger("difdev plot", p)
+  vdiffr::expect_doppelganger("difdev plot", p, variant = r_variant)
 })
 
 
@@ -154,7 +157,7 @@ test_that("difdev vs fitted plot is as expected", {
 
   p <- blr_plot_difdev_fitted(model)
 
-  vdiffr::expect_doppelganger("difdev fitted plot", p)
+  vdiffr::expect_doppelganger("difdev fitted plot", p, variant = r_variant)
 })
 
 test_that("difdev vs leverage plot is as expected", {
@@ -162,7 +165,7 @@ test_that("difdev vs leverage plot is as expected", {
 
   p <- blr_plot_difdev_leverage(model)
 
-  vdiffr::expect_doppelganger("difdev leverage plot", p)
+  vdiffr::expect_doppelganger("difdev leverage plot", p, variant = r_variant)
 })
 
 test_that("difchisq vs leverage plot is as expected", {
