@@ -10,6 +10,7 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^docs$
+^pkgdown$
 ^hex_blorr\.png$
 ^cran-comments\.md$
 ^\.github$
