@@ -14,9 +14,31 @@ test_that("output from blr_segment is as expected", {
   
   k        <- blr_segment(hsb2, honcomp, race)
   actual   <- rev(k$segment_data[['1s%']])[1]
-  expected <- c(0.22)
+  expected <- c(0.30)
 
   expect_equal(actual, expected)
+})
+
+test_that("event rate by level is events in level divided by n in level", {
+  expected <- round(as.numeric(tapply(hsb2$honcomp == 1, hsb2$race, mean)), 2)
+
+  k <- blr_segment(hsb2, honcomp, race)
+  expect_equal(k$segment_data[['1s%']], expected)
+
+  k2 <- blr_segment_dist(hsb2, honcomp, race)
+  expect_equal(k2$dist_table[['1s%']], expected)
+})
+
+test_that("event rate by level works when a level has no events", {
+  d <- hsb2
+  d$event <- as.integer(d$honcomp == 1)
+  d$event[d$race == "1"] <- 0
+
+  k <- blr_segment(d, event, race)
+  expect_equal(k$segment_data[['1s%']][1], 0)
+
+  k2 <- blr_segment_dist(d, event, race)
+  expect_equal(k2$dist_table[['1s%']][1], 0)
 })
 
 test_that("blr_segment prints the correct output", {
@@ -41,7 +63,7 @@ test_that("output from blr_segment_dist is as expected", {
   
   k        <- blr_segment_dist(hsb2, honcomp, race)
   actual   <- rev(k$dist_table[['1s%']])[1]
-  expected <- c(0.22)
+  expected <- c(0.30)
   expect_equal(actual, expected)
 })
 

@@ -1,4 +1,4 @@
-#' @importFrom stats coef confint binomial df.residual glm terms
+#' @importFrom stats coef confint binomial df.residual glm terms nobs
 #' @importFrom utils data
 response_var <- function(model) {
   model$terms[[2]]
@@ -11,7 +11,7 @@ data_name <- function(model) {
 
 # number of observations
 data_nrows <- function(model) {
-  nrow(model$data)
+  unname(nobs(model))
 }
 
 # model convergence status
@@ -31,8 +31,7 @@ model_df <- function(model) {
 
 # response profile
 resp_profile <- function(model) {
-  resp <- response_var(model)
-  table(as.factor(model$data[[resp]]))
+  table(as.factor(model$y))
 }
 
 
@@ -105,11 +104,11 @@ model_class <- function(model) {
 # create intercept only model
 i_model <- function(model) {
 
-  dep <- response_var(model)
-  dat <- model$data
+  dat  <- model$model
+  resp <- names(dat)[1]
 
   glm(
-    paste0(dep, " ~ 1"), data = dat,
+    paste0("`", resp, "` ~ 1"), data = dat,
     family = binomial(link = "logit")
   )
 

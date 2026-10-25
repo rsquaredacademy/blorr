@@ -159,20 +159,23 @@ print_model_fit_stats <- function(x) {
     "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
     "Efron's R2:", "Adj Count R2:", "AIC:"
   )
-  col2vec <- c(x$loglik_null, x$m_deviance, x$mcfadden, x$cox_snell, x$mckelvey,
-               x$count_r2, x$m_bic)
-  col2vals <- append(x = format(round(col2vec, 3), nsmall = 3), values = "",
-                     after = 2)
-  col4vals <- format(round(c(x$loglik_model, x$lr_ratio, x$lr_pval,
+  col1vals <- c(
+    format(round(x$loglik_null, 3), nsmall = 3),
+    format(round(x$m_deviance, 3), nsmall = 3),
+    "",
+    format(round(c(x$mcfadden, x$cox_snell, x$mckelvey, x$count_r2,
+                   x$m_bic), 3), nsmall = 3)
+  )
+  col3vals <- format(round(c(x$loglik_model, x$lr_ratio, x$lr_pval,
                              x$adj_mcfadden, x$nagelkerke, x$effron,
                              x$count_adj, x$m_aic), 3), nsmall = 3)
   nlen <- length(col3names)
   for (i in seq_len(nlen)) {
     cat(
       fl(col1names[i], w1), fs(),
-      fg(col2vals[i], w2), fs(),
+      fg(col1vals[i], w2), fs(),
       fl(col3names[i], w3), fs(),
-      fg(col4vals[i], w4), "\n"
+      fg(col3vals[i], w4), "\n"
     )
   }
   cat(rep("-", w), sep = "", "\n\n")

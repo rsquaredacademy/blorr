@@ -107,3 +107,68 @@ test_that("blr_lr_test prints the correct output", {
   k <- blr_test_lr(model)
   expect_snapshot(k)
 })
+
+test_that("pseudo R2 uses the number of observations used to fit the model", {
+  d <- hsb2
+  d$read[which(d$honcomp == "0")[1:10]] <- NA
+
+  m   <- glm(honcomp ~ female + read + science, data = d,
+             family = binomial(link = "logit"))
+  n   <- nobs(m)
+  ll0 <- as.numeric(logLik(glm(honcomp ~ 1, data = model.frame(m),
+                               family = binomial(link = "logit"))))
+  ll1 <- as.numeric(logLik(m))
+
+  cox_snell  <- 1 - exp((2 / n) * (ll0 - ll1))
+  nagelkerke <- cox_snell / (1 - exp((2 / n) * ll0))
+
+  expect_equal(blr_rsq_cox_snell(m), cox_snell)
+  expect_equal(blr_rsq_nagelkerke(m), nagelkerke)
+})
+
+test_that("pseudo R2 and printed fit stats work without a data argument", {
+  honcomp <- hsb2$honcomp
+  female  <- hsb2$female
+  read    <- hsb2$read
+  science <- hsb2$science
+
+  m   <- glm(honcomp ~ female + read + science,
+             family = binomial(link = "logit"))
+  n   <- nobs(m)
+  ll0 <- as.numeric(logLik(glm(honcomp ~ 1, family = binomial(link = "logit"))))
+  ll1 <- as.numeric(logLik(m))
+
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / n) * (ll0 - ll1)))
+  expect_length(blr_rsq_nagelkerke(m), 1)
+
+  out      <- capture.output(print(blr_model_fit_stats(m)))
+  bic_line <- out[grepl("BIC:", out, fixed = TRUE)]
+
+  expect_equal(length(bic_line), 1)
+  expect_match(bic_line, format(round(BIC(m), 3), nsmall = 3), fixed = TRUE)
+})
+
+test_that("multi model fit stats label each measure by name", {
+  model1 <- glm(honcomp ~ prog + read + science, data = hsb2,
+                family = binomial(link = "logit"))
+  model2 <- glm(honcomp ~ female + read + math, data = hsb2,
+                family = binomial(link = "logit"))
+
+  out <- capture.output(print(blr_multi_model_fit_stats(model1, model2)))
+
+  value_of <- function(label) {
+    line <- out[grepl(label, out, fixed = TRUE)]
+    expect_length(line, 1)
+    as.numeric(tail(strsplit(trimws(line), "[[:space:]]+")[[1]], 1))
+  }
+
+  expect_equal(value_of("ML (Cox-Snell) R2"),
+               round(blr_rsq_cox_snell(model2), 3))
+  expect_equal(value_of("Cragg-Uhler(Nagelkerke) R2"),
+               round(blr_rsq_nagelkerke(model2), 3))
+  expect_equal(value_of("McKelvey & Zavoina's R2"),
+               round(blr_rsq_mckelvey_zavoina(model2), 3))
+  expect_equal(value_of("Efron's R2"), round(blr_rsq_effron(model2), 3))
+  expect_equal(value_of("AIC"), round(AIC(model2), 3))
+  expect_equal(value_of("BIC"), round(BIC(model2), 3))
+})

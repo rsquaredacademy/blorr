@@ -229,10 +229,9 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
 
     if (aics[minaic] < laic[lpreds]) {
       preds    <- c(preds, all_pred[minaic])
-      minc     <- aics[minaic]
-      laic     <- c(laic, minc)
-      lbic     <- c(lbic, minc)
-      ldev     <- c(ldev, minc)
+      laic     <- c(laic, aics[minaic])
+      lbic     <- c(lbic, bics[minaic])
+      ldev     <- c(ldev, devs[minaic])
       lpreds   <- length(preds)
       all_pred <- all_pred[-minaic]
       len_p    <- length(all_pred)
