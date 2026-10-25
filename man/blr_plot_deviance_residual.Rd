@@ -33,3 +33,8 @@ family = binomial(link = 'logit'))
 blr_plot_deviance_residual(model)
 
 }
+\references{
+Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+
+McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
+}
