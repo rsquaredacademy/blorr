@@ -68,6 +68,8 @@ plot(k)
 \references{
 Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 credit  scoring. New Jersey, Wiley.
+
+Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
 }
 \seealso{
 Other bivariate analysis procedures: 

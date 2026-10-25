@@ -28,6 +28,8 @@
 #' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 #' credit  scoring. New Jersey, Wiley.
 #'
+#' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
+#'
 #' @examples
 #' # woe and iv
 #' k <- blr_woe_iv(hsb2, female, honcomp)
@@ -118,6 +120,9 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' @param data A \code{data.frame} or \code{tibble}.
 #' @param response Response variable; column in \code{data}.
 #' @param ... Predictor variables; column in \code{data}.
+#'
+#' @references
+#' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
 #'
 #' @examples
 #' blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)

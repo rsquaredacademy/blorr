@@ -68,6 +68,11 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 #' @inheritParams blr_plot_pearson_residual
 #' @param line_color Color of the horizontal line.
 #'
+#' @references
+#' Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+#'
+#' McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -94,6 +99,11 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
 #' Standardized deviance residuals plot.
 #'
 #' @inheritParams blr_plot_pearson_residual
+#'
+#' @references
+#' Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+#'
+#' McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
