@@ -64,8 +64,8 @@ blr_gini_index <- function(model, data = NULL) {
   event    <- event_indicator(response)
 
   r   <- rank(prob)
-  n1  <- sum(event)
-  n0  <- sum(!event)
+  n1  <- as.numeric(sum(event))
+  n0  <- as.numeric(sum(!event))
   auc <- (sum(r[event]) - n1 * (n1 + 1) / 2) / (n1 * n0)
 
   2 * auc - 1

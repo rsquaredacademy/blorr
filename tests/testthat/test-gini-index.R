@@ -100,3 +100,17 @@ test_that("AUC on complete rows matches the concordance statistic", {
   expect_equal(pairs$c, auc)
   expect_equal(pairs$somers_d, 2 * auc - 1)
 })
+
+test_that("gini index is finite on a large balanced model", {
+  skip_on_cran()
+  set.seed(2)
+  n <- 100000
+  d <- data.frame(y = rbinom(n, 1, 0.5), x1 = rnorm(n), x2 = rnorm(n))
+  model <- glm(y ~ x1 + x2, data = d, family = binomial)
+  y  <- model$y
+  p  <- fitted(model)
+  n1 <- as.numeric(sum(y == 1))
+  n0 <- as.numeric(sum(y == 0))
+  w  <- suppressWarnings(wilcox.test(p[y == 1], p[y == 0], exact = FALSE))$statistic
+  expect_equal(blr_gini_index(model), 2 * as.numeric(w) / (n1 * n0) - 1)
+})
