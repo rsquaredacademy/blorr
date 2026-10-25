@@ -131,6 +131,24 @@ model_class <- function(model) {
   class(model)[1]
 }
 
+# formula for a variable selection model; an intercept-only model is used
+# when no predictors are left
+selection_formula <- function(response, predictors) {
+  if (length(predictors) == 0) {
+    paste0(response, " ~ 1")
+  } else {
+    paste(response, "~", paste(predictors, collapse = " + "))
+  }
+}
+
+# fit a variable selection model, including the intercept-only model
+selection_model <- function(response, predictors, data) {
+  glm(
+    selection_formula(response, predictors), data = data,
+    family = binomial(link = "logit")
+  )
+}
+
 # create intercept only model
 i_model <- function(model) {
 

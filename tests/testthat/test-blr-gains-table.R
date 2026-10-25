@@ -31,15 +31,14 @@ test_that("gains table handles a decile with no events", {
   p <- predict(model, newdata = hsb2, type = "response")
 
   test_data <- hsb2
-  test_data$honcomp <- factor(
-    ifelse(rank(-p) <= 20, "0", as.character(test_data$honcomp)),
-    levels = c("0", "1")
+  test_data$honcomp <- as.integer(
+    rank(-p) > 20 & hsb2$honcomp == "1"
   )
 
   gt <- blr_gains_table(model, test_data)$gains_table
 
   expect_equal(gt$`1`[1], 0)
-  expect_equal(sum(gt$`1`), sum(test_data$honcomp == "1"))
+  expect_equal(sum(gt$`1`), sum(test_data$honcomp))
   expect_equal(sum(gt$total), nrow(test_data))
 })
 

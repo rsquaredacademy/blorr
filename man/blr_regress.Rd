@@ -21,6 +21,10 @@ that class): a symbolic description of the model to be fitted or class
 \description{
 Binary logistic regression.
 }
+\details{
+Odds ratio confidence limits are profile-likelihood intervals computed by
+\code{\link[stats]{confint}}.
+}
 \examples{
 # using formula
 blr_regress(object = honcomp ~ female + read + science, data = hsb2)

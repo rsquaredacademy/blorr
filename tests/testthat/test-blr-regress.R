@@ -9,6 +9,23 @@ test_that("output from blr_regress is as expected", {
   expect_snapshot(k)
 })
 
+test_that("odds ratio confidence limits are labelled as profile-likelihood intervals", {
+  model <- glm(
+    honcomp ~ female + read, data = hsb2,
+    family = binomial(link = "logit")
+  )
+
+  k   <- blr_regress(model, odd_conf_limit = TRUE)
+  out <- capture.output(print(k))
+
+  expect_true(any(grepl("95% Profile", out)))
+  expect_false(any(grepl("95% Wald", out)))
+  expect_equal(
+    unname(as.matrix(k$blr_conf)),
+    unname(suppressMessages(exp(confint(model)))[-1, ])
+  )
+})
+
 test_that("blr_regress response profile keeps factor response labels", {
   d <- hsb2
   d$hc_lab <- factor(ifelse(d$honcomp == 1, "yes", "no"), levels = c("no", "yes"))

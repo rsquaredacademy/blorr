@@ -50,6 +50,13 @@ A tibble.
 Weight of evidence and information value. Currently avialable for categorical
   predictors only.
 }
+\details{
+Character and numeric predictors are treated as categorical and factor
+levels without observations are dropped before the table is built. If a
+level has no events or no non-events, 0.5 is added to both counts for that
+level (Haldane-Anscombe continuity correction) before the weight of evidence
+and information value are computed.
+}
 \examples{
 # woe and iv
 k <- blr_woe_iv(hsb2, female, honcomp)

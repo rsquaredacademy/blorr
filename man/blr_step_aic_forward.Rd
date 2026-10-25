@@ -43,7 +43,7 @@ each step.}
 }
 \description{
 Build regression model from a set of candidate predictor variables by
-entering predictors based on chi square statistic, in a stepwise manner
+entering predictors based on Akaike information criterion, in a stepwise manner
 until there is no variable left to enter any more.
 }
 \examples{

@@ -22,3 +22,13 @@ test_that("output from backward variable p elimination is as expected", {
   expect_equal(actual, expected)
 })
 
+test_that("backward p-value elimination returns the intercept-only model when all predictors are removed", {
+  model <- glm(y ~ a + b + c, data = noise_data(), family = binomial)
+
+  invisible(capture.output(k <- blr_step_p_backward(model, prem = 0.3)))
+
+  expect_equal(k$steps, 3)
+  expect_equal(k$removed, c("c", "a", "b"))
+  expect_equal(names(coef(k$model)), "(Intercept)")
+})
+

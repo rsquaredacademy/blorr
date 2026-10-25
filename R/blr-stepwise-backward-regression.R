@@ -96,7 +96,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
 
   while (!end) {
-    m <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+    m <- selection_model(response, preds, l)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals <- m_sum$`Pr(>Chisq)`
     maxp  <- which(pvals == max(pvals))
@@ -108,12 +108,15 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         rpred  <- c(rpred, preds[maxp])
         preds  <- preds[-maxp]
         lp     <- length(rpred)
-        fr     <- glm(paste(response, "~",
-                                  paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+        fr     <- selection_model(response, preds, l)
         mfs    <- blr_model_fit_stats(fr)
         aic    <- c(aic, mfs$m_aic)
         bic    <- c(bic, mfs$m_bic)
         dev    <- c(dev, mfs$m_deviance)
+
+        if (length(preds) == 0) {
+          end <- TRUE
+        }
 
         if (interactive()) {
           cat(paste("-", rev(rpred)[1]), "\n")
@@ -124,7 +127,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         if (details) {
           cat("\n")
           cat(paste("Backward Elimination: Step", step, "\n\n"), paste("Variable", rpred[lp], "Removed"), "\n\n")
-          m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+          m <- blr_regress(selection_formula(response, preds), l)
           print(m)
           cat("\n\n")
         }
@@ -154,13 +157,12 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   cat(rep("-", 18), sep = "", "\n\n")
 
   fi <- blr_regress(
-    paste(response, "~", paste(preds, collapse = " + ")),
+    selection_formula(response, preds),
     data = l
   )
   print(fi)
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = 'logit'))
+  final_model <- selection_model(response, preds, l)
 
   out <- list(removed    = rpred,
               indvar     = cterms,
