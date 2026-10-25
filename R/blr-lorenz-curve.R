@@ -20,6 +20,12 @@
 #' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.):
 #' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
 #'
+#' Hand, D. J. and Till, R. J. (2001). A simple generalisation of the area under the ROC curve for multiple class classification problems. \emph{Machine Learning}, 45(2), 171--186.
+#'
+#' Hanley, J. A. and McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. \emph{Radiology}, 143(1), 29--36.
+#'
+#' Mann, H. B. and Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. \emph{The Annals of Mathematical Statistics}, 18(1), 50--60.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
@@ -85,6 +91,13 @@ blr_gini_index <- function(model, data = NULL) {
 #' @param lorenz_curve_col Color of the lorenz curve.
 #' @param diag_line_col Diagonal line color.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
+#'
+#' @references
+#' Hand, D. J. and Till, R. J. (2001). A simple generalisation of the area under the ROC curve for multiple class classification problems. \emph{Machine Learning}, 45(2), 171--186.
+#'
+#' Hanley, J. A. and McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. \emph{Radiology}, 143(1), 29--36.
+#'
+#' Mann, H. B. and Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. \emph{The Annals of Mathematical Statistics}, 18(1), 50--60.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

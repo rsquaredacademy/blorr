@@ -9,6 +9,9 @@
 #'
 #' @return Confusion matix.
 #'
+#' @references
+#' Kuhn, M. (2008). Building predictive models in R using the caret package. \emph{Journal of Statistical Software}, 28(5), 1--26.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))

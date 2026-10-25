@@ -31,6 +31,9 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_confusion_matrix(model, cutoff = 0.4)
 
 }
+\references{
+Kuhn, M. (2008). Building predictive models in R using the caret package. \emph{Journal of Statistical Software}, 28(5), 1--26.
+}
 \seealso{
 Other model validation techniques: 
 \code{\link{blr_decile_capture_rate}()},

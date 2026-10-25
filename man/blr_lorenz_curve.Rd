@@ -43,6 +43,13 @@ family = binomial(link = 'logit'))
 blr_lorenz_curve(model)
 
 }
+\references{
+Hand, D. J. and Till, R. J. (2001). A simple generalisation of the area under the ROC curve for multiple class classification problems. \emph{Machine Learning}, 45(2), 171--186.
+
+Hanley, J. A. and McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. \emph{Radiology}, 143(1), 29--36.
+
+Mann, H. B. and Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. \emph{The Annals of Mathematical Statistics}, 18(1), 50--60.
+}
 \seealso{
 Other model validation techniques: 
 \code{\link{blr_confusion_matrix}()},

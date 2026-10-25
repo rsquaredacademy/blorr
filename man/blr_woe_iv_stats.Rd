@@ -20,6 +20,9 @@ Prints weight of evidence and information value for multiple variables.
 blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 
 }
+\references{
+Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
+}
 \seealso{
 Other bivariate analysis procedures: 
 \code{\link{blr_bivariate_analysis}()},
