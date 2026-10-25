@@ -109,8 +109,13 @@ test_that("gini index is finite on a large balanced model", {
   model <- glm(y ~ x1 + x2, data = d, family = binomial)
   y  <- model$y
   p  <- predict(model, newdata = model$model, type = "response")
-  n1 <- as.numeric(sum(y == 1))
-  n0 <- as.numeric(sum(y == 0))
-  w  <- suppressWarnings(wilcox.test(p[y == 1], p[y == 0], exact = FALSE))$statistic
-  expect_equal(blr_gini_index(model), 2 * as.numeric(w) / (n1 * n0) - 1)
+  # more than 46,340 events: integer products would overflow
+  n1 <- sum(y == 1)
+  n0 <- sum(y == 0)
+  expect_gt(n1, 46340)
+  r   <- rank(p)
+  auc <- (sum(r[y == 1]) - n1 * (n1 + 1) / 2) / (as.numeric(n1) * n0)
+  gini <- blr_gini_index(model)
+  expect_true(is.finite(gini))
+  expect_equal(gini, 2 * auc - 1)
 })
