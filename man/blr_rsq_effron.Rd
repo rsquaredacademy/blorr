@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-model-fit-stats.R
 \name{blr_rsq_effron}
 \alias{blr_rsq_effron}
-\title{Effron R2}
+\title{Efron R2}
 \usage{
 blr_rsq_effron(model)
 }
@@ -10,10 +10,10 @@ blr_rsq_effron(model)
 \item{model}{An object of class \code{glm}.}
 }
 \value{
-Effron pseudo r-squared.
+Efron pseudo r-squared.
 }
 \description{
-Effron pseudo r-squared.
+Efron pseudo r-squared.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

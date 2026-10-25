@@ -24,7 +24,7 @@ blr_plot_pearson_residual(
 \item{yaxis_title}{Y axis label.}
 }
 \description{
-Standardised pearson residuals plot.
+Standardized Pearson residuals plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

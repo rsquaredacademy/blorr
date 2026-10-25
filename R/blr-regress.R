@@ -5,7 +5,7 @@
 #' @param object An object of class "formula" (or one that can be coerced to
 #'   that class): a symbolic description of the model to be fitted or class
 #'   \code{glm}.
-#' @param odd_conf_limit If TRUE, odds ratio confidence limts will be displayed.
+#' @param odd_conf_limit If TRUE, odds ratio confidence limits will be displayed.
 #' @param ... Other inputs.
 #'
 #' @details

@@ -25,4 +25,4 @@ blr_rsq_mcfadden(model)
 \references{
 \url{https://eml.berkeley.edu/reprints/mcfadden/zarembka.pdf}
 }
-\concept{model fit statisitcs}
+\concept{model fit statistics}

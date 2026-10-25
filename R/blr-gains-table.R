@@ -23,7 +23,7 @@
 #' Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons.
 #'
 #' Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
-#' Oxford,  Oxford  Uni-versity Press.
+#' Oxford,  Oxford  University Press.
 #'
 #' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
 #' A  Validation Methodology, Moody’s Investors Service.
@@ -128,7 +128,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @references
-#' \url{https://pubmed.ncbi.nlm.nih.gov/843576/}
+#' \doi{10.2307/2529319}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,

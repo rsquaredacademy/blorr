@@ -19,7 +19,7 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 \item{...}{Other arguments.}
 }
 \value{
-Confusion matix.
+Confusion matrix.
 }
 \description{
 Confusion matrix and statistics.

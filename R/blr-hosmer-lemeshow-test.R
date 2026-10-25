@@ -1,6 +1,6 @@
-#' Hosmer lemeshow test
+#' Hosmer-Lemeshow test
 #'
-#' Hosmer lemeshow goodness of fit test.
+#' Hosmer-Lemeshow goodness of fit test.
 #'
 #' @param model An object of class \code{glm}.
 #' @param data a \code{tibble} or \code{data.frame}.

@@ -120,7 +120,7 @@ model_bic <- function(model) {
 #'
 #' blr_rsq_mcfadden(model)
 #'
-#' @family model fit statisitcs
+#' @family model fit statistics
 #'
 #' @export
 #'
@@ -268,13 +268,13 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 }
 
 
-#' Effron R2
+#' Efron R2
 #'
-#' Effron pseudo r-squared.
+#' Efron pseudo r-squared.
 #'
 #' @param model An object of class \code{glm}.
 #'
-#' @return Effron pseudo r-squared.
+#' @return Efron pseudo r-squared.
 #' 
 #' @references
 #' Efron, B. (1978). Regression and ANOVA with zero-one data: Measures of residual variation. Journal of 
@@ -318,7 +318,7 @@ blr_rsq_effron <- function(model) {
 #'
 #' blr_rsq_count(model)
 #'
-#' @family model fit statistcs
+#' @family model fit statistics
 #'
 #' @export
 #'

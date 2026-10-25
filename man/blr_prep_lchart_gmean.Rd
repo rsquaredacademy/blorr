@@ -10,7 +10,7 @@ blr_prep_lchart_gmean(gains_table)
 blr_prep_lchart_data(gains_table, global_mean)
 }
 \arguments{
-\item{gains_table}{An object of clas \code{blr_gains_table}.}
+\item{gains_table}{An object of class \code{blr_gains_table}.}
 
 \item{global_mean}{Overall conversion rate.}
 }
