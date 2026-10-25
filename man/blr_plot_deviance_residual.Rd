@@ -2,14 +2,14 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_deviance_residual}
 \alias{blr_plot_deviance_residual}
-\title{Deviance residual values}
+\title{Standardized deviance residual values}
 \usage{
 blr_plot_deviance_residual(
   model,
   point_color = "blue",
-  title = "Deviance Residuals Plot",
+  title = "Standardized Deviance Residuals Plot",
   xaxis_title = "id",
-  yaxis_title = "Deviance Residuals"
+  yaxis_title = "Standardized Deviance Residuals"
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ blr_plot_deviance_residual(
 \item{yaxis_title}{Y axis label.}
 }
 \description{
-Deviance residuals plot.
+Standardized deviance residuals plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

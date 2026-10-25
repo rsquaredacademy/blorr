@@ -47,8 +47,14 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 A tibble.
 }
 \description{
-Weight of evidence and information value. Currently avialable for categorical
-  predictors only.
+Weight of evidence and information value.
+}
+\details{
+Character and numeric predictors are treated as categorical and factor
+levels without observations are dropped before the table is built. If a
+level has no events or no non-events, 0.5 is added to both counts for that
+level (Haldane-Anscombe continuity correction) before the weight of evidence
+and information value are computed.
 }
 \examples{
 # woe and iv

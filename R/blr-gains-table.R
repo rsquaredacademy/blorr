@@ -277,8 +277,11 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
 }
 
 
+# assign ten score-ordered groups; ceiling(i * 10 / n) covers every row
+# exactly once, even when n is small
 gains_decile_count <- function(data) {
-  round(nrow(data) / 10)
+  n <- nrow(data)
+  ceiling(seq_len(n) * 10 / n)
 }
 
 
@@ -302,16 +305,14 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
 #' @importFrom data.table data.table setorder .N := setDF
 gains_table_modify <- function(data, decile_count) {
 
-  residual <- nrow(data) - (decile_count * 9)
-
   d1 <- data[c('response', 'predicted')]
   colnames(d1) <- c('response', 'prob')
+  d1$event    <- as.integer(event_indicator(d1$response))
   d1 <- data.table(d1)
   setorder(d1, -prob)
-  d1[, decile := c(rep(1:9, each = decile_count),
-                   rep(10, times = residual))]
+  d1[, decile := decile_count]
 
-  out <- d1[, .(total = .N, `1` = table(response)[[2]]), by = decile]
+  out <- d1[, .(total = .N, `1` = sum(event)), by = decile]
   setDF(out)
   return(out)
 
@@ -328,12 +329,12 @@ gains_table_mutate <- function(data) {
   data$`cum_0s_%`    <- (data$cum_0s / sum(data$`0`)) * 100
   data$ks            <- data$`cum_1s_%` - data$`cum_0s_%`
   data$tp            <- data$cum_1s
-  data$tn            <- data$cum_0s[10] - data$cum_0s
+  data$tn            <- utils::tail(data$cum_0s, 1) - data$cum_0s
   data$fp            <- data$cum_0s
-  data$fn            <- data$cum_1s[10] - data$cum_1s
+  data$fn            <- utils::tail(data$cum_1s, 1) - data$cum_1s
   data$sensitivity   <- (data$tp / (data$tp + data$fn)) * 100
   data$specificity   <- (data$tn / (data$tn + data$fp)) * 100
-  data$accuracy      <- ((data$tp + data$tn) / data$cum_total[10]) * 100
+  data$accuracy      <- ((data$tp + data$tn) / utils::tail(data$cum_total, 1)) * 100
 
   return(data)
 

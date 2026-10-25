@@ -74,7 +74,7 @@ print_blr_reg <- function(x) {
     # odds ration estimates
     w18 <- max(nchar(c("Odds Ratio", x$blr_effects)))
     w19 <- max(nchar(c("Estimate", x$blr_odds_point)))
-    w20 <- max(nchar(c("95% Wald", format(x$blr_conf$`2.5 %`,
+    w20 <- max(nchar(c("95% Profile", format(x$blr_conf$`2.5 %`,
       round(4), nsmall = 4))))
 
     w21 <- max(nchar(c("Conf. Limit", format(x$blr_conf$`97.5 %`,
@@ -87,7 +87,7 @@ print_blr_reg <- function(x) {
     cat(fc("Odds Ratio Estimates", w22), "\n")
     cat(rep("-", w22), sep = "", "\n")
     cat(
-      fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Wald", w20),
+      fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Profile", w20),
       fl("Conf. Limit", w21), "\n"
     )
     cat(rep("-", w22), sep = "", "\n")

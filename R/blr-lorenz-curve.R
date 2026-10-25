@@ -4,6 +4,10 @@
 #'   inequality in labour market. In the predictive model, Gini Index is used
 #'   for measuring discriminatory power.
 #'
+#' @details
+#' The Gini index is computed as 2 * AUC - 1, where AUC is the area under the
+#' receiver operating characteristic curve.
+#'
 #' @param model An object of class \code{glm}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #'
@@ -31,18 +35,40 @@ blr_gini_index <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
-    data <- model$data
+    data      <- model$model
+    test_data <- FALSE
+  } else {
+    test_data <- TRUE
   }
 
   blr_check_data(data)
 
-  data$prob   <- predict.glm(model, newdata = data, type = "response")
-  n           <- length(data$prob)
-  data        <- data[order(data[['prob']]), ]
-  data$n      <- seq_len(nrow(data))
-  data$prob_n <- data$prob * data$n
+  resp_name <- names(model$model)[1]
 
-  (((sum(data$prob_n) / sum(data$prob)) * 2) - (n + 1)) / n
+  if (test_data) {
+    response <- data[[resp_name]]
+  } else {
+    response <- model$y
+  }
+
+  if (is.null(response)) {
+    stop("`data` must contain the response variable used to fit the model.",
+      call. = FALSE
+    )
+  }
+
+  prob     <- predict.glm(model, newdata = data, type = "response")
+  complete <- stats::complete.cases(response, prob)
+  response <- response[complete]
+  prob     <- prob[complete]
+  event    <- event_indicator(response)
+
+  r   <- rank(prob)
+  n1  <- as.numeric(sum(event))
+  n0  <- as.numeric(sum(!event))
+  auc <- (sum(r[event]) - n1 * (n1 + 1) / 2) / (n1 * n0)
+
+  2 * auc - 1
 
 }
 
@@ -78,7 +104,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
 
   if (is.null(data)) {
     test_data <- FALSE
-    data      <- model$data
+    data      <- model$model
   } else {
     test_data <- TRUE
     data      <- data

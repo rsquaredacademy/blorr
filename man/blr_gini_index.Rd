@@ -19,6 +19,10 @@ Gini index is a measure of inequality and was developed to measure income
   inequality in labour market. In the predictive model, Gini Index is used
   for measuring discriminatory power.
 }
+\details{
+The Gini index is computed as 2 * AUC - 1, where AUC is the area under the
+receiver operating characteristic curve.
+}
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))

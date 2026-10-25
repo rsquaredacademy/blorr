@@ -68,8 +68,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   mlen_p     <- length(predictors)
   tech       <- c("addition", "removal")
 
-  mo <- glm(paste(response, "~", 1), data = l,
-            family = binomial(link = "logit"))
+  mo <- selection_model(response, character(0), l)
   aic_c <- model_aic(mo)
 
   cat(format("Stepwise Selection Method", justify = "left", width = 25), "\n")
@@ -87,7 +86,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   step      <- 0
   all_step  <- 0
   preds     <- c()
-  var_index <- c()
+  var_index <- character(0)
   method    <- c()
   laic      <- c()
   lbic      <- c()
@@ -106,10 +105,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
     for (i in seq_len(lpds)) {
       predn <- c(preds, predictors[i])
-      m <- glm(
-        paste(response, "~", paste(predn, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
-      )
+      m <- selection_model(response, predn, l)
       aics[i] <- model_aic(m)
       bics[i] <- model_bic(m)
       devs[i] <- model_deviance(m)
@@ -190,10 +186,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
         for (i in seq_len(lpreds)) {
           preda <- preds[-i]
-          m <- glm(
-            paste(response, "~", paste(preda, collapse = " + ")),
-            data = l, family = binomial(link = "logit")
-          )
+          m <- selection_model(response, preda, l)
           aics[i] <- model_aic(m)
           bics[i] <- model_bic(m)
           devs[i] <- model_deviance(m)
@@ -282,14 +275,13 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     cat(rep("-", 18), sep = "", "\n\n")
 
     fi <- blr_regress(
-      paste(response, "~", paste(preds, collapse = " + ")),
+      selection_formula(response, preds),
       data = l
     )
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
+  final_model <- selection_model(response, preds, l)
 
   out <- list(
     candidates = nam,

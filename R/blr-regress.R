@@ -8,6 +8,10 @@
 #' @param odd_conf_limit If TRUE, odds ratio confidence limts will be displayed.
 #' @param ... Other inputs.
 #'
+#' @details
+#' Odds ratio confidence limits are profile-likelihood intervals computed by
+#' \code{\link[stats]{confint}}.
+#'
 #' @examples
 #' # using formula
 #' blr_regress(object = honcomp ~ female + read + science, data = hsb2)

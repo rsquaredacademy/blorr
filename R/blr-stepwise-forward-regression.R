@@ -109,19 +109,33 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
-             l, family = binomial(link = 'logit'))
+    m <- selection_model(response, predictors, l)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
   }
 
   minp   <- which(pvals == min(pvals))
+
+  if (min(pvals) > penter) {
+    cat("\nNo variables have been added to the model.\n\n")
+    final_model <- selection_model(response, character(0), l)
+    out <- list(predictors = character(0),
+                indvar     = cterms,
+                steps      = 0,
+                bic        = numeric(0),
+                aic        = numeric(0),
+                dev        = numeric(0),
+                model      = final_model)
+    class(out) <- "blr_step_p_forward"
+    return(out)
+  }
+
   # tvals  <- abs(tvals)
   # maxt   <- which(tvals == max(tvals))
   preds  <- all_pred[minp]
   lpreds <- length(preds)
-  fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+  fr     <- selection_model(response, preds, l)
   mfs    <- blr_model_fit_stats(fr)
   aic    <- mfs$m_aic
   bic    <- mfs$m_bic
@@ -140,7 +154,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   if (details) {
     cat("\n")
-    m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+    m <- blr_regress(selection_formula(response, preds), l)
     print(m)
     cat("\n\n")
   }
@@ -169,8 +183,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
       step   <- step + 1
       preds  <- c(preds, all_pred[minp])
       lpreds <- length(preds)
-      fr     <- glm(paste(response, "~",
-                                  paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+      fr     <- selection_model(response, preds, l)
       mfs    <- blr_model_fit_stats(fr)
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
@@ -189,7 +202,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
       if (details) {
         cat("\n")
-        m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+        m <- blr_regress(selection_formula(response, preds), l)
         print(m)
         cat("\n\n")
       }
@@ -217,13 +230,12 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   cat(rep("-", 18), sep = "", "\n\n")
 
   fi <- blr_regress(
-    paste(response, "~", paste(preds, collapse = " + ")),
+    selection_formula(response, preds),
     data = l
   )
   print(fi)
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
+  final_model <- selection_model(response, preds, l)
 
   out <- list(predictors = preds,
               indvar     = cterms,

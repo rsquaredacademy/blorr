@@ -1,7 +1,13 @@
 #' WoE & IV
 #'
-#' Weight of evidence and information value. Currently avialable for categorical
-#'   predictors only.
+#' Weight of evidence and information value.
+#'
+#' @details
+#' Character and numeric predictors are treated as categorical and factor
+#' levels without observations are dropped before the table is built. If a
+#' level has no events or no non-events, 0.5 is added to both counts for that
+#' level (Haldane-Anscombe continuity correction) before the weight of evidence
+#' and information value are computed.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
@@ -57,10 +63,10 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
   }
 
   dat      <- data[c(pred, resp)]
+  dat      <- dat[stats::complete.cases(dat), , drop = FALSE]
+  dat[[pred]] <- droplevels(factor(dat[[pred]]))
   lev      <- levels(dat[[pred]])
-  f        <- table(dat)
-  f1       <- table(dat)
-  d1       <- woe_data_prep(f, f1)
+  d1       <- woe_data_prep(dat[[pred]], dat[[resp]])
   d2       <- woe_data_modify(d1, lev = lev, digits = digits)
   woe_iv   <- woe_data_select(d2)
   var_name <- names(dat)[1]
@@ -108,7 +114,6 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Multi variable WOE & IV
 #'
 #' Prints weight of evidence and information value for multiple variables.
-#'   Currently avialable for categorical predictors only.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
 #' @param response Response variable; column in \code{data}.
@@ -140,11 +145,14 @@ blr_woe_iv_stats <- function(data, response, ...) {
   }
 }
 
-woe_data_prep <- function(f, f1) {
+woe_data_prep <- function(predictor, response) {
 
-  d <- data.frame(unique(rbind(f, f1)))[c('X0', 'X1')]
-  colnames(d) <- c('no', 'yes')
-  return(d)
+  event <- event_indicator(response)
+
+  data.frame(
+    no  = as.vector(tapply(!event, predictor, sum)),
+    yes = as.vector(tapply(event, predictor, sum))
+  )
 
 }
 
@@ -153,8 +161,16 @@ woe_data_modify <- function(data, lev, digits) {
   data$total        <- data$no + data$yes
   data$distribution <- round((data$total / sum(data$total) * 100), digits = digits)
   data$approval     <- round(((data$yes / data$total) * 100), digits = digits)
-  data$dist_yes     <- round(data$yes / sum(data$yes), digits = digits)
-  data$dist_no      <- round(data$no / sum(data$no), digits = digits)
+
+  # Haldane-Anscombe correction for levels with no events or no non-events
+  no  <- data$no
+  yes <- data$yes
+  zero_cell <- no == 0 | yes == 0
+  no[zero_cell]  <- no[zero_cell] + 0.5
+  yes[zero_cell] <- yes[zero_cell] + 0.5
+
+  data$dist_yes     <- round(yes / sum(yes), digits = digits)
+  data$dist_no      <- round(no / sum(no), digits = digits)
   data$woe          <- round(log(data$dist_no / data$dist_yes), digits = digits)
   data$dist_diff    <- data$dist_no - data$dist_yes
   data$iv           <- round((data$dist_diff * data$woe), digits = digits)

@@ -76,10 +76,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   preds    <- nam
   aic_f    <- model_aic(model)
 
-    mi <- glm(
-    paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = "logit")
-  )
+    mi <- selection_model(response, preds, l)
 
   laic <- aic_f
   lbic <- model_bic(mi)
@@ -109,10 +106,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
-    m <- glm(
-      paste(response, "~", paste(predictors, collapse = " + ")),
-      data = l, family = binomial(link = "logit")
-    )
+    m <- selection_model(response, predictors, l)
     aics[i] <- model_aic(m)
     bics[i] <- model_bic(m)
     devs[i] <- model_deviance(m)
@@ -166,17 +160,18 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
       step  <- step + 1
       aic_f <- aics[minc]
 
-      mi <- glm(
-        paste(response, "~", paste(preds, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
-      )
+      mi <- selection_model(response, preds, l)
 
       laic <- c(laic, aic_f)
       lbic <- c(lbic, model_bic(mi))
       ldev <- c(ldev, model_deviance(mi))
-      aics <- c()
-      bics <- c()
-      devs <- c()
+      aics <- numeric(0)
+      bics <- numeric(0)
+      devs <- numeric(0)
+
+      if (length(preds) == 0) {
+        end <- TRUE
+      }
 
       if (progress) {
         cat(paste("x", rev(rpred)[1], "\n"))
@@ -184,10 +179,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
-        m <- glm(
-          paste(response, "~", paste(predictors, collapse = " + ")),
-          data = l, family = binomial(link = "logit")
-        )
+        m <- selection_model(response, predictors, l)
         aics[i] <- model_aic(m)
         bics[i] <- model_bic(m)
         devs[i] <- model_deviance(m)
@@ -252,14 +244,13 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
     cat(rep("-", 18), sep = "", "\n\n")
 
     fi <- blr_regress(
-      paste(response, "~", paste(preds, collapse = " + ")),
+      selection_formula(response, preds),
       data = l
     )
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = 'logit'))
+  final_model <- selection_model(response, preds, l)
 
   vars <- c("Full Model", rpred)
 
