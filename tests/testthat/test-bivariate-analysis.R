@@ -53,6 +53,35 @@ test_that("event rate uses the second level of a factor response with non-0/1 la
   expect_equal(k2$dist_table[['1s%']], expected)
 })
 
+test_that("event rate is correct when a level has only events (logical response)", {
+  d <- data.frame(
+    g = c("a", "a", "b", "b", "c", "c"),
+    y = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  expected <- c(1, 0.5, 0)
+
+  k <- blr_segment(d, y, g)
+  expect_equal(k$segment_data[["1s%"]], expected)
+
+  k2 <- blr_segment_dist(d, y, g)
+  expect_equal(k2$dist_table[["1s%"]], expected)
+})
+
+test_that("event rate is correct when a level has only events (factor response)", {
+  d <- data.frame(
+    g = c("a", "a", "b", "b", "c", "c"),
+    y = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  d$y_lab <- factor(ifelse(d$y, "yes", "no"), levels = c("no", "yes"))
+  expected <- c(1, 0.5, 0)
+
+  k <- blr_segment(d, y_lab, g)
+  expect_equal(k$segment_data[["1s%"]], expected)
+
+  k2 <- blr_segment_dist(d, y_lab, g)
+  expect_equal(k2$dist_table[["1s%"]], expected)
+})
+
 test_that("blr_segment prints the correct output", {
   k <- blr_segment(hsb2, honcomp, race)
   expect_snapshot(k)
