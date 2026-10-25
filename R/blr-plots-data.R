@@ -2,7 +2,7 @@
 #'
 #' Data for generating ROC curve.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}
+#' @param gains_table An object of class \code{blr_gains_table}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -68,7 +68,7 @@ lorenz_plot_data <- function(gains_table) {
 #'
 #' Data for generating decile capture rate.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}
+#' @param gains_table An object of class \code{blr_gains_table}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -91,7 +91,7 @@ blr_prep_dcrate_data <- function(gains_table) {
 #'
 #' Data for generating lift chart.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param gains_table An object of class \code{blr_gains_table}.
 #' @param global_mean Overall conversion rate.
 #'
 #' @examples
@@ -128,7 +128,7 @@ blr_prep_lchart_data <- function(gains_table, global_mean) {
 #'
 #' Data for generating KS chart.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param gains_table An object of class \code{blr_gains_table}.
 #' @param ks_line Overall conversion rate.
 #'
 #' @examples

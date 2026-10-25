@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_diag_difchisq}
 \alias{blr_plot_diag_difchisq}
-\title{Delta chisquare plot}
+\title{Delta chi-square plot}
 \usage{
 blr_plot_diag_difchisq(
   model,

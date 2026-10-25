@@ -19,7 +19,7 @@ status](https://app.codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badg
 Tools designed to make it easier for users, particularly
 beginner/intermediate R users to build logistic regression models.
 Includes comprehensive regression output, variable selection procedures,
-model validation techniques and a ‘shiny’ app for interactive model
+model validation techniques and a 'shiny' app for interactive model
 building.
 
 ## Installation
@@ -268,7 +268,7 @@ blr_lorenz_curve(model)
 ## Getting Help
 
 If you encounter a bug, please file a minimal reproducible example using
-[reprex](https://reprex.tidyverse.org/index.html) on github. For
+[reprex](https://reprex.tidyverse.org/index.html) on GitHub. For
 questions and clarifications, use
 [StackOverflow](https://stackoverflow.com/).
 

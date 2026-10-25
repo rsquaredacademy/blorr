@@ -20,7 +20,7 @@ blr_segment(data, response, predictor)
 A tibble.
 }
 \description{
-Event rate by segements/levels of a qualitative variable.
+Event rate by segments/levels of a qualitative variable.
 }
 \examples{
 blr_segment(hsb2, honcomp, prog)

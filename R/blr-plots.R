@@ -32,7 +32,7 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 
 #' Residual values plot
 #'
-#' Standardised pearson residuals plot.
+#' Standardized Pearson residuals plot.
 #'
 #' @param model An object of class \code{glm}.
 #' @param point_color Color of the points.
@@ -275,7 +275,7 @@ blr_plot_diag_cbar <- function(model, point_color = "blue",
 }
 
 
-#' Delta chisquare plot
+#' Delta chi-square plot
 #'
 #' Diagnostics for detecting ill fitted observations.
 #'

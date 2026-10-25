@@ -7,7 +7,7 @@
 #' @param cutoff Cutoff for classification.
 #' @param ... Other arguments.
 #'
-#' @return Confusion matix.
+#' @return Confusion matrix.
 #'
 #' @references
 #' Kuhn, M. (2008). Building predictive models in R using the caret package. \emph{Journal of Statistical Software}, 28(5), 1--26.

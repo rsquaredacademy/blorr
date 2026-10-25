@@ -57,7 +57,7 @@ at https://archive.ics.uci.edu/ml/datasets/bank+marketing.
 Let us begin with careful bivariate analysis of each possible variable and the 
 outcome variable. We will use information value and likelihood ratio chi square 
 test for selecting the initial set of predictors for our model. The bivariate
-analysis is currently avialable for categorical predictors only.
+analysis is currently available for categorical predictors only.
 
 ```{r bivar1}
 blr_bivariate_analysis(bank_marketing, y, job, marital, education, default, 
@@ -66,7 +66,7 @@ blr_bivariate_analysis(bank_marketing, y, job, marital, education, default,
 
 ### Weight of Evidence & Information Value
 
-Weight of evidence (WoE) is used to assess the relative risk of di¤erent 
+Weight of evidence (WoE) is used to assess the relative risk of different
 attributes for a characteristic and as a means to transform characteristics 
 into variables. It is also a very useful tool for binning. The WoE for any 
 group with average odds is zero. A negative WoE indicates that the proportion 
@@ -99,7 +99,7 @@ variables using `blr_woe_iv_stats()`.
 blr_woe_iv_stats(bank_marketing, y, job, marital, education)
 ```
 
-`blr_woe_iv()` and `blr_woe_iv_stats()` are currently avialable for categorical 
+`blr_woe_iv()` and `blr_woe_iv_stats()` are currently available for categorical
 predictors only.
 
 ## Stepwise Selection
@@ -178,7 +178,7 @@ blr_regress(y ~  age + duration + previous + housing + default +
 ## Model Fit Statistics
 
 Model fit statistics are available to assess how well the model fits the data 
-and to compare two different models.The output includes likelihood ratio test, 
+and to compare two different models. The output includes likelihood ratio test,
 AIC, BIC and a host of pseudo r-squared measures. You can read more about 
 pseudo r-squared [here](https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faq-what-are-pseudo-r-squareds/).
 
@@ -317,7 +317,7 @@ model %>%
 ### Lorenz Curve
 
 The Lorenz curve is a simple graphic device which illustrates the degree of 
-inequality in the distribution of thevariable concerned. It is a visual 
+inequality in the distribution of the variable concerned. It is a visual
 representation of inequality used to measure the discriminatory power of the 
 predictive model.
 

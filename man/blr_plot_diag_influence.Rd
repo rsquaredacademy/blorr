@@ -15,7 +15,7 @@ blr_plot_diag_influence(model, print_plot = TRUE)
 A panel of influence diagnostic plots.
 }
 \description{
-Reisudal diagnostic plots for detecting influential observations.
+Residual diagnostic plots for detecting influential observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

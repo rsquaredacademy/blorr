@@ -22,4 +22,4 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 blr_rsq_count(model)
 
 }
-\concept{model fit statistcs}
+\concept{model fit statistics}

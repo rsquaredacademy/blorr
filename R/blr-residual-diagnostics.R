@@ -1,6 +1,6 @@
 #' Influence diagnostics plot
 #'
-#' Reisudal diagnostic plots for detecting influential observations.
+#' Residual diagnostic plots for detecting influential observations.
 #'
 #' @param model An object of class \code{glm}.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.

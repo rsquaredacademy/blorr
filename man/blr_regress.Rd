@@ -16,7 +16,7 @@ that class): a symbolic description of the model to be fitted or class
 
 \item{...}{Other inputs.}
 
-\item{odd_conf_limit}{If TRUE, odds ratio confidence limts will be displayed.}
+\item{odd_conf_limit}{If TRUE, odds ratio confidence limits will be displayed.}
 }
 \description{
 Binary logistic regression.

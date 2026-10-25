@@ -19,7 +19,7 @@ blr_prep_kschart_stat(ks_line)
 blr_prep_ksannotate_x(ks_line)
 }
 \arguments{
-\item{gains_table}{An object of clas \code{blr_gains_table}.}
+\item{gains_table}{An object of class \code{blr_gains_table}.}
 
 \item{ks_line}{Overall conversion rate.}
 }

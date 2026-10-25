@@ -1,7 +1,7 @@
 #' Bivariate analysis
 #'
 #' Information value and likelihood ratio chi square test for initial
-#'   variable/predictor selection. Currently avialable for categorical
+#'   variable/predictor selection. Currently available for categorical
 #'   predictors only.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
@@ -11,7 +11,7 @@
 #' @return A tibble with the following columns:
 #' \item{Variable}{Variable name}
 #' \item{Information Value}{Information value}
-#' \item{LR Chi Square}{Likelihood ratio statisitc}
+#' \item{LR Chi Square}{Likelihood ratio statistic}
 #' \item{LR DF}{Likelihood ratio degrees of freedom}
 #' \item{LR p-value}{Likelihood ratio p value}
 #'
@@ -109,7 +109,7 @@ lr_extract <- function(lr, value) {
 }
 #' Event rate
 #'
-#' Event rate by segements/levels of a qualitative variable.
+#' Event rate by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
@@ -213,7 +213,7 @@ print.blr_segment_twoway <- function(x, ...) {
 
 #' Response distribution
 #'
-#' Distribution of response variable by segements/levels of a qualitative variable.
+#' Distribution of response variable by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param response Response variable; column in \code{data}.

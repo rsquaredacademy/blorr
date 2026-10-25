@@ -48,7 +48,7 @@ blr_segment_dist(data, response, predictor)
 A tibble.
 }
 \description{
-Distribution of response variable by segements/levels of a qualitative variable.
+Distribution of response variable by segments/levels of a qualitative variable.
 }
 \examples{
 k <- blr_segment_dist(hsb2, honcomp, prog)

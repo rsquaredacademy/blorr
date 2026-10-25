@@ -2,7 +2,7 @@
 % Please edit documentation in R/blr-hosmer-lemeshow-test.R
 \name{blr_test_hosmer_lemeshow}
 \alias{blr_test_hosmer_lemeshow}
-\title{Hosmer lemeshow test}
+\title{Hosmer-Lemeshow test}
 \usage{
 blr_test_hosmer_lemeshow(model, data = NULL)
 }
@@ -12,7 +12,7 @@ blr_test_hosmer_lemeshow(model, data = NULL)
 \item{data}{a \code{tibble} or \code{data.frame}.}
 }
 \description{
-Hosmer lemeshow goodness of fit test.
+Hosmer-Lemeshow goodness of fit test.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
