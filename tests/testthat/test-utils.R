@@ -47,6 +47,17 @@ test_that("output from resp_profile is as expected", {
 })
 
 
+test_that("resp_profile keeps factor response labels", {
+  d <- hsb2
+  d$hc_lab <- factor(ifelse(d$honcomp == 1, "yes", "no"), levels = c("no", "yes"))
+  factor_model <- glm(hc_lab ~ female + read, data = d, family = binomial)
+
+  actual <- resp_profile(factor_model)
+  expect_equal(names(actual), c("no", "yes"))
+  expect_equal(as.integer(actual), c(147L, 53L))
+})
+
+
 test_that("predictor_names returns names of the predictors", {
   actual <- predictor_names(model)
   expected <- c("(Intercept)", "female1", "read", "science")

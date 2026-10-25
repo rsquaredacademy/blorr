@@ -138,7 +138,7 @@ blr_segment.default <- function(data, response, predictor) {
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
   d       <- data.table(d)
-  d       <- d[, .(n = .N, `1s` = sum(resp == 1)), by = pred]
+  d       <- d[, .(n = .N, `1s` = sum(event_indicator(resp))), by = pred]
 
   setDF(d)
 
@@ -287,7 +287,7 @@ segment_comp <- function(data, pred, resp) {
   d <- data[c(pred, resp)]
   colnames(d) <- c("pred", "resp")
   d <- data.table(d)
-  d <- d[, .(n = .N, `1s` = sum(resp == 1)), by = pred]
+  d <- d[, .(n = .N, `1s` = sum(event_indicator(resp))), by = pred]
 
   setDF(d)
 

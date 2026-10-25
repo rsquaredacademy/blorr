@@ -41,6 +41,18 @@ test_that("event rate by level works when a level has no events", {
   expect_equal(k2$dist_table[['1s%']][1], 0)
 })
 
+test_that("event rate uses the second level of a factor response with non-0/1 labels", {
+  d <- hsb2
+  d$hc_lab <- factor(ifelse(d$honcomp == 1, "yes", "no"), levels = c("no", "yes"))
+  expected <- round(as.numeric(tapply(d$hc_lab == "yes", d$race, mean)), 2)
+
+  k <- blr_segment(d, hc_lab, race)
+  expect_equal(k$segment_data[['1s%']], expected)
+
+  k2 <- blr_segment_dist(d, hc_lab, race)
+  expect_equal(k2$dist_table[['1s%']], expected)
+})
+
 test_that("blr_segment prints the correct output", {
   k <- blr_segment(hsb2, honcomp, race)
   expect_snapshot(k)

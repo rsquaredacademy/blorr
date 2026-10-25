@@ -22,7 +22,8 @@ print_blr_reg <- function(x) {
   )
   cat(rep("-", w7), sep = "", "\n\n")
 
-  w8  <- nchar("Outcome")
+  outcomes <- names(x$resp_prof)
+  w8  <- max(nchar(c("Outcome", outcomes)))
   w9  <- max(nchar(c("Frequency", x$resp_prof[[1]], x$resp_prof[[2]])))
   w10 <- sum(w8, w9, w8, w9, 24)
 
@@ -34,8 +35,8 @@ print_blr_reg <- function(x) {
   )
   cat(rep("-", w10), sep = "", "\n")
   cat(
-    fc(0, w8), fs3(), fc(x$resp_prof[[1]], w9), fs3(),
-    fc(1, w8), fs3(), fc(x$resp_prof[[2]], w9), "\n"
+    fc(outcomes[1], w8), fs3(), fc(x$resp_prof[[1]], w9), fs3(),
+    fc(outcomes[2], w8), fs3(), fc(x$resp_prof[[2]], w9), "\n"
   )
   cat(rep("-", w10), sep = "", "\n\n")
 

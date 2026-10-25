@@ -29,9 +29,25 @@ model_df <- function(model) {
   model$df.null
 }
 
+# event indicator: the second level for factor/character/logical responses,
+# as in glm(), and 1 for numeric 0/1 responses
+event_indicator <- function(resp) {
+  if (is.numeric(resp)) {
+    return(resp == 1)
+  }
+
+  lvls <- levels(factor(resp))
+
+  if (length(lvls) < 2) {
+    return(rep(FALSE, length(resp)))
+  }
+
+  !is.na(resp) & as.character(resp) == lvls[2]
+}
+
 # response profile
 resp_profile <- function(model) {
-  table(as.factor(model$y))
+  table(model$model[[1]])
 }
 
 
