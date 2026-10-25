@@ -31,7 +31,9 @@
 - the Gini index and Lorenz curve now use the observations the model was
   fitted on, so rows dropped for missing values are no longer misaligned, and
   the Gini index is reported as 2 * AUC - 1, the credit-scoring definition
-  based on the area under the ROC curve.
+  based on the area under the ROC curve. The index is computed from the
+  Mann-Whitney rank statistic, so it remains fast on large models, and `data`
+  without the response column is now an error instead of returning `NaN`.
 - variable selection procedures now return an intercept-only model when no
   predictor qualifies, and p-value based procedures apply the entry criterion
   to the first predictor as well.

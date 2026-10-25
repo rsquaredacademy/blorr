@@ -51,14 +51,22 @@ blr_gini_index <- function(model, data = NULL) {
     response <- model$y
   }
 
+  if (is.null(response)) {
+    stop("`data` must contain the response variable used to fit the model.",
+      call. = FALSE
+    )
+  }
+
   prob     <- predict.glm(model, newdata = data, type = "response")
   complete <- stats::complete.cases(response, prob)
   response <- response[complete]
   prob     <- prob[complete]
   event    <- event_indicator(response)
 
-  auc <- mean(outer(prob[event], prob[!event], ">") +
-    0.5 * outer(prob[event], prob[!event], "=="))
+  r   <- rank(prob)
+  n1  <- sum(event)
+  n0  <- sum(!event)
+  auc <- (sum(r[event]) - n1 * (n1 + 1) / 2) / (n1 * n0)
 
   2 * auc - 1
 

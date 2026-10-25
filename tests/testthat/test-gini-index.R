@@ -52,6 +52,35 @@ test_that("gini index on a test set uses the response from the test data", {
   expect_equal(blr_gini_index(model, test_data), 2 * auc - 1)
 })
 
+test_that("gini index errors when data lacks the response column", {
+  model <- glm(
+    honcomp ~ female + read, data = hsb2,
+    family = binomial(link = "logit")
+  )
+
+  expect_error(
+    blr_gini_index(model, hsb2[1:50, c("female", "read")]),
+    "must contain the response variable"
+  )
+})
+
+test_that("gini index is fast on a large model", {
+  skip_on_cran()
+
+  set.seed(1)
+  n <- 100000
+  d <- data.frame(
+    y  = rbinom(n, 1, 0.1),
+    x1 = rnorm(n),
+    x2 = rnorm(n)
+  )
+
+  model <- glm(y ~ x1 + x2, data = d, family = binomial(link = "logit"))
+
+  elapsed <- system.time(blr_gini_index(model))[["elapsed"]]
+  expect_lt(elapsed, 5)
+})
+
 test_that("AUC on complete rows matches the concordance statistic", {
   d <- hsb2
   d$read[which(d$honcomp == "0")[1:10]] <- NA
