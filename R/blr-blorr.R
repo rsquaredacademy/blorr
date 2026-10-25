@@ -28,7 +28,7 @@ if (getRversion() >= "2.15.1") {
     "group", "honcomp", "ks", "lr_ratio", "n%", "negative", "p_value",
     "positive", "predict", "predicted", "prob_n", "sec", "test_result",
     "variable", "woe_iv_table", "chisq_stat", "confusion_matrix",
-    "partition_table", "segment_data", "var_name", "fit", "resid", "cbar",
+    "partition_table", "segment_data", "var_name", "fit", "resid", "cbar", "event",
     "dev_df", "difchisq", "difdev", "fitted", "hat", "lr_df", "mfit",
     "twoway_segment", "varnames", "color", "concordance", "concordant",
     "d_by_g_mean","dbetas", "decile_mean", "discordant", "gmean", "obs",

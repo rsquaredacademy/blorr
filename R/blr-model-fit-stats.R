@@ -224,7 +224,7 @@ blr_rsq_nagelkerke <- function(model) {
 
   blr_check_model(model)
 
-  n   <- nrow(model$data)
+  n   <- nobs(model)
   num <- exp(((model_ll(model) * -2) - (imodel(model) * -2)) / n)
   den <- exp((imodel(model) * 2) / n )
   (1 - num) / (1 - den)
@@ -394,7 +394,7 @@ extract_lr <- function(lr, value) {
 
 cox_snell_comp <- function(model) {
 
-  n <- nrow(model$data)
+  n <- nobs(model)
   exp(((imodel(model) - model_ll(model)) * 2) / n)
 
 }

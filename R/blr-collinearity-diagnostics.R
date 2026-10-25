@@ -189,6 +189,6 @@ pveindex <- function(z) {
   ph       <- t(phi ^ 2)
   diag_sum <- diag(rowSums(ph, dims = 1))
 
-  prop.table(ph %*% diag_sum)  
+  prop.table(ph %*% diag_sum, margin = 2)  
   
 }

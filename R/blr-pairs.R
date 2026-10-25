@@ -44,8 +44,8 @@ pairs_compute <- function(compute_pairs, n) {
   compute_pairs$concordance <- compute_pairs$concordant / compute_pairs$pairs
   compute_pairs$discordance <-  compute_pairs$discordant / compute_pairs$pairs
   compute_pairs$tied        <-  compute_pairs$ties / compute_pairs$pairs
-  compute_pairs$somers_d    <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$concordant + compute_pairs$discordant)
-  compute_pairs$gamma       <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$pairs)
+  compute_pairs$somers_d    <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$pairs)
+  compute_pairs$gamma       <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$concordant + compute_pairs$discordant)
   compute_pairs$tau         <-  (2 * (compute_pairs$concordant - compute_pairs$discordant)) / (n * (n - 1))
   compute_pairs$c           <-  compute_pairs$concordance + (0.5 * compute_pairs$tied)
 

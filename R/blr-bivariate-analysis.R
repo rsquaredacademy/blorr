@@ -137,12 +137,13 @@ blr_segment.default <- function(data, response, predictor) {
   pred    <- deparse(substitute(predictor))
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
+  d$event <- event_indicator(d$resp)
   d       <- data.table(d)
-  d       <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
+  d       <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
   setDF(d)
 
-  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d$`1s%` <- round((d$`1s` / d$n), 2)
   d       <- d[c('pred', '1s%')]
   d       <- d[order(d$pred), ]
   result  <- list(segment_data = d)
@@ -286,13 +287,14 @@ segment_comp <- function(data, pred, resp) {
 
   d <- data[c(pred, resp)]
   colnames(d) <- c("pred", "resp")
+  d$event <- event_indicator(d$resp)
   d <- data.table(d)
-  d <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
+  d <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
   setDF(d)
 
   d$`n%`  <- round((d$n / sum(d$n)), 2)
-  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d$`1s%` <- round((d$`1s` / d$n), 2)
   d <- d[order(d$pred), ]
 
   return(d)

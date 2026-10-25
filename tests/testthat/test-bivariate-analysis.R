@@ -14,9 +14,72 @@ test_that("output from blr_segment is as expected", {
   
   k        <- blr_segment(hsb2, honcomp, race)
   actual   <- rev(k$segment_data[['1s%']])[1]
-  expected <- c(0.22)
+  expected <- c(0.30)
 
   expect_equal(actual, expected)
+})
+
+test_that("event rate by level is events in level divided by n in level", {
+  expected <- round(as.numeric(tapply(hsb2$honcomp == 1, hsb2$race, mean)), 2)
+
+  k <- blr_segment(hsb2, honcomp, race)
+  expect_equal(k$segment_data[['1s%']], expected)
+
+  k2 <- blr_segment_dist(hsb2, honcomp, race)
+  expect_equal(k2$dist_table[['1s%']], expected)
+})
+
+test_that("event rate by level works when a level has no events", {
+  d <- hsb2
+  d$event <- as.integer(d$honcomp == 1)
+  d$event[d$race == "1"] <- 0
+
+  k <- blr_segment(d, event, race)
+  expect_equal(k$segment_data[['1s%']][1], 0)
+
+  k2 <- blr_segment_dist(d, event, race)
+  expect_equal(k2$dist_table[['1s%']][1], 0)
+})
+
+test_that("event rate uses the second level of a factor response with non-0/1 labels", {
+  d <- hsb2
+  d$hc_lab <- factor(ifelse(d$honcomp == 1, "yes", "no"), levels = c("no", "yes"))
+  expected <- round(as.numeric(tapply(d$hc_lab == "yes", d$race, mean)), 2)
+
+  k <- blr_segment(d, hc_lab, race)
+  expect_equal(k$segment_data[['1s%']], expected)
+
+  k2 <- blr_segment_dist(d, hc_lab, race)
+  expect_equal(k2$dist_table[['1s%']], expected)
+})
+
+test_that("event rate is correct when a level has only events (logical response)", {
+  d <- data.frame(
+    g = c("a", "a", "b", "b", "c", "c"),
+    y = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  expected <- c(1, 0.5, 0)
+
+  k <- blr_segment(d, y, g)
+  expect_equal(k$segment_data[["1s%"]], expected)
+
+  k2 <- blr_segment_dist(d, y, g)
+  expect_equal(k2$dist_table[["1s%"]], expected)
+})
+
+test_that("event rate is correct when a level has only events (factor response)", {
+  d <- data.frame(
+    g = c("a", "a", "b", "b", "c", "c"),
+    y = c(TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  d$y_lab <- factor(ifelse(d$y, "yes", "no"), levels = c("no", "yes"))
+  expected <- c(1, 0.5, 0)
+
+  k <- blr_segment(d, y_lab, g)
+  expect_equal(k$segment_data[["1s%"]], expected)
+
+  k2 <- blr_segment_dist(d, y_lab, g)
+  expect_equal(k2$dist_table[["1s%"]], expected)
 })
 
 test_that("blr_segment prints the correct output", {
@@ -41,7 +104,7 @@ test_that("output from blr_segment_dist is as expected", {
   
   k        <- blr_segment_dist(hsb2, honcomp, race)
   actual   <- rev(k$dist_table[['1s%']])[1]
-  expected <- c(0.22)
+  expected <- c(0.30)
   expect_equal(actual, expected)
 })
 

@@ -72,11 +72,7 @@ print.blr_test_lr <- function(x, ...) {
 }
 
 lr_reduced_model <- function(full_model) {
-
-  dep <- response_var(full_model)
-  dat <- full_model$data
-  glm(paste0(dep, " ~ 1"), data = dat, family = binomial(link = "logit"))
-
+  i_model(full_model)
 }
 
 lr_test_result <- function(full_model, reduced_model) {
@@ -85,7 +81,7 @@ lr_test_result <- function(full_model, reduced_model) {
   reduced_model_ll <- mll(reduced_model)
   lr               <- reduced_model_ll - full_model_ll
 
-  df   <- length(coefficients(full_model)) - 1
+  df   <- df.residual(reduced_model) - df.residual(full_model)
   pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
 
   data.frame(lr_ratio = lr,
