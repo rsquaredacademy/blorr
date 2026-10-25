@@ -167,6 +167,18 @@ test_that("blr_woe_iv applies a continuity correction to zero cells", {
     log(dist_no[1] / dist_yes[1]), tolerance = 1e-3)
 })
 
+test_that("blr_woe_iv drops rows with missing values", {
+  d <- hsb2
+  d$honcomp[1:10] <- NA
+
+  k <- blr_woe_iv(d, race, honcomp)$woe_iv_table
+  tab <- table(d$race, d$honcomp)
+
+  expect_equal(k$count_0s, as.numeric(tab[, "0"]))
+  expect_equal(k$count_1s, as.numeric(tab[, "1"]))
+  expect_equal(sum(k$count_0s + k$count_1s), 190)
+})
+
 test_that("blr_woe_iv matches hand computation", {
   d <- data.frame(
     g = factor(c("a", "a", "a", "b", "b", "b")),

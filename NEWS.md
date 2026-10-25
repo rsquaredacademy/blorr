@@ -29,19 +29,22 @@
   predicts only one class, McNemar's test is reported as unavailable when it
   cannot be computed, and the no information rate uses the larger class.
 - the Gini index and Lorenz curve now use the observations the model was
-  fitted on, so rows dropped for missing values are no longer misaligned.
+  fitted on, so rows dropped for missing values are no longer misaligned, and
+  the Gini index is reported as 2 * AUC - 1, the credit-scoring definition
+  based on the area under the ROC curve.
 - variable selection procedures now return an intercept-only model when no
   predictor qualifies, and p-value based procedures apply the entry criterion
   to the first predictor as well.
 - `blr_woe_iv()` now accepts character and numeric predictors, drops unused
-  factor levels, and applies a 0.5 continuity correction to levels with no
-  events or no non-events.
+  factor levels, applies a 0.5 continuity correction to levels with no
+  events or no non-events, and drops rows with missing values so they are not
+  counted as non-events.
 - `blr_plot_dfbetas_panel()` now works for models with one or more predictors.
 - odds ratio confidence limits in `blr_regress()` are now labelled as
   profile-likelihood intervals.
 - the forward selection documentation now describes selection by AIC.
-- deviance residual plots are now labelled as standardized deviance residual
-  plots.
+- deviance residual plots now use and are labelled as standardized deviance
+  residuals.
 
 # blorr 0.3.1
 

@@ -329,12 +329,12 @@ gains_table_mutate <- function(data) {
   data$`cum_0s_%`    <- (data$cum_0s / sum(data$`0`)) * 100
   data$ks            <- data$`cum_1s_%` - data$`cum_0s_%`
   data$tp            <- data$cum_1s
-  data$tn            <- tail(data$cum_0s, 1) - data$cum_0s
+  data$tn            <- utils::tail(data$cum_0s, 1) - data$cum_0s
   data$fp            <- data$cum_0s
-  data$fn            <- tail(data$cum_1s, 1) - data$cum_1s
+  data$fn            <- utils::tail(data$cum_1s, 1) - data$cum_1s
   data$sensitivity   <- (data$tp / (data$tp + data$fn)) * 100
   data$specificity   <- (data$tn / (data$tn + data$fp)) * 100
-  data$accuracy      <- ((data$tp + data$tn) / tail(data$cum_total, 1)) * 100
+  data$accuracy      <- ((data$tp + data$tn) / utils::tail(data$cum_total, 1)) * 100
 
   return(data)
 

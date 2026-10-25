@@ -27,13 +27,14 @@ test_that("deviance residual plots are labelled as standardized", {
 
   expect_equal(p$labels$title, "Standardized Deviance Residuals Plot")
   expect_equal(p$labels$y, "Standardized Deviance Residuals")
-  expect_equal(p$data$y, unname(rstandard(model)))
+  expect_equal(p$data$y, unname(rstandard(model, type = "deviance")))
 
   p2 <- blr_plot_deviance_fitted(model)
 
   expect_equal(p2$labels$title,
     "Standardized Deviance Residual vs Fitted Values")
   expect_equal(p2$labels$y, "Standardized Deviance Residual")
+  expect_equal(p2$data$y, unname(rstandard(model, type = "deviance")))
 })
 
 test_that("event segmentation distribution plot is as expected", {

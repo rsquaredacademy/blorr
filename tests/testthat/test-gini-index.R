@@ -1,12 +1,15 @@
-test_that("output from blr_gini_index is as expected", {
+test_that("output from blr_gini_index is 2 * AUC - 1", {
   model <- glm(
     honcomp ~ female + read + science, data = blorr::hsb2,
     family = binomial(link = "logit")
   )
 
-  actual <- blr_gini_index(model)
-  expected <- ineq::Gini(model$fitted.values)
-  expect_equal(actual, expected)
+  prob  <- fitted(model)
+  event <- model$y == 1
+  auc   <- mean(outer(prob[event], prob[!event], ">") +
+    0.5 * outer(prob[event], prob[!event], "=="))
+
+  expect_equal(blr_gini_index(model), 2 * auc - 1)
 })
 
 test_that("gini index and lorenz curve use the rows the model was fitted on", {
@@ -18,17 +21,35 @@ test_that("gini index and lorenz curve use the rows the model was fitted on", {
     family = binomial(link = "logit")
   )
 
-  prob <- fitted(model)
-  n    <- length(prob)
-
-  expected <- (((sum(sort(prob) * seq_len(n)) / sum(prob)) * 2) -
-    (n + 1)) / n
+  prob  <- fitted(model)
+  event <- model$y == 1
+  auc   <- mean(outer(prob[event], prob[!event], ">") +
+    0.5 * outer(prob[event], prob[!event], "=="))
 
   expect_equal(nobs(model), 190)
-  expect_equal(blr_gini_index(model), expected)
+  expect_equal(blr_gini_index(model), 2 * auc - 1)
 
   lorenz <- blr_lorenz_curve(model, print_plot = FALSE)
   expect_equal(nrow(lorenz$data), nrow(blr_gains_table(model)$gains_table) + 2L)
+  expect_equal(
+    lorenz$labels$subtitle,
+    paste0("Gini Index = ", round(2 * auc - 1, 2))
+  )
+})
+
+test_that("gini index on a test set uses the response from the test data", {
+  model <- glm(
+    honcomp ~ female + read, data = hsb2,
+    family = binomial(link = "logit")
+  )
+
+  test_data <- hsb2[1:50, ]
+  prob      <- predict(model, newdata = test_data, type = "response")
+  event     <- test_data$honcomp == 1
+  auc       <- mean(outer(prob[event], prob[!event], ">") +
+    0.5 * outer(prob[event], prob[!event], "=="))
+
+  expect_equal(blr_gini_index(model, test_data), 2 * auc - 1)
 })
 
 test_that("AUC on complete rows matches the concordance statistic", {

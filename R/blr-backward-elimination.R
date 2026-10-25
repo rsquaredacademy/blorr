@@ -165,9 +165,9 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
       laic <- c(laic, aic_f)
       lbic <- c(lbic, model_bic(mi))
       ldev <- c(ldev, model_deviance(mi))
-      aics <- c()
-      bics <- c()
-      devs <- c()
+      aics <- numeric(0)
+      bics <- numeric(0)
+      devs <- numeric(0)
 
       if (length(preds) == 0) {
         end <- TRUE

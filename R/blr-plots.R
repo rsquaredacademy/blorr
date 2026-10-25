@@ -83,7 +83,7 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
 
   blr_check_model(model)
   fit_val <- fitted(model)
-  res_val <- rstandard(model)
+  res_val <- rstandard(model, type = "deviance")
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title) +
     geom_hline(yintercept = 0, color = line_color)
@@ -109,7 +109,7 @@ blr_plot_deviance_residual <- function(model, point_color = "blue",
                                        yaxis_title = "Standardized Deviance Residuals") {
 
   blr_check_model(model)
-  res_val <- rstandard(model)
+  res_val <- rstandard(model, type = "deviance")
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)

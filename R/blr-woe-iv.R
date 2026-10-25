@@ -1,7 +1,6 @@
 #' WoE & IV
 #'
-#' Weight of evidence and information value. Currently avialable for categorical
-#'   predictors only.
+#' Weight of evidence and information value.
 #'
 #' @details
 #' Character and numeric predictors are treated as categorical and factor
@@ -64,6 +63,7 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
   }
 
   dat      <- data[c(pred, resp)]
+  dat      <- dat[stats::complete.cases(dat), , drop = FALSE]
   dat[[pred]] <- droplevels(factor(dat[[pred]]))
   lev      <- levels(dat[[pred]])
   d1       <- woe_data_prep(dat[[pred]], dat[[resp]])
@@ -114,7 +114,6 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Multi variable WOE & IV
 #'
 #' Prints weight of evidence and information value for multiple variables.
-#'   Currently avialable for categorical predictors only.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
 #' @param response Response variable; column in \code{data}.

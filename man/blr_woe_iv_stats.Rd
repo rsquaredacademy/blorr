@@ -15,7 +15,6 @@ blr_woe_iv_stats(data, response, ...)
 }
 \description{
 Prints weight of evidence and information value for multiple variables.
-  Currently avialable for categorical predictors only.
 }
 \examples{
 blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)

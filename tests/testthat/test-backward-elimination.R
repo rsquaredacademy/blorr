@@ -32,3 +32,13 @@ test_that("backward p-value elimination returns the intercept-only model when al
   expect_equal(names(coef(k$model)), "(Intercept)")
 })
 
+test_that("backward AIC elimination prints details when the null model wins", {
+  model <- glm(y ~ a + b + c, data = noise_data(), family = binomial)
+
+  out <- capture.output(k <- blr_step_aic_backward(model, details = TRUE))
+
+  expect_equal(k$steps, 3)
+  expect_equal(names(coef(k$model)), "(Intercept)")
+  expect_true(any(grepl("Step 3", out, fixed = TRUE)))
+})
+
