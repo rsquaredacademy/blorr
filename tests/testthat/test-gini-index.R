@@ -108,7 +108,7 @@ test_that("gini index is finite on a large balanced model", {
   d <- data.frame(y = rbinom(n, 1, 0.5), x1 = rnorm(n), x2 = rnorm(n))
   model <- glm(y ~ x1 + x2, data = d, family = binomial)
   y  <- model$y
-  p  <- fitted(model)
+  p  <- predict(model, newdata = model$model, type = "response")
   n1 <- as.numeric(sum(y == 1))
   n0 <- as.numeric(sum(y == 0))
   w  <- suppressWarnings(wilcox.test(p[y == 1], p[y == 0], exact = FALSE))$statistic
