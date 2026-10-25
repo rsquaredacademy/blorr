@@ -40,32 +40,50 @@ blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL, ...) 
   }
 
   p_data <- predict(model, newdata = data, type = "response")
-  c_data <- as.factor(as.numeric(p_data > cutoff))
-  out    <- table(Prediction = c_data, Reference = response)
+  c_data <- factor(as.integer(p_data > cutoff), levels = c(0, 1))
 
-  a <- out[4]
-  b <- out[2]
-  c <- out[3]
-  d <- out[1]
+  if (is.factor(response) && length(levels(response)) > 1) {
+    ref <- factor(response, levels = levels(response))
+  } else {
+    ref <- factor(as.integer(event_indicator(response)), levels = c(0, 1))
+  }
 
-  accuracy     <- (a + d) / (a + b + c + d)
-  no_inf_rate  <- table(response)[[1]] / sum(table(response))
-  sensitivity  <- a / (a +  c)
-  specificity  <- d / (b + d)
-  prevalence   <- (a +  c) / (a + b + c + d)
-  detect_rate  <- a / (a + b + c + d)
-  detect_prev  <- (a +  b) / (a + b + c + d)
+  out    <- table(Prediction = c_data, Reference = ref)
+
+  a <- out[2, 2]
+  b <- out[2, 1]
+  c <- out[1, 2]
+  d <- out[1, 1]
+
+  safe_div     <- function(x, y) if (is.na(y) || y == 0) NA_real_ else x / y
+  n            <- sum(out)
+  accuracy     <- safe_div(a + d, n)
+  no_inf_rate  <- max(table(ref)) / n
+  sensitivity  <- safe_div(a, a + c)
+  specificity  <- safe_div(d, b + d)
+  prevalence   <- safe_div(a + c, n)
+  detect_rate  <- safe_div(a, n)
+  detect_prev  <- safe_div(a + b, n)
   bal_accuracy <- (sensitivity + specificity) / 2
-  precision    <- a / (a + b)
-  recall       <- a / (a + c)
+  precision    <- safe_div(a, a + b)
+  recall       <- safe_div(a, a + c)
   kappa        <- blr_kappa(out)
-  mcnemar_p    <- stats::mcnemar.test(out)$p.value
 
-  ppv <- (sensitivity * prevalence) / ((sensitivity * prevalence) +
-                                         ((1 - specificity) * (1 - prevalence)))
+  if ((b + c) > 0) {
+    mcnemar_p    <- stats::mcnemar.test(out)$p.value
+    mcnemar_note <- NULL
+  } else {
+    mcnemar_p    <- NA_real_
+    mcnemar_note <- "McNemar's test is not defined when there are no discordant predictions."
+  }
 
-  npv <- specificity * (1 - prevalence) / (((1 - sensitivity) * prevalence) +
-                                             (specificity * (1 - prevalence)))
+  ppv <- safe_div(sensitivity * prevalence,
+                  (sensitivity * prevalence) +
+                    ((1 - specificity) * (1 - prevalence)))
+
+  npv <- safe_div(specificity * (1 - prevalence),
+                  ((1 - sensitivity) * prevalence) +
+                    (specificity * (1 - prevalence)))
 
   result <- list(
     accuracy                 = accuracy,
@@ -74,6 +92,7 @@ blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL, ...) 
     detection_prevalence     = detect_prev,
     detection_rate           = detect_rate,
     mcnemar_kappa            = kappa,
+    mcnemar_note             = mcnemar_note,
     mcnemar_test_p_val       = mcnemar_p,
     negative_predicted_value = npv,
     no_information_rate      = no_inf_rate,
@@ -100,6 +119,9 @@ print.blr_confusion_matrix <- function(x, ...) {
   cat('     No Information Rate :', format(round(x$no_information_rate, 4), nsmall = 4), '\n\n')
   cat('                   Kappa :', format(round(x$mcnemar_kappa, 4), nsmall = 4), '\n\n')
   cat("McNemars's Test P-Value  :", format(round(x$mcnemar_test_p_val, 4), nsmall = 4), '\n\n')
+  if (!is.null(x$mcnemar_note)) {
+    cat("Note:", x$mcnemar_note, "\n\n")
+  }
   cat('             Sensitivity :', format(round(x$sensitivity, 4), nsmall = 4), '\n')
   cat('             Specificity :', format(round(x$specificity, 4), nsmall = 4), '\n')
   cat('          Pos Pred Value :', format(round(x$positive_predicted_value, 4), nsmall = 4), '\n')

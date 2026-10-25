@@ -31,7 +31,7 @@ blr_gini_index <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
-    data <- model$data
+    data <- model$model
   }
 
   blr_check_data(data)
@@ -78,7 +78,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
 
   if (is.null(data)) {
     test_data <- FALSE
-    data      <- model$data
+    data      <- model$model
   } else {
     test_data <- TRUE
     data      <- data

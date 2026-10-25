@@ -61,9 +61,9 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 }
 
 
-#' Deviance vs fitted values plot
+#' Standardized deviance vs fitted values plot
 #'
-#' Deviance vs fitted values plot.
+#' Standardized deviance vs fitted values plot.
 #'
 #' @inheritParams blr_plot_pearson_residual
 #' @param line_color Color of the horizontal line.
@@ -77,9 +77,9 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 #' @export
 #'
 blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "red",
-                                     title = "Deviance Residual vs Fitted Values",
+                                     title = "Standardized Deviance Residual vs Fitted Values",
                                      xaxis_title = "Fitted Values",
-                                     yaxis_title = "Deviance Residual") {
+                                     yaxis_title = "Standardized Deviance Residual") {
 
   blr_check_model(model)
   fit_val <- fitted(model)
@@ -89,9 +89,9 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
     geom_hline(yintercept = 0, color = line_color)
 }
 
-#' Deviance residual values
+#' Standardized deviance residual values
 #'
-#' Deviance residuals plot.
+#' Standardized deviance residuals plot.
 #'
 #' @inheritParams blr_plot_pearson_residual
 #'
@@ -104,9 +104,9 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
 #' @export
 #'
 blr_plot_deviance_residual <- function(model, point_color = "blue",
-                                       title = "Deviance Residuals Plot",
+                                       title = "Standardized Deviance Residuals Plot",
                                        xaxis_title = "id",
-                                       yaxis_title = "Deviance Residuals") {
+                                       yaxis_title = "Standardized Deviance Residuals") {
 
   blr_check_model(model)
   res_val <- rstandard(model)
@@ -602,8 +602,10 @@ dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
   d$color <- ifelse(((d$dbetas >= threshold) | (d$dbetas <= -threshold)), 
     c("outlier"), c("normal"))
-  d$fct_color <- ordered(factor(color), levels = c("normal", "outlier"))
-  d$txt   <- ifelse(d$color == "outlier", obs, NA)
+  d$fct_color <- ordered(factor(d$color), levels = c("normal", "outlier"))
+  d$txt   <- ifelse(d$color == "outlier", d$obs, NA)
+
+  return(d)
 
   # tibble(obs = seq_len(n), dbetas = dbetas) %>%
   #   mutate(
@@ -636,7 +638,7 @@ dfbetas_plot <- function(d, threshold, dfb, i) {
 
 
 dfbetas_outlier_data <- function(d) {
-  d[d$color == "outlier", c('obs', 'betas')]
+  d[d$color == "outlier", c('obs', 'dbetas')]
 }
 
 

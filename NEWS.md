@@ -22,6 +22,26 @@
   each coefficient.
 - Somers' D and Goodman-Kruskal gamma in `blr_pairs()` use the correct
   denominators.
+- gains tables now assign every observation to exactly one of ten deciles,
+  count events using the event level of the response, and no longer fail for
+  small samples or when a decile contains only one outcome.
+- confusion matrices now show both outcome classes even when the model
+  predicts only one class, McNemar's test is reported as unavailable when it
+  cannot be computed, and the no information rate uses the larger class.
+- the Gini index and Lorenz curve now use the observations the model was
+  fitted on, so rows dropped for missing values are no longer misaligned.
+- variable selection procedures now return an intercept-only model when no
+  predictor qualifies, and p-value based procedures apply the entry criterion
+  to the first predictor as well.
+- `blr_woe_iv()` now accepts character and numeric predictors, drops unused
+  factor levels, and applies a 0.5 continuity correction to levels with no
+  events or no non-events.
+- `blr_plot_dfbetas_panel()` now works for models with one or more predictors.
+- odds ratio confidence limits in `blr_regress()` are now labelled as
+  profile-likelihood intervals.
+- the forward selection documentation now describes selection by AIC.
+- deviance residual plots are now labelled as standardized deviance residual
+  plots.
 
 # blorr 0.3.1
 

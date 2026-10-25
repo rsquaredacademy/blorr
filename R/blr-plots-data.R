@@ -42,17 +42,13 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
 
-  decile_count <- lorenz_decile_count(data)
+  decile_count <- gains_decile_count(data)
 
   x <- gains_table_prep(model, data, test_data) 
   y <- gains_table_modify(x, decile_count = decile_count) 
   z <- gains_table_mutate(y) 
   lorenz_plot_data(z)
 
-}
-
-lorenz_decile_count <- function(data) {
-  round(nrow(data) / 10)
 }
 
 lorenz_plot_data <- function(gains_table) {
