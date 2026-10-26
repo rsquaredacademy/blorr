@@ -5,6 +5,12 @@
 #' @param model An object of class \code{glm}.
 #' @param ... Other inputs.
 #'
+#' @details
+#' For models fitted with prior weights, Cox-Snell and Nagelkerke R2 use the sum
+#' of the prior weights as the number of observations. The count, adjusted count,
+#' Efron and McKelvey-Zavoina R2 values are not reported (\code{NA}) for weighted
+#' models because they are not defined for weighted fits.
+#'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'             family = binomial(link = 'logit'))
@@ -46,7 +52,8 @@ blr_model_fit_stats.default <- function(model, ...) {
 
   blr_check_model(model)
 
-  lr <- fit_stat(model)
+  lr       <- fit_stat(model)
+  weighted <- has_prior_weights(model)
 
   result <- list(
     loglik_null  = null_ll(model),
@@ -60,12 +67,12 @@ blr_model_fit_stats.default <- function(model, ...) {
     m_aic        = model_aic(model),
     cox_snell    = blr_rsq_cox_snell(model),
     m_bic        = model_bic(model),
-    mckelvey     = blr_rsq_mckelvey_zavoina(model),
+    mckelvey     = if (weighted) NA_real_ else blr_rsq_mckelvey_zavoina(model),
     lr_df        = lr$lr_df,
-    effron       = blr_rsq_effron(model),
+    effron       = if (weighted) NA_real_ else blr_rsq_effron(model),
     nagelkerke   = blr_rsq_nagelkerke(model),
-    count_r2     = blr_rsq_count(model),
-    count_adj    = blr_rsq_adj_count(model))
+    count_r2     = if (weighted) NA_real_ else blr_rsq_count(model),
+    count_adj    = if (weighted) NA_real_ else blr_rsq_adj_count(model))
 
   class(result) <- "blr_model_fit_stats"
   return(result)
@@ -224,7 +231,7 @@ blr_rsq_nagelkerke <- function(model) {
 
   blr_check_model(model)
 
-  n   <- nobs(model)
+  n   <- effective_n(model)
   num <- exp(((model_ll(model) * -2) - (imodel(model) * -2)) / n)
   den <- exp((imodel(model) * 2) / n )
   (1 - num) / (1 - den)
@@ -256,6 +263,7 @@ blr_rsq_nagelkerke <- function(model) {
 blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "McKelvey & Zavoina's R2")
 
   predicted      <- predict(model)
   mean_predicted <- mean(predicted)
@@ -293,6 +301,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 blr_rsq_effron <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Efron's R2")
 
   predicted <- predict(model, type = "response")
   resp      <-model$y
@@ -325,6 +334,7 @@ blr_rsq_effron <- function(model) {
 blr_rsq_count <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Count R2")
 
   predicted <- predict(model, type = "response")
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
@@ -356,6 +366,7 @@ blr_rsq_count <- function(model) {
 blr_rsq_adj_count <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Adj Count R2")
 
   resp      <- model$y
   n         <- length(resp)
@@ -392,9 +403,18 @@ extract_lr <- function(lr, value) {
 
 }
 
+# Number of observations used by the likelihood based R2 measures. For a
+# weighted fit this is the sum of the prior weights, as in the weighted
+# log-likelihood.
+effective_n <- function(model) {
+
+  sum(model$prior.weights)
+
+}
+
 cox_snell_comp <- function(model) {
 
-  n <- nobs(model)
+  n <- effective_n(model)
   exp(((imodel(model) - model_ll(model)) * 2) / n)
 
 }

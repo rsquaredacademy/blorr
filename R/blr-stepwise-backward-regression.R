@@ -61,6 +61,7 @@ blr_step_p_backward <- function(model, ...) UseMethod("blr_step_p_backward")
 blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...) {
 
   blr_check_model(model)
+  blr_check_weights_offset(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
   blr_check_values(prem, 0, 1)

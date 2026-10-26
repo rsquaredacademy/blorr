@@ -152,12 +152,27 @@ selection_model <- function(response, predictors, data) {
 # create intercept only model
 i_model <- function(model) {
 
-  dat  <- model$model
-  resp <- names(dat)[1]
+  # Only the response is needed in the data: the weights and offset are
+  # supplied as vectors. Use names that cannot clash with the model data
+  # (model.frame() looks in the data first), and rename the response as well so
+  # that a response column called weights or offset cannot be confused either.
+  dat <- data.frame(.blr_response = model$model[[1]])
+
+  .blr_weights <- model$prior.weights
+  .blr_offset  <- model$offset
+
+  fit_env <- new.env(parent = environment())
+  fit_env$.blr_weights <- .blr_weights
+  fit_env$.blr_offset  <- .blr_offset
+
+  form <- as.formula(".blr_response ~ 1", env = fit_env)
 
   glm(
-    paste0("`", resp, "` ~ 1"), data = dat,
-    family = binomial(link = "logit")
+    form,
+    data    = dat,
+    weights = .blr_weights,
+    offset  = .blr_offset,
+    family  = model$family
   )
 
 }

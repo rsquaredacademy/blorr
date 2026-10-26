@@ -25,6 +25,7 @@
 blr_linktest <- function(model) {
 
   blr_check_model(model)
+  blr_check_weights_offset(model)
 
   dat    <- model$model
   fit    <- predict.glm(model, newdata = dat)

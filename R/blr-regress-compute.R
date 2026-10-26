@@ -1,7 +1,54 @@
-blr_reg_comp <- function(formula, data, odd_conf_limit) {
+blr_reg_comp <- function(formula, data, odd_conf_limit, weights = NULL, offset = NULL) {
 
-  model <- glm(formula = formula, data = data,
-               family = binomial(link = "logit"))
+  form <- as.formula(formula)
+
+  # Keep the formula's environment so variables created in a function or
+  # local() remain visible, but make the weights/offset arguments visible to
+  # model.frame() as well: it evaluates them in the formula environment, not in
+  # this function's frame. Use names that cannot clash with the model data:
+  # model.frame() looks in data first, so a data column named weights or offset
+  # would otherwise be used instead of the vectors supplied to glm().
+  .blr_weights <- weights
+  .blr_offset  <- offset
+
+  fit_env <- new.env(parent = environment(form))
+  if (!is.null(.blr_weights)) {
+    fit_env$.blr_weights <- .blr_weights
+  }
+  if (!is.null(.blr_offset)) {
+    fit_env$.blr_offset <- .blr_offset
+  }
+  environment(form) <- fit_env
+
+  if (is.null(weights) && is.null(offset)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      family  = binomial(link = "logit")
+    )
+  } else if (is.null(offset)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      weights = .blr_weights,
+      family  = binomial(link = "logit")
+    )
+  } else if (is.null(weights)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      offset  = .blr_offset,
+      family  = binomial(link = "logit")
+    )
+  } else {
+    model <- glm(
+      formula = form,
+      data    = data,
+      weights = .blr_weights,
+      offset  = .blr_offset,
+      family  = binomial(link = "logit")
+    )
+  }
 
   if (interactive()) {
     cat(paste("-", "Creating model overview."), "\n")

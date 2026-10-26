@@ -58,6 +58,7 @@ blr_step_aic_both <- function(model, details = FALSE, ...) UseMethod("blr_step_a
 blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   
   blr_check_model(model)
+  blr_check_weights_offset(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
