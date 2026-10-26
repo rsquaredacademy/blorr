@@ -47,7 +47,8 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
   hoslem_table <- hoslem_table_data(h1, resp = resp)
 
   chisq_stat  <- hoslem_chisq_stat(hoslem_table)
-  hoslem_df   <- 8
+  g           <- nrow(hoslem_table)
+  hoslem_df   <- max(1, g - 2)
   hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
 
   result <- list(partition_table = hoslem_table,

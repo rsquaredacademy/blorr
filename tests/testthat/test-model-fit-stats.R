@@ -172,3 +172,31 @@ test_that("multi model fit stats label each measure by name", {
   expect_equal(value_of("AIC"), round(AIC(model2), 3))
   expect_equal(value_of("BIC"), round(BIC(model2), 3))
 })
+
+
+test_that("null model retains weights, offset, and family in blr_model_fit_stats", {
+  # weighted model
+  set.seed(3)
+  w <- runif(nrow(hsb2), 0.5, 2)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
+  m0_w <- glm(honcomp ~ 1, data = hsb2, family = binomial, weights = w)
+  bfs_w <- blr_model_fit_stats(m_w)
+  expect_equal(bfs_w$loglik_null, as.numeric(logLik(m0_w)))
+  expect_equal(bfs_w$lr_ratio, m0_w$deviance - m_w$deviance)
+
+  # offset model
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, offset = off)
+  m0_off <- glm(honcomp ~ 1, data = hsb2, family = binomial, offset = off)
+  bfs_off <- blr_model_fit_stats(m_off)
+  expect_equal(bfs_off$loglik_null, as.numeric(logLik(m0_off)))
+  expect_equal(bfs_off$lr_ratio, m0_off$deviance - m_off$deviance)
+
+  # probit model
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  m0_prob <- glm(honcomp ~ 1, data = hsb2, family = binomial(link = "probit"))
+  bfs_prob <- blr_model_fit_stats(m_prob)
+  expect_equal(bfs_prob$loglik_null, as.numeric(logLik(m0_prob)))
+  expect_equal(bfs_prob$lr_ratio, m0_prob$deviance - m_prob$deviance)
+})

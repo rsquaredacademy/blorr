@@ -152,12 +152,18 @@ selection_model <- function(response, predictors, data) {
 # create intercept only model
 i_model <- function(model) {
 
-  dat  <- model$model
-  resp <- names(dat)[1]
+  dat     <- model$model
+  resp    <- names(dat)[1]
+  weights <- model$prior.weights
+  offset  <- model$offset
+  form    <- as.formula(paste0("`", resp, "` ~ 1"), env = environment())
 
   glm(
-    paste0("`", resp, "` ~ 1"), data = dat,
-    family = binomial(link = "logit")
+    form,
+    data    = dat,
+    weights = weights,
+    offset  = offset,
+    family  = model$family
   )
 
 }

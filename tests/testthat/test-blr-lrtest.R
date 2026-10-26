@@ -64,3 +64,28 @@ test_that("LR test uses the model frame when the data has missing values", {
   expect_equal(k$test_result[['lr_ratio']], -2 * (ll0 - as.numeric(logLik(model))))
 
 })
+
+
+test_that("null model retains weights, offset, and family in blr_test_lr", {
+  # weighted model
+  set.seed(3)
+  w <- runif(nrow(hsb2), 0.5, 2)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
+  m0_w <- glm(honcomp ~ 1, data = hsb2, family = binomial, weights = w)
+  res_w <- blr_test_lr(m_w)
+  expect_equal(res_w$test_result[['lr_ratio']], m0_w$deviance - m_w$deviance)
+
+  # offset model
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, offset = off)
+  m0_off <- glm(honcomp ~ 1, data = hsb2, family = binomial, offset = off)
+  res_off <- blr_test_lr(m_off)
+  expect_equal(res_off$test_result[['lr_ratio']], m0_off$deviance - m_off$deviance)
+
+  # probit model
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  m0_prob <- glm(honcomp ~ 1, data = hsb2, family = binomial(link = "probit"))
+  res_prob <- blr_test_lr(m_prob)
+  expect_equal(res_prob$test_result[['lr_ratio']], m0_prob$deviance - m_prob$deviance)
+})

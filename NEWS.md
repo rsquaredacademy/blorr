@@ -6,6 +6,11 @@ weight of evidence, and the Gini index.
 
 ## Bug Fixes
 
+- `blr_test_hosmer_lemeshow()` now calculates degrees of freedom from the
+  actual number of partition groups used (`max(1, g - 2)`) rather than hardcoding it to 8.
+- The intercept-only null model used in model fit statistics and likelihood
+  ratio tests now retains the fitted model's response, prior weights, offset, and family/link.
+- Package attachment no longer accesses the network to check for updates.
 - Cox-Snell and Nagelkerke R2 now use the number of observations the model was
   fitted on, so they are correct when rows are dropped for missing values or
   when the model is fitted without a `data` argument. The model fit statistics

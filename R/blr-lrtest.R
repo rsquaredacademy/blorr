@@ -79,7 +79,7 @@ lr_test_result <- function(full_model, reduced_model) {
 
   full_model_ll    <- mll(full_model)
   reduced_model_ll <- mll(reduced_model)
-  lr               <- reduced_model_ll - full_model_ll
+  lr               <- deviance(reduced_model) - deviance(full_model)
 
   df   <- df.residual(reduced_model) - df.residual(full_model)
   pval <- pchisq(q = lr, df = df, lower.tail = FALSE)
