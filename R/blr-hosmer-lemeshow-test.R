@@ -9,6 +9,12 @@
 #' The test is not available for models fitted with prior weights, and gives an
 #' error for such models.
 #'
+#' The degrees of freedom are \code{max(1, g - 2)}, where \code{g} is the number
+#' of partition groups actually used. With very few groups the test is
+#' degenerate: for example, a model with a single binary predictor gives only
+#' two groups, a chi-square statistic close to zero and a p-value close to one,
+#' which should not be read as evidence of good fit.
+#'
 #' @references
 #' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
 #' New  York:  John Wiley & Sons.

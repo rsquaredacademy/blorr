@@ -263,6 +263,7 @@ blr_rsq_nagelkerke <- function(model) {
 blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "McKelvey & Zavoina's R2")
 
   predicted      <- predict(model)
   mean_predicted <- mean(predicted)
@@ -300,6 +301,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 blr_rsq_effron <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Efron's R2")
 
   predicted <- predict(model, type = "response")
   resp      <-model$y
@@ -332,6 +334,7 @@ blr_rsq_effron <- function(model) {
 blr_rsq_count <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Count R2")
 
   predicted <- predict(model, type = "response")
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
@@ -363,6 +366,7 @@ blr_rsq_count <- function(model) {
 blr_rsq_adj_count <- function(model) {
 
   blr_check_model(model)
+  blr_check_prior_weights(model, "Adj Count R2")
 
   resp      <- model$y
   n         <- length(resp)

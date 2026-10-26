@@ -228,3 +228,76 @@ test_that("weighted fit statistics use prior weights and report NA measures", {
     "not available for models with prior weights", out, fixed = TRUE
   )))
 })
+
+test_that("weighted R2 functions error for models with prior weights", {
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m <- glm(honcomp ~ female + read + science, data = hsb2,
+           family = binomial(link = "logit"), weights = w)
+
+  expect_error(
+    blr_rsq_count(m),
+    "Count R2 is not available for models with prior weights", fixed = TRUE
+  )
+  expect_error(
+    blr_rsq_adj_count(m),
+    "Adj Count R2 is not available for models with prior weights", fixed = TRUE
+  )
+  expect_error(
+    blr_rsq_effron(m),
+    "Efron's R2 is not available for models with prior weights", fixed = TRUE
+  )
+  expect_error(
+    blr_rsq_mckelvey_zavoina(m),
+    "McKelvey & Zavoina's R2 is not available for models with prior weights",
+    fixed = TRUE
+  )
+})
+
+test_that("null model uses the model weights when the data has a weights column", {
+  set.seed(2)
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 1, 3)
+  m  <- glm(honcomp ~ female + read + weights, data = dd, family = binomial)
+  m0 <- glm(honcomp ~ 1, data = dd, family = binomial)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})
+
+test_that("null model uses the model weights and offset when the data has both columns", {
+  set.seed(3)
+  w   <- sample(1:4, nrow(hsb2), replace = TRUE)
+  off <- rnorm(nrow(hsb2))
+
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 0.5, 2)
+  dd$offset  <- rnorm(nrow(dd))
+
+  m  <- glm(honcomp ~ female + read + weights + offset, data = dd,
+            family = binomial, weights = w, offset = off)
+  m0 <- glm(honcomp ~ 1, data = dd,
+            family = binomial, weights = w, offset = off)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(
+    blr_rsq_cox_snell(m),
+    1 - exp((2 / sum(w)) * (ll0 - ll1))
+  )
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})

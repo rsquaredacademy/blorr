@@ -9,7 +9,8 @@ weight of evidence, and the Gini index.
 - `blr_regress()` now respects the prior weights and offset of the fitted
   model, whether the offset is supplied through the `offset` argument or in the
   model formula. Refitting a `glm` also keeps the formula environment.
-- Models that are not binomial-logit now give an error instead of wrong results.
+- Models that are not binomial logit models now give an error instead of wrong
+  results.
 - Variable selection and link-test functions now give an error for weighted and
   offset models instead of silently ignoring the weights or offset.
 - The Hosmer–Lemeshow table no longer prints empty rows when there are fewer
@@ -20,9 +21,13 @@ weight of evidence, and the Gini index.
 - For weighted fits, `blr_model_fit_stats()` computes Cox-Snell and Nagelkerke
   R2 using the sum of the prior weights, and reports `NA` for count R2,
   adjusted count R2, Efron R2, and McKelvey-Zavoina R2, which are not defined
-  for weighted fits.
+  for weighted fits. The standalone `blr_rsq_count()`, `blr_rsq_adj_count()`,
+  `blr_rsq_effron()` and `blr_rsq_mckelvey_zavoina()` functions give an error
+  for models with prior weights.
 - The intercept-only null model used in model fit statistics and likelihood
-  ratio tests now retains the fitted model's response, prior weights, offset, and family/link.
+  ratio tests now retains the fitted model's response, prior weights, offset,
+  and family/link, and uses the model's weights and offset even when the data
+  contain columns named `weights` or `offset`.
 - Package attachment no longer accesses the network to check for updates.
 - Cox-Snell and Nagelkerke R2 now use the number of observations the model was
   fitted on, or the sum of the prior weights for weighted fits, so they are
@@ -102,11 +107,13 @@ class `glm` ([#58](https://github.com/rsquaredacademy/blorr/issues/58))
 - data preparation functions of selected plots are now exported to enable end 
 users to create customized plots and to use plotting library of their 
 choice ([#64](https://github.com/rsquaredacademy/blorr/issues/64))
-- informs users about new versions ([#1](https://github.com/rsquaredacademy/blorr/issues/1))
+- informs users about new versions
+  ([#1](https://github.com/rsquaredacademy/blorr/issues/1))
 
 ## Bug Fixes
 
-- tibble package breaking changes ([#74](https://github.com/rsquaredacademy/blorr/issues/74)) 
+- tibble package breaking changes
+  ([#74](https://github.com/rsquaredacademy/blorr/issues/74))
 
 
 # blorr 0.1.0

@@ -54,6 +54,15 @@ has_prior_weights <- function(model) {
   !is.null(model$prior.weights) && any(model$prior.weights != 1)
 }
 
+blr_check_prior_weights <- function(model, measure) {
+  if (has_prior_weights(model)) {
+    stop(
+      paste0(measure, " is not available for models with prior weights."),
+      call. = FALSE
+    )
+  }
+}
+
 blr_check_weights_offset <- function(model) {
   has_weights <- has_prior_weights(model)
   has_offset  <- !is.null(model$offset) && any(model$offset != 0)
