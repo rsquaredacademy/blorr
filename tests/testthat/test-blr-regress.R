@@ -112,6 +112,77 @@ test_that("blr_regress estimates match glm for formula and argument offsets", {
   expect_equal(blr_regress(m_wform)$est, unname(coef(m_wform)), tolerance = 1e-8)
 })
 
+test_that("blr_regress uses the model weights when the data has a weights column", {
+  set.seed(3)
+  w  <- runif(200, .5, 2)
+  dd <- hsb2
+  dd$weights <- rnorm(200)
+  dd$offset  <- rnorm(200)
+
+  mc <- suppressWarnings(glm(
+    honcomp ~ female + read + weights + offset,
+    data = dd, family = binomial, weights = w
+  ))
+
+  res <- suppressWarnings(blr_regress(mc))
+
+  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
+  expect_equal(
+    res$se,
+    unname(summary(mc)$coefficients[, 2]),
+    tolerance = 1e-8
+  )
+})
+
+test_that("blr_regress uses the model weights and offset when the data has columns with those names", {
+  set.seed(6)
+  w   <- runif(200, .5, 2)
+  off <- rnorm(200)
+  dd  <- hsb2
+  dd$weights <- runif(200, 1, 3)
+  dd$offset  <- rnorm(200)
+
+  mc <- suppressWarnings(glm(
+    honcomp ~ female + read + weights + offset,
+    data = dd, family = binomial, weights = w, offset = off
+  ))
+
+  res <- suppressWarnings(blr_regress(mc))
+
+  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
+  expect_equal(
+    res$se,
+    unname(summary(mc)$coefficients[, 2]),
+    tolerance = 1e-8
+  )
+})
+
+test_that("blr_regress.default uses supplied weights and offset when the data has columns with those names", {
+  set.seed(7)
+  w   <- runif(200, .5, 2)
+  off <- rnorm(200)
+  dd  <- hsb2
+  dd$weights <- rnorm(200)
+  dd$offset  <- rnorm(200)
+
+  mc <- suppressWarnings(glm(
+    honcomp ~ female + read,
+    data = dd, family = binomial, weights = w, offset = off
+  ))
+
+  res <- suppressWarnings(blr_regress(
+    honcomp ~ female + read,
+    data = dd, weights = w, offset = off
+  ))
+
+  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
+  expect_equal(
+    res$se,
+    unname(summary(mc)$coefficients[, 2]),
+    tolerance = 1e-8
+  )
+})
+
 test_that("blr_regress keeps the formula environment", {
   f <- local({
     zz <- rnorm(nrow(hsb2))
