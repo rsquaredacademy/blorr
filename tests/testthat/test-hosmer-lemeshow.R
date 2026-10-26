@@ -41,6 +41,19 @@ test_that("Hosmer-Lemeshow degrees of freedom adapts to partition table rows", {
   expect_equal(res10$df, 8)
 })
 
+test_that("Hosmer-Lemeshow errors on models with prior weights", {
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m <- glm(honcomp ~ female + read + science, data = hsb2,
+           family = binomial(link = "logit"), weights = w)
+
+  expect_error(
+    blr_test_hosmer_lemeshow(m),
+    "Hosmer-Lemeshow test is not available for models with prior weights",
+    fixed = TRUE
+  )
+})
+
 test_that("Hosmer-Lemeshow print for fewer than 10 groups has no NA rows", {
   set.seed(2); n <- 600
   d <- data.frame(a = factor(sample(1:3, n, TRUE)), b = factor(sample(1:2, n, TRUE)))

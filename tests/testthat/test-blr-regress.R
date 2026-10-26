@@ -67,7 +67,7 @@ test_that("blr_regress reports nobs and response profile on data with missing va
 
 test_that("blr_regress keeps weights and offset of the fitted model", {
   set.seed(42)
-  w <- runif(nrow(hsb2), 0.5, 2)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
   res_w <- blr_regress(m_w)
   s_w <- summary(m_w)$coefficients
@@ -89,38 +89,40 @@ test_that("blr_regress keeps weights and offset of the fitted model", {
   expect_equal(res_off$pval, unname(s_off[, "Pr(>|z|)"]), tolerance = 1e-6)
 })
 
-test_that("blr_regress errors on non-logit models", {
-  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
-  expect_error(blr_regress(m_prob), "logit")
-})
-
-test_that("blr_check_model errors on gaussian glm", {
-  m_gauss <- glm(read ~ female + science, data = hsb2, family = gaussian())
-  expect_error(blr_check_model(m_gauss), "binomial")
-})
-
-test_that("blr_regress keeps weights and offset of the fitted model", {
-  set.seed(42)
-  w <- runif(nrow(hsb2), 0.5, 2)
-  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
-  res_w <- blr_regress(m_w)
-  s_w <- summary(m_w)$coefficients
-
-  expect_equal(res_w$est, unname(s_w[, "Estimate"]), tolerance = 1e-6)
-  expect_equal(res_w$se, unname(s_w[, "Std. Error"]), tolerance = 1e-6)
-  expect_equal(res_w$zval, unname(s_w[, "z value"]), tolerance = 1e-6)
-  expect_equal(res_w$pval, unname(s_w[, "Pr(>|z|)"]), tolerance = 1e-6)
-
-  # offset model
+test_that("blr_regress estimates match glm for formula and argument offsets", {
+  set.seed(4)
   off <- rnorm(nrow(hsb2))
-  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), offset = off)
-  res_off <- blr_regress(m_off)
-  s_off <- summary(m_off)$coefficients
 
-  expect_equal(res_off$est, unname(s_off[, "Estimate"]), tolerance = 1e-6)
-  expect_equal(res_off$se, unname(s_off[, "Std. Error"]), tolerance = 1e-6)
-  expect_equal(res_off$zval, unname(s_off[, "z value"]), tolerance = 1e-6)
-  expect_equal(res_off$pval, unname(s_off[, "Pr(>|z|)"]), tolerance = 1e-6)
+  m_form <- glm(honcomp ~ female + read + science + offset(off),
+                data = hsb2, family = binomial(link = "logit"))
+  m_arg  <- glm(honcomp ~ female + read + science, data = hsb2,
+                family = binomial(link = "logit"), offset = off)
+  m_both <- glm(honcomp ~ female + read + science + offset(off),
+                data = hsb2, family = binomial(link = "logit"), offset = off)
+
+  expect_equal(blr_regress(m_form)$est, unname(coef(m_form)), tolerance = 1e-8)
+  expect_equal(blr_regress(m_arg)$est, unname(coef(m_arg)), tolerance = 1e-8)
+  expect_equal(blr_regress(m_both)$est, unname(coef(m_both)), tolerance = 1e-8)
+
+  # weights and a formula offset together
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_wform <- glm(honcomp ~ female + read + science + offset(off),
+                 data = hsb2, family = binomial(link = "logit"), weights = w)
+  expect_equal(blr_regress(m_wform)$est, unname(coef(m_wform)), tolerance = 1e-8)
+})
+
+test_that("blr_regress keeps the formula environment", {
+  f <- local({
+    zz <- rnorm(nrow(hsb2))
+    honcomp ~ female + read + science + zz
+  })
+
+  m <- glm(f, data = hsb2, family = binomial(link = "logit"))
+
+  expect_equal(blr_regress(f, data = hsb2)$est, unname(coef(m)),
+               tolerance = 1e-8)
+  expect_equal(blr_regress(m)$est, unname(coef(m)), tolerance = 1e-8)
 })
 
 test_that("blr_regress errors on non-logit models", {

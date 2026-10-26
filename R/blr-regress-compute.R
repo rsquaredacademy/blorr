@@ -1,7 +1,19 @@
 blr_reg_comp <- function(formula, data, odd_conf_limit, weights = NULL, offset = NULL) {
 
   form <- as.formula(formula)
-  environment(form) <- environment()
+
+  # Keep the formula's environment so variables created in a function or
+  # local() remain visible, but make the weights/offset arguments visible to
+  # model.frame() as well: it evaluates them in the formula environment, not in
+  # this function's frame.
+  fit_env <- new.env(parent = environment(form))
+  if (!is.null(weights)) {
+    fit_env$weights <- weights
+  }
+  if (!is.null(offset)) {
+    fit_env$offset <- offset
+  }
+  environment(form) <- fit_env
 
   if (is.null(weights) && is.null(offset)) {
     model <- glm(

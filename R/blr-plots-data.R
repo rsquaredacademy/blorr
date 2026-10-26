@@ -42,6 +42,8 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
 
+  blr_check_model(model)
+
   decile_count <- gains_decile_count(data)
 
   x <- gains_table_prep(model, data, test_data) 

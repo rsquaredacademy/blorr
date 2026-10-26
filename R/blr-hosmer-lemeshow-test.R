@@ -5,6 +5,10 @@
 #' @param model An object of class \code{glm}.
 #' @param data a \code{tibble} or \code{data.frame}.
 #'
+#' @details
+#' The test is not available for models fitted with prior weights, and gives an
+#' error for such models.
+#'
 #' @references
 #' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
 #' New  York:  John Wiley & Sons.
@@ -29,6 +33,13 @@ blr_test_hosmer_lemeshow <- function(model, data = NULL)
 blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   blr_check_model(model)
+
+  if (has_prior_weights(model)) {
+    stop(
+      "Hosmer-Lemeshow test is not available for models with prior weights.",
+      call. = FALSE
+    )
+  }
 
   if (is.null(data)) {
     resp <- model$y

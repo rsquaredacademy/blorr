@@ -179,7 +179,11 @@ print_model_fit_stats <- function(x) {
       fg(col3vals[i], w4), "\n"
     )
   }
-  cat(rep("-", w), sep = "", "\n\n")
+  cat(rep("-", w), sep = "", "\n")
+  if (anyNA(c(x$count_r2, x$count_adj, x$effron, x$mckelvey))) {
+    cat("Count R2, Adj Count R2, Efron's R2 and McKelvey & Zavoina's R2 are not available for models with prior weights.\n")
+  }
+  cat("\n")
 }
 
 

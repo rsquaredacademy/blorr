@@ -6,20 +6,30 @@ weight of evidence, and the Gini index.
 
 ## Bug Fixes
 
-- `blr_regress()` now respects prior weights (and offset) of the fitted model.
+- `blr_regress()` now respects the prior weights and offset of the fitted
+  model, whether the offset is supplied through the `offset` argument or in the
+  model formula. Refitting a `glm` also keeps the formula environment.
 - Models that are not binomial-logit now give an error instead of wrong results.
-- Functions that refit the model give an error for weighted/offset models instead of silently ignoring the weights.
-- The Hosmer–Lemeshow table no longer prints empty rows when there are fewer than 10 groups.
-
+- Variable selection and link-test functions now give an error for weighted and
+  offset models instead of silently ignoring the weights or offset.
+- The Hosmer–Lemeshow table no longer prints empty rows when there are fewer
+  than 10 groups.
 - `blr_test_hosmer_lemeshow()` now calculates degrees of freedom from the
-  actual number of partition groups used (`max(1, g - 2)`) rather than hardcoding it to 8.
+  actual number of partition groups used rather than hardcoding them to 8, and
+  gives an error for models fitted with prior weights.
+- For weighted fits, `blr_model_fit_stats()` computes Cox-Snell and Nagelkerke
+  R2 using the sum of the prior weights, and reports `NA` for count R2,
+  adjusted count R2, Efron R2, and McKelvey-Zavoina R2, which are not defined
+  for weighted fits.
 - The intercept-only null model used in model fit statistics and likelihood
   ratio tests now retains the fitted model's response, prior weights, offset, and family/link.
 - Package attachment no longer accesses the network to check for updates.
 - Cox-Snell and Nagelkerke R2 now use the number of observations the model was
-  fitted on, so they are correct when rows are dropped for missing values or
-  when the model is fitted without a `data` argument. The model fit statistics
-  table is also assembled by name, so values no longer shift between labels.
+  fitted on, or the sum of the prior weights for weighted fits, so they are
+  correct when rows are dropped for missing values, when the model is fitted
+  without a `data` argument, or when prior weights are used. The model fit
+  statistics table is also assembled by name, so values no longer shift between
+  labels.
 - The likelihood ratio test now uses the difference in residual degrees of
   freedom between the reduced and full models, giving the correct degrees of
   freedom and p-value for nested models.

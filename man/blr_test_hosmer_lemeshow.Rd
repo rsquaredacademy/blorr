@@ -14,6 +14,10 @@ blr_test_hosmer_lemeshow(model, data = NULL)
 \description{
 Hosmer-Lemeshow goodness of fit test.
 }
+\details{
+The test is not available for models fitted with prior weights, and gives an
+error for such models.
+}
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))

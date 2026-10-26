@@ -69,7 +69,7 @@ test_that("LR test uses the model frame when the data has missing values", {
 test_that("null model retains weights, offset, and family in blr_test_lr", {
   # weighted model
   set.seed(3)
-  w <- runif(nrow(hsb2), 0.5, 2)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
   m0_w <- glm(honcomp ~ 1, data = hsb2, family = binomial, weights = w)
   res_w <- blr_test_lr(m_w)

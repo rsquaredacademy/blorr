@@ -177,7 +177,7 @@ test_that("multi model fit stats label each measure by name", {
 test_that("null model retains weights, offset, and family in blr_model_fit_stats", {
   # weighted model
   set.seed(3)
-  w <- runif(nrow(hsb2), 0.5, 2)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
   m0_w <- glm(honcomp ~ 1, data = hsb2, family = binomial, weights = w)
   bfs_w <- blr_model_fit_stats(m_w)
@@ -197,4 +197,34 @@ test_that("null model retains weights, offset, and family in blr_model_fit_stats
   m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
   expect_error(blr_model_fit_stats(m_prob), "logit")
   expect_equal(i_model(m_prob)$family$link, "probit")
+})
+
+test_that("weighted fit statistics use prior weights and report NA measures", {
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m  <- glm(honcomp ~ female + read + science, data = hsb2,
+            family = binomial(link = "logit"), weights = w)
+  m0 <- glm(honcomp ~ 1, data = hsb2,
+            family = binomial(link = "logit"), weights = w)
+
+  n_w <- sum(w)
+  ll0 <- as.numeric(logLik(m0))
+  ll1 <- as.numeric(logLik(m))
+
+  cox_snell  <- 1 - exp((2 / n_w) * (ll0 - ll1))
+  nagelkerke <- cox_snell / (1 - exp((2 / n_w) * ll0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$cox_snell, cox_snell)
+  expect_equal(res$nagelkerke, nagelkerke)
+  expect_true(is.na(res$count_r2))
+  expect_true(is.na(res$count_adj))
+  expect_true(is.na(res$effron))
+  expect_true(is.na(res$mckelvey))
+
+  out <- capture.output(print(res))
+  expect_true(any(grepl(
+    "not available for models with prior weights", out, fixed = TRUE
+  )))
 })

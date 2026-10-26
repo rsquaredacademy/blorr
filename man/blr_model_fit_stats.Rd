@@ -14,6 +14,12 @@ blr_model_fit_stats(model, ...)
 \description{
 Model fit statistics.
 }
+\details{
+For models fitted with prior weights, Cox-Snell and Nagelkerke R2 use the sum
+of the prior weights as the number of observations. The count, adjusted count,
+Efron and McKelvey-Zavoina R2 values are not reported (\code{NA}) for weighted
+models because they are not defined for weighted fits.
+}
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
             family = binomial(link = 'logit'))
