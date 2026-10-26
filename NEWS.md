@@ -6,6 +6,11 @@ weight of evidence, and the Gini index.
 
 ## Bug Fixes
 
+- `blr_regress()` now respects prior weights (and offset) of the fitted model.
+- Models that are not binomial-logit now give an error instead of wrong results.
+- Functions that refit the model give an error for weighted/offset models instead of silently ignoring the weights.
+- The Hosmer–Lemeshow table no longer prints empty rows when there are fewer than 10 groups.
+
 - `blr_test_hosmer_lemeshow()` now calculates degrees of freedom from the
   actual number of partition groups used (`max(1, g - 2)`) rather than hardcoding it to 8.
 - The intercept-only null model used in model fit statistics and likelihood

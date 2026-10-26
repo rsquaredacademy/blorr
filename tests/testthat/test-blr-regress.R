@@ -64,3 +64,71 @@ test_that("blr_regress reports nobs and response profile on data with missing va
   expect_equal(as.integer(k$resp_prof[[1]]), sum(model$y == 0))
   expect_equal(as.integer(k$resp_prof[[2]]), sum(model$y == 1))
 })
+
+test_that("blr_regress keeps weights and offset of the fitted model", {
+  set.seed(42)
+  w <- runif(nrow(hsb2), 0.5, 2)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
+  res_w <- blr_regress(m_w)
+  s_w <- summary(m_w)$coefficients
+
+  expect_equal(res_w$est, unname(s_w[, "Estimate"]), tolerance = 1e-6)
+  expect_equal(res_w$se, unname(s_w[, "Std. Error"]), tolerance = 1e-6)
+  expect_equal(res_w$zval, unname(s_w[, "z value"]), tolerance = 1e-6)
+  expect_equal(res_w$pval, unname(s_w[, "Pr(>|z|)"]), tolerance = 1e-6)
+
+  # offset model
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), offset = off)
+  res_off <- blr_regress(m_off)
+  s_off <- summary(m_off)$coefficients
+
+  expect_equal(res_off$est, unname(s_off[, "Estimate"]), tolerance = 1e-6)
+  expect_equal(res_off$se, unname(s_off[, "Std. Error"]), tolerance = 1e-6)
+  expect_equal(res_off$zval, unname(s_off[, "z value"]), tolerance = 1e-6)
+  expect_equal(res_off$pval, unname(s_off[, "Pr(>|z|)"]), tolerance = 1e-6)
+})
+
+test_that("blr_regress errors on non-logit models", {
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_regress(m_prob), "logit")
+})
+
+test_that("blr_check_model errors on gaussian glm", {
+  m_gauss <- glm(read ~ female + science, data = hsb2, family = gaussian())
+  expect_error(blr_check_model(m_gauss), "binomial")
+})
+
+test_that("blr_regress keeps weights and offset of the fitted model", {
+  set.seed(42)
+  w <- runif(nrow(hsb2), 0.5, 2)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
+  res_w <- blr_regress(m_w)
+  s_w <- summary(m_w)$coefficients
+
+  expect_equal(res_w$est, unname(s_w[, "Estimate"]), tolerance = 1e-6)
+  expect_equal(res_w$se, unname(s_w[, "Std. Error"]), tolerance = 1e-6)
+  expect_equal(res_w$zval, unname(s_w[, "z value"]), tolerance = 1e-6)
+  expect_equal(res_w$pval, unname(s_w[, "Pr(>|z|)"]), tolerance = 1e-6)
+
+  # offset model
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), offset = off)
+  res_off <- blr_regress(m_off)
+  s_off <- summary(m_off)$coefficients
+
+  expect_equal(res_off$est, unname(s_off[, "Estimate"]), tolerance = 1e-6)
+  expect_equal(res_off$se, unname(s_off[, "Std. Error"]), tolerance = 1e-6)
+  expect_equal(res_off$zval, unname(s_off[, "z value"]), tolerance = 1e-6)
+  expect_equal(res_off$pval, unname(s_off[, "Pr(>|z|)"]), tolerance = 1e-6)
+})
+
+test_that("blr_regress errors on non-logit models", {
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_regress(m_prob), "logit")
+})
+
+test_that("blr_check_model errors on gaussian glm", {
+  m_gauss <- glm(read ~ female + science, data = hsb2, family = gaussian())
+  expect_error(blr_check_model(m_gauss), "binomial")
+})

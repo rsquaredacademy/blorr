@@ -65,6 +65,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
   }
 
   blr_check_model(model)
+  blr_check_weights_offset(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 

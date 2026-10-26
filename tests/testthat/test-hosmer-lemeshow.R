@@ -40,3 +40,17 @@ test_that("Hosmer-Lemeshow degrees of freedom adapts to partition table rows", {
   expect_equal(nrow(res10$partition_table), 10)
   expect_equal(res10$df, 8)
 })
+
+test_that("Hosmer-Lemeshow print for fewer than 10 groups has no NA rows", {
+  set.seed(2); n <- 600
+  d <- data.frame(a = factor(sample(1:3, n, TRUE)), b = factor(sample(1:2, n, TRUE)))
+  eta <- -1 + 0.8 * (d$a == "2") + 1.2 * (d$a == "3") + 0.5 * (d$b == "2") + 1.5 * (d$a == "3" & d$b == "2")
+  d$y <- rbinom(n, 1, plogis(eta))
+  m <- glm(y ~ a + b, data = d, family = binomial)
+
+  res <- blr_test_hosmer_lemeshow(m)
+  out <- capture.output(print(res))
+  expect_false(any(grepl("NA", out)))
+  expect_output(print(res), "Partition for the Hosmer & Lemeshow Test")
+})
+

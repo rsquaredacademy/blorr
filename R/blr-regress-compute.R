@@ -1,7 +1,37 @@
-blr_reg_comp <- function(formula, data, odd_conf_limit) {
+blr_reg_comp <- function(formula, data, odd_conf_limit, weights = NULL, offset = NULL) {
 
-  model <- glm(formula = formula, data = data,
-               family = binomial(link = "logit"))
+  form <- as.formula(formula)
+  environment(form) <- environment()
+
+  if (is.null(weights) && is.null(offset)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      family  = binomial(link = "logit")
+    )
+  } else if (is.null(offset)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      weights = weights,
+      family  = binomial(link = "logit")
+    )
+  } else if (is.null(weights)) {
+    model <- glm(
+      formula = form,
+      data    = data,
+      offset  = offset,
+      family  = binomial(link = "logit")
+    )
+  } else {
+    model <- glm(
+      formula = form,
+      data    = data,
+      weights = weights,
+      offset  = offset,
+      family  = binomial(link = "logit")
+    )
+  }
 
   if (interactive()) {
     cat(paste("-", "Creating model overview."), "\n")

@@ -61,6 +61,7 @@ blr_step_p_both <- function(model, ...) UseMethod("blr_step_p_both")
 blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FALSE, ...) {
 
   blr_check_model(model)
+  blr_check_weights_offset(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
   blr_check_values(pent, 0, 1)

@@ -1,41 +1,66 @@
 #' @importFrom stats family
 blr_check_model <- function(model) {
 
-	model_class  <- class(model)[1] == "glm"
-	model_family <- isTRUE(family(model)$family == "binomial")
+  model_class <- inherits(model, "glm")
 
-	fmla <- deparse(formula(model))
-	data <- deparse(model$call$data)
+  if (!model_class) {
+    fmla <- tryCatch(paste(deparse(formula(model)), collapse = " "), error = function(e) "")
+    data <- tryCatch(paste(deparse(model$call$data), collapse = " "), error = function(e) "")
 
-	if (!model_class) {
-
-		cat("Hmmm.. Looks like you have specified an incorrect model. The below steps might be helpful:
-
-* Check if you have used the", "glm()", "function to build the model.
-* If you have never used it before, you can learn more by typing", "?glm", "or", "help(glm)", "in the Console.\n\n",
-
-"Please specify the model in the below format:\n\n",
-
-"glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
-
-"Happy modeling :)\n")
-
-    stop("", call. = FALSE)
-
+    stop(
+      paste0(
+        "Hmmm.. Looks like you have specified an incorrect model. The below steps might be helpful:\n\n",
+        "* Check if you have used the glm() function to build the model.\n",
+        "* If you have never used it before, you can learn more by typing ?glm or help(glm) in the Console.\n\n",
+        "Please specify the model in the below format:\n\n",
+        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
+        "Happy modeling :)\n"
+      ),
+      call. = FALSE
+    )
   }
 
-  if (!model_family) {
+  fam  <- family(model)
+  fmla <- paste(deparse(formula(model)), collapse = " ")
+  data <- paste(deparse(model$call$data), collapse = " ")
 
-  	cat("The error distribution is not", "binomial", ". Please specify the error distribution using the", "family", "argument in", "glm()", ".\n",
-
-"Please specify the model in the below format:",
-
-"glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit')",
-
-"Happy modeling :)\n")
-
+  if (!isTRUE(fam$family == "binomial")) {
+    stop(
+      paste0(
+        "The error distribution is not binomial. Please specify the error distribution using the family argument in glm().\n\n",
+        "Please specify the model in the below format:\n\n",
+        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
+        "Happy modeling :)\n"
+      ),
+      call. = FALSE
+    )
   }
 
+  if (!isTRUE(fam$link == "logit")) {
+    stop(
+      paste0(
+        "The link function is not logit. Please specify the link function using the family argument in glm().\n\n",
+        "Please specify the model in the below format:\n\n",
+        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
+        "Happy modeling :)\n"
+      ),
+      call. = FALSE
+    )
+  }
+
+}
+
+blr_check_weights_offset <- function(model) {
+  has_weights <- !is.null(model$prior.weights) && any(model$prior.weights != 1)
+  has_offset  <- !is.null(model$offset) && any(model$offset != 0)
+
+  if (has_weights && has_offset) {
+    stop("Weights and offsets are not supported by this function yet.", call. = FALSE)
+  } else if (has_weights) {
+    stop("Weights are not supported by this function yet.", call. = FALSE)
+  } else if (has_offset) {
+    stop("Offsets are not supported by this function yet.", call. = FALSE)
+  }
 }
 
 blr_check_data <- function(data) {

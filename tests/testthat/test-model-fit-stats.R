@@ -195,8 +195,6 @@ test_that("null model retains weights, offset, and family in blr_model_fit_stats
 
   # probit model
   m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
-  m0_prob <- glm(honcomp ~ 1, data = hsb2, family = binomial(link = "probit"))
-  bfs_prob <- blr_model_fit_stats(m_prob)
-  expect_equal(bfs_prob$loglik_null, as.numeric(logLik(m0_prob)))
-  expect_equal(bfs_prob$lr_ratio, m0_prob$deviance - m_prob$deviance)
+  expect_error(blr_model_fit_stats(m_prob), "logit")
+  expect_equal(i_model(m_prob)$family$link, "probit")
 })

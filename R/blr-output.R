@@ -294,7 +294,7 @@ print_blr_test_hosmer_lemeshow <- function(x) {
     "\n"
   )
   cat(rep("-", w), sep = "", "\n")
-  for (i in seq_len(10)) {
+  for (i in seq_len(nrow(j))) {
     cat(
       fc(j$group[i], w1), fs(), fc(j$n[i], w2), fs(), fc(j$`1s_observed`[i], w3), fs(),
       fc(format(round(j$`1s_expected`[i], 2), nsmall = 2), w4), fs(), fc(j$`0s_observed`[i], w5), fs(),
