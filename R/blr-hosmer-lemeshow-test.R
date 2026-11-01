@@ -121,6 +121,8 @@ hoslem_data_mutate <- function(hoslem_data, int_limits) {
 
 hoslem_table_data <- function(data) {
 
+  resp <- NULL
+
   d <- data.table(data)
   d <- d[, .(n = .N,
              `1s_observed` = sum(resp),
