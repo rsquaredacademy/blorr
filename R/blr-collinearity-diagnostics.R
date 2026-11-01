@@ -118,13 +118,14 @@ blr_eigen_cindex <- function(model) {
   pvdata <- NULL
 
   x      <- as.data.frame(model.matrix(model))    
-  e      <- evalue(x)$e
-  cindex <- cindx(e)
-  pv     <- pveindex(evalue(x)$pvdata)
+  ev     <- evalue(x)
+  e      <- ev$e
+  cindex <- cindx(e, ev$positive)
+  pv     <- pveindex(ev$pvdata, ev$positive)
   out    <- data.frame(Eigenvalue = cbind(e, cindex, pv))
   
   colnames(out) <- c("Eigenvalue", "Condition Index",
-                     colnames(evalue(x)$pvdata))
+                     colnames(ev$pvdata))
   return(out)
 
 }
@@ -170,34 +171,59 @@ evalue <- function(x) {
   y              <- x
   colnames(y)[1] <- "intercept"
   z              <- scale(y, scale = T, center = F)
+
+  # a zero-norm column is scaled to NaN; keep it as a zero column so the rank
+  # deficiency is reported by the diagnostics instead of raising an error
+  z[!is.finite(z)] <- 0
+
   tu             <- t(z) %*% z
   d              <- diag(tu)
   d[d == 0]      <- 1
-  e              <- eigen(tu / d)$values
-    
-  list(e = e, pvdata = z)
+  e              <- Re(eigen(tu / d)$values)
+
+  # one rank criterion for both the condition indices and the variance
+  # proportions, taken from the singular values of the scaled design
+  svdz     <- svd(z)
+  tol      <- max(svdz$d) * max(dim(z)) * .Machine$double.eps
+  positive <- svdz$d > tol
+
+  list(e = e, pvdata = z, positive = positive)
 
 }
 
 
-cindx <- function(e) {
+cindx <- function(e, positive = NULL) {
 
-  # eigenvalues that are zero to numerical precision must not be fed into a
-  # square root as small negative numbers
+  e <- Re(e)
+
+  # eigenvalues below the design rank are not resolvable and give an
+  # unavailable (infinite) condition index; positive eigenvalues, however
+  # small, are retained so their index stays finite
+  if (!is.null(positive)) {
+    if (length(positive) < length(e)) {
+      positive <- c(positive, rep(FALSE, length(e) - length(positive)))
+    }
+    e[!positive] <- 0
+  }
+
+  # clamp only small negative eigenvalues caused by numerical error
   tol <- sqrt(.Machine$double.eps) * max(abs(e), 1)
-  e[abs(e) < tol] <- 0
+  e[e < 0 & abs(e) < tol] <- 0
   e <- pmax(e, 0)
 
   sqrt(e[1] / e)
 
 }
 
-pveindex <- function(z) {
+pveindex <- function(z, positive = NULL) {
 
   svdx     <- svd(z)
   svdxd    <- svdx$d
-  tol      <- max(svdxd) * max(dim(z)) * .Machine$double.eps
-  positive <- svdxd > tol
+
+  if (is.null(positive)) {
+    tol      <- max(svdxd) * max(dim(z)) * .Machine$double.eps
+    positive <- svdxd > tol
+  }
 
   phi <- matrix(0, nrow = ncol(z), ncol = length(svdxd))
 

@@ -96,6 +96,9 @@ weight of evidence, and the Gini index.
 - Constant predictors now get infinite variance inflation factors and
   unavailable variance proportions, and `blr_vif_tol()` works for a single
   predictor.
+- Condition indices stay finite for full-rank designs with a small positive
+  eigenvalue, and zero-variance predictor columns are handled without an error,
+  reporting an infinite index and unavailable variance proportions.
 - The maintainer email address is now `aravindhebbali@rsquaredacademy.com`.
 - `blr_prep_lorenz_data()` defaults to the model frame and consistently uses
   the fitted rows for training data.

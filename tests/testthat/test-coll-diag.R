@@ -75,3 +75,39 @@ test_that("VIF works for a single-predictor model", {
   expect_equal(v$VIF, 1)
 })
 
+test_that("nearly collinear full-rank designs keep a finite condition index", {
+  set.seed(1)
+  d <- mtcars
+  d$wt2 <- d$wt + rnorm(32, sd = 1e-4)
+  model <- glm(am ~ wt + wt2, data = d, family = binomial)
+
+  e <- blr_eigen_cindex(model)
+  last <- nrow(e)
+
+  expect_equal(model$rank, 3)
+  expect_gt(e[["Eigenvalue"]][last], 0)
+  expect_true(is.finite(e[["Condition Index"]][last]))
+  expect_equal(e[["Condition Index"]][last], 89785.8298103, tolerance = 1e-6)
+
+  z  <- scale(model.matrix(model), center = FALSE, scale = TRUE)
+  tu <- crossprod(z)
+  d  <- diag(tu)
+  ev <- eigen(tu / d)$values
+  expect_equal(e[["Condition Index"]][last], sqrt(max(ev) / min(ev)))
+})
+
+test_that("zero columns get unavailable rather than broken collinearity diagnostics", {
+  model <- glm(am ~ wt + z, data = transform(mtcars, z = 0),
+               family = binomial)
+
+  e <- blr_eigen_cindex(model)
+
+  expect_false(any(is.nan(as.matrix(e))))
+  expect_true(is.infinite(e[["Condition Index"]][nrow(e)]))
+  expect_true(all(is.na(as.matrix(e[nrow(e), -(1:2)]))))
+
+  v <- blr_vif_tol(model)
+  expect_equal(v$Variable, c("wt", "z"))
+  expect_true(is.infinite(v$VIF[v$Variable == "z"]))
+})
+
