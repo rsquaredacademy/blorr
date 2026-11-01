@@ -41,6 +41,9 @@ weight of evidence, and the Gini index.
   probabilities). The index is computed from the
   Mann-Whitney rank statistic, so it remains fast on large models, and `data`
   without the response column is now an error.
+- The default `blr_gini_index()` call now uses the fitted response labels, so
+  labelled factor and logical responses give the same index as an explicit
+  `data` argument instead of `NaN`.
 - Variable selection procedures now return an intercept-only model when no
   predictor qualifies, and p-value based procedures apply the entry criterion
   to the first predictor as well.

@@ -37,6 +37,20 @@ test_that("gini index and lorenz curve use the rows the model was fitted on", {
   )
 })
 
+test_that("default gini uses the fitted response labels", {
+  d  <- transform(mtcars, am = factor(am, labels = c("no", "yes")))
+  mf <- glm(am ~ wt + hp, d, family = binomial)
+
+  expect_equal(blr_gini_index(mf), 0.967611336032)
+  expect_equal(blr_gini_index(mf), blr_gini_index(mf, d))
+
+  ml <- glm(I(am == 1) ~ wt + hp, mtcars, family = binomial)
+  mn <- glm(am ~ wt + hp, mtcars, family = binomial)
+
+  expect_equal(blr_gini_index(ml), 0.967611336032)
+  expect_equal(blr_gini_index(ml), blr_gini_index(mn))
+})
+
 test_that("gini index on a test set uses the response from the test data", {
   model <- glm(
     honcomp ~ female + read, data = hsb2,

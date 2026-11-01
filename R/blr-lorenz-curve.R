@@ -54,7 +54,10 @@ blr_gini_index <- function(model, data = NULL) {
   if (test_data) {
     response <- data[[resp_name]]
   } else {
-    response <- model$y
+    # model$y is already encoded as 0/1, so map the original fitted response
+    # labels instead; otherwise a labelled factor or logical response is
+    # compared with the numeric codes and every row becomes a non-event
+    response <- model$model[[1]]
   }
 
   if (is.null(response)) {
