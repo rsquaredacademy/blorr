@@ -287,15 +287,17 @@ design_contains <- function(full, reduced) {
 }
 
 # formula for a variable selection model; an intercept-only model is used
-# when no predictors are left. The response is quoted so that a transformed or
-# grouped response is taken from the model frame column of that name rather
-# than re-evaluated.
+# when no predictors are left. The response and each predictor are quoted so
+# that a transformed, grouped or locally defined term is taken from the stored
+# model frame column of that name rather than re-evaluated from the original
+# formula expression.
 selection_formula <- function(response, predictors) {
   response <- paste0("`", response, "`")
 
   if (length(predictors) == 0) {
     paste0(response, " ~ 1")
   } else {
+    predictors <- paste0("`", predictors, "`")
     paste(response, "~", paste(predictors, collapse = " + "))
   }
 }
@@ -323,56 +325,15 @@ selection_weights <- function(model) {
   w
 }
 
-# data used to refit variable selection candidates. The stored model frame has
-# already evaluated terms such as log(wt) but no longer contains the original
-# variables, so a formula using the original term labels cannot be evaluated on
-# it. When the fitted model's data is available, use the rows the model was
-# fitted on and add the evaluated response column; otherwise fall back to the
-# model frame.
+# data used to refit variable selection candidates. The stored model frame
+# already holds every term evaluated as a column named by its term label (for
+# example a `log(wt)` column), so candidates are always refit on it rather than
+# re-evaluating the original data. This keeps selection aligned with the fitted
+# response, predictors and weights even when the source data object is edited
+# or reassigned after fitting, and it also works for predictors built from
+# locally defined functions or for models fitted without a `data` argument.
 selection_data <- function(model) {
-
-  mf   <- model$model
-  resp <- names(mf)[1]
-  dat  <- NULL
-
-  if (!is.null(model$call$data)) {
-    env <- environment(stats::terms(model))
-    if (is.null(env)) {
-      env <- parent.frame()
-    }
-    dat <- tryCatch(eval(model$call$data, envir = env),
-                    error = function(e) NULL)
-    if (!is.null(dat) && !is.data.frame(dat)) {
-      dat <- tryCatch(as.data.frame(dat), error = function(e) NULL)
-    }
-  }
-
-  if (!is.null(dat) && nrow(dat) >= nrow(mf)) {
-    rn <- rownames(mf)
-    if (!is.null(rn) && all(rn %in% rownames(dat))) {
-      dat <- dat[rn, , drop = FALSE]
-    } else if (nrow(dat) != nrow(mf)) {
-      dat <- NULL
-    }
-  } else {
-    dat <- NULL
-  }
-
-  if (is.null(dat)) {
-    return(mf)
-  }
-
-  # every variable named in the terms must be a column of the original data;
-  # otherwise the stored evaluated columns are the only reliable source
-  vars <- all.vars(stats::delete.response(stats::terms(model)))
-
-  if (!all(vars %in% names(dat))) {
-    return(mf)
-  }
-
-  dat[[resp]] <- mf[[1]]
-
-  dat
+  model$model
 }
 
 # fit a variable selection model, including the intercept-only model. When the
