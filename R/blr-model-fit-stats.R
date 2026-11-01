@@ -372,7 +372,20 @@ fit_stat <- function(model) {
 
   dev_df <- df.residual(model)
 
-  # an intercept-only model is its own null model, so there is no likelihood
+  # the intercept-only model is only a valid null when the constant vector is
+  # in the column space of the fitted design; a no-intercept model with a
+  # genuine predictor does not contain it
+  if (!null_model_nested(model)) {
+    warning(
+      paste("likelihood ratio test is not available: the intercept-only",
+            "model is not nested within the fitted model"),
+      call. = FALSE
+    )
+    return(list(lr_ratio = NA_real_, lr_df = NA_real_,
+                lr_pval = NA_real_, dev_df = dev_df))
+  }
+
+  # a null-equivalent design is its own null model, so there is no likelihood
   # ratio test to report
   if (model$rank <= 1L) {
     return(list(lr_ratio = 0, lr_df = 0, lr_pval = 1, dev_df = dev_df))
@@ -388,6 +401,25 @@ fit_stat <- function(model) {
        lr_df    = lr_df,
        lr_pval  = lr_pval,
        dev_df   = dev_df)
+
+}
+
+# does the fitted design span the constant vector, i.e. is the intercept-only
+# model nested in it? projection residuals are compared against a numerical
+# rank tolerance scaled to the design and the sample size
+null_model_nested <- function(model) {
+
+  mm <- stats::model.matrix(model)
+  n  <- nrow(mm)
+
+  if (n == 0L || ncol(mm) == 0L) {
+    return(FALSE)
+  }
+
+  res <- qr.resid(qr(mm), rep(1, n))
+  tol <- sqrt(.Machine$double.eps) * max(1, max(abs(mm))) * sqrt(n)
+
+  max(abs(res)) <= tol
 
 }
 

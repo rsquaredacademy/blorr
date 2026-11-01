@@ -10,6 +10,10 @@ weight of evidence, and the Gini index.
   fitted on, so they are correct when rows are dropped for missing values or
   when the model is fitted without a `data` argument. The model fit statistics
   table is also assembled by name, so values no longer shift between labels.
+- `blr_model_fit_stats()` no longer reports a zero likelihood ratio test for
+  a model without an intercept. The intercept-only model is only used as the
+  null when it is actually nested in the fitted design; otherwise the test is
+  reported as unavailable with a warning.
 - The likelihood ratio test now uses the difference in residual degrees of
   freedom between the reduced and full models, giving the correct degrees of
   freedom and p-value for nested models.

@@ -266,6 +266,37 @@ test_that("fit statistics are available for an intercept-only model", {
   expect_equal(k$dev_df, df.residual(model))
 })
 
+test_that("a rank-one model without an intercept has no zero LR test", {
+  model <- glm(am ~ 0 + wt, data = mtcars, family = binomial)
+
+  expect_warning(
+    k <- blr_model_fit_stats(model),
+    "likelihood ratio test is not available"
+  )
+
+  # the fitted and intercept-only likelihoods differ, so reporting a zero
+  # statistic would be wrong
+  expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+  expect_false(isTRUE(all.equal(
+    -2 * (k$loglik_null - k$loglik_model), 0
+  )))
+  expect_true(is.na(k$lr_ratio))
+  expect_true(is.na(k$lr_df))
+  expect_true(is.na(k$lr_pval))
+  expect_equal(k$dev_df, df.residual(model))
+
+  # the same applies when more than one predictor is fitted without an
+  # intercept: the intercept-only model is not nested in the fitted design
+  model2 <- glm(am ~ 0 + wt + hp, data = mtcars, family = binomial)
+
+  expect_warning(
+    k2 <- blr_model_fit_stats(model2),
+    "likelihood ratio test is not available"
+  )
+  expect_true(is.na(k2$lr_ratio))
+  expect_equal(k2$dev_df, df.residual(model2))
+})
+
 test_that("residual df uses the fitted rank when a coefficient is aliased", {
   model <- glm(am ~ wt + I(2 * wt), data = mtcars, family = binomial)
 
