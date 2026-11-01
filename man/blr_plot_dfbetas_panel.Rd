@@ -30,12 +30,10 @@ general cutoff value to indicate influential observations and
 \eqn{2/\sqrt(n)} as a size-adjusted cutoff.
 }
 \examples{
-\dontrun{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_dfbetas_panel(model)
-}
 
 }
 \references{

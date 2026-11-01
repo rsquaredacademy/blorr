@@ -10,7 +10,7 @@ blr_step_aic_both(model, details = FALSE, ...)
 \method{plot}{blr_step_aic_both}(x, text_size = 3, ...)
 }
 \arguments{
-\item{model}{An object of class \code{lm}.}
+\item{model}{An object of class \code{glm}.}
 
 \item{details}{Logical; if \code{TRUE}, details of variable selection will be
 printed on screen.}
@@ -41,8 +41,8 @@ entering and removing predictors based on akaike information criterion, in a
 stepwise manner until there is no variable left to enter or remove any more.
 }
 \examples{
-\dontrun{
-model <- glm(y ~ ., data = stepwise)
+\donttest{
+model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 
 # selection summary
 blr_step_aic_both(model)

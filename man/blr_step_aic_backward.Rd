@@ -48,7 +48,6 @@ removing predictors based on akaike information criterion, in a stepwise
 manner until there is no variable left to remove any more.
 }
 \examples{
-\dontrun{
 model <- glm(honcomp ~ female + read + science + math + prog + socst,
 data = hsb2, family = binomial(link = 'logit'))
 
@@ -65,7 +64,6 @@ plot(blr_step_aic_backward(model))
 k <- blr_step_aic_backward(model)
 k$model
 
-}
 
 }
 \references{

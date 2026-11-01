@@ -54,6 +54,38 @@ weight of evidence, and the Gini index.
 - The forward selection documentation now describes selection by AIC.
 - Deviance residual plots now use and are labelled as standardized deviance
   residuals.
+- Forward AIC selection now compares the best first candidate with the
+  intercept-only model and returns the intercept-only model when no predictor
+  improves AIC.
+- Weighted fits keep their weights, offset, link and contrasts in likelihood
+  ratio tests, pseudo R-squared measures and `blr_regress()`, and
+  `blr_regress()` can summarise a fit whose response is a transformed
+  expression.
+- Likelihood ratio tests reject models fitted to different observations,
+  weights or offsets, or non-nested models, and bivariate analysis fits its
+  null model on the predictor model's complete rows.
+- Efron, count, adjusted count and McKelvey-Zavoina R-squared align fitted
+  values with the fitted response when `na.action = na.exclude`.
+- Missing responses are no longer counted as non-events in segment, gains,
+  confusion matrix and validation summaries, and unused response levels no
+  longer change which class is treated as the event.
+- The Hosmer-Lemeshow test accepts numeric and labelled factor responses and
+  explicit `data`, uses degrees of freedom based on the observed number of
+  groups, and reports the test as unavailable when too few groups remain.
+- Weight of evidence and information value are computed at full precision
+  before being rounded, avoiding infinite values from small proportions.
+- `blr_pairs()` uses wide counters, so pair counts above the 32-bit integer
+  limit no longer overflow.
+- Residual degrees of freedom are taken from the fitted rank, so aliased
+  coefficients are not counted as estimated parameters.
+- Constant predictors now get infinite variance inflation factors and
+  unavailable variance proportions, and `blr_vif_tol()` works for a single
+  predictor.
+- The maintainer email address is now `aravindhebbali@rsquaredacademy.com`.
+- `blr_prep_lorenz_data()` defaults to the model frame and consistently uses
+  the fitted rows for training data.
+- Executable selection and dfbetas examples now use the binomial family and
+  the correct model class.
 
 # blorr 0.3.1
 

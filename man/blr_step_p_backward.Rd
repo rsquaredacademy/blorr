@@ -13,7 +13,7 @@ blr_step_p_backward(model, ...)
 \method{plot}{blr_step_p_backward}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
-\item{model}{An object of class \code{lm}; the model should include all
+\item{model}{An object of class \code{glm}; the model should include all
 candidate predictor variables.}
 
 \item{...}{Other inputs.}
@@ -47,7 +47,6 @@ removing predictors based on p values, in a stepwise manner until there is
 no variable left to remove any more.
 }
 \examples{
-\dontrun{
 # stepwise backward regression
 model <- glm(honcomp ~ female + read + science + math + prog + socst,
   data = hsb2, family = binomial(link = 'logit'))
@@ -62,7 +61,6 @@ plot(k)
 # final model
 k$model
 
-}
 
 
 }

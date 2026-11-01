@@ -47,7 +47,6 @@ entering predictors based on Akaike information criterion, in a stepwise manner
 until there is no variable left to enter any more.
 }
 \examples{
-\dontrun{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
@@ -64,7 +63,6 @@ plot(blr_step_aic_forward(model))
 k <- blr_step_aic_forward(model)
 k$model
 
-}
 
 }
 \references{
