@@ -47,6 +47,9 @@ weight of evidence, and the Gini index.
 - Variable selection procedures now return an intercept-only model when no
   predictor qualifies, and p-value based procedures apply the entry criterion
   to the first predictor as well.
+- Forward, backward and stepwise selection now keep the fitted model's weights,
+  offset, link and contrasts in every candidate model, and print the same
+  fitted model they return instead of an unweighted formula refit.
 - `blr_woe_iv()` now accepts character and numeric predictors, drops unused
   factor levels, applies a 0.5 continuity correction to levels with no
   events or no non-events, and drops rows with missing values so they are not

@@ -265,19 +265,16 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
   }
 
 
+  final_model <- selection_model(response, preds, l, fit = model)
+
   if (progress) {
     cat("\n\n")
     cat("Final Model Output", "\n")
     cat(rep("-", 18), sep = "", "\n\n")
 
-    fi <- blr_regress(
-      paste(response, "~", paste(preds, collapse = " + ")),
-      data = l
-    )
+    fi <- blr_regress(final_model)
     print(fi)
   }
-
-  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(
     candidates = nam,

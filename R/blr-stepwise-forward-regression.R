@@ -151,7 +151,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   if (details) {
     cat("\n")
-    m <- blr_regress(selection_formula(response, preds), l)
+    m <- blr_regress(fr)
     print(m)
     cat("\n\n")
   }
@@ -167,7 +167,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     for (i in seq_len(len_p)) {
 
       predictors <- c(preds, all_pred[i])
-      m <- glm(paste(response, "~", paste(predictors, collapse = " + ")), l, family = binomial(link = 'logit'))
+      m <- selection_model(response, predictors, l, fit = model)
       m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
@@ -199,7 +199,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
       if (details) {
         cat("\n")
-        m <- blr_regress(selection_formula(response, preds), l)
+        m <- blr_regress(fr)
         print(m)
         cat("\n\n")
       }
@@ -226,13 +226,10 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   cat("Final Model Output", "\n")
   cat(rep("-", 18), sep = "", "\n\n")
 
-  fi <- blr_regress(
-    selection_formula(response, preds),
-    data = l
-  )
-  print(fi)
-
   final_model <- selection_model(response, preds, l, fit = model)
+
+  fi <- blr_regress(final_model)
+  print(fi)
 
   out <- list(predictors = preds,
               indvar     = cterms,

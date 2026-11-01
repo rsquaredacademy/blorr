@@ -124,7 +124,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         if (details) {
           cat("\n")
           cat(paste("Backward Elimination: Step", step, "\n\n"), paste("Variable", rpred[lp], "Removed"), "\n\n")
-          m <- blr_regress(selection_formula(response, preds), l)
+          m <- blr_regress(fr)
           print(m)
           cat("\n\n")
         }
@@ -153,13 +153,10 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   cat("Final Model Output", "\n")
   cat(rep("-", 18), sep = "", "\n\n")
 
-  fi <- blr_regress(
-    selection_formula(response, preds),
-    data = l
-  )
-  print(fi)
-
   final_model <- selection_model(response, preds, l, fit = model)
+
+  fi <- blr_regress(final_model)
+  print(fi)
 
   out <- list(removed    = rpred,
               indvar     = cterms,

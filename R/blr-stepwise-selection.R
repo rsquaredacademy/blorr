@@ -269,19 +269,16 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     }
   }
 
+  final_model <- selection_model(response, preds, l, fit = model)
+
   if (details == TRUE) {
     cat("\n\n")
     cat("Final Model Output", "\n")
     cat(rep("-", 18), sep = "", "\n\n")
 
-    fi <- blr_regress(
-      selection_formula(response, preds),
-      data = l
-    )
+    fi <- blr_regress(final_model)
     print(fi)
   }
-
-  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(
     candidates = nam,
