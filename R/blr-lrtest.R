@@ -109,6 +109,37 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
+  # term labels are not enough: the reduced model must also be fitted to the
+  # same rows and use a subset of the actual full-model design columns,
+  # including the intercept. Comparing the model matrices catches a reduced
+  # intercept that the full model does not have, and a same-named predictor
+  # fitted to different values.
+  full_design <- stats::model.matrix(full_model)
+  red_design  <- stats::model.matrix(reduced_model)
+
+  red_cols  <- colnames(red_design)
+  full_cols <- colnames(full_design)
+
+  if (is.null(red_cols) || anyDuplicated(red_cols) ||
+      !all(red_cols %in% full_cols)) {
+    stop("reduced_model must be nested within full_model.", call. = FALSE)
+  }
+
+  full_match <- match(red_cols, full_cols)
+
+  if (!isTRUE(all.equal(unname(red_design),
+                        unname(full_design[, full_match, drop = FALSE]),
+                        check.attributes = FALSE))) {
+    stop("reduced_model must be nested within full_model.", call. = FALSE)
+  }
+
+  if (stats::df.residual(reduced_model) -
+      stats::df.residual(full_model) < 1) {
+    stop("reduced_model must be nested within full_model and estimate fewer parameters.",
+      call. = FALSE
+    )
+  }
+
   invisible(TRUE)
 }
 

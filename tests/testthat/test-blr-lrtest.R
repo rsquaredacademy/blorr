@@ -89,3 +89,33 @@ test_that("LR test rejects a non-nested reduced model", {
   )
 })
 
+test_that("LR test rejects a reduced intercept absent from the full design", {
+  full    <- glm(am ~ 0 + wt + hp, data = mtcars, family = binomial)
+  reduced <- glm(am ~ wt, data = mtcars, family = binomial)
+
+  expect_error(
+    blr_test_lr(full, reduced),
+    "nested"
+  )
+})
+
+test_that("LR test rejects a reduced design fitted to different predictor values", {
+  full    <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  reduced <- glm(am ~ wt, data = transform(mtcars, wt = rev(wt)),
+                 family = binomial)
+
+  expect_error(
+    blr_test_lr(full, reduced),
+    "nested"
+  )
+})
+
+test_that("LR test rejects comparisons with no additional parameters", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+
+  expect_error(
+    blr_test_lr(model, model),
+    "nested"
+  )
+})
+

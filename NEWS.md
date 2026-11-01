@@ -72,7 +72,10 @@ weight of evidence, and the Gini index.
   or variable selection, so those statistics match base R.
 - Likelihood ratio tests reject models fitted to different observations,
   weights or offsets, or non-nested models, and bivariate analysis fits its
-  null model on the predictor model's complete rows.
+  null model on the predictor model's complete rows. Nesting is checked
+  against the fitted design matrices, including the intercept and the actual
+  predictor values, and comparisons with no additional parameters are
+  rejected.
 - Efron, count, adjusted count and McKelvey-Zavoina R-squared align fitted
   values with the fitted response when `na.action = na.exclude`.
 - Missing responses are no longer counted as non-events in segment, gains,
