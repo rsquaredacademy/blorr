@@ -63,8 +63,8 @@ blr_gains_table.default <- function(model, data = NULL) {
     data      <- data
   }
 
-  dct <- gains_decile_count(data)
   gtp <- gains_table_prep(model, data, test_data)
+  dct <- gains_decile_count(gtp)
   gtm <- gains_table_modify(gtp, decile_count = dct)
   gt  <- gains_table_mutate(gtm)
 

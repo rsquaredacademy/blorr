@@ -49,11 +49,11 @@ blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
     test_data <- FALSE
   }
 
-  decile_count <- gains_decile_count(data)
-
-  x <- gains_table_prep(model, data, test_data) 
-  y <- gains_table_modify(x, decile_count = decile_count) 
-  z <- gains_table_mutate(y) 
+  # derive the decile assignment from the response-prediction pairs that are
+  # actually retained, not from rows that will be dropped for missing values
+  x <- gains_table_prep(model, data, test_data)
+  y <- gains_table_modify(x, decile_count = gains_decile_count(x))
+  z <- gains_table_mutate(y)
   lorenz_plot_data(z)
 
 }

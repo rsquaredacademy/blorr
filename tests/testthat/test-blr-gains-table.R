@@ -27,6 +27,43 @@ test_that("gains table assigns every observation to exactly one decile", {
   }
 })
 
+test_that("gains table assigns deciles after dropping missing outcomes", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$am[1] <- NA
+
+  gt <- blr_gains_table(m, td)$gains_table
+
+  expect_equal(sum(gt$total), 31)
+  expect_equal(sum(gt$`1`), 12)
+  expect_true(all(gt$decile >= 1 & gt$decile <= 10))
+  expect_equal(anyDuplicated(gt$decile), 0L)
+  expect_equal(tail(gt$`cum_total_%`, 1), 100)
+  expect_equal(tail(gt$`cum_1s_%`, 1), 100)
+  expect_equal(tail(gt$`cum_0s_%`, 1), 100)
+
+  lz <- blr_prep_lorenz_data(m, td, TRUE)
+  expect_equal(nrow(lz), nrow(gt) + 2L)
+  expect_equal(lz$cum_1s_per[c(1, nrow(lz))], c(0, 1))
+  expect_equal(lz$cum_0s_per[c(1, nrow(lz))], c(0, 1))
+})
+
+test_that("gains table assigns deciles after dropping missing predictors", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$hp[1] <- NA
+
+  gt <- blr_gains_table(m, td)$gains_table
+
+  expect_equal(sum(gt$total), 31)
+  expect_equal(sum(gt$`1`), sum(mtcars$am[-1]))
+  expect_equal(tail(gt$`cum_total_%`, 1), 100)
+
+  lz <- blr_prep_lorenz_data(m, td, TRUE)
+  expect_equal(nrow(lz), nrow(gt) + 2L)
+  expect_equal(lz$cum_1s_per[nrow(lz)], 1)
+})
+
 test_that("gains table handles a decile with no events", {
   p <- predict(model, newdata = hsb2, type = "response")
 

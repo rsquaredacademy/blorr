@@ -30,6 +30,9 @@ weight of evidence, and the Gini index.
 - Gains tables now assign every observation to exactly one of ten deciles,
   count events using the event level of the response, and no longer fail for
   small samples or when a decile contains only one outcome.
+- Gains tables and Lorenz data now assign deciles after dropping rows with
+  missing outcomes or predictors, so those rows no longer cause an error or
+  misaligned deciles.
 - Confusion matrices now show both outcome classes even when the model
   predicts only one class, McNemar's test is reported as unavailable when it
   cannot be computed, and the no information rate uses the larger class.
