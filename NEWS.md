@@ -28,7 +28,10 @@ weight of evidence, and the Gini index.
 - Forward selection now stores the BIC and deviance of each step instead of
   the AIC after the first step.
 - Variance decomposition proportions in `blr_eigen_cindex()` now sum to one
-  for each coefficient.
+  for each coefficient. Eigenvalues and condition indices are now computed
+  from the singular values of the scaled design rather than from its
+  cross-product, so a nearly collinear full-rank design keeps a finite index
+  and a design without an intercept keeps its predictor names.
 - Somers' D and Goodman-Kruskal gamma in `blr_pairs()` now use the correct
   denominators.
 - Gains tables now assign every observation to exactly one of ten deciles,

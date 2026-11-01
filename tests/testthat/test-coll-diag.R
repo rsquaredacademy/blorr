@@ -90,10 +90,43 @@ test_that("nearly collinear full-rank designs keep a finite condition index", {
   expect_equal(e[["Condition Index"]][last], 89785.8298103, tolerance = 1e-6)
 
   z  <- scale(model.matrix(model), center = FALSE, scale = TRUE)
-  tu <- crossprod(z)
-  d  <- diag(tu)
-  ev <- eigen(tu / d)$values
-  expect_equal(e[["Condition Index"]][last], sqrt(max(ev) / min(ev)))
+  s  <- svd(z)$d
+  expect_equal(e[["Condition Index"]][last], max(s) / min(s),
+               tolerance = 1e-8)
+})
+
+test_that("condition indices follow the scaled-design singular values", {
+  set.seed(2)
+  d <- mtcars
+  d$wt2 <- d$wt + rnorm(32, sd = 1e-8)
+  model <- glm(am ~ wt + wt2, data = d, family = binomial)
+
+  z <- scale(model.matrix(model), center = FALSE, scale = TRUE)
+  s <- svd(z)$d
+
+  e    <- blr_eigen_cindex(model)
+  last <- nrow(e)
+
+  expect_equal(model$rank, 3)
+  expect_equal(e[["Eigenvalue"]], s ^ 2 / (nrow(z) - 1))
+  expect_equal(e[["Eigenvalue"]][last], min(s) ^ 2 / (nrow(z) - 1),
+               tolerance = 1e-8)
+  expect_gt(e[["Eigenvalue"]][last], 0)
+  expect_equal(e[["Condition Index"]][last], max(s) / min(s),
+               tolerance = 1e-8)
+  expect_true(is.finite(e[["Condition Index"]][last]))
+
+  set.seed(1)
+  d <- mtcars
+  d$wt2 <- d$wt + rnorm(32, sd = 1e-8)
+  model <- glm(am ~ wt + wt2, data = d, family = binomial)
+
+  z <- scale(model.matrix(model), center = FALSE, scale = TRUE)
+  s <- svd(z)$d
+  e <- blr_eigen_cindex(model)
+
+  expect_equal(e[["Condition Index"]][nrow(e)], max(s) / min(s),
+               tolerance = 1e-8)
 })
 
 test_that("zero columns get unavailable rather than broken collinearity diagnostics", {

@@ -169,23 +169,26 @@ evalue <- function(x) {
 
   values         <- NULL
   y              <- x
-  colnames(y)[1] <- "intercept"
+
+  if ("(Intercept)" %in% colnames(y)) {
+    colnames(y)[colnames(y) == "(Intercept)"] <- "intercept"
+  }
+
   z              <- scale(y, scale = T, center = F)
 
   # a zero-norm column is scaled to NaN; keep it as a zero column so the rank
   # deficiency is reported by the diagnostics instead of raising an error
   z[!is.finite(z)] <- 0
 
-  tu             <- t(z) %*% z
-  d              <- diag(tu)
-  d[d == 0]      <- 1
-  e              <- Re(eigen(tu / d)$values)
-
-  # one rank criterion for both the condition indices and the variance
-  # proportions, taken from the singular values of the scaled design
+  # eigenvalues and condition indices come from the singular values of the
+  # same scaled design used for the variance proportions; forming them from
+  # the cross-product would square the condition number and lose the small
+  # positive directions of a nearly collinear full-rank design
   svdz     <- svd(z)
-  tol      <- max(svdz$d) * max(dim(z)) * .Machine$double.eps
-  positive <- svdz$d > tol
+  d        <- svdz$d
+  tol      <- max(d) * max(dim(z)) * .Machine$double.eps
+  positive <- d > tol
+  e        <- d ^ 2 / max(nrow(z) - 1L, 1L)
 
   list(e = e, pvdata = z, positive = positive)
 
@@ -206,10 +209,11 @@ cindx <- function(e, positive = NULL) {
     e[!positive] <- 0
   }
 
-  # clamp only small negative eigenvalues caused by numerical error
-  tol <- sqrt(.Machine$double.eps) * max(abs(e), 1)
-  e[e < 0 & abs(e) < tol] <- 0
-  e <- pmax(e, 0)
+  e[e < 0] <- 0
+
+  if (length(e) == 0L || e[1] <= 0) {
+    return(rep(Inf, length(e)))
+  }
 
   sqrt(e[1] / e)
 
