@@ -139,6 +139,18 @@ test_that("LR test accepts a nested design with different factor contrasts", {
   expect_equal(k2$test_result[["d_f"]], a2[["Df"]][2])
 })
 
+test_that("LR test accepts a nested design with a different term expression", {
+  full <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  red  <- glm(am ~ I(wt), data = mtcars, family = binomial)
+
+  k <- blr_test_lr(full, red)
+  a <- anova(red, full, test = "Chisq")
+
+  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+  expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
+  expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
+})
+
 test_that("LR test rejects comparisons with no additional parameters", {
   model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
 

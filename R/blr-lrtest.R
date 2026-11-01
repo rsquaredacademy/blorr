@@ -102,20 +102,14 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("models were not fitted with the same offset.", call. = FALSE)
   }
 
-  full_terms <- attr(terms(full_model), "term.labels")
-  red_terms  <- attr(terms(reduced_model), "term.labels")
-
-  if (!all(red_terms %in% full_terms)) {
-    stop("reduced_model must be nested within full_model.", call. = FALSE)
-  }
-
-  # term labels are not enough, and neither are matching design-column names:
-  # nesting only requires the reduced design to lie in the column space of the
-  # full design, which holds for equivalent factor parameterizations such as
-  # treatment and sum contrasts. The projection residual is compared against a
-  # numerical tolerance scaled to the design, so mismatched rows, a reduced
-  # intercept the full model does not span, and a same-named predictor fitted
-  # to different values are still rejected.
+  # matching term labels are not required either: nesting only requires the
+  # reduced design to lie in the column space of the full design, which holds
+  # for equivalent factor parameterizations such as treatment and sum
+  # contrasts and for algebraically identical terms such as I(wt) and wt. The
+  # projection residual is compared against a numerical tolerance scaled to
+  # the design, so mismatched rows, a reduced intercept the full model does
+  # not span, and a same-named predictor fitted to different values are still
+  # rejected.
   full_design <- stats::model.matrix(full_model)
   red_design  <- stats::model.matrix(reduced_model)
 
