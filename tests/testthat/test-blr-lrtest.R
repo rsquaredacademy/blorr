@@ -110,6 +110,35 @@ test_that("LR test rejects a reduced design fitted to different predictor values
   )
 })
 
+test_that("LR test accepts a nested design with different factor contrasts", {
+  d    <- transform(mtcars, g = factor(cyl))
+  full <- glm(am ~ g + hp, data = d, family = binomial,
+              contrasts = list(g = "contr.treatment"))
+  red  <- glm(am ~ g, data = d, family = binomial,
+              contrasts = list(g = "contr.sum"))
+
+  k <- blr_test_lr(full, red)
+  a <- anova(red, full, test = "Chisq")
+
+  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+  expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
+  expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
+  expect_equal(k$test_result[["lr_ratio"]], 6.7312378514618,
+               tolerance = 1e-9)
+
+  # the same containment holds when the full model uses the sum coding
+  full2 <- glm(am ~ g + hp, data = d, family = binomial,
+               contrasts = list(g = "contr.sum"))
+  red2  <- glm(am ~ g, data = d, family = binomial,
+               contrasts = list(g = "contr.treatment"))
+
+  k2 <- blr_test_lr(full2, red2)
+  a2 <- anova(red2, full2, test = "Chisq")
+
+  expect_equal(k2$test_result[["lr_ratio"]], a2[["Deviance"]][2])
+  expect_equal(k2$test_result[["d_f"]], a2[["Df"]][2])
+})
+
 test_that("LR test rejects comparisons with no additional parameters", {
   model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
 

@@ -17,6 +17,10 @@ weight of evidence, and the Gini index.
   a model without an intercept. The intercept-only model is only used as the
   null when it is actually nested in the fitted design; otherwise the test is
   reported as unavailable with a warning.
+- The likelihood ratio test now checks nesting by the column space of the
+  fitted designs rather than by matching column names, so equivalent factor
+  parameterizations such as treatment and sum contrasts can be compared while
+  non-nested designs are still rejected.
 - The likelihood ratio test now uses the difference in residual degrees of
   freedom between the reduced and full models, giving the correct degrees of
   freedom and p-value for nested models.

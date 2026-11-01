@@ -109,27 +109,26 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  # term labels are not enough: the reduced model must also be fitted to the
-  # same rows and use a subset of the actual full-model design columns,
-  # including the intercept. Comparing the model matrices catches a reduced
-  # intercept that the full model does not have, and a same-named predictor
-  # fitted to different values.
+  # term labels are not enough, and neither are matching design-column names:
+  # nesting only requires the reduced design to lie in the column space of the
+  # full design, which holds for equivalent factor parameterizations such as
+  # treatment and sum contrasts. The projection residual is compared against a
+  # numerical tolerance scaled to the design, so mismatched rows, a reduced
+  # intercept the full model does not span, and a same-named predictor fitted
+  # to different values are still rejected.
   full_design <- stats::model.matrix(full_model)
   red_design  <- stats::model.matrix(reduced_model)
 
-  red_cols  <- colnames(red_design)
-  full_cols <- colnames(full_design)
-
-  if (is.null(red_cols) || anyDuplicated(red_cols) ||
-      !all(red_cols %in% full_cols)) {
+  if (nrow(full_design) != nrow(red_design) || ncol(red_design) < 1L) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  full_match <- match(red_cols, full_cols)
+  resid <- qr.resid(qr(full_design), red_design)
+  tol   <- sqrt(.Machine$double.eps) *
+    max(1, max(abs(full_design)), max(abs(red_design))) *
+    sqrt(nrow(full_design))
 
-  if (!isTRUE(all.equal(unname(red_design),
-                        unname(full_design[, full_match, drop = FALSE]),
-                        check.attributes = FALSE))) {
+  if (max(abs(resid)) > tol) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
