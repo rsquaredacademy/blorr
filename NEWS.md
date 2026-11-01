@@ -104,7 +104,8 @@ weight of evidence, and the Gini index.
   reporting an infinite index and unavailable variance proportions.
 - The maintainer email address is now `aravindhebbali@rsquaredacademy.com`.
 - `blr_prep_lorenz_data()` defaults to the model frame and consistently uses
-  the fitted rows for training data.
+  the fitted rows for training data. Its example now calls the function with
+  the default data argument instead of the non-existent `model$data`.
 - Executable selection and dfbetas examples now use the binomial family and
   the correct model class.
 

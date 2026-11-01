@@ -19,7 +19,6 @@ Data for generating Lorenz curve.
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
-data <- model$data
-blr_prep_lorenz_data(model, data, FALSE)
+blr_prep_lorenz_data(model)
 
 }

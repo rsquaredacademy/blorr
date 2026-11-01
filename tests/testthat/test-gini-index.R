@@ -78,6 +78,15 @@ test_that("gini index errors when data lacks the response column", {
   )
 })
 
+test_that("lorenz data documentation uses the default data argument", {
+  rd <- system.file("man", "blr_prep_lorenz_data.Rd", package = "blorr")
+  skip_if_not(nzchar(rd) && file.exists(rd))
+
+  lines <- readLines(rd)
+  expect_false(any(grepl("model$data", lines, fixed = TRUE)))
+  expect_true(any(grepl("blr_prep_lorenz_data(model)", lines, fixed = TRUE)))
+})
+
 test_that("gini index is fast on a large model", {
   skip_on_cran()
 

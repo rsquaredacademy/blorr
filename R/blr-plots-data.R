@@ -35,8 +35,7 @@ blr_prep_roc_data <- function(gains_table) {
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
-#' data <- model$data
-#' blr_prep_lorenz_data(model, data, FALSE)
+#' blr_prep_lorenz_data(model)
 #'
 #' @export
 #'
