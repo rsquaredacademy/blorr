@@ -194,6 +194,36 @@ test_that("weighted fits keep their weights in LR tests and pseudo R2", {
   expect_equal(blr_rsq_nagelkerke(model), nagelkerke)
 })
 
+test_that("grouped binomial fits reconstruct the null model with trials once", {
+  set.seed(12)
+  d <- data.frame(x = rnorm(30), trials = sample(5:20, 30, TRUE))
+  d$s <- rbinom(30, d$trials, plogis(d$x))
+  m <- glm(cbind(s, trials - s) ~ x, d, family = binomial)
+  null <- update(m, . ~ 1)
+
+  expect_equal(as.numeric(logLik(i_model(m))), -73.348689513827)
+  expect_equal(as.numeric(logLik(i_model(m))), as.numeric(logLik(null)))
+  expect_equal(blr_rsq_cox_snell(m), 0.787563611002)
+})
+
+test_that("grouped binomial selection models keep trial and user weights once", {
+  set.seed(12)
+  d <- data.frame(x = rnorm(30), z = rnorm(30),
+                  trials = sample(5:20, 30, TRUE))
+  d$s <- rbinom(30, d$trials, plogis(d$x))
+  d$w <- rep(c(1, 2), 15)
+  m <- glm(cbind(s, trials - s) ~ x + z, d, family = binomial, weights = w)
+
+  sel <- selection_model(names(m$model)[1], "x", m$model, fit = m)
+  ref <- glm(cbind(s, trials - s) ~ x, data = d, family = binomial,
+             weights = w)
+
+  expect_equal(unname(coef(sel)), unname(coef(ref)))
+  expect_equal(as.numeric(logLik(sel)), as.numeric(logLik(ref)))
+  expect_equal(as.numeric(logLik(i_model(m))),
+               as.numeric(logLik(update(m, . ~ 1))))
+})
+
 test_that("blr_regress summarises the supplied weighted fit", {
   d <- mtcars
   d$w <- rep(c(1, 2), 16)

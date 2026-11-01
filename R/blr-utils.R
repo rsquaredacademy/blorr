@@ -235,13 +235,40 @@ model_class <- function(model) {
 }
 
 # formula for a variable selection model; an intercept-only model is used
-# when no predictors are left
+# when no predictors are left. The response is quoted so that a transformed or
+# grouped response is taken from the model frame column of that name rather
+# than re-evaluated.
 selection_formula <- function(response, predictors) {
+  response <- paste0("`", response, "`")
+
   if (length(predictors) == 0) {
     paste0(response, " ~ 1")
   } else {
     paste(response, "~", paste(predictors, collapse = " + "))
   }
+}
+
+# weights to pass back to glm() when refitting from a stored model frame. For a
+# grouped binomial response the trial counts are part of the response, and
+# glm() multiplies the supplied weights by them, so the trial counts stored in
+# prior.weights are divided out to keep them applied exactly once.
+selection_weights <- function(model, data = model$model) {
+
+  w <- model$prior.weights
+
+  if (is.null(w)) {
+    return(NULL)
+  }
+
+  resp <- data[[1]]
+
+  if (is.matrix(resp) && ncol(resp) == 2L &&
+      identical(model$family$family, "binomial")) {
+    trials <- rowSums(resp)
+    w      <- ifelse(trials > 0, w / trials, 0)
+  }
+
+  w
 }
 
 # fit a variable selection model, including the intercept-only model. When the
@@ -262,7 +289,7 @@ selection_model <- function(response, predictors, data, fit = NULL) {
     formula  = form,
     data     = data,
     family   = fit$family,
-    weights  = fit$prior.weights
+    weights  = selection_weights(fit, data)
   )
 
   ctr <- selection_contrasts(fit, form)
@@ -305,7 +332,7 @@ i_model <- function(model) {
     formula   = form,
     data      = dat,
     family    = model$family,
-    weights   = model$prior.weights
+    weights   = selection_weights(model, dat)
   )
 
   ctr <- selection_contrasts(model, form)

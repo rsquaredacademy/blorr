@@ -67,6 +67,9 @@ weight of evidence, and the Gini index.
   ratio tests, pseudo R-squared measures and `blr_regress()`, and
   `blr_regress()` can summarise a fit whose response is a transformed
   expression.
+- Grouped binomial fits no longer apply the trial counts twice when the null
+  model is reconstructed for pseudo R-squared measures, likelihood ratio tests
+  or variable selection, so those statistics match base R.
 - Likelihood ratio tests reject models fitted to different observations,
   weights or offsets, or non-nested models, and bivariate analysis fits its
   null model on the predictor model's complete rows.
