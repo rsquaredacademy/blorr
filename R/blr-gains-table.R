@@ -291,13 +291,18 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
     namu <- names(model$model)[1]
     response <- data[[namu]]
   } else {
-    response <- model$model[1]
+    response <- model$model[[1]]
   }
 
-  resp_tib <- data.frame(response = response)
-  prob_tib <- data.frame(predicted = predict.glm(model, newdata = data, type = "response"))
-  out <- cbind(resp_tib, prob_tib)
-  colnames(out) <- c('response', 'predicted')
+  prob <- predict.glm(model, newdata = data, type = "response")
+
+  out <- data.frame(
+    response  = response,
+    predicted = prob,
+    event     = as.integer(model_event_indicator(model, response))
+  )
+
+  out <- out[stats::complete.cases(out), , drop = FALSE]
   return(out)
 
 }
@@ -305,9 +310,9 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
 #' @importFrom data.table data.table setorder .N := setDF
 gains_table_modify <- function(data, decile_count) {
 
-  d1 <- data[c('response', 'predicted')]
-  colnames(d1) <- c('response', 'prob')
-  d1$event    <- as.integer(event_indicator(d1$response))
+  d1 <- data[c('response', 'predicted', 'event')]
+  colnames(d1) <- c('response', 'prob', 'event')
+  d1$event    <- as.integer(d1$event)
   d1 <- data.table(d1)
   setorder(d1, -prob)
   d1[, decile := decile_count]

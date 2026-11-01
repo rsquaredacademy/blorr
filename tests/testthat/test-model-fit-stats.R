@@ -172,3 +172,66 @@ test_that("multi model fit stats label each measure by name", {
   expect_equal(value_of("AIC"), round(AIC(model2), 3))
   expect_equal(value_of("BIC"), round(BIC(model2), 3))
 })
+
+test_that("weighted fits keep their weights in LR tests and pseudo R2", {
+  d <- mtcars
+  d$w <- rep(c(1, 2), 16)
+  model <- glm(am ~ wt + hp, data = d, family = binomial, weights = w)
+  null  <- update(model, . ~ 1)
+
+  lr <- blr_test_lr(model)$test_result
+  a  <- anova(null, model, test = "Chisq")
+
+  expect_equal(lr$lr_ratio, a[["Deviance"]][2])
+  expect_equal(lr$d_f, a[["Df"]][2])
+  expect_equal(lr$p_value, a[["Pr(>Chi)"]][2])
+
+  cox_snell <- 1 - exp(2 * (as.numeric(logLik(null)) -
+                              as.numeric(logLik(model))) / nobs(model))
+  nagelkerke <- cox_snell / (1 - exp(2 * as.numeric(logLik(null)) / nobs(model)))
+
+  expect_equal(blr_rsq_cox_snell(model), cox_snell)
+  expect_equal(blr_rsq_nagelkerke(model), nagelkerke)
+})
+
+test_that("blr_regress summarises the supplied weighted fit", {
+  d <- mtcars
+  d$w <- rep(c(1, 2), 16)
+  model <- glm(am ~ wt + hp, data = d, family = binomial, weights = w)
+
+  k <- blr_regress(model)
+
+  expect_equal(k$est, unname(coef(model)))
+  expect_equal(k$se, unname(summary(model)$coefficients[, "Std. Error"]))
+  expect_equal(k$n_obs, unname(nobs(model)))
+})
+
+test_that("pseudo R2 is identical for na.omit and na.exclude fits", {
+  d <- mtcars
+  d$hp[1] <- NA
+  me <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.exclude)
+  mo <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.omit)
+
+  r2 <- function(m) {
+    c(blr_rsq_effron(m), blr_rsq_count(m), blr_rsq_adj_count(m),
+      blr_rsq_mckelvey_zavoina(m))
+  }
+
+  expect_equal(r2(me), r2(mo))
+  expect_false(anyNA(r2(me)))
+
+  k <- blr_model_fit_stats(me)
+  expect_false(anyNA(c(k$effron, k$count_r2, k$count_adj, k$mckelvey)))
+})
+
+test_that("residual df uses the fitted rank when a coefficient is aliased", {
+  model <- glm(am ~ wt + I(2 * wt), data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$dev_df, df.residual(model))
+  expect_equal(model_d_f(model), model$rank)
+})
+

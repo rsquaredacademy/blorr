@@ -5,7 +5,7 @@
 #' entering and removing predictors based on p values, in a stepwise manner
 #' until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{lm}; the model should include all
+#' @param model An object of class \code{glm}; the model should include all
 #'   candidate predictor variables.
 #' @param pent p value; variables with p value less than \code{pent} will enter
 #'   into the model.
@@ -34,13 +34,13 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # stepwise regression
-#' model <- glm(y ~ ., data = stepwise)
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #' blr_step_p_both(model)
 #'
 #' # stepwise regression plot
-#' model <- glm(y ~ ., data = stepwise)
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #' k <- blr_step_p_both(model)
 #' plot(k)
 #'
@@ -67,7 +67,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   blr_check_values(prem, 0, 1)
 
   response <- names(model$model)[1]
-  l        <- model$data
+  l        <- model$model
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (pent) / 2, df)
@@ -109,7 +109,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- selection_model(response, predictors, l)
+    m <- selection_model(response, predictors, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
@@ -119,7 +119,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   if (min(pvals) > pent) {
     cat("\nNo variables have been added to or removed from the model.\n\n")
-    final_model <- selection_model(response, character(0), l)
+    final_model <- selection_model(response, character(0), l, fit = model)
     out <- list(orders     = character(0),
                 method     = character(0),
                 steps      = 0,
@@ -135,7 +135,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   preds   <- all_pred[minp]
   lpreds  <- length(preds)
-  fr      <- selection_model(response, preds, l)
+  fr      <- selection_model(response, preds, l, fit = model)
   mfs     <- blr_model_fit_stats(fr)
   aic     <- mfs$m_aic
   bic     <- mfs$m_bic
@@ -175,7 +175,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     preds     <- preds[-maxp]
     all_step  <- all_step + 1
     ppos      <- ppos - length(maxp)
-    fr        <- selection_model(response, preds, l)
+    fr        <- selection_model(response, preds, l, fit = model)
     mfs       <- blr_model_fit_stats(fr)
     aic       <- c(aic, mfs$m_aic)
     bic       <- c(bic, mfs$m_bic)
@@ -200,7 +200,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     for (i in seq_len(len_p)) {
 
       predictors <- c(preds, all_pred[i])
-      m <- selection_model(response, predictors, l)
+      m <- selection_model(response, predictors, l, fit = model)
       m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
@@ -215,7 +215,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       method    <- c(method, tech[1])
       lpreds    <- length(preds)
       all_step  <- all_step + 1
-      fr     <- selection_model(response, preds, l)
+      fr     <- selection_model(response, preds, l, fit = model)
       mfs    <- blr_model_fit_stats(fr)
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
@@ -248,7 +248,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       #   cat("\n\n")
       # }
 
-      m2     <- selection_model(response, preds, l)
+      m2     <- selection_model(response, preds, l, fit = model)
       m_sum <- Anova(m2, test.statistic = "Wald")
       pvals_r <- m_sum$`Pr(>Chisq)`
       maxp    <- which(pvals_r == max(pvals_r))
@@ -260,7 +260,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         preds     <- preds[-maxp]
         all_step  <- all_step + 1
         ppos      <- ppos - length(maxp)
-        fr        <- selection_model(response, preds, l)
+        fr        <- selection_model(response, preds, l, fit = model)
         mfs       <- blr_model_fit_stats(fr)
         aic       <- c(aic, mfs$m_aic)
         bic       <- c(bic, mfs$m_bic)
@@ -306,7 +306,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   )
   print(fi)
 
-  final_model <- selection_model(response, preds, l)
+  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(
     orders     = var_index,

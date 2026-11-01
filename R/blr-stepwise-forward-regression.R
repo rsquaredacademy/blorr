@@ -5,7 +5,7 @@
 #' entering predictors based on p values, in a stepwise manner until there is
 #' no variable left to enter any more.
 #'
-#' @param model An object of class \code{lm}; the model should include all
+#' @param model An object of class \code{glm}; the model should include all
 #'   candidate predictor variables.
 #' @param penter p value; variables with p value less than \code{penter} will
 #'   enter into the model
@@ -35,7 +35,6 @@
 #'
 #'
 #' @examples
-#' \dontrun{
 #' # stepwise forward regression
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'   family = binomial(link = 'logit'))
@@ -49,8 +48,6 @@
 #'
 #' # final model
 #' k$model
-#'
-#' }
 #'
 #' @importFrom stats qt
 #' @importFrom car Anova
@@ -71,7 +68,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   blr_check_npredictors(model, 3)
   blr_check_values(penter, 0, 1)
 
-  l        <- model$data
+  l        <- model$model
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (penter) / 2, df)
@@ -109,7 +106,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- selection_model(response, predictors, l)
+    m <- selection_model(response, predictors, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
@@ -119,7 +116,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
 
   if (min(pvals) > penter) {
     cat("\nNo variables have been added to the model.\n\n")
-    final_model <- selection_model(response, character(0), l)
+    final_model <- selection_model(response, character(0), l, fit = model)
     out <- list(predictors = character(0),
                 indvar     = cterms,
                 steps      = 0,
@@ -135,7 +132,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   # maxt   <- which(tvals == max(tvals))
   preds  <- all_pred[minp]
   lpreds <- length(preds)
-  fr     <- selection_model(response, preds, l)
+  fr     <- selection_model(response, preds, l, fit = model)
   mfs    <- blr_model_fit_stats(fr)
   aic    <- mfs$m_aic
   bic    <- mfs$m_bic
@@ -183,7 +180,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
       step   <- step + 1
       preds  <- c(preds, all_pred[minp])
       lpreds <- length(preds)
-      fr     <- selection_model(response, preds, l)
+      fr     <- selection_model(response, preds, l, fit = model)
       mfs    <- blr_model_fit_stats(fr)
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
@@ -235,7 +232,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   )
   print(fi)
 
-  final_model <- selection_model(response, preds, l)
+  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(predictors = preds,
               indvar     = cterms,

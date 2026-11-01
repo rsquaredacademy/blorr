@@ -3,11 +3,21 @@ blr_reg_comp <- function(formula, data, odd_conf_limit) {
   model <- glm(formula = formula, data = data,
                family = binomial(link = "logit"))
 
+  blr_reg_compute(model, odd_conf_limit)
+}
+
+blr_reg_compute <- function(model, odd_conf_limit) {
+
   if (interactive()) {
     cat(paste("-", "Creating model overview."), "\n")
   }
   
-  dataname       <- data_name(model)
+  dataname       <- model$call$data
+  if (is.null(dataname)) {
+    dataname <- ""
+  } else {
+    dataname <- tryCatch(deparse(dataname), error = function(e) "")
+  }
   resp_name      <- response_var(model)
   n_obs          <- data_nrows(model)
   converge       <- converge_status(model)

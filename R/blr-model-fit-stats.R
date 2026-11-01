@@ -257,7 +257,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
 
-  predicted      <- predict(model)
+  predicted      <- model$linear.predictors
   mean_predicted <- mean(predicted)
 
   ess    <- sum((predicted - mean_predicted) ^ 2)
@@ -294,8 +294,8 @@ blr_rsq_effron <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- predict(model, type = "response")
-  resp      <-model$y
+  predicted <- model$fitted.values
+  resp      <- model$y
   mean_resp <- mean(resp)
   den       <- sum((resp - mean_resp) ^ 2)
   num       <- sum((resp - predicted) ^ 2) / den
@@ -326,7 +326,7 @@ blr_rsq_count <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- predict(model, type = "response")
+  predicted <- model$fitted.values
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
@@ -360,7 +360,7 @@ blr_rsq_adj_count <- function(model) {
   resp      <- model$y
   n         <- length(resp)
   n2        <- max(table(resp))
-  predicted <- predict(model, type = "response")
+  predicted <- model$fitted.values
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   den       <- n - n2
 
@@ -372,8 +372,7 @@ fit_stat <- function(model) {
 
   lr <- blr_test_lr(model)
 
-  pred_n   <- length(model$coefficients)
-  dev_df   <- length(model$y) - pred_n
+  dev_df   <- df.residual(model)
   lr_ratio <- extract_lr(lr, lr_ratio)
   lr_df    <- extract_lr(lr, d_f)
   lr_pval  <- extract_lr(lr, p_value)

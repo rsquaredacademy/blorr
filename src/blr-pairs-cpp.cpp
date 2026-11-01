@@ -6,18 +6,19 @@ using namespace Rcpp;
 DataFrame blr_pairs_cpp(NumericVector x, NumericVector y) {
 
   // loop counters
-  int n1 = x.size();
-  int n2 = y.size();
+  R_xlen_t n1 = x.size();
+  R_xlen_t n2 = y.size();
 
-  // count pairs
-  int pairs_count = 0;
-  int concordant = 0;
-  int discordant = 0;
-  int ties = 0;
+  // count pairs; use wide (double) counters so more than 2^31 - 1
+  // cross-class pairs do not overflow
+  double pairs_count = 0;
+  double concordant = 0;
+  double discordant = 0;
+  double ties = 0;
 
   // compute
-  for(int i = 0; i < n1; i++) {
-    for(int j = 0; j < n2; j++) {
+  for(R_xlen_t i = 0; i < n1; i++) {
+    for(R_xlen_t j = 0; j < n2; j++) {
 
       pairs_count++;
 

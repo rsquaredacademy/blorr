@@ -359,12 +359,10 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' New York: John Wiley & Sons. pp. ISBN 0-471-05856-4.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_dfbetas_panel(model)
-#' }
 #'
 #' @importFrom stats dfbetas
 #' @importFrom ggplot2 geom_linerange geom_text annotate

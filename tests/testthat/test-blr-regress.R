@@ -64,3 +64,12 @@ test_that("blr_regress reports nobs and response profile on data with missing va
   expect_equal(as.integer(k$resp_prof[[1]]), sum(model$y == 0))
   expect_equal(as.integer(k$resp_prof[[2]]), sum(model$y == 1))
 })
+
+test_that("blr_regress can summarise a fit with a transformed response", {
+  model <- glm(I(am == 1) ~ wt, data = mtcars, family = binomial)
+
+  k <- blr_regress(model)
+
+  expect_equal(k$est, unname(coef(model)))
+  expect_equal(k$n_obs, unname(nobs(model)))
+})

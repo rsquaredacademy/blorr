@@ -5,7 +5,7 @@
 #' entering and removing predictors based on akaike information criterion, in a
 #' stepwise manner until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{lm}.
+#' @param model An object of class \code{glm}.
 #' @param details Logical; if \code{TRUE}, details of variable selection will be
 #'   printed on screen.
 #' @param ... Other arguments.
@@ -29,8 +29,8 @@
 #' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @examples
-#' \dontrun{
-#' model <- glm(y ~ ., data = stepwise)
+#' \donttest{
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #'
 #' # selection summary
 #' blr_step_aic_both(model)
@@ -68,7 +68,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   mlen_p     <- length(predictors)
   tech       <- c("addition", "removal")
 
-  mo <- selection_model(response, character(0), l)
+  mo <- selection_model(response, character(0), l, fit = model)
   aic_c <- model_aic(mo)
 
   cat(format("Stepwise Selection Method", justify = "left", width = 25), "\n")
@@ -105,7 +105,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
     for (i in seq_len(lpds)) {
       predn <- c(preds, predictors[i])
-      m <- selection_model(response, predn, l)
+      m <- selection_model(response, predn, l, fit = model)
       aics[i] <- model_aic(m)
       bics[i] <- model_bic(m)
       devs[i] <- model_deviance(m)
@@ -186,7 +186,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
         for (i in seq_len(lpreds)) {
           preda <- preds[-i]
-          m <- selection_model(response, preda, l)
+          m <- selection_model(response, preda, l, fit = model)
           aics[i] <- model_aic(m)
           bics[i] <- model_bic(m)
           devs[i] <- model_deviance(m)
@@ -281,7 +281,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     print(fi)
   }
 
-  final_model <- selection_model(response, preds, l)
+  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(
     candidates = nam,

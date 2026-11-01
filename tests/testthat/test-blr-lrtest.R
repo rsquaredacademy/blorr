@@ -64,3 +64,28 @@ test_that("LR test uses the model frame when the data has missing values", {
   expect_equal(k$test_result[['lr_ratio']], -2 * (ll0 - as.numeric(logLik(model))))
 
 })
+
+test_that("LR test rejects models fitted to different observations", {
+  d <- mtcars
+  d$hp[1:5] <- NA
+  full    <- glm(am ~ wt + hp, data = d, family = binomial)
+  reduced <- glm(am ~ wt, data = d, family = binomial)
+
+  expect_error(
+    blr_test_lr(full, reduced),
+    "same observations"
+  )
+})
+
+test_that("LR test rejects a non-nested reduced model", {
+  full    <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  reduced <- suppressWarnings(glm(am ~ wt + qsec, data = mtcars,
+                                  family = binomial,
+                                  weights = rep(1, nrow(mtcars))))
+
+  expect_error(
+    blr_test_lr(full, reduced),
+    "nested"
+  )
+})
+

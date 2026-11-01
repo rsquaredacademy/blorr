@@ -119,3 +119,34 @@ test_that("gini index is finite on a large balanced model", {
   expect_true(is.finite(gini))
   expect_equal(gini, 2 * auc - 1)
 })
+
+test_that("validation uses the fitted event class when test levels differ", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td    <- transform(mtcars, am = factor(am, levels = c(9, 0, 1)))
+
+  expect_equal(blr_gini_index(model, td), blr_gini_index(model, mtcars))
+  expect_equal(sum(blr_gains_table(model, td)$gains_table[["1"]]),
+               sum(blr_gains_table(model, mtcars)$gains_table[["1"]]))
+
+  cm <- blr_confusion_matrix(model, data = td)
+  expect_equal(dim(cm$conf_matrix), c(2L, 2L))
+  expect_equal(sum(cm$conf_matrix), nrow(mtcars))
+})
+
+test_that("lorenz data uses model defaults and fitted rows", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+
+  k <- blr_prep_lorenz_data(model)
+  expect_equal(nrow(k), nrow(blr_gains_table(model)$gains_table) + 2L)
+  expect_equal(k$cum_1s_per[c(1, nrow(k))], c(0, 1))
+
+  d <- mtcars
+  d$hp[1] <- NA
+  m <- glm(am ~ wt + hp, data = d, family = binomial)
+
+  k2 <- blr_prep_lorenz_data(m, d, FALSE)
+  expect_equal(nrow(k2), nrow(blr_gains_table(m)$gains_table) + 2L)
+  expect_equal(k2$cum_1s_per[nrow(k2)], 1)
+})
+
+

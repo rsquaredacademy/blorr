@@ -55,6 +55,8 @@ blr_test_lr.default <- function(full_model, reduced_model) {
     stop("reduced_model must be an object of class glm.", call. = FALSE)
   }
 
+  lr_check_comparable(full_model, reduced_model)
+
   model_info <- lr_model_info(full_model, reduced_model)
   test_info  <- lr_test_result(full_model, reduced_model)
 
@@ -73,6 +75,41 @@ print.blr_test_lr <- function(x, ...) {
 
 lr_reduced_model <- function(full_model) {
   i_model(full_model)
+}
+
+# full and reduced models must describe the same observations, response,
+# weights and offset, and the reduced model must be nested in the full model
+lr_check_comparable <- function(full_model, reduced_model) {
+
+  if (!identical(family(full_model)$family, family(reduced_model)$family) ||
+      !identical(family(full_model)$link, family(reduced_model)$link)) {
+    stop("full_model and reduced_model must use the same family and link.",
+      call. = FALSE
+    )
+  }
+
+  if (!identical(nobs(full_model), nobs(reduced_model)) ||
+      !isTRUE(all.equal(full_model$y, reduced_model$y))) {
+    stop("models were not fitted to the same observations.", call. = FALSE)
+  }
+
+  if (!isTRUE(all.equal(full_model$prior.weights,
+                        reduced_model$prior.weights))) {
+    stop("models were not fitted with the same weights.", call. = FALSE)
+  }
+
+  if (!isTRUE(all.equal(full_model$offset, reduced_model$offset))) {
+    stop("models were not fitted with the same offset.", call. = FALSE)
+  }
+
+  full_terms <- attr(terms(full_model), "term.labels")
+  red_terms  <- attr(terms(reduced_model), "term.labels")
+
+  if (!all(red_terms %in% full_terms)) {
+    stop("reduced_model must be nested within full_model.", call. = FALSE)
+  }
+
+  invisible(TRUE)
 }
 
 lr_test_result <- function(full_model, reduced_model) {

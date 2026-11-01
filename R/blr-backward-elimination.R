@@ -31,7 +31,6 @@
 #' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
 #' data = hsb2, family = binomial(link = 'logit'))
 #'
@@ -47,8 +46,6 @@
 #' # final model
 #' k <- blr_step_aic_backward(model)
 #' k$model
-#'
-#' }
 #'
 #' @family variable selection procedures
 #'
@@ -76,7 +73,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   preds    <- nam
   aic_f    <- model_aic(model)
 
-    mi <- selection_model(response, preds, l)
+    mi <- selection_model(response, preds, l, fit = model)
 
   laic <- aic_f
   lbic <- model_bic(mi)
@@ -106,7 +103,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
-    m <- selection_model(response, predictors, l)
+    m <- selection_model(response, predictors, l, fit = model)
     aics[i] <- model_aic(m)
     bics[i] <- model_bic(m)
     devs[i] <- model_deviance(m)
@@ -160,7 +157,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
       step  <- step + 1
       aic_f <- aics[minc]
 
-      mi <- selection_model(response, preds, l)
+      mi <- selection_model(response, preds, l, fit = model)
 
       laic <- c(laic, aic_f)
       lbic <- c(lbic, model_bic(mi))
@@ -179,7 +176,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
-        m <- selection_model(response, predictors, l)
+        m <- selection_model(response, predictors, l, fit = model)
         aics[i] <- model_aic(m)
         bics[i] <- model_bic(m)
         devs[i] <- model_deviance(m)
@@ -250,7 +247,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
     print(fi)
   }
 
-  final_model <- selection_model(response, preds, l)
+  final_model <- selection_model(response, preds, l, fit = model)
 
   vars <- c("Full Model", rpred)
 

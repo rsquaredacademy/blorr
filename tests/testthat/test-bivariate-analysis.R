@@ -1,6 +1,6 @@
 test_that("output from blr_bivariate_analysis is as expected", {
   k <- blr_bivariate_analysis(hsb2, honcomp, female, prog)
-  expect_equal(k$iv, c(0.1023, 0.4329))
+  expect_equal(k$iv, c(0.1022, 0.4330))
   expect_equal(round(k$likelihood_ratio, 2), c(3.94, 16.15))
 })
 
@@ -117,7 +117,7 @@ test_that("blr_twoway_segment prints the correct output", {
 test_that("output from blr_woe_iv is as expected", {
   k        <- blr_woe_iv(hsb2, prog, honcomp)
   actual   <- sum(k$woe_iv_table[['iv']])
-  expected <- 0.4329
+  expected <- 0.4330
   expect_equal(actual, expected)
 })
 
@@ -210,3 +210,78 @@ test_that("output from blr_woe_iv_stats is as expected", {
   k <- blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
   expect_snapshot(k)
 })
+
+test_that("bivariate LR test fits the null model on the predictor model rows", {
+  d <- mtcars
+  d$gear[1:8] <- NA
+
+  k <- blr_bivariate_analysis(d, am, gear)
+  m <- glm(am ~ gear, data = d, family = binomial)
+  a <- anova(glm(am ~ 1, data = model.frame(m), family = binomial),
+             m, test = "Chisq")
+
+  expect_equal(unname(k$likelihood_ratio), a[["Deviance"]][2])
+  expect_equal(unname(k$df), a[["Df"]][2])
+  expect_equal(unname(k$pval), a[["Pr(>Chi)"]][2])
+})
+
+test_that("missing responses are not counted as non-events", {
+  d <- data.frame(g = c("a", "a", "b", "b"),
+                  y = c(1, NA, 0, 1))
+
+  seg <- blr_segment(d, y, g)$segment_data
+  expect_equal(seg[["1s%"]], c(1, 0.5))
+  expect_equal(seg[["pred"]], c("a", "b"))
+
+  dist <- blr_segment_dist(d, y, g)$dist_table
+  expect_equal(dist[["n"]], c(1L, 2L))
+  expect_equal(dist[["1s"]], c(1L, 1L))
+  expect_equal(dist[["1s%"]], c(1, 0.5))
+})
+
+test_that("missing responses are excluded from confusion matrix counts", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$am[1] <- NA
+
+  k <- blr_confusion_matrix(model, data = td)
+  p <- predict(model, newdata = td, type = "response")
+
+  expect_equal(sum(k$conf_matrix), sum(!is.na(td$am)))
+  expect_equal(k$accuracy,
+               mean(as.integer(p[-1] > 0.5) == td$am[-1]))
+})
+
+test_that("event rates drop unused response levels in standalone data", {
+  d <- data.frame(
+    g = c("a", "a", "b", "b", "c", "c"),
+    y = factor(c(1, 1, 0, 0, 0, 0), levels = c(9, 0, 1))
+  )
+
+  expect_equal(blr_segment(d, y, g)$segment_data[["1s%"]], c(1, 0, 0))
+
+  w <- blr_woe_iv(d, g, y)$woe_iv_table
+  expect_equal(w$count_1s, c(2, 0, 0))
+})
+
+test_that("WoE and IV use full precision before rounding", {
+  d <- data.frame(
+    y = c(1, rep(1, 20000), 0, 0),
+    g = c("a", rep("b", 20000), "a", "b")
+  )
+
+  k <- blr_woe_iv(d, g, y)$woe_iv_table
+
+  expect_true(all(is.finite(k$woe)))
+  expect_true(all(is.finite(k$iv)))
+  expect_equal(k$woe[1], log(0.5 / (1 / 20001)), tolerance = 1e-4)
+  expect_equal(k$iv[1],
+               (0.5 - 1 / 20001) * log(0.5 / (1 / 20001)),
+               tolerance = 1e-4)
+
+  k2 <- blr_woe_iv(d, g, y, digits = 2)$woe_iv_table
+  expect_true(all(is.finite(k2$woe)))
+  expect_equal(k2$woe, round(k$woe, 2))
+  expect_equal(k2$iv, round(k$iv, 2))
+})
+

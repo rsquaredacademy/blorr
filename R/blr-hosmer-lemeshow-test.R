@@ -31,24 +31,39 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
-    resp <- model$y
     data <- model$model
+    resp <- model$model[[1]]
   } else {
-    namu <- formula(model)[[2]]
+    namu <- as.character(formula(model)[[2]])
     blr_check_data(data)
-    resp_temp <- data[[namu]]
-    resp <- as.numeric(levels(resp_temp))[resp_temp]
+
+    if (!namu %in% names(data)) {
+      stop("`data` must contain the response variable used to fit the model.",
+        call. = FALSE
+      )
+    }
+
+    resp <- data[[namu]]
   }
 
-  hoslem_data <- hoslem_data_prep(model, data, resp)
+  event       <- model_event_indicator(model, resp)
+  hoslem_data <- hoslem_data_prep(model, data, event)
   int_limits  <- hoslem_int_limits(hoslem_data)
 
   h1 <- hoslem_data_mutate(hoslem_data, int_limits = int_limits)
-  hoslem_table <- hoslem_table_data(h1, resp = resp)
+  hoslem_table <- hoslem_table_data(h1)
 
-  chisq_stat  <- hoslem_chisq_stat(hoslem_table)
-  hoslem_df   <- 8
-  hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
+  groups <- nrow(hoslem_table)
+
+  if (groups < 3) {
+    chisq_stat  <- NA_real_
+    hoslem_df   <- NA_integer_
+    hoslem_pval <- NA_real_
+  } else {
+    chisq_stat  <- hoslem_chisq_stat(hoslem_table)
+    hoslem_df   <- groups - 2
+    hoslem_pval <- pchisq(chisq_stat, df = hoslem_df, lower.tail = FALSE)
+  }
 
   result <- list(partition_table = hoslem_table,
                  chisq_stat      = chisq_stat,
@@ -66,11 +81,15 @@ print.blr_test_hosmer_lemeshow <- function(x, ...) {
   print_blr_test_hosmer_lemeshow(x)
 }
 
-hoslem_data_prep <- function(model, data, resp) {
+hoslem_data_prep <- function(model, data, event) {
 
-  data$prob <- predict.glm(model, newdata = data, type = "response")
-  data$resp <- resp
-  data[order(data$prob), ]
+  d <- data.frame(
+    prob = predict.glm(model, newdata = data, type = "response"),
+    resp = as.numeric(event)
+  )
+
+  d <- d[stats::complete.cases(d), , drop = FALSE]
+  d[order(d$prob), , drop = FALSE]
 
 }
 
@@ -100,7 +119,7 @@ hoslem_data_mutate <- function(hoslem_data, int_limits) {
 
 }
 
-hoslem_table_data <- function(data, resp) {
+hoslem_table_data <- function(data) {
 
   d <- data.table(data)
   d <- d[, .(n = .N,

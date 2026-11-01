@@ -5,7 +5,7 @@
 #' removing predictors based on p values, in a stepwise manner until there is
 #' no variable left to remove any more.
 #'
-#' @param model An object of class \code{lm}; the model should include all
+#' @param model An object of class \code{glm}; the model should include all
 #'   candidate predictor variables.
 #' @param prem p value; variables with p more than \code{prem} will be removed
 #'   from the model.
@@ -31,7 +31,6 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
-#' \dontrun{
 #' # stepwise backward regression
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
 #'   data = hsb2, family = binomial(link = 'logit'))
@@ -45,8 +44,6 @@
 #'
 #' # final model
 #' k$model
-#'
-#' }
 #'
 #'
 #' @family variable selection procedures
@@ -66,7 +63,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   blr_check_values(prem, 0, 1)
 
 
-  l        <- model$data
+  l        <- model$model
   nam      <- colnames(attr(model$terms, "factors"))
   response <- names(model$model)[1]
   preds    <- nam
@@ -96,7 +93,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
 
   while (!end) {
-    m <- selection_model(response, preds, l)
+    m <- selection_model(response, preds, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals <- m_sum$`Pr(>Chisq)`
     maxp  <- which(pvals == max(pvals))
@@ -108,7 +105,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         rpred  <- c(rpred, preds[maxp])
         preds  <- preds[-maxp]
         lp     <- length(rpred)
-        fr     <- selection_model(response, preds, l)
+        fr     <- selection_model(response, preds, l, fit = model)
         mfs    <- blr_model_fit_stats(fr)
         aic    <- c(aic, mfs$m_aic)
         bic    <- c(bic, mfs$m_bic)
@@ -162,7 +159,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   )
   print(fi)
 
-  final_model <- selection_model(response, preds, l)
+  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(removed    = rpred,
               indvar     = cterms,

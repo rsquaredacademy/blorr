@@ -47,3 +47,30 @@ test_that("Somers' D and gamma use the correct denominators", {
   expect_equal(k$somers_d,
                (concordant - discordant) / (concordant + discordant + tied))
 })
+
+test_that("pair counts do not overflow 32-bit integers on large fits", {
+  skip_on_cran()
+
+  set.seed(2)
+  n <- 100000
+  d <- data.frame(
+    y  = rbinom(n, 1, 0.5),
+    x1 = rnorm(n),
+    x2 = rnorm(n)
+  )
+  model <- glm(y ~ x1 + x2, data = d, family = binomial)
+
+  n1 <- sum(model$y == 1)
+  n0 <- sum(model$y == 0)
+
+  k <- blr_pairs(model)
+
+  expect_gt(as.double(n1) * n0, 2 ^ 31 - 1)
+  expect_equal(k$pairs, as.double(n1) * n0)
+  expect_true(all(c(k$concordance, k$discordance, k$tied) >= 0))
+  expect_equal(k$concordance * k$pairs + k$discordance * k$pairs +
+                 k$tied * k$pairs, k$pairs, tolerance = 1e-8)
+  expect_true(is.finite(k$tau))
+  expect_equal(k$c, (blr_gini_index(model) + 1) / 2, tolerance = 1e-10)
+})
+

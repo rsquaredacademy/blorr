@@ -135,24 +135,31 @@ fmrsq <- function(nam, data, i) {
   r.squared <- NULL
 
   fm <- lm(as.formula(paste0("`", nam[i], "` ", "~ .")), data = data)
-  1 - summary(fm)$r.squared
+  max(1 - summary(fm)$r.squared, 0)
 
 }
 
 viftol <- function(model) {
 
-  m   <- as.data.frame(model.matrix(model))[, -1]
+  mm  <- model.matrix(model)
+  m   <- as.data.frame(mm[, -1, drop = FALSE])
   nam <- names(m)
-  p   <- length(model$coefficients) - 1
-  tol <- c()
+  p   <- ncol(m)
+  tol <- numeric(p)
 
-  for (i in seq_len(p)) {
-    tol[i] <- fmrsq(nam, m, i)
+  if (p > 0) {
+    zero_var <- vapply(m, function(x) {
+      length(unique(x[!is.na(x)])) < 2
+    }, logical(1))
+
+    for (i in seq_len(p)) {
+      tol[i] <- if (zero_var[i]) 0 else fmrsq(nam, m, i)
+    }
   }
 
   vifs <- 1 / tol
 
-  list(nam = names(m), tol = tol, vifs = vifs)
+  list(nam = nam, tol = tol, vifs = vifs)
 
 }
 
@@ -164,7 +171,9 @@ evalue <- function(x) {
   colnames(y)[1] <- "intercept"
   z              <- scale(y, scale = T, center = F)
   tu             <- t(z) %*% z
-  e              <- eigen(tu / diag(tu))$values
+  d              <- diag(tu)
+  d[d == 0]      <- 1
+  e              <- eigen(tu / d)$values
     
   list(e = e, pvdata = z)
 
@@ -173,22 +182,39 @@ evalue <- function(x) {
 
 cindx <- function(e) {
 
+  # eigenvalues that are zero to numerical precision must not be fed into a
+  # square root as small negative numbers
+  tol <- sqrt(.Machine$double.eps) * max(abs(e), 1)
+  e[abs(e) < tol] <- 0
+  e <- pmax(e, 0)
+
   sqrt(e[1] / e)
 
 }
 
 pveindex <- function(z) {
 
-  d <- NULL
-  v <- NULL
-
   svdx     <- svd(z)
   svdxd    <- svdx$d
-  phi_diag <- diag(1 / svdxd)
-  phi      <- svdx$v %*% phi_diag    
+  tol      <- max(svdxd) * max(dim(z)) * .Machine$double.eps
+  positive <- svdxd > tol
+
+  phi <- matrix(0, nrow = ncol(z), ncol = length(svdxd))
+
+  if (any(positive)) {
+    phi[, positive] <- svdx$v[, positive, drop = FALSE] %*%
+      diag(1 / svdxd[positive], nrow = sum(positive))
+  }
+
   ph       <- t(phi ^ 2)
   diag_sum <- diag(rowSums(ph, dims = 1))
+  out      <- prop.table(ph %*% diag_sum, margin = 2)
 
-  prop.table(ph %*% diag_sum, margin = 2)  
+  # variance proportions are undefined for zero eigenvalues and for columns
+  # that are exact linear combinations of the remaining design columns
+  out[!positive, ] <- NA
+  out[, colSums(out, na.rm = TRUE) == 0] <- NA
+
+  out
   
 }

@@ -29,34 +29,137 @@ model_df <- function(model) {
   model$df.null
 }
 
-# event indicator: the second level for factor/character/logical responses,
-# as in glm(), and 1 for numeric 0/1 responses
-event_indicator <- function(resp) {
+# event indicator: missing responses stay missing; for factor/character
+# responses unused levels are dropped before the event (second) level is
+# identified, as in glm(). When `event` is supplied it identifies the event
+# value explicitly, which lets validation functions use the fitted model's
+# event class even when a test sample has different or unused levels.
+event_indicator <- function(resp, event = NULL) {
+  missing <- is.na(resp)
+
+  if (!is.null(event)) {
+    if (is.logical(resp)) {
+      out <- resp %in% TRUE
+    } else {
+      out <- as.character(resp) == as.character(event)
+    }
+
+    out[missing] <- NA
+    return(out)
+  }
+
+  if (is.factor(resp)) {
+    resp <- droplevels(resp)
+    lvls <- levels(resp)
+
+    if (length(lvls) < 2) {
+      out <- rep(FALSE, length(resp))
+    } else {
+      out <- resp == lvls[2]
+    }
+
+    out[missing] <- NA
+    return(out)
+  }
+
+  if (is.logical(resp)) {
+    out        <- resp %in% TRUE
+    out[missing] <- NA
+    return(out)
+  }
+
+  if (is.numeric(resp)) {
+    out        <- resp == 1
+    out[missing] <- NA
+    return(out)
+  }
+
+  lvls <- levels(droplevels(factor(resp)))
+
+  if (length(lvls) < 2) {
+    out <- rep(FALSE, length(resp))
+  } else {
+    out <- as.character(resp) == lvls[2]
+  }
+
+  out[missing] <- NA
+  out
+}
+
+# event value used by the fitted model: the second declared response level for
+# factors, TRUE for logical responses and 1 for numeric 0/1 responses
+model_event_level <- function(model) {
+  resp <- model$model[[1]]
+
+  if (is.null(resp)) {
+    return(NULL)
+  }
+
   if (is.factor(resp)) {
     lvls <- levels(resp)
 
     if (length(lvls) < 2) {
-      return(rep(FALSE, length(resp)))
+      return(NULL)
     }
 
-    return(!is.na(resp) & resp == lvls[2])
+    return(lvls[2])
   }
 
   if (is.logical(resp)) {
-    return(resp %in% TRUE)
+    return(TRUE)
   }
 
   if (is.numeric(resp)) {
-    return(!is.na(resp) & resp == 1)
+    return(1)
   }
 
-  lvls <- levels(factor(resp))
+  lvls <- levels(droplevels(factor(resp)))
 
   if (length(lvls) < 2) {
-    return(rep(FALSE, length(resp)))
+    return(NULL)
   }
 
-  !is.na(resp) & as.character(resp) == lvls[2]
+  lvls[2]
+}
+
+# event indicator aligned with the fitted model's response encoding
+model_event_indicator <- function(model, resp) {
+  event_indicator(resp, event = model_event_level(model))
+}
+
+# labels, in non-event/event order, of the response used to fit the model
+model_response_levels <- function(model) {
+  resp <- model$model[[1]]
+
+  if (is.null(resp)) {
+    return(NULL)
+  }
+
+  if (is.factor(resp)) {
+    lvls <- levels(resp)
+
+    if (length(lvls) < 2) {
+      return(NULL)
+    }
+
+    return(lvls[1:2])
+  }
+
+  if (is.logical(resp)) {
+    return(c("FALSE", "TRUE"))
+  }
+
+  if (is.numeric(resp)) {
+    return(c("0", "1"))
+  }
+
+  lvls <- levels(droplevels(factor(resp)))
+
+  if (length(lvls) < 2) {
+    return(NULL)
+  }
+
+  lvls[1:2]
 }
 
 # response profile
@@ -141,30 +244,88 @@ selection_formula <- function(response, predictors) {
   }
 }
 
-# fit a variable selection model, including the intercept-only model
-selection_model <- function(response, predictors, data) {
-  glm(
-    selection_formula(response, predictors), data = data,
-    family = binomial(link = "logit")
+# fit a variable selection model, including the intercept-only model. When the
+# original fitted model is supplied, its weights, offset, family/link and
+# contrasts are carried over so selection compares comparable models.
+selection_model <- function(response, predictors, data, fit = NULL) {
+
+  form <- stats::as.formula(selection_formula(response, predictors))
+
+  if (is.null(fit)) {
+    return(glm(
+      form, data = data,
+      family = binomial(link = "logit")
+    ))
+  }
+
+  args <- list(
+    formula  = form,
+    data     = data,
+    family   = fit$family,
+    weights  = fit$prior.weights
   )
+
+  ctr <- selection_contrasts(fit, form)
+
+  if (!is.null(ctr)) {
+    args$contrasts <- ctr
+  }
+
+  if (!is.null(fit$offset)) {
+    args$offset <- fit$offset
+  }
+
+  do.call(stats::glm, args)
 }
 
-# create intercept only model
+# keep only the contrasts of variables that remain in a selection formula
+selection_contrasts <- function(fit, form) {
+  if (is.null(fit$contrasts) || length(fit$contrasts) == 0) {
+    return(NULL)
+  }
+
+  keep <- intersect(names(fit$contrasts), all.vars(form))
+
+  if (length(keep) == 0) {
+    return(NULL)
+  }
+
+  fit$contrasts[keep]
+}
+
+# create intercept only model, preserving the original fit's weights, offset,
+# family/link, contrasts and (already complete) fitted rows
 i_model <- function(model) {
 
   dat  <- model$model
   resp <- names(dat)[1]
+  form <- stats::as.formula(paste0("`", resp, "` ~ 1"))
 
-  glm(
-    paste0("`", resp, "` ~ 1"), data = dat,
-    family = binomial(link = "logit")
+  args <- list(
+    formula   = form,
+    data      = dat,
+    family    = model$family,
+    weights   = model$prior.weights
   )
+
+  ctr <- selection_contrasts(model, form)
+
+  if (!is.null(ctr)) {
+    args$contrasts <- ctr
+  }
+
+  if (!is.null(model$offset)) {
+    args$offset <- model$offset
+  }
+
+  do.call(stats::glm, args)
 
 }
 
-# model dfs
+# model dfs: number of estimated parameters (fitted rank), not the number of
+# coefficient names (which includes aliased coefficients)
 model_d_f <- function(model) {
-  length(model$coefficients)
+  model$rank
 }
 
 # extract log likelihood from blr_lr_test

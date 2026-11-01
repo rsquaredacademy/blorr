@@ -164,8 +164,8 @@ woe_data_prep <- function(predictor, response) {
 woe_data_modify <- function(data, lev, digits) {
 
   data$total        <- data$no + data$yes
-  data$distribution <- round((data$total / sum(data$total) * 100), digits = digits)
-  data$approval     <- round(((data$yes / data$total) * 100), digits = digits)
+  data$distribution <- (data$total / sum(data$total) * 100)
+  data$approval     <- ((data$yes / data$total) * 100)
 
   # Haldane-Anscombe correction for levels with no events or no non-events
   no  <- data$no
@@ -174,11 +174,17 @@ woe_data_modify <- function(data, lev, digits) {
   no[zero_cell]  <- no[zero_cell] + 0.5
   yes[zero_cell] <- yes[zero_cell] + 0.5
 
-  data$dist_yes     <- round(yes / sum(yes), digits = digits)
-  data$dist_no      <- round(no / sum(no), digits = digits)
-  data$woe          <- round(log(data$dist_no / data$dist_yes), digits = digits)
+  # distributions, logarithms and IV are computed at full precision; values
+  # are rounded only when returned so small proportions do not become zero
+  data$dist_yes     <- yes / sum(yes)
+  data$dist_no      <- no / sum(no)
+  data$woe          <- log(data$dist_no / data$dist_yes)
   data$dist_diff    <- data$dist_no - data$dist_yes
-  data$iv           <- round((data$dist_diff * data$woe), digits = digits)
+  data$iv           <- data$dist_diff * data$woe
+
+  round_cols <- c("distribution", "approval", "dist_yes", "dist_no", "woe", "iv")
+  data[round_cols] <- lapply(data[round_cols], round, digits = digits)
+
   cbind(data.frame(levels = lev), data)
 
 }

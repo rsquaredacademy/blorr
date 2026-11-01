@@ -51,3 +51,27 @@ test_that("variance decomposition proportions sum to one for each coefficient", 
 
   expect_equal(unname(props), unname(t(pi_mat)))
 })
+
+test_that("constant predictors get explicit unavailable collinearity diagnostics", {
+  d <- mtcars
+  d$z <- 1
+  model <- glm(am ~ wt + z, data = d, family = binomial)
+
+  v <- blr_vif_tol(model)
+  expect_equal(v$Variable, c("wt", "z"))
+  expect_equal(v$Tolerance[v$Variable == "wt"], 1)
+  expect_true(is.infinite(v$VIF[v$Variable == "z"]))
+
+  e <- blr_eigen_cindex(model)
+  expect_false(any(is.nan(as.matrix(e))))
+  expect_true(is.infinite(e[["Condition Index"]][nrow(e)]))
+})
+
+test_that("VIF works for a single-predictor model", {
+  v <- blr_vif_tol(glm(am ~ wt, data = mtcars, family = binomial))
+
+  expect_equal(v$Variable, "wt")
+  expect_equal(v$Tolerance, 1)
+  expect_equal(v$VIF, 1)
+})
+

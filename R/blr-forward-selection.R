@@ -30,7 +30,6 @@
 #' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
@@ -46,8 +45,6 @@
 #' # final model
 #' k <- blr_step_aic_forward(model)
 #' k$model
-#'
-#' }
 #'
 #' @family variable selection procedures
 #'
@@ -79,10 +76,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
   bics     <- c()
   devs     <- c()
 
-  mo <- glm(
-    paste(response, "~", 1), data = l,
-    family = binomial(link = "logit")
-  )
+  mo <- selection_model(response, character(0), l, fit = model)
   aic1 <- model_aic(mo)
 
   if (progress) {
@@ -101,10 +95,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    k <- glm(
-      paste(response, "~", paste(predictors, collapse = " + ")),
-      data = l, family = binomial(link = "logit")
-    )
+    k <- selection_model(response, predictors, l, fit = model)
     aics[i] <- model_aic(k)
     bics[i] <- model_bic(k)
     devs[i] <- model_deviance(k)
@@ -144,6 +135,27 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
     cat(rep("-", w), sep = "", "\n\n")
   }
 
+  if (min(aics) >= aic1) {
+    if (progress) {
+      cat("\n")
+      cat("No more variables to be added.\n")
+    }
+
+    out <- list(
+      candidates = nam,
+      steps      = 0,
+      predictors = character(0),
+      aics       = aic1,
+      bics       = model_bic(mo),
+      devs       = model_deviance(mo),
+      model      = mo
+    )
+
+    class(out) <- "blr_step_aic_forward"
+
+    return(out)
+  }
+
   minc     <- which(aics == min(aics))
   laic     <- aics[minc]
   lbic     <- bics[minc]
@@ -170,10 +182,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
     aics <- c()
     bics <- c()
     devs <- c()
-    mo <- glm(
-      paste(response, "~", paste(preds, collapse = " + ")), data = l,
-      family = binomial(link = "logit")
-    )
+    mo <- selection_model(response, preds, l, fit = model)
     aic1 <- model_aic(mo)
 
     if (details) {
@@ -182,10 +191,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
 
     for (i in seq_len(len_p)) {
       predictors <- c(preds, all_pred[i])
-      k <- glm(
-        paste(response, "~", paste(predictors, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
-      )
+      k <- selection_model(response, predictors, l, fit = model)
       aics[i] <- model_aic(k)
       bics[i] <- model_bic(k)
       devs[i] <- model_deviance(k)
@@ -271,8 +277,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
     print(fi)
   }
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = 'logit'))
+  final_model <- selection_model(response, preds, l, fit = model)
 
   out <- list(
     candidates = nam,

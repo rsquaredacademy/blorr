@@ -67,7 +67,7 @@ blr_gini_index <- function(model, data = NULL) {
   complete <- stats::complete.cases(response, prob)
   response <- response[complete]
   prob     <- prob[complete]
-  event    <- event_indicator(response)
+  event    <- model_event_indicator(model, response)
 
   r   <- rank(prob)
   n1  <- as.numeric(sum(event))
