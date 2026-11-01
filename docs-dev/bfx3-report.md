@@ -18,7 +18,7 @@ under `C:/Users/DELL/AppData/Local/Temp/opencode`.
 | BFXX2-1 rank-one no-intercept model got a fabricated 0/0/1 LR test | `tests/testthat/test-model-fit-stats.R:269` | `R/blr-model-fit-stats.R:371` (`fit_stat`), `:410` (`null_model_nested`); NEWS | Fitted log-likelihoods are retained (`-21.61487` vs `-19.85828`, difference 3.513167); `lr_ratio`, `lr_df`, `lr_pval` are now `NA` with a warning instead of `0/0/1`; the intercept-only 0/0/1 test still passes; a two-predictor no-intercept model is also reported unavailable | Fixed |
 | BFXX2-2 full-rank condition indices could be infinite or inaccurate | `tests/testthat/test-coll-diag.R:118` (plus SVD reference in the existing test at `:78`) | `R/blr-collinearity-diagnostics.R:176` (`evalue`), `:214` (`cindx`), `:238` (`pveindex`) | Seed-2 `sd = 1e-8`: eigenvalue `5.568402e-18`, index `727132689.55556` equals `max(svd(z)$d)/min(svd(z)$d)`; seed-1 `sd = 1e-8`: index `897855518.49466` equals the SVD ratio; zero/constant columns still give `Inf`/`NA`; variance proportions still sum to one | Fixed |
 | BFXX2-3 p-value selection failed on transformed predictors | `tests/testthat/test-forward-selection.R:77` | `R/blr-utils.R:275` (`selection_weights`), `:300` (`selection_data`), `:349` (`selection_model`); `l <- selection_data(model)` in all six selection procedures (`R/blr-forward-selection.R:69`, `R/blr-backward-elimination.R:71`, `R/blr-stepwise-selection.R:64`, `R/blr-stepwise-forward-regression.R:71`, `R/blr-stepwise-backward-regression.R:66`, `R/blr-stepwise-regression.R:70`) | `am ~ log(wt) + hp + noise` selects `log(wt), hp` in forward, backward and both-direction p procedures; coefficients equal an independent `glm(am ~ log(wt) + hp)` (`19.766500`, `-22.669018`, `0.0331006`); weighted, grouped-trial, offset, probit and sum-contrast fits still match independent fits exactly | Fixed |
-| BFXX2-4 LR rejected a valid nested model with different contrasts | `tests/testthat/test-blr-lrtest.R:113` | `R/blr-lrtest.R:126` (projection of the reduced design onto the full design) | Treatment-vs-sum contrast pair gives LR `6.7312378514618`, df 1, p `0.0094738831697857`, identical to `anova()`; the reverse contrast pair also matches; the missing-intercept, reversed-predictor, different-observations and identical-model rejection tests still pass | Fixed |
+| BFXX2-4 LR rejected a valid nested model with different contrasts | `tests/testthat/test-blr-lrtest.R:113` and `:142` | `R/blr-lrtest.R:120` (projection of the reduced design onto the full design) | Treatment-vs-sum contrast pair gives LR `6.7312378514618`, df 1, p `0.0094738831697857`, identical to `anova()`; the reverse contrast pair also matches; `I(wt)` nested in `wt` also matches `anova()`; the missing-intercept, reversed-predictor, different-observations and identical-model rejection tests still pass | Fixed |
 | BFXX2-5 VIF dropped a predictor from a no-intercept fit | `tests/testthat/test-coll-diag.R:55` | `R/blr-collinearity-diagnostics.R:143` (`viftol`) | `am ~ 0 + wt + hp` reports both `wt` and `hp` with tolerance `0.5660512` and VIF `1.7666245792683`, matching `1/(1 - R2(lm(hp ~ wt)))`; the single-predictor no-intercept fit reports `wt`, tolerance 1, VIF 1; intercept models are unchanged | Fixed |
 
 ## Verification of the audit's exact reproductions
@@ -72,7 +72,7 @@ R CMD check --as-cran --no-manual blorr_0.3.2.tar.gz
 
 Result: **0 errors / 0 warnings / 1 NOTE**. Examples, run-donttest examples,
 tests and vignette rebuild are all OK. Check-mode suite:
-`FAIL 0 | WARN 0 | SKIP 49 | PASS 376`. The only NOTE is the intended CRAN
+`FAIL 0 | WARN 0 | SKIP 49 | PASS 379`. The only NOTE is the intended CRAN
 incoming-feasibility maintainer change:
 
 ```
@@ -80,7 +80,9 @@ New maintainer: Aravind Hebbali <aravindhebbali@rsquaredacademy.com>
 Old maintainer(s): Aravind Hebbali <hebbali.aravind@gmail.com>
 ```
 
-No other NOTE or WARNING was emitted.
+No other NOTE or WARNING was emitted. The check was rerun from a fresh
+`git archive` after the final LR-terminology commit (`102ac04`) and produced
+the same result.
 
 ## Commits
 
@@ -89,6 +91,7 @@ No other NOTE or WARNING was emitted.
 - `7071649` fix: keep every direction for wide-design condition indices (BFXX2-2) (bfx3)
 - `d70093a` fix: keep every predictor in VIF for no-intercept fits (BFXX2-5) (bfx3)
 - `6a9a8db` fix: test LR nesting by design column space (BFXX2-4) (bfx3)
+- `102ac04` fix: accept any design-space nested model in LR test (BFXX2-4) (bfx3)
 - `f7f1f19` fix: refit selection candidates on original fitted rows (BFXX2-3) (bfx3)
 
 Each user-visible fix has one bullet in `NEWS.md` under 0.3.2.
