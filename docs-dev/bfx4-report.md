@@ -71,7 +71,8 @@ covered by a test; no other finding from the re-audit was touched.
 - `tests/testthat/test-model-fit-stats.R`, `test-blr-lrtest.R`,
   `test-forward-selection.R`: new value-asserting tests; transformed-term
   label assertions updated for the quoted column names.
-- `NEWS.md`: two new bullets under 0.3.2 Bug Fixes.
+- `NEWS.md`: one new bullet and one corrected bullet under 0.3.2 Bug Fixes
+  (the round-3 selection bullet now describes the stored-model-frame refit).
 
 ## Commits
 
