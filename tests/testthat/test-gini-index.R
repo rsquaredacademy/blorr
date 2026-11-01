@@ -147,6 +147,33 @@ test_that("validation uses the fitted event class when test levels differ", {
   expect_equal(sum(cm$conf_matrix), nrow(mtcars))
 })
 
+test_that("held-out response values outside the fitted classes are rejected", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$am[1] <- 9
+
+  expect_error(blr_gini_index(m, td), "not present in the fitted model")
+  expect_error(blr_confusion_matrix(m, data = td),
+               "not present in the fitted model")
+  expect_error(blr_gains_table(m, td), "not present in the fitted model")
+  expect_error(blr_test_hosmer_lemeshow(m, data = td),
+               "not present in the fitted model")
+
+  d  <- transform(mtcars, am = factor(am, labels = c("no", "yes")))
+  mf <- glm(am ~ wt + hp, data = d, family = binomial)
+  tf <- d
+  tf$am <- factor(as.character(tf$am), levels = c("no", "yes", "unknown"))
+  tf$am[1] <- "unknown"
+
+  expect_error(blr_gini_index(mf, tf), "not present in the fitted model")
+
+  ml <- glm(I(am == 1) ~ wt + hp, data = mtcars, family = binomial)
+  tl <- mtcars
+  tl[["I(am == 1)"]] <- c(2, mtcars$am[-1] == 1)
+
+  expect_error(blr_gini_index(ml, tl), "not present in the fitted model")
+})
+
 test_that("lorenz data uses model defaults and fitted rows", {
   model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
 

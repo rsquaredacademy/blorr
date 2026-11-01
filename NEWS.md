@@ -81,6 +81,9 @@ weight of evidence, and the Gini index.
 - Missing responses are no longer counted as non-events in segment, gains,
   confusion matrix and validation summaries, and unused response levels no
   longer change which class is treated as the event.
+- Validation functions now reject held-out response values that are not one of
+  the two response classes the model was fitted on, instead of silently
+  counting them as non-events.
 - The Hosmer-Lemeshow test accepts numeric and labelled factor responses and
   explicit `data`, uses degrees of freedom based on the observed number of
   groups, and reports the test as unavailable when too few groups remain.

@@ -33,15 +33,31 @@ model_df <- function(model) {
 # responses unused levels are dropped before the event (second) level is
 # identified, as in glm(). When `event` is supplied it identifies the event
 # value explicitly, which lets validation functions use the fitted model's
-# event class even when a test sample has different or unused levels.
-event_indicator <- function(resp, event = NULL) {
+# event class even when a test sample has different or unused levels. When the
+# fitted response classes are supplied as `levels`, any other observed label is
+# an error rather than silently becoming a non-event.
+event_indicator <- function(resp, event = NULL, levels = NULL) {
   missing <- is.na(resp)
 
   if (!is.null(event)) {
+    labels <- as.character(resp)
+
+    if (!is.null(levels)) {
+      levels <- as.character(levels)
+      bad    <- !missing & !(labels %in% levels)
+
+      if (any(bad)) {
+        stop("response contains values not present in the fitted model: ",
+          paste(unique(labels[bad]), collapse = ", "),
+          call. = FALSE
+        )
+      }
+    }
+
     if (is.logical(resp)) {
       out <- resp %in% TRUE
     } else {
-      out <- as.character(resp) == as.character(event)
+      out <- labels == as.character(event)
     }
 
     out[missing] <- NA
@@ -124,7 +140,11 @@ model_event_level <- function(model) {
 
 # event indicator aligned with the fitted model's response encoding
 model_event_indicator <- function(model, resp) {
-  event_indicator(resp, event = model_event_level(model))
+  event_indicator(
+    resp,
+    event  = model_event_level(model),
+    levels = model_response_levels(model)
+  )
 }
 
 # labels, in non-event/event order, of the response used to fit the model
