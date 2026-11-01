@@ -370,9 +370,16 @@ blr_rsq_adj_count <- function(model) {
 
 fit_stat <- function(model) {
 
+  dev_df <- df.residual(model)
+
+  # an intercept-only model is its own null model, so there is no likelihood
+  # ratio test to report
+  if (model$rank <= 1L) {
+    return(list(lr_ratio = 0, lr_df = 0, lr_pval = 1, dev_df = dev_df))
+  }
+
   lr <- blr_test_lr(model)
 
-  dev_df   <- df.residual(model)
   lr_ratio <- extract_lr(lr, lr_ratio)
   lr_df    <- extract_lr(lr, d_f)
   lr_pval  <- extract_lr(lr, p_value)

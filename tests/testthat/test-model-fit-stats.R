@@ -256,6 +256,16 @@ test_that("pseudo R2 is identical for na.omit and na.exclude fits", {
   expect_false(anyNA(c(k$effron, k$count_r2, k$count_adj, k$mckelvey)))
 })
 
+test_that("fit statistics are available for an intercept-only model", {
+  model <- glm(am ~ 1, data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$lr_ratio, 0)
+  expect_equal(k$lr_df, 0)
+  expect_equal(k$dev_df, df.residual(model))
+})
+
 test_that("residual df uses the fitted rank when a coefficient is aliased", {
   model <- glm(am ~ wt + I(2 * wt), data = mtcars, family = binomial)
 
