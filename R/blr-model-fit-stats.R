@@ -405,8 +405,8 @@ fit_stat <- function(model) {
 }
 
 # does the fitted design span the constant vector, i.e. is the intercept-only
-# model nested in it? projection residuals are compared against a numerical
-# rank tolerance scaled to the design and the sample size
+# model nested in it? columns are normalized before comparison so the answer is
+# invariant to rescaling any predictor
 null_model_nested <- function(model) {
 
   mm <- stats::model.matrix(model)
@@ -416,10 +416,7 @@ null_model_nested <- function(model) {
     return(FALSE)
   }
 
-  res <- qr.resid(qr(mm), rep(1, n))
-  tol <- sqrt(.Machine$double.eps) * max(1, max(abs(mm))) * sqrt(n)
-
-  max(abs(res)) <= tol
+  design_contains(mm, matrix(1, nrow = n, ncol = 1))
 
 }
 

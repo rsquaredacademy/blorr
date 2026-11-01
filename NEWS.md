@@ -126,6 +126,9 @@ weight of evidence, and the Gini index.
   the default data argument instead of the non-existent `model$data`.
 - Executable selection and dfbetas examples now use the binomial family and
   the correct model class.
+- Likelihood ratio nesting checks now normalize the design columns before
+  comparing column spaces, so rescaling a predictor no longer changes whether
+  a no-intercept or non-nested comparison is accepted.
 
 # blorr 0.3.1
 

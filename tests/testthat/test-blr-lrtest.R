@@ -160,3 +160,14 @@ test_that("LR test rejects comparisons with no additional parameters", {
   )
 })
 
+test_that("LR nesting check is invariant to predictor scale", {
+  for (s in c(1, 1e6, 1e8)) {
+    d    <- transform(mtcars, big = hp * s)
+    full <- glm(am ~ wt + big, data = d, family = binomial)
+    red  <- glm(am ~ wt, data = transform(d, wt = rev(wt)),
+                family = binomial)
+
+    expect_error(blr_test_lr(full, red), "nested")
+  }
+})
+

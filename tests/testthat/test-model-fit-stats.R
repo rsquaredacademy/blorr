@@ -306,3 +306,33 @@ test_that("residual df uses the fitted rank when a coefficient is aliased", {
   expect_equal(model_d_f(model), model$rank)
 })
 
+test_that("no-intercept fit statistics do not depend on predictor scale", {
+  ref_ll <- NULL
+
+  for (s in c(1, 1e6, 1e8)) {
+    d     <- transform(mtcars, x = wt * s)
+    model <- glm(am ~ 0 + x, data = d, family = binomial)
+
+    expect_warning(
+      k <- blr_model_fit_stats(model),
+      "likelihood ratio test is not available"
+    )
+
+    # the fitted and intercept-only likelihoods match base R, differ from each
+    # other, and are unchanged by rescaling the predictor
+    expect_equal(k$loglik_null, as.numeric(logLik(update(model, . ~ 1))))
+    expect_equal(k$loglik_model, as.numeric(logLik(model)))
+    expect_true(is.na(k$lr_ratio))
+    expect_true(is.na(k$lr_df))
+    expect_true(is.na(k$lr_pval))
+    expect_equal(k$dev_df, df.residual(model))
+    expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+
+    if (is.null(ref_ll)) {
+      ref_ll <- c(k$loglik_null, k$loglik_model)
+    } else {
+      expect_equal(c(k$loglik_null, k$loglik_model), ref_ll)
+    }
+  }
+})
+

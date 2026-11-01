@@ -254,6 +254,38 @@ model_class <- function(model) {
   class(model)[1]
 }
 
+# normalize each column of a design matrix to unit 2-norm; zero columns are
+# left as zero so they do not affect the column-space comparison
+column_normalize <- function(x) {
+  scale <- sqrt(colSums(x * x))
+  scale[scale == 0] <- 1
+  sweep(x, 2, scale, "/")
+}
+
+# is every column of `reduced` in the column space of `full`? Predictor
+# rescaling must not change the answer, so both designs are column-normalized
+# to unit 2-norm before each normalized reduced column is projected onto the
+# normalized full column space. Each residual is then measured relative to the
+# column's own (unit) scale with a tolerance that depends only on the number of
+# observations, so an unrelated large predictor cannot make a non-nested design
+# appear nested.
+design_contains <- function(full, reduced) {
+
+  full    <- column_normalize(full)
+  reduced <- column_normalize(reduced)
+
+  qr_full <- qr(full)
+  tol     <- sqrt(.Machine$double.eps) * max(1, sqrt(nrow(full)))
+
+  for (j in seq_len(ncol(reduced))) {
+    if (max(abs(qr.resid(qr_full, reduced[, j, drop = FALSE]))) > tol) {
+      return(FALSE)
+    }
+  }
+
+  TRUE
+}
+
 # formula for a variable selection model; an intercept-only model is used
 # when no predictors are left. The response is quoted so that a transformed or
 # grouped response is taken from the model frame column of that name rather

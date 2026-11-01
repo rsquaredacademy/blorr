@@ -106,10 +106,10 @@ lr_check_comparable <- function(full_model, reduced_model) {
   # reduced design to lie in the column space of the full design, which holds
   # for equivalent factor parameterizations such as treatment and sum
   # contrasts and for algebraically identical terms such as I(wt) and wt. The
-  # projection residual is compared against a numerical tolerance scaled to
-  # the design, so mismatched rows, a reduced intercept the full model does
-  # not span, and a same-named predictor fitted to different values are still
-  # rejected.
+  # designs are column-normalized before the projection residual is checked, so
+  # mismatched rows, a reduced intercept the full model does not span, and a
+  # same-named predictor fitted to different values are still rejected no
+  # matter how any predictor is rescaled.
   full_design <- stats::model.matrix(full_model)
   red_design  <- stats::model.matrix(reduced_model)
 
@@ -117,12 +117,7 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  resid <- qr.resid(qr(full_design), red_design)
-  tol   <- sqrt(.Machine$double.eps) *
-    max(1, max(abs(full_design)), max(abs(red_design))) *
-    sqrt(nrow(full_design))
-
-  if (max(abs(resid)) > tol) {
+  if (!design_contains(full_design, red_design)) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
