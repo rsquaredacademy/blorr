@@ -52,6 +52,26 @@ test_that("variance decomposition proportions sum to one for each coefficient", 
   expect_equal(unname(props), unname(t(pi_mat)))
 })
 
+test_that("VIF assesses every predictor in a model without an intercept", {
+  model <- glm(am ~ 0 + wt + hp, data = mtcars, family = binomial)
+
+  v <- blr_vif_tol(model)
+
+  tol_wt <- 1 - summary(lm(wt ~ hp, data = mtcars))$r.squared
+  tol_hp <- 1 - summary(lm(hp ~ wt, data = mtcars))$r.squared
+
+  expect_equal(v$Variable, c("wt", "hp"))
+  expect_equal(v$Tolerance, c(tol_wt, tol_hp))
+  expect_equal(v$VIF, 1 / c(tol_wt, tol_hp))
+  expect_equal(v$VIF[v$Variable == "hp"], 1.7666245792683, tolerance = 1e-10)
+
+  v1 <- blr_vif_tol(glm(am ~ 0 + wt, data = mtcars, family = binomial))
+
+  expect_equal(v1$Variable, "wt")
+  expect_equal(v1$Tolerance, 1)
+  expect_equal(v1$VIF, 1)
+})
+
 test_that("constant predictors get explicit unavailable collinearity diagnostics", {
   d <- mtcars
   d$z <- 1

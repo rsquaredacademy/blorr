@@ -143,7 +143,15 @@ fmrsq <- function(nam, data, i) {
 viftol <- function(model) {
 
   mm  <- model.matrix(model)
-  m   <- as.data.frame(mm[, -1, drop = FALSE])
+
+  # remove the intercept column only when the fit actually has an intercept;
+  # for a no-intercept model every design column is a predictor
+  if (attr(stats::terms(model), "intercept") == 1L &&
+      "(Intercept)" %in% colnames(mm)) {
+    mm <- mm[, colnames(mm) != "(Intercept)", drop = FALSE]
+  }
+
+  m   <- as.data.frame(mm)
   nam <- names(m)
   p   <- ncol(m)
   tol <- numeric(p)

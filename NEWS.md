@@ -10,6 +10,9 @@ weight of evidence, and the Gini index.
   fitted on, so they are correct when rows are dropped for missing values or
   when the model is fitted without a `data` argument. The model fit statistics
   table is also assembled by name, so values no longer shift between labels.
+- `blr_vif_tol()` now identifies the intercept from the fitted terms instead of
+  assuming the first design column, so a model without an intercept reports
+  tolerance and VIF for every predictor instead of silently dropping one.
 - `blr_model_fit_stats()` no longer reports a zero likelihood ratio test for
   a model without an intercept. The intercept-only model is only used as the
   null when it is actually nested in the fitted design; otherwise the test is
