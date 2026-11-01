@@ -194,6 +194,14 @@ evalue <- function(x) {
   # positive directions of a nearly collinear full-rank design
   svdz     <- svd(z)
   d        <- svdz$d
+
+  # a wide design has more columns than observations; the remaining
+  # directions are zero eigenvalues and are kept so that every design column
+  # has a condition index and a variance proportion
+  if (length(d) < ncol(z)) {
+    d <- c(d, rep(0, ncol(z) - length(d)))
+  }
+
   tol      <- max(d) * max(dim(z)) * .Machine$double.eps
   positive <- d > tol
   e        <- d ^ 2 / max(nrow(z) - 1L, 1L)
@@ -232,16 +240,25 @@ pveindex <- function(z, positive = NULL) {
   svdx     <- svd(z)
   svdxd    <- svdx$d
 
+  if (length(svdxd) < ncol(z)) {
+    svdxd <- c(svdxd, rep(0, ncol(z) - length(svdxd)))
+  }
+
   if (is.null(positive)) {
     tol      <- max(svdxd) * max(dim(z)) * .Machine$double.eps
     positive <- svdxd > tol
   }
 
-  phi <- matrix(0, nrow = ncol(z), ncol = length(svdxd))
+  if (length(positive) < length(svdxd)) {
+    positive <- c(positive, rep(FALSE, length(svdxd) - length(positive)))
+  }
 
-  if (any(positive)) {
-    phi[, positive] <- svdx$v[, positive, drop = FALSE] %*%
-      diag(1 / svdxd[positive], nrow = sum(positive))
+  phi <- matrix(0, nrow = ncol(z), ncol = length(svdxd))
+  pos <- which(positive)
+
+  if (length(pos) > 0L) {
+    phi[, pos] <- svdx$v[, pos, drop = FALSE] %*%
+      diag(1 / svdxd[pos], nrow = length(pos))
   }
 
   ph       <- t(phi ^ 2)
