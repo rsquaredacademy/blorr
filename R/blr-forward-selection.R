@@ -66,7 +66,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
   blr_check_npredictors(model, 3)
 
   response <- names(model$model)[1]
-  l        <- model$model
+  l        <- selection_data(model)
   nam      <- coeff_names(model)
   all_pred <- nam
   mlen_p   <- length(all_pred)

@@ -67,7 +67,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   blr_check_values(prem, 0, 1)
 
   response <- names(model$model)[1]
-  l        <- model$model
+  l        <- selection_data(model)
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (pent) / 2, df)

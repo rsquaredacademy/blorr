@@ -63,7 +63,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   blr_check_values(prem, 0, 1)
 
 
-  l        <- model$model
+  l        <- selection_data(model)
   nam      <- colnames(attr(model$terms, "factors"))
   response <- names(model$model)[1]
   preds    <- nam

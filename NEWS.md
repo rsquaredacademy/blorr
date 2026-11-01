@@ -64,6 +64,10 @@ weight of evidence, and the Gini index.
 - Variable selection procedures now return an intercept-only model when no
   predictor qualifies, and p-value based procedures apply the entry criterion
   to the first predictor as well.
+- Variable selection procedures now refit candidate models on the original
+  fitted data rows, so predictors supplied as expressions such as `log(wt)`
+  are evaluated again instead of failing because the stored model frame only
+  has the evaluated column.
 - Forward, backward and stepwise selection now keep the fitted model's weights,
   offset, link and contrasts in every candidate model, and print the same
   fitted model they return instead of an unweighted formula refit.

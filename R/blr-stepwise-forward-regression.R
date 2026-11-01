@@ -68,7 +68,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
   blr_check_npredictors(model, 3)
   blr_check_values(penter, 0, 1)
 
-  l        <- model$model
+  l        <- selection_data(model)
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (penter) / 2, df)

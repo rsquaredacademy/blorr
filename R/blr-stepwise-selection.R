@@ -61,7 +61,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
-  l          <- model$model
+  l          <- selection_data(model)
   nam        <- colnames(attr(model$terms, "factors"))
   response   <- names(model$model)[1]
   predictors <- nam

@@ -272,7 +272,7 @@ selection_formula <- function(response, predictors) {
 # grouped binomial response the trial counts are part of the response, and
 # glm() multiplies the supplied weights by them, so the trial counts stored in
 # prior.weights are divided out to keep them applied exactly once.
-selection_weights <- function(model, data = model$model) {
+selection_weights <- function(model) {
 
   w <- model$prior.weights
 
@@ -280,7 +280,7 @@ selection_weights <- function(model, data = model$model) {
     return(NULL)
   }
 
-  resp <- data[[1]]
+  resp <- model$model[[1]]
 
   if (is.matrix(resp) && ncol(resp) == 2L &&
       identical(model$family$family, "binomial")) {
@@ -289,6 +289,58 @@ selection_weights <- function(model, data = model$model) {
   }
 
   w
+}
+
+# data used to refit variable selection candidates. The stored model frame has
+# already evaluated terms such as log(wt) but no longer contains the original
+# variables, so a formula using the original term labels cannot be evaluated on
+# it. When the fitted model's data is available, use the rows the model was
+# fitted on and add the evaluated response column; otherwise fall back to the
+# model frame.
+selection_data <- function(model) {
+
+  mf   <- model$model
+  resp <- names(mf)[1]
+  dat  <- NULL
+
+  if (!is.null(model$call$data)) {
+    env <- environment(stats::terms(model))
+    if (is.null(env)) {
+      env <- parent.frame()
+    }
+    dat <- tryCatch(eval(model$call$data, envir = env),
+                    error = function(e) NULL)
+    if (!is.null(dat) && !is.data.frame(dat)) {
+      dat <- tryCatch(as.data.frame(dat), error = function(e) NULL)
+    }
+  }
+
+  if (!is.null(dat) && nrow(dat) >= nrow(mf)) {
+    rn <- rownames(mf)
+    if (!is.null(rn) && all(rn %in% rownames(dat))) {
+      dat <- dat[rn, , drop = FALSE]
+    } else if (nrow(dat) != nrow(mf)) {
+      dat <- NULL
+    }
+  } else {
+    dat <- NULL
+  }
+
+  if (is.null(dat)) {
+    return(mf)
+  }
+
+  # every variable named in the terms must be a column of the original data;
+  # otherwise the stored evaluated columns are the only reliable source
+  vars <- all.vars(stats::delete.response(stats::terms(model)))
+
+  if (!all(vars %in% names(dat))) {
+    return(mf)
+  }
+
+  dat[[resp]] <- mf[[1]]
+
+  dat
 }
 
 # fit a variable selection model, including the intercept-only model. When the
@@ -309,7 +361,7 @@ selection_model <- function(response, predictors, data, fit = NULL) {
     formula  = form,
     data     = data,
     family   = fit$family,
-    weights  = selection_weights(fit, data)
+    weights  = selection_weights(fit)
   )
 
   ctr <- selection_contrasts(fit, form)
@@ -352,7 +404,7 @@ i_model <- function(model) {
     formula   = form,
     data      = dat,
     family    = model$family,
-    weights   = selection_weights(model, dat)
+    weights   = selection_weights(model)
   )
 
   ctr <- selection_contrasts(model, form)

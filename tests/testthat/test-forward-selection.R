@@ -74,6 +74,29 @@ test_that("stepwise p selection prints the weighted model it returns", {
   }
 })
 
+test_that("p-value selection reevaluates transformed predictors on fitted rows", {
+  set.seed(1)
+  d <- mtcars
+  d$noise <- rnorm(32)
+  m <- glm(am ~ log(wt) + hp + noise, data = d, family = binomial)
+
+  expected <- glm(am ~ log(wt) + hp, data = d, family = binomial)
+
+  out <- capture.output(fwd <- blr_step_p_forward(m))
+  expect_equal(attr(terms(fwd$model), "term.labels"), c("log(wt)", "hp"))
+  expect_equal(unname(coef(fwd$model)), unname(coef(expected)))
+  expect_equal(fwd$predictors, c("log(wt)", "hp"))
+
+  out <- capture.output(bwd <- blr_step_p_backward(m))
+  expect_equal(attr(terms(bwd$model), "term.labels"), c("log(wt)", "hp"))
+  expect_equal(unname(coef(bwd$model)), unname(coef(expected)))
+
+  out <- capture.output(both <- blr_step_p_both(m))
+  expect_equal(attr(terms(both$model), "term.labels"), c("log(wt)", "hp"))
+  expect_equal(unname(coef(both$model)), unname(coef(expected)))
+  expect_equal(both$predictors, c("log(wt)", "hp"))
+})
+
 test_that("AIC selection procedures print the weighted model they return", {
   set.seed(1)
   d <- mtcars
