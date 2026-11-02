@@ -73,3 +73,32 @@ test_that("blr_regress can summarise a fit with a transformed response", {
   expect_equal(k$est, unname(coef(model)))
   expect_equal(k$n_obs, unname(nobs(model)))
 })
+
+test_that("aliased coefficients do not shift summary statistics (bfx8)", {
+  m  <- glm(am ~ I(0 * wt) + wt + hp, mtcars, family = binomial)
+  r  <- blr_regress(m)
+  sm <- summary(m)$coefficients
+
+  expect_equal(r$parameter, c("(Intercept)", "I(0 * wt)", "wt", "hp"))
+  expect_equal(r$df, c(1, 0, 1, 1))
+  expect_true(all(is.na(c(r$est[2], r$se[2], r$zval[2], r$pval[2]))))
+  for (nm in rownames(sm)) {
+    i <- match(nm, r$parameter)
+    expect_equal(r$est[i], sm[nm, "Estimate"])
+    expect_equal(r$se[i], sm[nm, "Std. Error"])
+    expect_equal(r$zval[i], sm[nm, "z value"])
+    expect_equal(r$pval[i], sm[nm, "Pr(>|z|)"])
+  }
+  expect_equal(r$se[3], 3.068675113054696, tolerance = 1e-8)
+  expect_equal(r$zval[3], -2.634190614723622, tolerance = 1e-8)
+  expect_equal(r$pval[4], .040914646459029938, tolerance = 1e-8)
+  expect_output(print(r), "wt")
+
+  # aliased models print with odds limits, with and without an intercept
+  for (f in list(am ~ wt + I(2 * wt), am ~ 0 + wt + I(2 * wt))) {
+    ma <- glm(f, mtcars, family = binomial)
+    ra <- blr_regress(ma, odd_conf_limit = TRUE)
+    expect_output(print(ra), "Odds Ratio Estimates")
+    expect_equal(ra$blr_odds_point, unname(exp(coef(ma))[ra$blr_effects]))
+  }
+})

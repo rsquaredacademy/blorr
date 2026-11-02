@@ -278,3 +278,44 @@ test_that("LR nesting uses the weighted fit's informative rows (bfx7)", {
   expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
   expect_equal(k$test_result[["d_f"]], 1)
 })
+
+test_that("LR nesting is invariant to translating predictors (bfx8)", {
+  full <- glm(am ~ wt + hp, mtcars, family = binomial)
+  ref  <- anova(glm(am ~ wt, mtcars, family = binomial), full,
+                test = "Chisq")[["Deviance"]][2]
+
+  for (sh in c(0, 1e6, 1e7, 1e8, 1e9)) {
+    # the varying part stays well above glm's own aliasing tolerance
+    for (s in c(1, 1e3)) {
+      d <- transform(mtcars, z = rev(wt) * s + sh, zv = wt * s + sh)
+
+      # invalid: a translated, rescaled reversed predictor
+      expect_error(
+        blr_test_lr(full, glm(am ~ z, d, family = binomial)),
+        "nested"
+      )
+
+      # valid: a translated, rescaled wt is nested in the intercept + wt space
+      k <- blr_test_lr(full, glm(am ~ zv, d, family = binomial))
+      expect_equal(k$test_result[["lr_ratio"]], ref, tolerance = 1e-6)
+      expect_equal(k$test_result[["d_f"]], 1)
+
+      # valid: the translated column in the full model instead (glm itself
+      # stops converging for this full fit beyond a shift of 1e8)
+      if (sh <= 1e8) {
+        fs <- glm(am ~ zv + hp, d, family = binomial)
+        k2 <- blr_test_lr(fs, glm(am ~ wt, d, family = binomial))
+        expect_equal(k2$test_result[["lr_ratio"]], ref, tolerance = 1e-6)
+      }
+    }
+
+    # without an intercept, a translated predictor does not span the
+    # constant, so the null comparison is unavailable
+    d  <- transform(mtcars, zv = wt + sh)
+    m0 <- glm(am ~ 0 + zv + hp, d, family = binomial)
+    if (sh > 0) {
+      expect_warning(fs0 <- blr_model_fit_stats(m0), "not nested")
+      expect_true(is.na(fs0$lr_ratio))
+    }
+  }
+})

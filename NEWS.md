@@ -84,6 +84,13 @@ weight of evidence, and the Gini index.
   new data uses the new offset values. If a selected model cannot be rebuilt
   exactly from the original terms, selection now stops with an error instead
   of returning a model whose predictions could differ from `glm()`.
+- `blr_regress()` now matches standard errors, z values and p-values to the
+  coefficients by name, so an aliased coefficient no longer shifts them onto
+  other predictors; aliased rows show 0 degrees of freedom and missing
+  statistics, and odds ratio tables with aliased coefficients now print.
+- Variable selection rebuilds selected terms from the fitted model's own
+  expressions, so terms with high-precision constants such as
+  `I(wt / 3.141592653589793)` keep their exact values.
 - `blr_regress(odd_conf_limit = TRUE)` now works for intercept-only models,
   reporting an empty odds ratio table, and reports the odds ratio of every
   predictor of a model without an intercept.
@@ -158,7 +165,10 @@ weight of evidence, and the Gini index.
   intercept-only model is nested for `blr_model_fit_stats()`, is checked on
   the observations with positive prior weight using the fitted model's
   non-aliased columns, so zero weights or zero-trial groups no longer cause
-  valid nested comparisons to be rejected.
+  valid nested comparisons to be rejected. The check compares the column
+  spaces themselves, through orthonormal bases with a rounding tolerance
+  based on the designs' condition numbers, so adding a large constant to a
+  predictor no longer lets a non-nested comparison through.
 
 # blorr 0.3.1
 

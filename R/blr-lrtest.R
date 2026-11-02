@@ -118,19 +118,19 @@ lr_check_comparable <- function(full_model, reduced_model) {
   }
 
   # both designs are compared on the observations that carry information in
-  # the full fit (the prior weights were checked to be equal above), and the
-  # full design is reduced to its estimated, non-aliased columns
+  # the full fit (the prior weights were checked to be equal above), each
+  # reduced to its estimated, non-aliased columns
   rows        <- fitted_rows(full_model)
   full_design <- fitted_design(full_model, rows)
-  red_design  <- red_design[rows, , drop = FALSE]
+  red_design  <- fitted_design(reduced_model, rows)
 
   nested <- design_contains(full_design, red_design)
 
   if (!nested) {
-    if (attr(nested, "residual") < 1e-4) {
+    if (!isTRUE(attr(nested, "reliable"))) {
       stop("reduced_model must be nested within full_model; nesting could ",
-           "not be confirmed to numerical precision, possibly because the ",
-           "full design is nearly collinear.", call. = FALSE)
+           "not be confirmed to numerical precision because a design is too ",
+           "ill-conditioned.", call. = FALSE)
     }
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }

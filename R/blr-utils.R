@@ -193,9 +193,10 @@ predictor_names <- function(model) {
   names(model$coefficients)
 }
 
-# model df
+# model df: one per estimated coefficient, zero for an aliased coefficient,
+# so the vector has one entry per coefficient name
 predictor_df <- function(model) {
-  rep_len(1, model$rank)
+  unname(ifelse(is.na(model$coefficients), 0, 1))
 }
 
 # model estimate
@@ -203,9 +204,13 @@ predictor_est <- function(model) {
   unname(model$coefficients)
 }
 
-# extract columns from model summary
+# extract columns from model summary, matched to the coefficients by name.
+# summary.glm omits aliased coefficients, so matching by position would shift
+# the statistics of every later coefficient; aliased rows are NA instead.
 predictor_mine <- function(model, col_name = NULL) {
-  unname(summary(model)$coefficients[, col_name])
+  sm  <- summary(model)$coefficients
+  idx <- match(names(model$coefficients), rownames(sm))
+  unname(sm[idx, col_name])
 }
 
 # standard error
@@ -289,35 +294,50 @@ column_normalize <- function(x) {
   sweep(x, 2, nrm, "/")
 }
 
-# is every column of `reduced` in the column space of `full`? Predictor
-# rescaling must not change the answer, so both designs are column-normalized
-# to unit 2-norm before each normalized reduced column is projected onto the
-# normalized full column space. Each residual is then measured relative to the
-# column's own (unit) scale with a tolerance that depends only on the number of
-# observations, so an unrelated large predictor cannot make a non-nested design
-# appear nested. The largest absolute residual is returned as the `residual`
-# attribute.
+# is the column space of `reduced` contained in the column space of `full`?
+# The comparison is between spaces, not columns, so it does not depend on how
+# either design is parameterized: rescaling a column, or adding a multiple of
+# another column (for example a large constant to a predictor of a model with
+# an intercept), leaves the answer unchanged.
 #
-# `full` should already be the fitted model's estimable design: its
-# non-aliased columns on the observations that carry information (positive
-# prior weight), see fitted_design(). Its whole column space is used, so a
-# nearly collinear direction the fit estimates is not dropped.
+# Both designs (their estimable columns on the informative rows, see
+# fitted_design()) are column-normalized, which removes the effect of units,
+# and an orthonormal basis of each space is taken from its singular value
+# decomposition. Each orthonormal basis vector of the reduced space is then
+# projected onto the full space; its residual length is the sine of its angle
+# to that space. The tolerance is the size of the rounding error such a
+# residual can carry, which grows with the condition numbers of the two
+# normalized designs, so a nearly collinear but genuine direction is accepted
+# while a direction that is merely small relative to a large constant is not.
+# If either design is so ill-conditioned that the rounding error is not small,
+# nesting cannot be confirmed and FALSE is returned. Attributes `residual`,
+# `tol` and `reliable` describe the decision.
 design_contains <- function(full, reduced) {
 
-  if (nrow(full) == 0L || ncol(full) == 0L) {
-    return(structure(FALSE, residual = Inf))
+  fail <- function(res = Inf, tol = NA_real_, reliable = FALSE) {
+    structure(FALSE, residual = res, tol = tol, reliable = reliable)
   }
 
-  full    <- column_normalize(full)
-  reduced <- column_normalize(reduced)
+  if (nrow(full) == 0L || ncol(full) == 0L || ncol(reduced) == 0L ||
+      nrow(full) != nrow(reduced)) {
+    return(fail(reliable = TRUE))
+  }
 
-  u   <- svd(full, nv = 0)$u
-  tol <- sqrt(.Machine$double.eps) * max(1, sqrt(nrow(full)))
+  sf <- svd(column_normalize(full), nv = 0)
+  sr <- svd(column_normalize(reduced), nv = 0)
 
-  r   <- reduced - u %*% crossprod(u, reduced)
-  res <- max(abs(r))
+  if (min(sf$d) <= 0 || min(sr$d) <= 0) {
+    return(fail())
+  }
 
-  structure(res <= tol, residual = res)
+  kappa <- max(sf$d) / min(sf$d) + max(sr$d) / min(sr$d)
+  tol   <- 8 * .Machine$double.eps * sqrt(nrow(full)) * kappa
+
+  q   <- sr$u
+  e   <- q - sf$u %*% crossprod(sf$u, q)
+  res <- max(sqrt(colSums(e * e)))
+
+  structure(res <= tol, residual = res, tol = tol, reliable = tol < 1e-4)
 }
 
 # rows of a fitted model that carry information: positive prior weight (zero
@@ -422,6 +442,22 @@ selection_restore <- function(lit, fit, predictors) {
   out
 }
 
+# are two design matrices equal column by column up to rounding, relative to
+# each column's own scale? Restoration re-evaluates the stored variables, so
+# exact identity is not required, but any real difference fails.
+design_equal <- function(a, b) {
+  a <- unname(a)
+  b <- unname(b)
+  if (any(is.na(a) != is.na(b))) {
+    return(FALSE)
+  }
+  a[is.na(a)] <- 0
+  b[is.na(b)] <- 0
+  scale <- pmax(apply(abs(a), 2, max), apply(abs(b), 2, max))
+  scale[scale == 0] <- 1
+  all(apply(abs(a - b), 2, max) <= 64 * .Machine$double.eps * scale)
+}
+
 selection_restore_impl <- function(lit, fit, predictors) {
 
   tt       <- stats::terms(fit)
@@ -430,7 +466,18 @@ selection_restore_impl <- function(lit, fit, predictors) {
   mf_names <- names(fit$model)
   resp     <- vars_all[[attr(tt, "response")]]
 
-  rhs_parts <- lapply(predictors, str2lang)
+  # rebuild each selected term from the original variables' language objects
+  # and the factor incidence of the fitted terms, never by re-parsing a term
+  # label (labels are display strings and can round numeric constants)
+  fac  <- attr(tt, "factors")
+  labs <- attr(tt, "term.labels")
+  rhs_parts <- lapply(predictors, function(p) {
+    j <- match(p, labs)
+    if (is.na(j)) {
+      stop("unknown term", call. = FALSE)
+    }
+    Reduce(function(a, b) call(":", a, b), vars_all[fac[, j] > 0])
+  })
   off       <- attr(tt, "offset")
   if (!is.null(off)) {
     rhs_parts <- c(rhs_parts, vars_all[off])
@@ -510,9 +557,7 @@ selection_restore_impl <- function(lit, fit, predictors) {
   x_new <- stats::model.matrix(new_tt, fr, contrasts.arg = lit$contrasts)
   x_lit <- stats::model.matrix(lit)
 
-  if (!identical(dim(x_new), dim(x_lit)) ||
-      !isTRUE(all.equal(unname(x_new), unname(x_lit),
-                        check.attributes = FALSE, tolerance = 0))) {
+  if (!identical(dim(x_new), dim(x_lit)) || !design_equal(x_new, x_lit)) {
     return(NULL)
   }
 

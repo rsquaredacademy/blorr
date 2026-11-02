@@ -73,7 +73,7 @@ print_blr_reg <- function(x) {
 
     # odds ration estimates
     w18 <- max(nchar(c("Odds Ratio", x$blr_effects)))
-    w19 <- max(nchar(c("Estimate", x$blr_odds_point)))
+    w19 <- max(nchar(c("Estimate", x$blr_odds_point)), 2, na.rm = TRUE)
     w20 <- max(nchar(c("95% Profile", format(x$blr_conf$`2.5 %`,
       round(4), nsmall = 4))))
 

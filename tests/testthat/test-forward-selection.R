@@ -475,3 +475,52 @@ test_that("intercept-only selections report empty odds ratio tables (bfx7)", {
   expect_equal(unname(as.matrix(r0$blr_conf)),
                unname(exp(suppressMessages(confint(m0)))))
 })
+
+test_that("selection keeps high-precision constants in terms (bfx8)", {
+  set.seed(1)
+  d <- transform(mtcars, noise = rnorm(32))
+  # reference formulas are written out: update() would deparse and round
+  forms <- list(
+    am ~ I(wt / 3.141592653589793) + hp + noise,
+    am ~ I(wt^0.3333333333333333) + hp + noise,
+    am ~ I(wt + 0.12345678901234567) + hp + noise
+  )
+  refs <- list(
+    am ~ I(wt / 3.141592653589793) + hp,
+    am ~ I(wt^0.3333333333333333) + hp,
+    am ~ I(wt + 0.12345678901234567) + hp
+  )
+
+  for (i in seq_along(forms)) {
+    m   <- glm(forms[[i]], d, family = binomial)
+    ref <- glm(refs[[i]], d, family = binomial)
+    for (run in selection_procedures) {
+      k <- run(m)
+      expect_identical(attr(terms(k$model), "variables"),
+                       attr(terms(ref), "variables"))
+      expect_equal(coef(k$model), coef(ref))
+      expect_equal(as.numeric(logLik(k$model)), as.numeric(logLik(ref)))
+      expect_equal(predict(k$model, mtcars, type = "response"),
+                   predict(ref, mtcars, type = "response"))
+    }
+  }
+
+  m <- glm(forms[[1]], d, family = binomial)
+  capture.output(k <- blr_step_aic_forward(m))
+  expect_equal(unname(coef(k$model)),
+               c(18.86629871720412, -25.39498624864346, .03625559608221653),
+               tolerance = 1e-8)
+  # mtcars is nearly separated, so profiling warns about fitted 0/1 values
+  expect_equal(suppressWarnings(suppressMessages(confint(k$model))),
+               suppressWarnings(suppressMessages(confint(
+                 glm(am ~ I(wt / 3.141592653589793) + hp, d,
+                     family = binomial)))))
+})
+
+test_that("selection stops when a model cannot be restored exactly (bfx8)", {
+  m   <- glm(am ~ wt + hp, mtcars, family = binomial)
+  lit <- selection_model("am", "wt", m$model, fit = m)
+  expect_error(selection_restore(lit, m, "not_a_term"),
+               "could not rebuild the selected model")
+  expect_null(selection_restore_impl(lit, m, "hp"))
+})
