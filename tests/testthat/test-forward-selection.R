@@ -204,3 +204,101 @@ test_that("selection works for a no-data fit with locally scoped variables", {
   expect_equal(unname(coef(k$model)), unname(coef(fit$reference)))
 })
 
+
+selection_procedures <- list(
+  p_forward    = function(x) { capture.output(k <- blr_step_p_forward(x)); k },
+  p_backward   = function(x) { capture.output(k <- blr_step_p_backward(x)); k },
+  p_both       = function(x) { capture.output(k <- blr_step_p_both(x)); k },
+  aic_forward  = function(x) { capture.output(k <- blr_step_aic_forward(x)); k },
+  aic_backward = function(x) { capture.output(k <- blr_step_aic_backward(x)); k },
+  aic_both     = function(x) { capture.output(k <- blr_step_aic_both(x)); k }
+)
+
+# the returned model must equal an independent glm on its own formula: same
+# coefficients and names, likelihood, and predictions on raw new data
+expect_matches_reference <- function(model, data, newdata) {
+  ref <- glm(formula(model), data = data, family = family(model))
+  expect_equal(coef(model), coef(ref))
+  expect_equal(as.numeric(logLik(model)), as.numeric(logLik(ref)))
+  expect_equal(
+    predict(model, newdata, type = "response"),
+    predict(ref, newdata, type = "response")
+  )
+}
+
+test_that("selected transformed models predict from raw new data (bfx5)", {
+  set.seed(1)
+  d <- transform(mtcars, noise = rnorm(32))
+  m <- glm(am ~ log(wt) + hp + noise, d, family = binomial)
+  expected <- glm(am ~ log(wt) + hp, d, family = binomial)
+
+  for (run in selection_procedures) {
+    k <- run(m)
+    expect_equal(attr(terms(k$model), "term.labels"), c("log(wt)", "hp"))
+    expect_equal(unname(coef(k$model)),
+                 c(19.76650039746535, -22.66901763616302, 0.0331005632650925),
+                 tolerance = 1e-8)
+    expect_equal(coef(k$model), coef(expected))
+    expect_equal(predict(k$model, mtcars, type = "response"),
+                 predict(expected, mtcars, type = "response"))
+  }
+
+  m2 <- glm(am ~ I(wt^2) + hp, d, family = binomial)
+  capture.output(k2 <- blr_step_aic_backward(m2))
+  expect_matches_reference(k2$model, d, mtcars)
+})
+
+test_that("selection keeps interaction terms grouped (bfx5)", {
+  set.seed(103)
+  d <- data.frame(x = rnorm(300), z = rnorm(300), noise = rnorm(300))
+  d$y <- rbinom(300, 1, plogis(.2 + 1.2 * d$x + .8 * d$z + .6 * d$x * d$z))
+  m <- glm(y ~ x * z + noise, d, family = binomial)
+
+  for (nm in names(selection_procedures)) {
+    k <- selection_procedures[[nm]](m)
+    expect_matches_reference(k$model, d, d[1:25, ])
+  }
+
+  capture.output(k <- blr_step_p_forward(m))
+  expect_equal(attr(terms(k$model), "term.labels"), c("x", "z", "noise", "x:z"))
+  expect_equal(as.numeric(logLik(k$model)), -155.495848540222, tolerance = 1e-8)
+
+  set.seed(5)
+  d5 <- data.frame(x = rnorm(200), g = factor(sample(letters[1:3], 200, TRUE)),
+                   w = rnorm(200), noise = rnorm(200))
+  d5$y <- rbinom(200, 1, plogis(d5$x + (d5$g == "b") - d5$w^2 / 2))
+  m5 <- glm(y ~ g * x + poly(w, 2) + noise, d5, family = binomial)
+  for (run in selection_procedures) {
+    expect_matches_reference(run(m5)$model, d5, d5[1:15, ])
+  }
+})
+
+test_that("selection works with non-syntactic predictor names (bfx5)", {
+  set.seed(1)
+  d <- transform(mtcars, noise = rnorm(32))
+  names(d)[names(d) == "wt"] <- "body weight"
+  m <- glm(am ~ `body weight` + hp + noise, d, family = binomial)
+  expected <- glm(am ~ `body weight` + hp, d, family = binomial)
+
+  for (run in selection_procedures) {
+    k <- run(m)
+    expect_equal(coef(k$model), coef(expected))
+    expect_equal(predict(k$model, d, type = "response"),
+                 predict(expected, d, type = "response"))
+  }
+})
+
+test_that("selected locally transformed models predict from raw data (bfx5)", {
+  set.seed(1)
+  d  <- transform(mtcars, noise = rnorm(32))
+  lt <- function(z) 2 * log(z)
+  m  <- glm(am ~ lt(wt) + hp + noise, d, family = binomial)
+  expected <- glm(am ~ lt(wt) + hp, d, family = binomial)
+
+  for (run in selection_procedures) {
+    k <- run(m)
+    expect_equal(coef(k$model), coef(expected))
+    expect_equal(predict(k$model, mtcars, type = "response"),
+                 predict(expected, mtcars, type = "response"))
+  }
+})

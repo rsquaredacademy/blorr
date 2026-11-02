@@ -255,11 +255,23 @@ model_class <- function(model) {
 }
 
 # normalize each column of a design matrix to unit 2-norm; zero columns are
-# left as zero so they do not affect the column-space comparison
+# left as zero so they do not affect the column-space comparison. Each column is
+# first divided by its largest absolute value, so the 2-norm is computed on
+# values of order one and cannot overflow (very large predictors) or underflow
+# to zero (very small predictors).
 column_normalize <- function(x) {
-  scale <- sqrt(colSums(x * x))
-  scale[scale == 0] <- 1
-  sweep(x, 2, scale, "/")
+
+  if (any(!is.finite(x))) {
+    stop("model design contains non-finite values.", call. = FALSE)
+  }
+
+  mx <- apply(abs(x), 2, max)
+  mx[mx == 0] <- 1
+  x  <- sweep(x, 2, mx, "/")
+
+  nrm <- sqrt(colSums(x * x))
+  nrm[nrm == 0] <- 1
+  sweep(x, 2, nrm, "/")
 }
 
 # is every column of `reduced` in the column space of `full`? Predictor
@@ -287,19 +299,156 @@ design_contains <- function(full, reduced) {
 }
 
 # formula for a variable selection model; an intercept-only model is used
-# when no predictors are left. The response and each predictor are quoted so
-# that a transformed, grouped or locally defined term is taken from the stored
-# model frame column of that name rather than re-evaluated from the original
-# formula expression.
-selection_formula <- function(response, predictors) {
-  response <- paste0("`", response, "`")
+# when no predictors are left. Candidates are refit on the stored model frame,
+# whose columns are the evaluated variables of the fitted formula (for example
+# a `log(wt)` column, or separate `x` and `z` columns for an `x:z` term). Each
+# term label is therefore rebuilt as a language object from the model frame
+# columns it uses: a variable is referred to by its column name as a symbol and
+# an interaction joins its variables with `:`. Building calls rather than
+# pasting strings keeps interactions grouped and never quotes a name twice.
+selection_term_exprs <- function(fit) {
+
+  tt   <- stats::terms(fit)
+  labs <- attr(tt, "term.labels")
+
+  if (length(labs) == 0) {
+    return(list())
+  }
+
+  fac  <- attr(tt, "factors")
+  vars <- names(fit$model)[seq_len(nrow(fac))]
+
+  out <- lapply(seq_along(labs), function(j) {
+    v <- lapply(vars[fac[, j] > 0], as.name)
+    Reduce(function(a, b) call(":", a, b), v)
+  })
+
+  names(out) <- labs
+  out
+}
+
+selection_formula <- function(fit, predictors) {
+
+  resp <- as.name(names(fit$model)[1])
 
   if (length(predictors) == 0) {
-    paste0(response, " ~ 1")
+    rhs <- 1
   } else {
-    predictors <- paste0("`", predictors, "`")
-    paste(response, "~", paste(predictors, collapse = " + "))
+    ex <- selection_term_exprs(fit)
+    if (!all(predictors %in% names(ex))) {
+      stop("selection candidate is not a term of the fitted model.",
+           call. = FALSE)
+    }
+    rhs <- Reduce(function(a, b) call("+", a, b), ex[predictors])
   }
+
+  form <- eval(call("~", resp, rhs))
+  environment(form) <- environment(stats::terms(fit))
+  form
+}
+
+# the candidate refit above uses stored model frame column names, so its terms
+# say `log(wt)` is a column. The returned model should behave like a glm fitted
+# directly on the original expressions (for example `predict(newdata)` on raw
+# data computes log(wt) again). The refit's coefficients are kept and its
+# terms, formula, call, model frame and coefficient names are replaced by the
+# original-expression versions, after checking that the original terms
+# reproduce exactly the same design matrix from the stored model frame. If the
+# check cannot be made, the stored-frame refit is returned unchanged: its
+# estimates are the same, only its formula refers to stored column names.
+selection_restore <- function(lit, fit, predictors) {
+
+  out <- tryCatch(selection_restore_impl(lit, fit, predictors),
+                  error = function(e) NULL)
+
+  if (is.null(out)) lit else out
+}
+
+selection_restore_impl <- function(lit, fit, predictors) {
+
+  tt       <- stats::terms(fit)
+  env      <- environment(tt)
+  vars_all <- as.list(attr(tt, "variables"))[-1]
+  mf_names <- names(fit$model)
+  resp     <- vars_all[[attr(tt, "response")]]
+
+  rhs_parts <- lapply(predictors, str2lang)
+  off       <- attr(tt, "offset")
+  if (!is.null(off)) {
+    rhs_parts <- c(rhs_parts, vars_all[off])
+  }
+
+  rhs <- if (length(rhs_parts) == 0) {
+    1
+  } else {
+    Reduce(function(a, b) call("+", a, b), rhs_parts)
+  }
+
+  form_call <- call("~", resp, rhs)
+  form      <- eval(form_call)
+  environment(form) <- env
+  new_tt    <- stats::terms(form)
+
+  # map each variable of the new terms to the fitted model's variables
+  vars_new <- as.list(attr(new_tt, "variables"))[-1]
+  idx <- vapply(vars_new, function(v) {
+    hit <- which(vapply(vars_all, identical, logical(1), v))
+    if (length(hit) != 1L) NA_integer_ else hit
+  }, integer(1))
+
+  if (anyNA(idx)) {
+    return(NULL)
+  }
+
+  pv <- attr(tt, "predvars")
+  if (!is.null(pv)) {
+    attr(new_tt, "predvars") <- as.call(c(quote(list), as.list(pv)[-1][idx]))
+  }
+
+  dc <- attr(tt, "dataClasses")
+  if (!is.null(dc)) {
+    attr(new_tt, "dataClasses") <- dc[mf_names[idx]]
+  }
+
+  # model frame: original variable columns plus the refit's (weights)/(offset)
+  fr     <- fit$model[idx]
+  extras <- names(lit$model)[startsWith(names(lit$model), "(")]
+  for (nm in extras) {
+    fr[[nm]] <- lit$model[[nm]]
+  }
+  attr(fr, "terms")     <- new_tt
+  attr(fr, "na.action") <- attr(lit$model, "na.action")
+
+  x_new <- stats::model.matrix(new_tt, fr, contrasts.arg = lit$contrasts)
+  x_lit <- stats::model.matrix(lit)
+
+  if (!identical(dim(x_new), dim(x_lit)) ||
+      !isTRUE(all.equal(unname(x_new), unname(x_lit),
+                        check.attributes = FALSE, tolerance = 0))) {
+    return(NULL)
+  }
+
+  cn <- colnames(x_new)
+  names(lit$coefficients) <- cn
+  colnames(lit$qr$qr)     <- cn
+  if (!is.null(lit$R)) {
+    dimnames(lit$R) <- list(cn, cn)
+  }
+  rk <- seq_len(lit$rank)
+  names(lit$effects)[rk] <- cn[lit$qr$pivot[rk]]
+
+  lit$terms   <- new_tt
+  lit$model   <- fr
+  lit$formula <- form
+
+  cl <- fit$call
+  if (is.null(cl)) {
+    cl <- lit$call
+  }
+  cl$formula <- form_call
+  lit$call   <- cl
+
+  lit
 }
 
 # weights to pass back to glm() when refitting from a stored model frame. For a
@@ -339,16 +488,9 @@ selection_data <- function(model) {
 # fit a variable selection model, including the intercept-only model. When the
 # original fitted model is supplied, its weights, offset, family/link and
 # contrasts are carried over so selection compares comparable models.
-selection_model <- function(response, predictors, data, fit = NULL) {
+selection_model <- function(response, predictors, data, fit) {
 
-  form <- stats::as.formula(selection_formula(response, predictors))
-
-  if (is.null(fit)) {
-    return(glm(
-      form, data = data,
-      family = binomial(link = "logit")
-    ))
-  }
+  form <- selection_formula(fit, predictors)
 
   args <- list(
     formula  = form,
@@ -367,7 +509,7 @@ selection_model <- function(response, predictors, data, fit = NULL) {
     args$offset <- fit$offset
   }
 
-  do.call(stats::glm, args)
+  selection_restore(do.call(stats::glm, args), fit, predictors)
 }
 
 # keep only the contrasts of variables that remain in a selection formula

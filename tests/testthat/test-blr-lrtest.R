@@ -171,3 +171,24 @@ test_that("LR nesting check is invariant to predictor scale", {
   }
 })
 
+
+test_that("LR nesting check survives column norm overflow and underflow", {
+  for (s in c(1, 1e155, 1e-200)) {
+    # non-nested: a rescaled reversed predictor is not in span(1, wt, hp)
+    d       <- transform(mtcars, x = rev(wt) * s)
+    full    <- glm(am ~ wt + hp, data = d, family = binomial)
+    reduced <- glm(am ~ x, data = d, family = binomial)
+    expect_error(blr_test_lr(full, reduced), "nested")
+
+    # nested control at the same scale: x is a rescaled wt
+    d2   <- transform(mtcars, x = wt * s)
+    f2   <- glm(am ~ x + hp, data = d2, family = binomial)
+    r2   <- glm(am ~ x, data = d2, family = binomial)
+    k    <- blr_test_lr(f2, r2)
+    a    <- anova(r2, f2, test = "Chisq")
+    expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+    expect_equal(k$test_result[["lr_ratio"]], 9.116974335178096,
+                 tolerance = 1e-6)
+    expect_equal(k$test_result[["d_f"]], 1)
+  }
+})

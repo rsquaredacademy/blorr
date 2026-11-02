@@ -67,7 +67,11 @@ weight of evidence, and the Gini index.
 - Variable selection procedures now refit candidate models on the stored model
   frame, so predictors supplied as expressions such as `log(wt)` or built from
   locally defined functions are handled correctly, and editing or reassigning
-  the source data after fitting no longer changes the selected terms.
+  the source data after fitting no longer changes the selected terms. The
+  returned model keeps the original term expressions, so `predict()` on raw
+  new data recomputes terms such as `log(wt)` or `poly(x, 2)` as for an
+  ordinary `glm()` fit, and interaction terms such as `x:z` and non-syntactic
+  names such as `` `body weight` `` are refit correctly.
 - Forward, backward and stepwise selection now keep the fitted model's weights,
   offset, link and contrasts in every candidate model, and print the same
   fitted model they return instead of an unweighted formula refit.
@@ -128,7 +132,10 @@ weight of evidence, and the Gini index.
   the correct model class.
 - Likelihood ratio nesting checks now normalize the design columns before
   comparing column spaces, so rescaling a predictor no longer changes whether
-  a no-intercept or non-nested comparison is accepted.
+  a no-intercept or non-nested comparison is accepted. Each column is scaled
+  by its largest absolute value before its norm is taken, so very large or
+  very small predictor values (for example of order `1e155` or `1e-200`) no
+  longer overflow or underflow and let a non-nested comparison through.
 
 # blorr 0.3.1
 
