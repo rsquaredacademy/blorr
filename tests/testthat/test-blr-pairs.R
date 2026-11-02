@@ -74,3 +74,12 @@ test_that("pair counts do not overflow 32-bit integers on large fits", {
   expect_equal(k$c, (blr_gini_index(model) + 1) / 2, tolerance = 1e-10)
 })
 
+
+test_that("blr_pairs works for na.exclude fits (bfx6)", {
+  d <- mtcars
+  d$hp[c(2, 9, 30)] <- NA
+  m_ex   <- glm(am ~ wt + hp, d, family = binomial, na.action = na.exclude)
+  m_omit <- glm(am ~ wt + hp, d, family = binomial, na.action = na.omit)
+  expect_equal(blr_pairs(m_ex), blr_pairs(m_omit))
+  expect_equal(blr_pairs(m_ex)[["pairs"]], 198)
+})

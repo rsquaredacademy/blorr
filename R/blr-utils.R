@@ -281,21 +281,36 @@ column_normalize <- function(x) {
 # column's own (unit) scale with a tolerance that depends only on the number of
 # observations, so an unrelated large predictor cannot make a non-nested design
 # appear nested.
-design_contains <- function(full, reduced) {
+#
+# The full column space is the span of the leading `rank` left singular vectors
+# of the normalized design. `rank` should be the rank of the fitted full model
+# (glm's own estimable space), so a nearly collinear but estimated direction is
+# kept rather than dropped by a default QR tolerance; without it, singular
+# values below a relative cutoff of 1e-12 are treated as zero. The largest
+# absolute projection residual is returned as the `residual` attribute.
+design_contains <- function(full, reduced, rank = NULL) {
 
   full    <- column_normalize(full)
   reduced <- column_normalize(reduced)
 
-  qr_full <- qr(full)
-  tol     <- sqrt(.Machine$double.eps) * max(1, sqrt(nrow(full)))
+  sv <- svd(full, nv = 0)
+  d  <- sv$d
 
-  for (j in seq_len(ncol(reduced))) {
-    if (max(abs(qr.resid(qr_full, reduced[, j, drop = FALSE]))) > tol) {
-      return(FALSE)
-    }
+  if (is.null(rank) || !is.finite(rank) || rank < 1L || rank > length(d)) {
+    rank <- sum(d > max(d) * 1e-12)
   }
 
-  TRUE
+  if (rank < 1L) {
+    return(structure(FALSE, residual = Inf))
+  }
+
+  u   <- sv$u[, seq_len(rank), drop = FALSE]
+  tol <- sqrt(.Machine$double.eps) * max(1, sqrt(nrow(full)))
+
+  r   <- reduced - u %*% crossprod(u, reduced)
+  res <- max(abs(r))
+
+  structure(res <= tol, residual = res)
 }
 
 # formula for a variable selection model; an intercept-only model is used
@@ -361,7 +376,19 @@ selection_restore <- function(lit, fit, predictors) {
   out <- tryCatch(selection_restore_impl(lit, fit, predictors),
                   error = function(e) NULL)
 
-  if (is.null(out)) lit else out
+  if (is.null(out)) {
+    out <- lit
+  }
+
+  # the refit uses the already complete stored rows; carry over the original
+  # omission map so na.exclude fits keep their padded residuals and fitted
+  # values, as an ordinary glm() fit with the same call would
+  if (!is.null(fit$na.action)) {
+    out$na.action <- fit$na.action
+    attr(out$model, "na.action") <- fit$na.action
+  }
+
+  out
 }
 
 selection_restore_impl <- function(lit, fit, predictors) {
@@ -410,14 +437,37 @@ selection_restore_impl <- function(lit, fit, predictors) {
     attr(new_tt, "dataClasses") <- dc[mf_names[idx]]
   }
 
-  # model frame: original variable columns plus the refit's (weights)/(offset)
+  # model frame: original variable columns (including any formula offsets)
+  # plus the original fit's own extra columns such as (weights) and an
+  # argument-supplied (offset). The refit's (offset) column holds the total
+  # offset, so copying it would count formula offsets twice.
   fr     <- fit$model[idx]
-  extras <- names(lit$model)[startsWith(names(lit$model), "(")]
+  extras <- names(fit$model)[startsWith(names(fit$model), "(")]
   for (nm in extras) {
-    fr[[nm]] <- lit$model[[nm]]
+    fr[[nm]] <- fit$model[[nm]]
   }
   attr(fr, "terms")     <- new_tt
-  attr(fr, "na.action") <- attr(lit$model, "na.action")
+  attr(fr, "na.action") <- attr(fit$model, "na.action")
+
+  # the restored frame must imply the same total offset and prior weights as
+  # the refit, since profiling and refitting read them from the frame
+  n       <- NROW(lit$y)
+  off_new <- stats::model.offset(fr)
+  off_lit <- lit$offset
+  if (is.null(off_new)) off_new <- rep(0, n)
+  if (is.null(off_lit)) off_lit <- rep(0, n)
+  if (!isTRUE(all.equal(as.numeric(off_new), as.numeric(off_lit),
+                        tolerance = 0))) {
+    return(NULL)
+  }
+
+  w_new <- stats::model.weights(fr)
+  w_lit <- selection_weights(fit)
+  if (is.null(w_new)) w_new <- rep(1, n)
+  if (is.null(w_lit)) w_lit <- rep(1, n)
+  if (!isTRUE(all.equal(as.numeric(w_new), as.numeric(w_lit)))) {
+    return(NULL)
+  }
 
   x_new <- stats::model.matrix(new_tt, fr, contrasts.arg = lit$contrasts)
   x_lit <- stats::model.matrix(lit)

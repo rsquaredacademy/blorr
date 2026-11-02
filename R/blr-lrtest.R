@@ -117,7 +117,14 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  if (!design_contains(full_design, red_design)) {
+  nested <- design_contains(full_design, red_design, rank = full_model$rank)
+
+  if (!nested) {
+    if (attr(nested, "residual") < 1e-4) {
+      stop("reduced_model must be nested within full_model; nesting could ",
+           "not be confirmed to numerical precision, possibly because the ",
+           "full design is nearly collinear.", call. = FALSE)
+    }
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 

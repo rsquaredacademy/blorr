@@ -192,3 +192,43 @@ test_that("LR nesting check survives column norm overflow and underflow", {
     expect_equal(k$test_result[["d_f"]], 1)
   }
 })
+
+test_that("LR nesting keeps nearly collinear directions the fit estimates (bfx6)", {
+  # exact dyadic data: v = 2^27 * (b - a), so am ~ v is nested in am ~ a + b + hp
+  set.seed(12)
+  d <- transform(mtcars, a = seq_len(32) / 8, v = sample(-16:15) / 8)
+  d$b <- d$a + 2^-27 * d$v
+  full    <- glm(am ~ a + b + hp, d, family = binomial)
+  reduced <- glm(am ~ v, d, family = binomial)
+  expect_equal(full$rank, 4)
+
+  k <- blr_test_lr(full, reduced)
+  a <- anova(reduced, full, test = "Chisq")
+  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+  expect_equal(k$test_result[["lr_ratio"]], 9.7601884568512, tolerance = 1e-6)
+  expect_equal(k$test_result[["d_f"]], 2)
+
+  # near-collinear but estimable at several scales
+  for (s in c(1, 1e155, 1e-200)) {
+    set.seed(12)
+    dd   <- mtcars
+    b0   <- dd$wt + rnorm(32, sd = 1e-6)
+    dd$v <- (b0 - dd$wt) / 1e-6
+    dd$a <- dd$wt * s
+    dd$b <- b0 * s
+    full <- glm(am ~ a + b + hp, dd, family = binomial)
+    red  <- glm(am ~ v, dd, family = binomial)
+    k    <- blr_test_lr(full, red)
+    expect_equal(k$test_result[["lr_ratio"]], 32.80829168332131,
+                 tolerance = 1e-6)
+    expect_equal(k$test_result[["d_f"]], 2)
+
+    # invalid reversed-predictor control at the same scale still errors
+    dr <- transform(mtcars, x = rev(wt) * s)
+    expect_error(
+      blr_test_lr(glm(am ~ wt + hp, dr, family = binomial),
+                  glm(am ~ x, dr, family = binomial)),
+      "nested"
+    )
+  }
+})

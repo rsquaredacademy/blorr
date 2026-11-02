@@ -24,7 +24,7 @@ blr_pairs <- function(model) {
   blr_check_model(model)
 
   resp    <- model$y
-  fit     <- fitted(model)
+  fit     <- model$fitted.values
   pairs   <- data.frame(response = resp, fit_val = fit)
   n       <- nrow(pairs)
   p_ones  <- pairs_one_zero(pairs, 1, fit_val)

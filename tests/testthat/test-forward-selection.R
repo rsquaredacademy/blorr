@@ -302,3 +302,89 @@ test_that("selected locally transformed models predict from raw data (bfx5)", {
                  predict(expected, mtcars, type = "response"))
   }
 })
+
+test_that("selected models keep offsets once for profile intervals (bfx6)", {
+  set.seed(6)
+  d <- data.frame(x = rnorm(200), z = rnorm(200), noise = rnorm(200),
+                  off = rnorm(200, .5, .5))
+  d$y <- rbinom(200, 1, plogis(.2 + 2 * d$x + d$off))
+  d$off2 <- runif(200)
+
+  fits <- list(
+    formula = list(f = y ~ x + z + noise + offset(off), off = NULL),
+    argument = list(f = y ~ x + z + noise, off = d$off),
+    both = list(f = y ~ x + z + noise + offset(off), off = d$off2)
+  )
+
+  for (cs in fits) {
+    m <- glm(cs$f, d, family = binomial, offset = cs$off)
+    for (run in selection_procedures) {
+      k   <- run(m)
+      ref <- glm(formula(k$model), d, family = binomial, offset = cs$off)
+      expect_equal(coef(k$model), coef(ref))
+      expect_equal(as.numeric(stats::model.offset(k$model$model)),
+                   as.numeric(k$model$offset))
+      expect_equal(suppressMessages(confint(k$model)),
+                   suppressMessages(confint(ref)))
+      capture.output(r1 <- blr_regress(k$model, odd_conf_limit = TRUE))
+      capture.output(r2 <- blr_regress(ref, odd_conf_limit = TRUE))
+      expect_equal(r1$blr_conf, r2$blr_conf)
+    }
+  }
+
+  # the audit case: x profile interval of the AIC forward selection
+  m <- glm(y ~ x + z + noise + offset(off), d, family = binomial)
+  capture.output(k <- blr_step_aic_forward(m))
+  expect_equal(unname(suppressMessages(confint(k$model))["x", ]),
+               c(1.338478644906690, 2.377497411266178), tolerance = 1e-6)
+
+  # intercept-only selection with a formula offset
+  set.seed(11)
+  dn <- data.frame(y = rbinom(100, 1, .4), a = rnorm(100), b = rnorm(100),
+                   o = rnorm(100))
+  mn <- glm(y ~ a + b + offset(o), dn, family = binomial)
+  capture.output(k <- blr_step_aic_forward(mn))
+  ref <- glm(y ~ 1 + offset(o), dn, family = binomial)
+  expect_equal(suppressMessages(confint(k$model)),
+               suppressMessages(confint(ref)))
+})
+
+test_that("selected na.exclude models keep their row padding (bfx6)", {
+  set.seed(1)
+  d <- transform(mtcars, noise = rnorm(32), w = rep(c(1, 2), 16))
+  d$hp[c(2, 9, 30)] <- NA
+  m   <- glm(am ~ log(wt) + hp + noise, d, family = binomial,
+             na.action = na.exclude)
+  ref <- glm(am ~ log(wt) + hp, d, family = binomial, na.action = na.exclude)
+
+  for (run in selection_procedures) {
+    k <- run(m)
+    expect_equal(coef(k$model), coef(ref))
+    expect_equal(predict(k$model), predict(ref))
+    expect_equal(residuals(k$model), residuals(ref))
+    expect_equal(fitted(k$model), fitted(ref))
+    expect_equal(unname(which(is.na(predict(k$model)))), c(2L, 9L, 30L))
+  }
+
+  # weighted fit with a matrix-valued term
+  set.seed(7)
+  dw <- data.frame(x = rnorm(150), z = rnorm(150), noise = rnorm(150),
+                   w = sample(1:3, 150, TRUE))
+  dw$y <- rbinom(150, 1, plogis(.3 + dw$x - .6 * dw$z^2))
+  dw$x[c(4, 40, 99)] <- NA
+  mw <- glm(y ~ x + poly(z, 2) + noise, dw, family = binomial, weights = w,
+            na.action = na.exclude)
+  expect_true(mw$converged)
+  for (run in selection_procedures) {
+    k    <- run(mw)
+    refw <- glm(formula(k$model), dw[!is.na(dw$x), ], family = binomial,
+                weights = w, na.action = na.exclude)
+    expect_true("x" %in% attr(terms(k$model), "term.labels"))
+    expect_equal(as.numeric(logLik(k$model)), as.numeric(logLik(refw)))
+    expect_equal(length(residuals(k$model)), 150L)
+    expect_equal(unname(which(is.na(residuals(k$model)))), c(4L, 40L, 99L))
+    expect_equal(names(predict(k$model)), rownames(dw))
+    expect_equal(predict(k$model)[!is.na(dw$x)], predict(refw),
+                 ignore_attr = TRUE)
+  }
+})

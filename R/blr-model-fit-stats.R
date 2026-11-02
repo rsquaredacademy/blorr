@@ -416,7 +416,8 @@ null_model_nested <- function(model) {
     return(FALSE)
   }
 
-  design_contains(mm, matrix(1, nrow = n, ncol = 1))
+  as.vector(design_contains(mm, matrix(1, nrow = n, ncol = 1),
+                            rank = model$rank))
 
 }
 

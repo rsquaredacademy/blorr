@@ -72,6 +72,13 @@ weight of evidence, and the Gini index.
   new data recomputes terms such as `log(wt)` or `poly(x, 2)` as for an
   ordinary `glm()` fit, and interaction terms such as `x:z` and non-syntactic
   names such as `` `body weight` `` are refit correctly.
+- Models returned by variable selection keep formula and argument offsets
+  exactly once in their model frame, so `confint()` and the odds ratio
+  limits of `blr_regress()` match an ordinary `glm()` fit, and models fitted
+  with `na.action = na.exclude` keep their padded residuals, fitted values
+  and predictions.
+- `blr_pairs()`, and therefore `blr_regress()`, now works for models fitted
+  with `na.action = na.exclude`.
 - Forward, backward and stepwise selection now keep the fitted model's weights,
   offset, link and contrasts in every candidate model, and print the same
   fitted model they return instead of an unweighted formula refit.
@@ -136,6 +143,10 @@ weight of evidence, and the Gini index.
   by its largest absolute value before its norm is taken, so very large or
   very small predictor values (for example of order `1e155` or `1e-200`) no
   longer overflow or underflow and let a non-nested comparison through.
+  The full column space now has the fitted model's rank, so a nearly
+  collinear direction the fit estimates is no longer dropped and a valid
+  nested comparison is no longer rejected. When nesting cannot be confirmed
+  to numerical precision the error says so.
 
 # blorr 0.3.1
 
