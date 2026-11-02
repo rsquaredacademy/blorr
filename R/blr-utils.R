@@ -223,22 +223,37 @@ predictor_pval <- function(model) {
   predictor_mine(model, "Pr(>|z|)")
 }
 
-# odds ratio estimate
-# odds ratio effects
+# odds ratio effects: every estimated coefficient except the intercept,
+# identified by name so a model without an intercept keeps its first predictor
+# and an intercept-only model has no effects
+odds_index <- function(model) {
+  which(names(coef(model)) != "(Intercept)")
+}
+
 odds_effect <- function(model) {
-  names(coef(model))[-1]
+  names(coef(model))[odds_index(model)]
 }
 
 # odds ratio point estimates
 odds_point <- function(model) {
-  unname(exp(coef(model))[-1])
+  unname(exp(coef(model))[odds_index(model)])
 }
 
-# odds ratio confidence intervals
+# odds ratio confidence intervals (profile likelihood)
 odds_conf_limit <- function(model) {
 
-  n   <- length(model$coefficients)
-  out <- exp(data.frame(confint(model))[2:n, ])
+  idx <- odds_index(model)
+
+  if (length(idx) == 0) {
+    out <- data.frame(numeric(0), numeric(0))
+  } else {
+    ci <- confint(model)
+    if (is.null(dim(ci))) {
+      ci <- matrix(ci, nrow = 1, dimnames = list(names(coef(model)), names(ci)))
+    }
+    out <- exp(as.data.frame(ci[idx, , drop = FALSE]))
+  }
+
   colnames(out) <- c('`2.5 %`', '`97.5 %`')
   return(out)
 
@@ -280,37 +295,47 @@ column_normalize <- function(x) {
 # normalized full column space. Each residual is then measured relative to the
 # column's own (unit) scale with a tolerance that depends only on the number of
 # observations, so an unrelated large predictor cannot make a non-nested design
-# appear nested.
+# appear nested. The largest absolute residual is returned as the `residual`
+# attribute.
 #
-# The full column space is the span of the leading `rank` left singular vectors
-# of the normalized design. `rank` should be the rank of the fitted full model
-# (glm's own estimable space), so a nearly collinear but estimated direction is
-# kept rather than dropped by a default QR tolerance; without it, singular
-# values below a relative cutoff of 1e-12 are treated as zero. The largest
-# absolute projection residual is returned as the `residual` attribute.
-design_contains <- function(full, reduced, rank = NULL) {
+# `full` should already be the fitted model's estimable design: its
+# non-aliased columns on the observations that carry information (positive
+# prior weight), see fitted_design(). Its whole column space is used, so a
+# nearly collinear direction the fit estimates is not dropped.
+design_contains <- function(full, reduced) {
+
+  if (nrow(full) == 0L || ncol(full) == 0L) {
+    return(structure(FALSE, residual = Inf))
+  }
 
   full    <- column_normalize(full)
   reduced <- column_normalize(reduced)
 
-  sv <- svd(full, nv = 0)
-  d  <- sv$d
-
-  if (is.null(rank) || !is.finite(rank) || rank < 1L || rank > length(d)) {
-    rank <- sum(d > max(d) * 1e-12)
-  }
-
-  if (rank < 1L) {
-    return(structure(FALSE, residual = Inf))
-  }
-
-  u   <- sv$u[, seq_len(rank), drop = FALSE]
+  u   <- svd(full, nv = 0)$u
   tol <- sqrt(.Machine$double.eps) * max(1, sqrt(nrow(full)))
 
   r   <- reduced - u %*% crossprod(u, reduced)
   res <- max(abs(r))
 
   structure(res <= tol, residual = res)
+}
+
+# rows of a fitted model that carry information: positive prior weight (zero
+# case weights and zero-trial binomial groups contribute nothing to the fit)
+fitted_rows <- function(model) {
+  w <- model$prior.weights
+  if (is.null(w)) {
+    rep(TRUE, NROW(stats::model.matrix(model)))
+  } else {
+    w > 0
+  }
+}
+
+# the fitted model's estimable design: model matrix columns with a
+# non-aliased coefficient, on the rows that carry information
+fitted_design <- function(model, rows = fitted_rows(model)) {
+  mm <- stats::model.matrix(model)
+  mm[rows, !is.na(stats::coef(model)), drop = FALSE]
 }
 
 # formula for a variable selection model; an intercept-only model is used
@@ -368,16 +393,22 @@ selection_formula <- function(fit, predictors) {
 # data computes log(wt) again). The refit's coefficients are kept and its
 # terms, formula, call, model frame and coefficient names are replaced by the
 # original-expression versions, after checking that the original terms
-# reproduce exactly the same design matrix from the stored model frame. If the
-# check cannot be made, the stored-frame refit is returned unchanged: its
-# estimates are the same, only its formula refers to stored column names.
+# reproduce exactly the same design matrix, total offset and prior weights from
+# the stored model frame. If the check fails, selection stops with an error.
 selection_restore <- function(lit, fit, predictors) {
 
   out <- tryCatch(selection_restore_impl(lit, fit, predictors),
                   error = function(e) NULL)
 
+  # the stored-frame refit cannot be returned as it is: its formula names
+  # stored columns and its call holds the training offset and weights, so
+  # predict(newdata) would fail or silently reuse training offsets. If the
+  # original terms cannot be restored exactly, stop instead.
   if (is.null(out)) {
-    out <- lit
+    stop("variable selection could not rebuild the selected model from the ",
+         "terms of the original model (",
+         paste(c(names(fit$model)[1], predictors), collapse = ", "),
+         "); refit the model with simpler terms.", call. = FALSE)
   }
 
   # the refit uses the already complete stored rows; carry over the original
@@ -461,11 +492,18 @@ selection_restore_impl <- function(lit, fit, predictors) {
     return(NULL)
   }
 
-  w_new <- stats::model.weights(fr)
-  w_lit <- selection_weights(fit)
+  # compare the prior weights glm() would derive from the restored frame (case
+  # weights times binomial trials for a grouped response) with the refit's
+  # prior weights. Comparing effective weights keeps zero-trial groups, whose
+  # case weight cannot be recovered from a zero product, consistent.
+  w_new  <- stats::model.weights(fr)
   if (is.null(w_new)) w_new <- rep(1, n)
-  if (is.null(w_lit)) w_lit <- rep(1, n)
-  if (!isTRUE(all.equal(as.numeric(w_new), as.numeric(w_lit)))) {
+  resp_n <- fr[[1]]
+  if (is.matrix(resp_n) && ncol(resp_n) == 2L &&
+      identical(fit$family$family, "binomial")) {
+    w_new <- w_new * rowSums(resp_n)
+  }
+  if (!isTRUE(all.equal(as.numeric(w_new), as.numeric(lit$prior.weights)))) {
     return(NULL)
   }
 

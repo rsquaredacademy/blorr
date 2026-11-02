@@ -117,7 +117,14 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  nested <- design_contains(full_design, red_design, rank = full_model$rank)
+  # both designs are compared on the observations that carry information in
+  # the full fit (the prior weights were checked to be equal above), and the
+  # full design is reduced to its estimated, non-aliased columns
+  rows        <- fitted_rows(full_model)
+  full_design <- fitted_design(full_model, rows)
+  red_design  <- red_design[rows, , drop = FALSE]
+
+  nested <- design_contains(full_design, red_design)
 
   if (!nested) {
     if (attr(nested, "residual") < 1e-4) {

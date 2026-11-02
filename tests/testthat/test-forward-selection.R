@@ -388,3 +388,90 @@ test_that("selected na.exclude models keep their row padding (bfx6)", {
                  ignore_attr = TRUE)
   }
 })
+
+test_that("zero-trial groups keep offsets for new-data prediction (bfx7)", {
+  set.seed(6)
+  d <- data.frame(x = rnorm(200), noise = rnorm(200),
+                  off = rnorm(200, .5, .5), w = rep(1:2, 100),
+                  trials = sample(5:20, 200, TRUE))
+  d$trials[1] <- 0
+  d$s <- rbinom(200, d$trials, plogis(.2 + 2 * d$x + d$off))
+  nd <- d
+  nd$off <- nd$off + 2
+
+  # with and without case weights
+  for (wt in list(d$w, NULL)) {
+    m   <- glm(cbind(s, trials - s) ~ x + noise + offset(off), d,
+               family = binomial, weights = wt)
+    ref <- glm(cbind(s, trials - s) ~ x + offset(off), d,
+               family = binomial, weights = wt)
+    for (run in selection_procedures) {
+      k <- run(m)
+      expect_equal(attr(terms(k$model), "term.labels"), "x")
+      expect_equal(coef(k$model), coef(ref))
+      expect_equal(as.numeric(logLik(k$model)), as.numeric(logLik(ref)))
+      expect_equal(predict(k$model, nd, type = "response"),
+                   predict(ref, nd, type = "response"))
+      expect_length(predict(k$model, nd[2:6, ], type = "response"), 5)
+      expect_equal(suppressMessages(confint(k$model)),
+                   suppressMessages(confint(ref)))
+    }
+  }
+
+  capture.output(k <- blr_step_aic_forward(
+    glm(cbind(s, trials - s) ~ x + noise + offset(off), d,
+        family = binomial, weights = w)))
+  expect_equal(unname(predict(k$model, nd, type = "response")[1:3]),
+               c(.9588533716095685, .7764947177677286, .9909307023581748),
+               tolerance = 1e-8)
+
+  # zero trials with case weights, a matrix term, formula and argument
+  # offsets and na.exclude
+  d$off2 <- runif(200)
+  d$z    <- rnorm(200)
+  d$x[c(5, 60)] <- NA
+  m2 <- glm(cbind(s, trials - s) ~ x + poly(z, 2) + noise + offset(off), d,
+            family = binomial, weights = w, offset = off2,
+            na.action = na.exclude)
+  nd2 <- d
+  nd2$off  <- nd2$off + 1
+  nd2$off2 <- nd2$off2 - 1
+  for (run in selection_procedures) {
+    k   <- run(m2)
+    ref <- glm(formula(k$model), d[!is.na(d$x), ], family = binomial,
+               weights = w, offset = off2, na.action = na.exclude)
+    expect_equal(as.numeric(logLik(k$model)), as.numeric(logLik(ref)))
+    expect_equal(predict(k$model, nd2[!is.na(nd2$x), ], type = "response"),
+                 predict(ref, nd2[!is.na(nd2$x), ], type = "response"))
+    expect_equal(unname(which(is.na(residuals(k$model)))), c(5L, 60L))
+  }
+})
+
+test_that("intercept-only selections report empty odds ratio tables (bfx7)", {
+  m <- glm(am ~ 1, mtcars, family = binomial)
+  r <- blr_regress(m, odd_conf_limit = TRUE)
+  expect_equal(r$blr_effects, character(0))
+  expect_equal(nrow(r$blr_conf), 0L)
+  expect_equal(ncol(r$blr_conf), 2L)
+  expect_equal(r$est, unname(coef(m)))
+  out <- capture.output(print(r))
+  expect_true(any(grepl("Odds Ratio", out)))
+
+  # intercept-only result of a selection procedure
+  mn <- glm(y ~ a + b + c, noise_data(), family = binomial)
+  for (run in selection_procedures) {
+    k <- run(mn)
+    expect_equal(attr(terms(k$model), "term.labels"), character(0))
+    rk <- blr_regress(k$model, odd_conf_limit = TRUE)
+    expect_equal(nrow(rk$blr_conf), 0L)
+    expect_equal(rk$est, unname(coef(k$model)))
+  }
+
+  # a model without an intercept keeps every predictor's odds ratio
+  m0 <- glm(am ~ 0 + wt + hp, mtcars, family = binomial)
+  r0 <- blr_regress(m0, odd_conf_limit = TRUE)
+  expect_equal(r0$blr_effects, c("wt", "hp"))
+  expect_equal(r0$blr_odds_point, unname(exp(coef(m0))))
+  expect_equal(unname(as.matrix(r0$blr_conf)),
+               unname(exp(suppressMessages(confint(m0)))))
+})

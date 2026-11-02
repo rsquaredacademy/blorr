@@ -232,3 +232,49 @@ test_that("LR nesting keeps nearly collinear directions the fit estimates (bfx6)
     )
   }
 })
+
+test_that("LR nesting uses the weighted fit's informative rows (bfx7)", {
+  for (s in c(1, 1e155, 1e-200)) {
+    d <- mtcars
+    d$wt <- d$wt * s
+    d$w  <- 1
+    d$w[1:8] <- 0
+    d$z  <- c(1:8, rep(0, 24))
+    full    <- glm(am ~ wt + hp + z, d, family = binomial, weights = w)
+    reduced <- glm(am ~ wt, d, family = binomial, weights = w)
+    expect_equal(full$rank, 3)
+
+    k <- blr_test_lr(full, reduced)
+    a <- anova(reduced, full, test = "Chisq")
+    expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+    expect_equal(k$test_result[["lr_ratio"]], 8.912477493356727,
+                 tolerance = 1e-6)
+    expect_equal(k$test_result[["d_f"]], 1)
+
+    fs <- blr_model_fit_stats(full)
+    expect_equal(fs$lr_ratio, 26.49604410128582, tolerance = 1e-6)
+    expect_equal(fs$lr_df, 2)
+    expect_equal(fs$lr_pval, 1.763831633771082e-6, tolerance = 1e-6)
+
+    # invalid control: reversed weight on the informative rows
+    d$v <- rev(d$wt)
+    expect_error(
+      blr_test_lr(full, glm(am ~ v, d, family = binomial, weights = w)),
+      "nested"
+    )
+  }
+
+  # zero-trial groups without a weights argument
+  d <- mtcars
+  d$s <- d$am
+  d$fail <- 1 - d$am
+  d$s[1:8] <- 0
+  d$fail[1:8] <- 0
+  d$z <- c(1:8, rep(0, 24))
+  full    <- glm(cbind(s, fail) ~ wt + hp + z, d, family = binomial)
+  reduced <- glm(cbind(s, fail) ~ wt, d, family = binomial)
+  k <- blr_test_lr(full, reduced)
+  a <- anova(reduced, full, test = "Chisq")
+  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+  expect_equal(k$test_result[["d_f"]], 1)
+})

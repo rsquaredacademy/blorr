@@ -79,6 +79,14 @@ weight of evidence, and the Gini index.
   and predictions.
 - `blr_pairs()`, and therefore `blr_regress()`, now works for models fitted
   with `na.action = na.exclude`.
+- Variable selection on grouped binomial fits with zero-trial groups now
+  returns a model with the original formula and offsets, so `predict()` on
+  new data uses the new offset values. If a selected model cannot be rebuilt
+  exactly from the original terms, selection now stops with an error instead
+  of returning a model whose predictions could differ from `glm()`.
+- `blr_regress(odd_conf_limit = TRUE)` now works for intercept-only models,
+  reporting an empty odds ratio table, and reports the odds ratio of every
+  predictor of a model without an intercept.
 - Forward, backward and stepwise selection now keep the fitted model's weights,
   offset, link and contrasts in every candidate model, and print the same
   fitted model they return instead of an unweighted formula refit.
@@ -146,7 +154,11 @@ weight of evidence, and the Gini index.
   The full column space now has the fitted model's rank, so a nearly
   collinear direction the fit estimates is no longer dropped and a valid
   nested comparison is no longer rejected. When nesting cannot be confirmed
-  to numerical precision the error says so.
+  to numerical precision the error says so. Nesting, and whether the
+  intercept-only model is nested for `blr_model_fit_stats()`, is checked on
+  the observations with positive prior weight using the fitted model's
+  non-aliased columns, so zero weights or zero-trial groups no longer cause
+  valid nested comparisons to be rejected.
 
 # blorr 0.3.1
 
