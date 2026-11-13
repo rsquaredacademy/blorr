@@ -23,6 +23,15 @@ blr_pairs <- function(model) {
 
   blr_check_model(model)
 
+  if (is_grouped_binomial(model)) {
+    # one Bernoulli observation per trial
+    g       <- grouped_counts(model)
+    p_ones  <- rep(g$fit, g$s)
+    p_zeros <- rep(g$fit, g$f)
+    n       <- length(p_ones) + length(p_zeros)
+    return(pairs_compute(blr_pairs_cpp(p_ones, p_zeros), n = n))
+  }
+
   resp    <- model$y
   fit     <- model$fitted.values
   pairs   <- data.frame(response = resp, fit_val = fit)

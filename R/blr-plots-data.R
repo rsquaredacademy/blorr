@@ -41,6 +41,8 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
 
+  blr_check_ungrouped(model, "blr_prep_lorenz_data()")
+
   # training data must be the rows the model was actually fitted on; a
   # supplied training data set may still contain rows dropped by the fit
   if (!test_data || is.null(data)) {

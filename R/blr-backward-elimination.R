@@ -103,15 +103,19 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   bics  <- c()
   devs  <- c()
 
+  dfs <- numeric(0)
+
+  base_rank <- selection_model(response, preds, l, fit = model)$rank
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
     m <- selection_model(response, predictors, l, fit = model)
     aics[i] <- model_aic(m)
+    dfs[i] <- abs(m$rank - base_rank)
     bics[i] <- model_bic(m)
     devs[i] <- model_deviance(m)
   }
 
-  da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
+  da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs, dfs = dfs)
   da2 <- da[order(da[['aics']]), ]
 
   if (details) {
@@ -132,7 +136,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
     for (i in seq_len(ln)) {
       cat(
-        fl(da2[i, 1], w1), fs(), fc(1, w2), fs(),
+        fl(da2[i, 1], w1), fs(), fc(da2[i, 5], w2), fs(),
         fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
         fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
         fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -176,10 +180,14 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
         cat(paste("x", rev(rpred)[1], "\n"))
       }
 
+      dfs <- numeric(0)
+
+      base_rank <- selection_model(response, preds, l, fit = model)$rank
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
         m <- selection_model(response, predictors, l, fit = model)
         aics[i] <- model_aic(m)
+        dfs[i] <- abs(m$rank - base_rank)
         bics[i] <- model_bic(m)
         devs[i] <- model_deviance(m)
       }
@@ -191,7 +199,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
         da <- data.frame(
           predictors = preds, aics = aics, bics = bics,
-          devs = devs
+          devs = devs, dfs = dfs
         )
         da2 <- da[order(da[['aics']]), ]
         w1  <- max(nchar("Predictor"), nchar(predictors))
@@ -211,7 +219,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
         for (i in seq_len(ln)) {
           cat(
-            fl(da2[i, 1], w1), fs(), fc(1, w2), fs(),
+            fl(da2[i, 1], w1), fs(), fc(da2[i, 5], w2), fs(),
             fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
             fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
             fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"

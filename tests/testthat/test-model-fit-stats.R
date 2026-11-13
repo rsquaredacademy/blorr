@@ -203,7 +203,10 @@ test_that("grouped binomial fits reconstruct the null model with trials once", {
 
   expect_equal(as.numeric(logLik(i_model(m))), -73.348689513827)
   expect_equal(as.numeric(logLik(i_model(m))), as.numeric(logLik(null)))
-  expect_equal(blr_rsq_cox_snell(m), 0.787563611002)
+  # Cox-Snell counts trials (one Bernoulli row per trial), as the expanded fit
+  e  <- d[rep(seq_len(30), d$trials), ]
+  e$y <- unlist(lapply(seq_len(30), function(i) c(rep(1, d$s[i]), rep(0, d$trials[i] - d$s[i]))))
+  expect_equal(blr_rsq_cox_snell(m), blr_rsq_cox_snell(glm(y ~ x, e, family = binomial)), tolerance = 1e-6)
 })
 
 test_that("grouped binomial selection models keep trial and user weights once", {

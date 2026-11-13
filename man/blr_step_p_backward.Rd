@@ -67,6 +67,12 @@ k$model
 \references{
 Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 }
+\section{Aliased terms}{
+A model with aliased (perfectly collinear) coefficients is rejected with an
+error, because the Wald test used to enter or remove terms does not exist
+for them. Remove the aliased terms and refit.
+}
+
 \seealso{
 Other variable selection procedures: 
 \code{\link{blr_step_aic_backward}()},

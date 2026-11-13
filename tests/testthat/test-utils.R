@@ -6,7 +6,7 @@ model <- glm(
 
 test_that("response_var extract response variable name from the model", {
   actual <- response_var(model)
-  expected <- model$terms[[2]]
+  expected <- "honcomp"
   expect_equal(actual, expected)
 })
 

@@ -53,6 +53,7 @@ blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
 blr_gains_table.default <- function(model, data = NULL) {
 
   blr_check_model(model)
+  blr_check_ungrouped(model, "blr_gains_table()")
 
   if (is.null(data)) {
     test_data <- FALSE

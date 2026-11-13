@@ -69,6 +69,12 @@ Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.:
 Kutner, MH, Nachtsheim CJ, Neter J and Li W., 2004, Applied Linear Statistical Models (5th edition).
 Chicago, IL., McGraw Hill/Irwin.
 }
+\section{Aliased terms}{
+A model with aliased (perfectly collinear) coefficients is rejected with an
+error, because the Wald test used to enter or remove terms does not exist
+for them. Remove the aliased terms and refit.
+}
+
 \seealso{
 Other variable selection procedures: 
 \code{\link{blr_step_aic_backward}()},

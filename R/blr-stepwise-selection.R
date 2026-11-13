@@ -103,17 +103,21 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     devs <- c()
     lpds <- length(predictors)
 
+    dfs <- numeric(0)
+
+    base_rank <- selection_model(response, preds, l, fit = model)$rank
     for (i in seq_len(lpds)) {
       predn <- c(preds, predictors[i])
       m <- selection_model(response, predn, l, fit = model)
       aics[i] <- model_aic(m)
+      dfs[i] <- abs(m$rank - base_rank)
       bics[i] <- model_bic(m)
       devs[i] <- model_deviance(m)
     }
 
     da <- data.frame(
       predictors = predictors, aics = aics, bics = bics,
-      devs = devs
+      devs = devs, dfs = dfs
     )
     da2 <- da[order(da[['aics']]), ]
 
@@ -137,7 +141,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
       for (i in seq_len(ln)) {
         cat(
-          fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+          fl(da2[i, 1], w1), fs(), fg(da2[i, 5], w2), fs(),
           fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
           fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
           fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -184,17 +188,21 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
         bics <- c()
         devs <- c()
 
+        dfs <- numeric(0)
+
+        base_rank <- selection_model(response, preds, l, fit = model)$rank
         for (i in seq_len(lpreds)) {
           preda <- preds[-i]
           m <- selection_model(response, preda, l, fit = model)
           aics[i] <- model_aic(m)
+          dfs[i] <- abs(m$rank - base_rank)
           bics[i] <- model_bic(m)
           devs[i] <- model_deviance(m)
         }
 
         da <- data.frame(
           predictors = preds, aics = aics, bics = bics,
-          devs = devs
+          devs = devs, dfs = dfs
         )
         da2 <- da[order(da[['aics']]), ]
 
@@ -217,7 +225,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
           for (i in seq_len(ln)) {
             cat(
-              fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+              fl(da2[i, 1], w1), fs(), fg(da2[i, 5], w2), fs(),
               fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
               fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
               fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"

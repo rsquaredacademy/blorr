@@ -1,7 +1,39 @@
 #' @importFrom stats coef confint binomial df.residual glm terms nobs
 #' @importFrom utils data
 response_var <- function(model) {
-  model$terms[[2]]
+  paste(deparse(model$terms[[2]]), collapse = " ")
+}
+
+# grouped binomial data: a cbind(successes, failures) response, or proportions
+# with the trials given as weights. Functions that treat every row as one 0/1
+# observation either expand such a model to one Bernoulli observation per trial
+# (grouped_counts()) or stop with blr_check_ungrouped().
+is_grouped_binomial <- function(model) {
+  y <- model$y
+  is.matrix(model$model[[1]]) || any(y > 0 & y < 1, na.rm = TRUE)
+}
+
+# successes and failures per row of a grouped model; the counts must be whole
+grouped_counts <- function(model) {
+  w <- model$prior.weights
+  s <- model$y * w
+  f <- (1 - model$y) * w
+  if (any(abs(s - round(s)) > 1e-6 * pmax(1, abs(s))) ||
+      any(abs(f - round(f)) > 1e-6 * pmax(1, abs(f)))) {
+    stop("grouped binomial data with non-integer trial counts is not ",
+         "supported.", call. = FALSE)
+  }
+  list(s = round(s), f = round(f), fit = model$fitted.values)
+}
+
+blr_check_ungrouped <- function(model, what) {
+  if (is_grouped_binomial(model)) {
+    stop(what, " does not support grouped binomial data (a cbind(successes, ",
+         "failures) response, or proportions with trials as weights). Refit ",
+         "the model on one row per trial (Bernoulli 0/1 response).",
+         call. = FALSE)
+  }
+  invisible(TRUE)
 }
 
 # name of the data set
@@ -186,6 +218,10 @@ model_response_levels <- function(model) {
 
 # response profile
 resp_profile <- function(model) {
+  if (is_grouped_binomial(model)) {
+    g <- grouped_counts(model)
+    return(c("0" = sum(g$f), "1" = sum(g$s)))
+  }
   table(model$model[[1]])
 }
 
@@ -210,6 +246,11 @@ predictor_est <- function(model) {
 # summary.glm omits aliased coefficients, so matching by position would shift
 # the statistics of every later coefficient; aliased rows are NA instead.
 predictor_mine <- function(model, col_name = NULL) {
+  # a model with no coefficients has an empty summary table whose columns are
+  # named for a t statistic; there is nothing to match
+  if (length(model$coefficients) == 0) {
+    return(numeric(0))
+  }
   sm  <- summary(model)$coefficients
   idx <- match(names(model$coefficients), rownames(sm))
   unname(sm[idx, col_name])

@@ -51,6 +51,12 @@ Build regression model from a set of candidate predictor variables by
 entering and removing predictors based on p values, in a stepwise manner
 until there is no variable left to enter or remove any more.
 }
+\section{Aliased terms}{
+A model with aliased (perfectly collinear) coefficients is rejected with an
+error, because the Wald test used to enter or remove terms does not exist
+for them. Remove the aliased terms and refit.
+}
+
 \examples{
 \donttest{
 # stepwise regression

@@ -26,6 +26,9 @@ weight of evidence, and the Gini index.
   `wt`) are not recognised as nested.
 - The model overview now prints `Df. Model` as the number of estimated coefficients excluding the intercept, instead of the null residual df.
 - The stepwise p-value (both directions) summary now labels its last column `Deviance`, which is what it reports, instead of `C(p)`.
+- Grouped binomial models (a `cbind(successes, failures)` response, or proportions with trials as weights) are now evaluated per trial. `blr_pairs()`, the association table and response summary in `blr_regress()`, `blr_model_fit_stats()` (likelihood, deviance, AIC, BIC and all R2 measures) and the count R2 measures equal the fit on one row per trial. Functions that need one 0/1 row per observation (gains table, Lorenz/Gini, confusion matrix, Hosmer-Lemeshow, link test) stop with a clear error. The response name in the overview is printed as one expression.
+- The AIC selection detail tables print the real degrees of freedom of each term (for example 3 for a four-level factor) instead of 1.
+- `blr_regress()` works for a model with no coefficients, and the p-value selection procedures stop with a clear message for a model with aliased terms instead of failing with an obscure error.
 - `blr_step_aic_backward()` now takes the first row (AIC, BIC and deviance)
   from the same refitted full model that every removal is compared with, so a
   model fitted without an intercept no longer produces a mixed baseline row or

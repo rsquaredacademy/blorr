@@ -39,6 +39,7 @@
 blr_gini_index <- function(model, data = NULL) {
 
   blr_check_model(model)
+  blr_check_ungrouped(model, "blr_gini_index()")
 
   if (is.null(data)) {
     data      <- model$model

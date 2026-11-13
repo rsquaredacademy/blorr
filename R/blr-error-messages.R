@@ -135,3 +135,16 @@ blr_check_varnames <- function(data, column) {
 
 
 
+
+# the p-value selection procedures test each term with a Wald statistic, which
+# does not exist for an aliased (perfectly collinear or constant) term, so a
+# model with an aliased coefficient is rejected up front
+blr_check_aliased <- function(model, what) {
+  if (anyNA(stats::coef(model))) {
+    bad <- names(stats::coef(model))[is.na(stats::coef(model))]
+    stop(what, " cannot be used with a model that has aliased (perfectly ",
+         "collinear) terms: ", paste(bad, collapse = ", "),
+         ". Remove them and refit the model.", call. = FALSE)
+  }
+  invisible(TRUE)
+}

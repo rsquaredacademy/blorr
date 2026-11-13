@@ -29,6 +29,7 @@ blr_test_hosmer_lemeshow <- function(model, data = NULL)
 blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   blr_check_model(model)
+  blr_check_ungrouped(model, "blr_test_hosmer_lemeshow()")
 
   if (is.null(data)) {
     data <- model$model
