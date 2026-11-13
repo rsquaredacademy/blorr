@@ -28,3 +28,7 @@ without case weights, are unaffected".
 
 ## Checks
 See below.
+
+Clean `git archive` of commit 68d0599: `R CMD build` + `R CMD check --as-cran --no-manual`: 0 errors, 0 warnings, 1 NOTE
+(CRAN incoming: maintainer change, expected). Examples, donttest examples, tests and vignette rebuild OK.
+`devtools::test()` (NOT_CRAN=true): 215 tests, 0 failures, 1104 expectations.
