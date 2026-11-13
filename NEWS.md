@@ -19,8 +19,8 @@ weight of evidence, and the Gini index.
   reported as unavailable with a warning.
 - The likelihood ratio test now checks nesting structurally: the reduced
   model's estimated terms must be a subset, by name and values, of the full
-  model's, with the same response, rows, weights and offset. No numerical
-  tolerance is used, so a comparison that cannot be established as nested stops
+  model's, with the same response, rows, weights and offset. The columns must be
+  identical (compared exactly, with no tolerance), so a comparison that cannot be established as nested stops
   with an error instead of returning chi-square inference. Equivalent
   parameterizations under different names (other factor contrasts, `I(wt)` for
   `wt`) are not recognised as nested.

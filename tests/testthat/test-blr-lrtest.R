@@ -317,3 +317,62 @@ test_that("BFXX8-1 reproductions stop; nested controls are accepted (bfx9)", {
                  "nested")
   }
 })
+
+test_that("same-named but unequal columns are rejected, with no tolerance (bfx11)", {
+  # small units: wt * 1e-200 reversed in the reduced model
+  d <- transform(mtcars, x = wt * 1e-200)
+  full <- glm(am ~ x + hp, d, family = binomial)
+  red  <- glm(am ~ x, transform(d, x = rev(x)), family = binomial)
+  expect_error(blr_test_lr(full, red), "nested")
+
+  # at other scales too
+  for (s in c(1, 1e-10, 1e-100, 1e150)) {
+    d <- transform(mtcars, x = wt * s)
+    expect_error(
+      blr_test_lr(glm(am ~ x + hp, d, family = binomial),
+                  glm(am ~ x, transform(d, x = rev(x)), family = binomial)),
+      "nested")
+  }
+
+  # exact dyadic case: same names, columns differ by a tiny relative amount
+  set.seed(1219)
+  n <- 256
+  d <- data.frame(a = seq_len(n)/8, v = sample(-128:127)/8,
+                  u = sample(-128:127)/8, h = rnorm(n))
+  d$y <- rbinom(n, 1, plogis(-.5 + .02*d$a + .3*d$u))
+  d$b <- d$a + 2^-27*d$v
+  rd  <- d
+  rd$b <- rd$a + 2^-27*rd$u
+  expect_error(blr_test_lr(glm(y ~ a + b + h, d, family = binomial),
+                           glm(y ~ a + b, rd, family = binomial)), "nested")
+
+  # a one-ulp change in one value is not nested either
+  m <- mtcars
+  m2 <- m
+  m2$wt[3] <- m2$wt[3] * (1 + 1e-15)
+  expect_error(blr_test_lr(glm(am ~ wt + hp, m, family = binomial),
+                           glm(am ~ wt, m2, family = binomial)), "nested")
+})
+
+test_that("ordinary nested comparisons still run and match anova (bfx11)", {
+  d <- transform(mtcars, g = factor(cyl), lw = rep(c(1, 2), 16),
+                 off = log(rep(c(1, 1.5), 16)))
+  cases <- list(
+    list(am ~ wt + hp, am ~ wt, NULL, NULL),
+    list(am ~ g + hp, am ~ g, NULL, NULL),
+    list(am ~ wt * hp, am ~ wt + hp, NULL, NULL),
+    list(am ~ g * wt, am ~ g + wt, NULL, NULL),
+    list(am ~ wt + hp, am ~ wt, "lw", NULL),
+    list(am ~ wt + hp + offset(off), am ~ wt + offset(off), NULL, NULL)
+  )
+  for (cs in cases) {
+    w <- if (is.null(cs[[3]])) NULL else d[[cs[[3]]]]
+    full <- eval(bquote(glm(.(cs[[1]]), d, family = binomial, weights = .(w))))
+    red  <- eval(bquote(glm(.(cs[[2]]), d, family = binomial, weights = .(w))))
+    k <- suppressWarnings(blr_test_lr(full, red))
+    a <- suppressWarnings(anova(red, full, test = "Chisq"))
+    expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+    expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
+    expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
+  }
+})

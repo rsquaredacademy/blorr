@@ -88,17 +88,23 @@ lr_check_comparable <- function(full_model, reduced_model) {
     )
   }
 
+  # exact equality (names dropped): no tolerance is used anywhere in the
+  # comparability or nesting checks
+  same <- function(a, b) identical(as.numeric(unname(a)), as.numeric(unname(b)))
+  n_f  <- length(full_model$y)
+
   if (!identical(nobs(full_model), nobs(reduced_model)) ||
-      !isTRUE(all.equal(full_model$y, reduced_model$y))) {
+      !same(full_model$y, reduced_model$y)) {
     stop("models were not fitted to the same observations.", call. = FALSE)
   }
 
-  if (!isTRUE(all.equal(full_model$prior.weights,
-                        reduced_model$prior.weights))) {
+  if (!same(full_model$prior.weights, reduced_model$prior.weights)) {
     stop("models were not fitted with the same weights.", call. = FALSE)
   }
 
-  if (!isTRUE(all.equal(full_model$offset, reduced_model$offset))) {
+  off <- function(m) if (is.null(m$offset)) rep(0, n_f) else m$offset
+
+  if (!same(off(full_model), off(reduced_model))) {
     stop("models were not fitted with the same offset.", call. = FALSE)
   }
 
@@ -106,7 +112,7 @@ lr_check_comparable <- function(full_model, reduced_model) {
   # weights and offset (checked above), and every estimated column of the
   # reduced model is an estimated column of the full model with the same name
   # and values on the informative rows (positive prior weight). If that cannot
-  # be established the test stops with an error; no tolerance is involved.
+  # be established exactly the test stops with an error.
   if (nrow(stats::model.matrix(full_model)) !=
       nrow(stats::model.matrix(reduced_model))) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)

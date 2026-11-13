@@ -318,10 +318,11 @@ model_class <- function(model) {
 }
 
 # is the reduced model structurally nested in the full model? This is a
-# documented, purely structural rule (no numerical tolerance): the reduced
+# documented, purely structural rule with exact comparison: the reduced
 # model's estimated (non-aliased) design columns must all appear, by name, among
 # the full model's estimated columns, and the columns that share a name must
-# hold the same values on the observations that carry information. Both designs
+# hold identical values (identical(), no tolerance) on the observations that
+# carry information. Both designs
 # are taken from fitted_design(). Algebraically equivalent parameterizations
 # under different names (for example other factor contrasts, or I(wt) in place
 # of wt) are not recognised as nested; the caller stops with an error.
@@ -341,8 +342,7 @@ design_nested <- function(full, reduced) {
   }
 
   for (nm in rn) {
-    if (!isTRUE(all.equal(unname(full[, nm]), unname(reduced[, nm]),
-                          tolerance = 1e-8))) {
+    if (!identical(as.numeric(full[, nm]), as.numeric(reduced[, nm]))) {
       return(FALSE)
     }
   }
