@@ -18,14 +18,18 @@ The intercept-only null in `blr_model_fit_stats()` is available only when the mo
 `(Intercept)`; a no-intercept model whose columns span the constant now gives "not nested" / NA (previously available).
 
 ## Deferred (not fixed; wrong-number items outside the brief's two High items)
-- BFXX8-3 (Medium): printed Df. Model is df.null; AIC detail tables hard-code DF 1.
+- BFXX8-3 (Medium), AIC detail tables only: candidate rows still hard-code DF 1 (zero-rank / factor / matrix terms). The overview `Df. Model` part was fixed (see below).
 - BFXX8-4 (Medium): grouped-binomial response summary, association table and count R2 treat counts as binary.
 - BFXX8-5 (Medium): blr_regress on zero-parameter no-intercept glm errors.
 - BFXX8-6 (Medium): p-value selection crashes on aliased candidate terms.
-- BFXX8-7 (Low): p-both prints deviance under "C(p)".
-BFXX8-3, 4 and 7 give wrong numbers or labels and are within the common rule; they were left because the
-brief limited this round to BFXX8-1/2 plus "any Medium/Low" only if time allows: Aravind/Claude to decide
-whether to run a bfx10 round for them.
+BFXX8-3 (tables), 4, 5 and 6 are larger changes (grouped-binomial handling, alias handling in three p procedures,
+rank-based DF) and were not done this round; Claude/Aravind to decide on a bfx10 round for them.
+
+## Also fixed (cheap Medium/Low items)
+| Finding | Test | Fix | Status |
+|---|---|---|---|
+| BFXX8-3 (overview) Df. Model was df.null | test-blr-regress.R "overview Df. Model ..." (am~wt+hp: 2, no-intercept: 2, aliased 0+wt+I(2*wt): 1, am~1: 0; resid df 29); test-utils.R model_df; blr-regress snapshot updated (199 -> 3) | R/blr-utils.R `model_df()`: non-aliased coefficients minus intercept | Fixed |
+| BFXX8-7 p-both column labelled C(p) | test-forward-selection.R "p-both summary labels ... Deviance" | R/blr-output.R:641 label "Deviance" | Fixed |
 
 ## Checks
 See the final section appended below after the R CMD check run.

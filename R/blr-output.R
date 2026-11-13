@@ -638,7 +638,7 @@ print_stepwise <- function(data) {
     format("Step", width = w1, justify = "centre"), fs(), format("Variable", width = w2, justify = "centre"), fs(),
     format("Removed", width = w3, justify = "centre"), fs(),
     format("AIC", width = w4, justify = "centre"), fs(), format("BIC", width = w5, justify = "centre"), fs(),
-    format("C(p)", width = w6, justify = "centre"), fs(), "\n"
+    format("Deviance", width = w6, justify = "centre"), fs(), "\n"
   )
   cat(rep("-", w), sep = "", "\n")
 

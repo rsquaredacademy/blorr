@@ -24,6 +24,8 @@ weight of evidence, and the Gini index.
   with an error instead of returning chi-square inference. Equivalent
   parameterizations under different names (other factor contrasts, `I(wt)` for
   `wt`) are not recognised as nested.
+- The model overview now prints `Df. Model` as the number of estimated coefficients excluding the intercept, instead of the null residual df.
+- The stepwise p-value (both directions) summary now labels its last column `Deviance`, which is what it reports, instead of `C(p)`.
 - `blr_step_aic_backward()` now takes the first row (AIC, BIC and deviance)
   from the same refitted full model that every removal is compared with, so a
   model fitted without an intercept no longer produces a mixed baseline row or

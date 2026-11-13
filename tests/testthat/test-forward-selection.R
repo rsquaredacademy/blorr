@@ -524,3 +524,15 @@ test_that("selection stops when a model cannot be restored exactly (bfx8)", {
                "could not rebuild the selected model")
   expect_null(selection_restore_impl(lit, m, "hp"))
 })
+
+test_that("p-both summary labels the deviance column as Deviance (bfx9)", {
+  set.seed(1)
+  d <- transform(mtcars, noise = rnorm(32))
+  m <- glm(am ~ wt + hp + noise, d, family = binomial)
+  invisible(capture.output(k <- blr_step_p_both(m)))
+  out <- capture.output(print(k))
+  expect_true(any(grepl("Deviance", out)))
+  expect_false(any(grepl("C(p)", out, fixed = TRUE)))
+  expect_equal(k$dev[1], deviance(glm(am ~ wt, d, family = binomial)),
+               tolerance = 1e-6)
+})

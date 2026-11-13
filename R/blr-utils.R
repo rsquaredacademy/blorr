@@ -24,9 +24,11 @@ residual_df <- function(model) {
   model$df.residual
 }
 
-# model degrees of freedom
+# model degrees of freedom: estimated (non-aliased) coefficients, excluding
+# the intercept when the model has one
 model_df <- function(model) {
-  model$df.null
+  est <- names(stats::coef(model))[!is.na(stats::coef(model))]
+  length(setdiff(est, "(Intercept)"))
 }
 
 # event indicator: missing responses stay missing; for factor/character

@@ -102,3 +102,16 @@ test_that("aliased coefficients do not shift summary statistics (bfx8)", {
     expect_equal(ra$blr_odds_point, unname(exp(coef(ma))[ra$blr_effects]))
   }
 })
+
+test_that("overview Df. Model is the estimated model df excluding the intercept (bfx9)", {
+  m1 <- glm(am ~ wt + hp, mtcars, family = binomial)
+  m2 <- glm(am ~ 0 + wt + hp, mtcars, family = binomial)
+  m3 <- glm(am ~ 0 + wt + I(2 * wt), mtcars, family = binomial)
+  m4 <- glm(am ~ 1, mtcars, family = binomial)
+
+  expect_equal(blr_regress(m1)$mod_df, 2)
+  expect_equal(blr_regress(m1)$resid_df, 29)
+  expect_equal(blr_regress(m2)$mod_df, 2)
+  expect_equal(blr_regress(m3)$mod_df, 1)
+  expect_equal(blr_regress(m4)$mod_df, 0)
+})
