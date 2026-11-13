@@ -33,3 +33,8 @@ rank-based DF) and were not done this round; Claude/Aravind to decide on a bfx10
 
 ## Checks
 See the final section appended below after the R CMD check run.
+
+## Check results (clean git archive of HEAD 3795a8e, R CMD build, R CMD check --as-cran --no-manual)
+0 errors, 0 warnings, 1 NOTE (CRAN incoming feasibility: maintainer change, expected per cran-comments.md). Examples (incl. donttest), tests (60 s) and vignette rebuild OK.
+devtools::test() with NOT_CRAN=true: 212 tests, 0 failures, ~1051 expectations.
+Commands that changed something: edits to R/, tests/, NEWS.md, docs-dev; blr-regress snapshot updated (Df. Model 199 -> 3).
