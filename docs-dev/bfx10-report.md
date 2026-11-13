@@ -33,3 +33,7 @@ re-run because it rewrote every Rd).
 
 ## Checks
 See the final section below.
+
+## Check results (clean git archive of the bfx10 commit)
+`R CMD build` + `R CMD check --as-cran --no-manual`: 0 errors, 0 warnings, 1 NOTE (CRAN incoming: maintainer change, expected).
+`devtools::test()` with NOT_CRAN=true: 217 tests, 0 failures, 1168 expectations.
