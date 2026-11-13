@@ -110,42 +110,25 @@ test_that("LR test rejects a reduced design fitted to different predictor values
   )
 })
 
-test_that("LR test accepts a nested design with different factor contrasts", {
+test_that("LR test stops when nesting is not structural: contrasts, I(wt) (bfx9)", {
+  # nesting is by name: equivalent but differently named columns are not
+  # recognised, so the test stops instead of inferring
   d    <- transform(mtcars, g = factor(cyl))
   full <- glm(am ~ g + hp, data = d, family = binomial,
               contrasts = list(g = "contr.treatment"))
   red  <- glm(am ~ g, data = d, family = binomial,
               contrasts = list(g = "contr.sum"))
+  expect_error(blr_test_lr(full, red), "nested")
 
-  k <- blr_test_lr(full, red)
-  a <- anova(red, full, test = "Chisq")
+  full1 <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  red1  <- glm(am ~ I(wt), data = mtcars, family = binomial)
+  expect_error(blr_test_lr(full1, red1), "nested")
 
-  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
-  expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
-  expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
-  expect_equal(k$test_result[["lr_ratio"]], 6.7312378514618,
-               tolerance = 1e-9)
-
-  # the same containment holds when the full model uses the sum coding
-  full2 <- glm(am ~ g + hp, data = d, family = binomial,
-               contrasts = list(g = "contr.sum"))
-  red2  <- glm(am ~ g, data = d, family = binomial,
-               contrasts = list(g = "contr.treatment"))
-
-  k2 <- blr_test_lr(full2, red2)
-  a2 <- anova(red2, full2, test = "Chisq")
-
-  expect_equal(k2$test_result[["lr_ratio"]], a2[["Deviance"]][2])
-  expect_equal(k2$test_result[["d_f"]], a2[["Df"]][2])
-})
-
-test_that("LR test accepts a nested design with a different term expression", {
-  full <- glm(am ~ wt + hp, data = mtcars, family = binomial)
-  red  <- glm(am ~ I(wt), data = mtcars, family = binomial)
-
-  k <- blr_test_lr(full, red)
-  a <- anova(red, full, test = "Chisq")
-
+  # same contrasts and same names: accepted, value equals anova
+  red2 <- glm(am ~ g, data = d, family = binomial,
+              contrasts = list(g = "contr.treatment"))
+  k <- blr_test_lr(full, red2)
+  a <- anova(red2, full, test = "Chisq")
   expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
   expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
   expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
@@ -193,43 +176,27 @@ test_that("LR nesting check survives column norm overflow and underflow", {
   }
 })
 
-test_that("LR nesting keeps nearly collinear directions the fit estimates (bfx6)", {
-  # exact dyadic data: v = 2^27 * (b - a), so am ~ v is nested in am ~ a + b + hp
+test_that("LR nesting is structural for near-collinear designs (bfx9)", {
+  # exact dyadic data: v = 2^27 * (b - a) is a hidden relationship that the
+  # structural rule does not look for: am ~ v is declined, not tested
   set.seed(12)
   d <- transform(mtcars, a = seq_len(32) / 8, v = sample(-16:15) / 8)
   d$b <- d$a + 2^-27 * d$v
-  full    <- glm(am ~ a + b + hp, d, family = binomial)
-  reduced <- glm(am ~ v, d, family = binomial)
-  expect_equal(full$rank, 4)
+  full <- glm(am ~ a + b + hp, d, family = binomial)
+  expect_error(blr_test_lr(full, glm(am ~ v, d, family = binomial)), "nested")
 
-  k <- blr_test_lr(full, reduced)
-  a <- anova(reduced, full, test = "Chisq")
-  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
-  expect_equal(k$test_result[["lr_ratio"]], 9.7601884568512, tolerance = 1e-6)
-  expect_equal(k$test_result[["d_f"]], 2)
-
-  # near-collinear but estimable at several scales
+  # but a subset of the full model's own columns is accepted, at any scale
   for (s in c(1, 1e155, 1e-200)) {
     set.seed(12)
     dd   <- mtcars
-    b0   <- dd$wt + rnorm(32, sd = 1e-6)
-    dd$v <- (b0 - dd$wt) / 1e-6
     dd$a <- dd$wt * s
-    dd$b <- b0 * s
+    dd$b <- (dd$wt + rnorm(32, sd = 1e-6)) * s
     full <- glm(am ~ a + b + hp, dd, family = binomial)
-    red  <- glm(am ~ v, dd, family = binomial)
+    red  <- glm(am ~ a + b, dd, family = binomial)
     k    <- blr_test_lr(full, red)
-    expect_equal(k$test_result[["lr_ratio"]], 32.80829168332131,
-                 tolerance = 1e-6)
-    expect_equal(k$test_result[["d_f"]], 2)
-
-    # invalid reversed-predictor control at the same scale still errors
-    dr <- transform(mtcars, x = rev(wt) * s)
-    expect_error(
-      blr_test_lr(glm(am ~ wt + hp, dr, family = binomial),
-                  glm(am ~ x, dr, family = binomial)),
-      "nested"
-    )
+    a    <- anova(red, full, test = "Chisq")
+    expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
+    expect_equal(k$test_result[["d_f"]], 1)
   }
 })
 
@@ -279,43 +246,74 @@ test_that("LR nesting uses the weighted fit's informative rows (bfx7)", {
   expect_equal(k$test_result[["d_f"]], 1)
 })
 
-test_that("LR nesting is invariant to translating predictors (bfx8)", {
-  full <- glm(am ~ wt + hp, mtcars, family = binomial)
-  ref  <- anova(glm(am ~ wt, mtcars, family = binomial), full,
-                test = "Chisq")[["Deviance"]][2]
-
-  for (sh in c(0, 1e6, 1e7, 1e8, 1e9)) {
-    # the varying part stays well above glm's own aliasing tolerance
+test_that("LR nesting works on translated predictors by name (bfx8, bfx9)", {
+  for (sh in c(0, 1e6, 1e8)) {
     for (s in c(1, 1e3)) {
       d <- transform(mtcars, z = rev(wt) * s + sh, zv = wt * s + sh)
+      full <- glm(am ~ zv + hp, d, family = binomial)
 
-      # invalid: a translated, rescaled reversed predictor
-      expect_error(
-        blr_test_lr(full, glm(am ~ z, d, family = binomial)),
-        "nested"
-      )
+      # a different predictor is never nested
+      expect_error(blr_test_lr(full, glm(am ~ z, d, family = binomial)),
+                   "nested")
 
-      # valid: a translated, rescaled wt is nested in the intercept + wt space
-      k <- blr_test_lr(full, glm(am ~ zv, d, family = binomial))
-      expect_equal(k$test_result[["lr_ratio"]], ref, tolerance = 1e-6)
+      # a subset of the full model's own columns is nested
+      red <- glm(am ~ zv, d, family = binomial)
+      k   <- blr_test_lr(full, red)
+      a   <- anova(red, full, test = "Chisq")
+      expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2],
+                   tolerance = 1e-6)
       expect_equal(k$test_result[["d_f"]], 1)
-
-      # valid: the translated column in the full model instead (glm itself
-      # stops converging for this full fit beyond a shift of 1e8)
-      if (sh <= 1e8) {
-        fs <- glm(am ~ zv + hp, d, family = binomial)
-        k2 <- blr_test_lr(fs, glm(am ~ wt, d, family = binomial))
-        expect_equal(k2$test_result[["lr_ratio"]], ref, tolerance = 1e-6)
-      }
     }
 
-    # without an intercept, a translated predictor does not span the
-    # constant, so the null comparison is unavailable
+    # without an intercept the null comparison is unavailable
     d  <- transform(mtcars, zv = wt + sh)
     m0 <- glm(am ~ 0 + zv + hp, d, family = binomial)
     if (sh > 0) {
       expect_warning(fs0 <- blr_model_fit_stats(m0), "not nested")
       expect_true(is.na(fs0$lr_ratio))
     }
+  }
+})
+
+test_that("BFXX8-1 reproductions stop; nested controls are accepted (bfx9)", {
+  set.seed(1219)
+  n <- 256
+  d <- data.frame(a = seq_len(n)/8, v = sample(-128:127)/8,
+                  u = sample(-128:127)/8, h = rnorm(n))
+  d$y <- rbinom(n, 1, plogis(-.5 + .02*d$a + .1*d$v + .3*d$h))
+
+  for (pow in c(27, 33)) {
+    delta <- if (pow == 27) 1e-5 else .001
+    d$b <- d$a + 2^-pow*d$v
+    d$z <- d$v + delta*d$u
+    full    <- glm(y ~ a + b + h, d, family = binomial)
+    reduced <- glm(y ~ z, d, family = binomial)
+    stable  <- glm(y ~ a + v + h, d, family = binomial)
+
+    expect_error(blr_test_lr(full, reduced), "nested")
+    expect_error(blr_test_lr(stable, reduced), "nested")
+
+    # delta = 0 control: v itself is not a column of the full model either,
+    # so it is declined; a subset of its columns is accepted and exact
+    expect_error(blr_test_lr(full, glm(y ~ v, d, family = binomial)),
+                 "nested")
+    red <- glm(y ~ a + b, d, family = binomial)
+    k   <- blr_test_lr(full, red)
+    an  <- anova(red, full, test = "Chisq")
+    expect_equal(k$test_result[["lr_ratio"]], an[["Deviance"]][2])
+    expect_equal(k$test_result[["d_f"]], 1)
+  }
+
+  # scale controls on an orthogonal-style design
+  set.seed(888)
+  e <- data.frame(a = rnorm(n), v = rnorm(n), u = rnorm(n))
+  e$y <- rbinom(n, 1, plogis(.3*e$a + .3*e$v))
+  for (s in c(1, 1e155, 1e-200)) {
+    e$b <- (e$a + 1e-9*e$v) * s
+    e$z <- (e$v + 1e-5*e$u) * s
+    e$a2 <- e$a * s
+    full <- glm(y ~ a2 + b, e, family = binomial)
+    expect_error(blr_test_lr(full, glm(y ~ z, e, family = binomial)),
+                 "nested")
   }
 })

@@ -404,21 +404,15 @@ fit_stat <- function(model) {
 
 }
 
-# does the fitted design span the constant vector, i.e. is the intercept-only
-# model nested in it? columns are normalized before comparison so the answer is
-# invariant to rescaling any predictor. The check uses the fitted model's
-# estimable (non-aliased) columns on the observations with positive prior
-# weight, the same policy as the likelihood ratio test.
+# is the intercept-only model nested in the fitted model? Structural rule: the
+# fitted model must have an estimated (non-aliased) intercept column. A
+# no-intercept model is never treated as containing the null model, even if its
+# columns happen to sum to a constant.
 null_model_nested <- function(model) {
 
   mm <- fitted_design(model)
-  n  <- nrow(mm)
 
-  if (n == 0L || ncol(mm) == 0L) {
-    return(FALSE)
-  }
-
-  as.vector(design_contains(mm, matrix(1, nrow = n, ncol = 1)))
+  nrow(mm) > 0L && "(Intercept)" %in% colnames(mm)
 
 }
 

@@ -17,10 +17,17 @@ weight of evidence, and the Gini index.
   a model without an intercept. The intercept-only model is only used as the
   null when it is actually nested in the fitted design; otherwise the test is
   reported as unavailable with a warning.
-- The likelihood ratio test now checks nesting by the column space of the
-  fitted designs rather than by matching column names, so equivalent factor
-  parameterizations such as treatment and sum contrasts can be compared while
-  non-nested designs are still rejected.
+- The likelihood ratio test now checks nesting structurally: the reduced
+  model's estimated terms must be a subset, by name and values, of the full
+  model's, with the same response, rows, weights and offset. No numerical
+  tolerance is used, so a comparison that cannot be established as nested stops
+  with an error instead of returning chi-square inference. Equivalent
+  parameterizations under different names (other factor contrasts, `I(wt)` for
+  `wt`) are not recognised as nested.
+- `blr_step_aic_backward()` now takes the first row (AIC, BIC and deviance)
+  from the same refitted full model that every removal is compared with, so a
+  model fitted without an intercept no longer produces a mixed baseline row or
+  a wrong first removal.
 - The likelihood ratio test now uses the difference in residual degrees of
   freedom between the reduced and full models, giving the correct degrees of
   freedom and p-value for nested models.

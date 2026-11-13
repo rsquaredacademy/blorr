@@ -274,70 +274,37 @@ model_class <- function(model) {
   class(model)[1]
 }
 
-# normalize each column of a design matrix to unit 2-norm; zero columns are
-# left as zero so they do not affect the column-space comparison. Each column is
-# first divided by its largest absolute value, so the 2-norm is computed on
-# values of order one and cannot overflow (very large predictors) or underflow
-# to zero (very small predictors).
-column_normalize <- function(x) {
-
-  if (any(!is.finite(x))) {
-    stop("model design contains non-finite values.", call. = FALSE)
-  }
-
-  mx <- apply(abs(x), 2, max)
-  mx[mx == 0] <- 1
-  x  <- sweep(x, 2, mx, "/")
-
-  nrm <- sqrt(colSums(x * x))
-  nrm[nrm == 0] <- 1
-  sweep(x, 2, nrm, "/")
-}
-
-# is the column space of `reduced` contained in the column space of `full`?
-# The comparison is between spaces, not columns, so it does not depend on how
-# either design is parameterized: rescaling a column, or adding a multiple of
-# another column (for example a large constant to a predictor of a model with
-# an intercept), leaves the answer unchanged.
-#
-# Both designs (their estimable columns on the informative rows, see
-# fitted_design()) are column-normalized, which removes the effect of units,
-# and an orthonormal basis of each space is taken from its singular value
-# decomposition. Each orthonormal basis vector of the reduced space is then
-# projected onto the full space; its residual length is the sine of its angle
-# to that space. The tolerance is the size of the rounding error such a
-# residual can carry, which grows with the condition numbers of the two
-# normalized designs, so a nearly collinear but genuine direction is accepted
-# while a direction that is merely small relative to a large constant is not.
-# If either design is so ill-conditioned that the rounding error is not small,
-# nesting cannot be confirmed and FALSE is returned. Attributes `residual`,
-# `tol` and `reliable` describe the decision.
-design_contains <- function(full, reduced) {
-
-  fail <- function(res = Inf, tol = NA_real_, reliable = FALSE) {
-    structure(FALSE, residual = res, tol = tol, reliable = reliable)
-  }
+# is the reduced model structurally nested in the full model? This is a
+# documented, purely structural rule (no numerical tolerance): the reduced
+# model's estimated (non-aliased) design columns must all appear, by name, among
+# the full model's estimated columns, and the columns that share a name must
+# hold the same values on the observations that carry information. Both designs
+# are taken from fitted_design(). Algebraically equivalent parameterizations
+# under different names (for example other factor contrasts, or I(wt) in place
+# of wt) are not recognised as nested; the caller stops with an error.
+design_nested <- function(full, reduced) {
 
   if (nrow(full) == 0L || ncol(full) == 0L || ncol(reduced) == 0L ||
       nrow(full) != nrow(reduced)) {
-    return(fail(reliable = TRUE))
+    return(FALSE)
   }
 
-  sf <- svd(column_normalize(full), nv = 0)
-  sr <- svd(column_normalize(reduced), nv = 0)
+  fn <- colnames(full)
+  rn <- colnames(reduced)
 
-  if (min(sf$d) <= 0 || min(sr$d) <= 0) {
-    return(fail())
+  if (is.null(fn) || is.null(rn) || anyDuplicated(fn) || anyDuplicated(rn) ||
+      !all(rn %in% fn)) {
+    return(FALSE)
   }
 
-  kappa <- max(sf$d) / min(sf$d) + max(sr$d) / min(sr$d)
-  tol   <- 8 * .Machine$double.eps * sqrt(nrow(full)) * kappa
+  for (nm in rn) {
+    if (!isTRUE(all.equal(unname(full[, nm]), unname(reduced[, nm]),
+                          tolerance = 1e-8))) {
+      return(FALSE)
+    }
+  }
 
-  q   <- sr$u
-  e   <- q - sf$u %*% crossprod(sf$u, q)
-  res <- max(sqrt(colSums(e * e)))
-
-  structure(res <= tol, residual = res, tol = tol, reliable = tol < 1e-4)
+  TRUE
 }
 
 # rows of a fitted model that carry information: positive prior weight (zero

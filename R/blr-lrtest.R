@@ -102,37 +102,24 @@ lr_check_comparable <- function(full_model, reduced_model) {
     stop("models were not fitted with the same offset.", call. = FALSE)
   }
 
-  # matching term labels are not required either: nesting only requires the
-  # reduced design to lie in the column space of the full design, which holds
-  # for equivalent factor parameterizations such as treatment and sum
-  # contrasts and for algebraically identical terms such as I(wt) and wt. The
-  # designs are column-normalized before the projection residual is checked, so
-  # mismatched rows, a reduced intercept the full model does not span, and a
-  # same-named predictor fitted to different values are still rejected no
-  # matter how any predictor is rescaled.
-  full_design <- stats::model.matrix(full_model)
-  red_design  <- stats::model.matrix(reduced_model)
-
-  if (nrow(full_design) != nrow(red_design) || ncol(red_design) < 1L) {
+  # nesting is a structural check (see design_nested()): same response, rows,
+  # weights and offset (checked above), and every estimated column of the
+  # reduced model is an estimated column of the full model with the same name
+  # and values on the informative rows (positive prior weight). If that cannot
+  # be established the test stops with an error; no tolerance is involved.
+  if (nrow(stats::model.matrix(full_model)) !=
+      nrow(stats::model.matrix(reduced_model))) {
     stop("reduced_model must be nested within full_model.", call. = FALSE)
   }
 
-  # both designs are compared on the observations that carry information in
-  # the full fit (the prior weights were checked to be equal above), each
-  # reduced to its estimated, non-aliased columns
   rows        <- fitted_rows(full_model)
   full_design <- fitted_design(full_model, rows)
   red_design  <- fitted_design(reduced_model, rows)
 
-  nested <- design_contains(full_design, red_design)
-
-  if (!nested) {
-    if (!isTRUE(attr(nested, "reliable"))) {
-      stop("reduced_model must be nested within full_model; nesting could ",
-           "not be confirmed to numerical precision because a design is too ",
-           "ill-conditioned.", call. = FALSE)
-    }
-    stop("reduced_model must be nested within full_model.", call. = FALSE)
+  if (!design_nested(full_design, red_design)) {
+    stop("reduced_model must be nested within full_model: its estimated ",
+         "terms must be a subset, by name and values, of the full model's ",
+         "terms.", call. = FALSE)
   }
 
   if (stats::df.residual(reduced_model) -

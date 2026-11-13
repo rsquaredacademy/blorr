@@ -71,9 +71,11 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   l        <- selection_data(model)
   nam      <- coeff_names(model)
   preds    <- nam
-  aic_f    <- model_aic(model)
 
-    mi <- selection_model(response, preds, l, fit = model)
+  # one refitted full model supplies the baseline AIC, BIC and deviance, so
+  # the first row and every comparison come from the same fit
+  mi    <- selection_model(response, preds, l, fit = model)
+  aic_f <- model_aic(mi)
 
   laic <- aic_f
   lbic <- model_bic(mi)
