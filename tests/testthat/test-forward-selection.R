@@ -29,58 +29,6 @@ test_that("output from forward variable p selection is as expected", {
   expect_equal(actual, expected)
 })
 
-test_that("forward p selection keeps weights and prints the returned model", {
-  set.seed(1)
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  d$noise <- rnorm(32)
-  m <- glm(am ~ wt + hp + noise, d, family = binomial, weights = w)
-
-  out <- capture.output(k <- blr_step_p_forward(m, penter = 0.03))
-
-  expected <- glm(am ~ wt + hp, data = d, family = binomial, weights = w)
-
-  expect_equal(k$predictors, c("wt", "hp"))
-  expect_equal(unname(coef(k$model)), unname(coef(expected)))
-  for (b in coef(k$model)) {
-    expect_true(any(grepl(sprintf("%.4f", b), out, fixed = TRUE)))
-  }
-})
-
-test_that("backward p elimination prints the weighted model it returns", {
-  set.seed(1)
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  d$noise <- rnorm(32)
-  m <- glm(am ~ wt + hp + noise, d, family = binomial, weights = w)
-
-  out <- capture.output(k <- blr_step_p_backward(m))
-
-  expected <- glm(reformulate(setdiff(k$indvar, k$removed), response = "am"),
-                  data = d, family = binomial, weights = w)
-  expect_equal(unname(coef(k$model)), unname(coef(expected)))
-  for (b in coef(k$model)) {
-    expect_true(any(grepl(sprintf("%.4f", b), out, fixed = TRUE)))
-  }
-})
-
-test_that("stepwise p selection prints the weighted model it returns", {
-  set.seed(1)
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  d$noise <- rnorm(32)
-  m <- glm(am ~ wt + hp + noise, d, family = binomial, weights = w)
-
-  out <- capture.output(k <- blr_step_p_both(m))
-
-  expected <- glm(reformulate(k$predictors, response = "am"), data = d,
-                  family = binomial, weights = w)
-  expect_equal(unname(coef(k$model)), unname(coef(expected)))
-  for (b in coef(k$model)) {
-    expect_true(any(grepl(sprintf("%.4f", b), out, fixed = TRUE)))
-  }
-})
-
 test_that("p-value selection reevaluates transformed predictors on fitted rows", {
   set.seed(1)
   d <- mtcars
@@ -102,30 +50,6 @@ test_that("p-value selection reevaluates transformed predictors on fitted rows",
   expect_equal(sel_terms(both$model), c("log(wt)", "hp"))
   expect_equal(unname(coef(both$model)), unname(coef(expected)))
   expect_equal(both$predictors, c("log(wt)", "hp"))
-})
-
-test_that("AIC selection procedures print the weighted model they return", {
-  set.seed(1)
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  d$noise <- rnorm(32)
-  m <- glm(am ~ wt + hp + noise, d, family = binomial, weights = w)
-
-  runs <- list(
-    function() blr_step_aic_forward(m, progress = TRUE),
-    function() blr_step_aic_backward(m, progress = TRUE),
-    function() blr_step_aic_both(m, details = TRUE)
-  )
-
-  for (run in runs) {
-    out <- capture.output(k <- run())
-    expected <- glm(formula(k$model), data = d, family = binomial,
-                    weights = w)
-    expect_equal(unname(coef(k$model)), unname(coef(expected)))
-    for (b in coef(k$model)) {
-      expect_true(any(grepl(sprintf("%.4f", b), out, fixed = TRUE)))
-    }
-  }
 })
 
 test_that("all six procedures use the stored fit after source-data mutation", {
@@ -366,19 +290,19 @@ test_that("selected na.exclude models keep their row padding (bfx6)", {
     expect_equal(unname(which(is.na(predict(k$model)))), c(2L, 9L, 30L))
   }
 
-  # weighted fit with a matrix-valued term
+  # fit with a matrix-valued term
   set.seed(7)
   dw <- data.frame(x = rnorm(150), z = rnorm(150), noise = rnorm(150),
                    w = sample(1:3, 150, TRUE))
   dw$y <- rbinom(150, 1, plogis(.3 + dw$x - .6 * dw$z^2))
   dw$x[c(4, 40, 99)] <- NA
-  mw <- glm(y ~ x + poly(z, 2) + noise, dw, family = binomial, weights = w,
+  mw <- glm(y ~ x + poly(z, 2) + noise, dw, family = binomial,
             na.action = na.exclude)
   expect_true(mw$converged)
   for (run in selection_procedures) {
     k    <- run(mw)
     refw <- glm(formula(k$model), dw[!is.na(dw$x), ], family = binomial,
-                weights = w, na.action = na.exclude)
+                na.action = na.exclude)
     expect_true("x" %in% attr(terms(k$model), "term.labels"))
     expect_equal(as.numeric(logLik(k$model)), as.numeric(logLik(refw)))
     expect_equal(length(residuals(k$model)), 150L)

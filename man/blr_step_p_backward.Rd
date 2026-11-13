@@ -14,7 +14,7 @@ blr_step_p_backward(model, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
-candidate predictor variables. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
+candidate predictor variables. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other inputs.}
 
@@ -33,7 +33,7 @@ each step.}
 An object of class \code{"blr_step_p_backward"} is a list containing the
 following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm} Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
+\item{model}{model with the least AIC; an object of class \code{glm} Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{steps}{total number of steps}
 \item{removed}{variables removed from the model}
 \item{aic}{akaike information criteria}

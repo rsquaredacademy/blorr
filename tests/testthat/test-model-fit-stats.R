@@ -173,39 +173,6 @@ test_that("multi model fit stats label each measure by name", {
   expect_equal(value_of("BIC"), round(BIC(model2), 3))
 })
 
-test_that("weighted fits keep their weights in LR tests and pseudo R2", {
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  model <- glm(am ~ wt + hp, data = d, family = binomial, weights = w)
-  null  <- update(model, . ~ 1)
-
-  lr <- blr_test_lr(model)$test_result
-  a  <- anova(null, model, test = "Chisq")
-
-  expect_equal(lr$lr_ratio, a[["Deviance"]][2])
-  expect_equal(lr$d_f, a[["Df"]][2])
-  expect_equal(lr$p_value, a[["Pr(>Chi)"]][2])
-
-  cox_snell <- 1 - exp(2 * (as.numeric(logLik(null)) -
-                              as.numeric(logLik(model))) / nobs(model))
-  nagelkerke <- cox_snell / (1 - exp(2 * as.numeric(logLik(null)) / nobs(model)))
-
-  expect_equal(blr_rsq_cox_snell(model), cox_snell)
-  expect_equal(blr_rsq_nagelkerke(model), nagelkerke)
-})
-
-test_that("blr_regress summarises the supplied weighted fit", {
-  d <- mtcars
-  d$w <- rep(c(1, 2), 16)
-  model <- glm(am ~ wt + hp, data = d, family = binomial, weights = w)
-
-  k <- blr_regress(model)
-
-  expect_equal(k$est, unname(coef(model)))
-  expect_equal(k$se, unname(summary(model)$coefficients[, "Std. Error"]))
-  expect_equal(k$n_obs, unname(nobs(model)))
-})
-
 test_that("pseudo R2 is identical for na.omit and na.exclude fits", {
   d <- mtcars
   d$hp[1] <- NA

@@ -4,22 +4,44 @@ response_var <- function(model) {
   paste(deparse(model$terms[[2]]), collapse = " ")
 }
 
-# Grouped binomial responses are not supported (one shared guard, called by
-# blr_check_model()): a matrix response such as cbind(successes, failures), or
-# any response value other than 0/1 (proportions). A numeric 0/1 response with
-# prior weights is read as a Bernoulli response with case weights, as before;
-# such a model cannot be told apart from an all-boundary proportion response
-# with trials as weights.
-is_grouped_binomial <- function(model) {
-  is.matrix(model$model[[1]]) || any(!(model$y %in% c(0, 1)))
+# Supported models: unweighted 0/1 (Bernoulli) binomial models. One shared guard,
+# called by blr_check_model(), stops on weighted models (any prior weight other
+# than 1, zero weights included) and on grouped binomial models (a matrix
+# response such as cbind(successes, failures), or any response value other than
+# 0/1). The check uses the stored original response (model frame column 1) as
+# well as the initialized response, so it does not depend on which of them
+# glm() normalized; a fit stored without its model frame or response is
+# declined.
+blr_unsupported_message <- function() {
+  paste("blorr supports unweighted 0/1 (Bernoulli) models; weighted and",
+        "grouped binomial models are not supported.")
 }
 
-blr_check_grouped <- function(model) {
-  if (is_grouped_binomial(model)) {
-    stop("blorr supports 0/1 (Bernoulli) responses; grouped binomial models ",
-         "(cbind(successes, failures) or proportions with weights) are not ",
-         "supported.", call. = FALSE)
+blr_check_supported <- function(model) {
+
+  if (is.null(model$model) || is.null(model$y)) {
+    stop("blorr needs the model frame and the response of the fit: refit ",
+         "with glm(..., model = TRUE, y = TRUE).", call. = FALSE)
   }
+
+  resp <- model$model[[1]]
+  bad  <- is.matrix(resp) || any(!(model$y %in% c(0, 1)))
+
+  if (!bad && is.numeric(resp)) {
+    bad <- any(!(resp %in% c(0, 1)))
+  }
+
+  w1 <- model$prior.weights
+  w2 <- tryCatch(stats::weights(model, "prior"), error = function(e) NULL)
+
+  if (!bad) {
+    bad <- is.null(w1) || any(w1 != 1, na.rm = TRUE) || (!is.null(w2) && any(w2 != 1, na.rm = TRUE))
+  }
+
+  if (bad) {
+    stop(blr_unsupported_message(), call. = FALSE)
+  }
+
   invisible(TRUE)
 }
 

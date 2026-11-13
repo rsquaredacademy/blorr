@@ -8,7 +8,7 @@
 #' The Gini index is computed as 2 * AUC - 1, where AUC is the area under the
 #' receiver operating characteristic curve.
 #'
-#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
+#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #'
 #' @return Gini index.
@@ -86,7 +86,7 @@ blr_gini_index <- function(model, data = NULL) {
 #' @description Lorenz curve is a visual representation of inequality. It is
 #'   used to measure the discriminatory power of the predictive model.
 #'
-#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
+#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param title Plot title.
 #' @param xaxis_title X axis title.

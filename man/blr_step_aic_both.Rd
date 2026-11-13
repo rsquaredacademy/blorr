@@ -10,7 +10,7 @@ blr_step_aic_both(model, details = FALSE, ...)
 \method{plot}{blr_step_aic_both}(x, text_size = 3, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
+\item{model}{An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{details}{Logical; if \code{TRUE}, details of variable selection will be
 printed on screen.}
@@ -26,7 +26,7 @@ printed on screen.}
 An object of class \code{"blr_step_aic_both"} is a list containing the
 following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm} Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
+\item{model}{model with the least AIC; an object of class \code{glm} Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{candidates}{candidate predictor variables}
 \item{predictors}{variables added/removed from the model}
 \item{method}{addition/deletion}

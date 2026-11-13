@@ -10,7 +10,7 @@ blr_test_lr(full_model, reduced_model)
 \method{blr_test_lr}{default}(full_model, reduced_model)
 }
 \arguments{
-\item{full_model}{An object of class \code{glm}; model with all predictors. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
+\item{full_model}{An object of class \code{glm}; model with all predictors. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{reduced_model}{An object of class \code{glm}; nested model. Optional if
 you are comparing the \code{full_model} with an intercept only model.}

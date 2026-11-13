@@ -200,38 +200,6 @@ test_that("LR nesting is structural for near-collinear designs (bfx9)", {
   }
 })
 
-test_that("LR nesting uses the weighted fit's informative rows (bfx7)", {
-  for (s in c(1, 1e155, 1e-200)) {
-    d <- mtcars
-    d$wt <- d$wt * s
-    d$w  <- 1
-    d$w[1:8] <- 0
-    d$z  <- c(1:8, rep(0, 24))
-    full    <- glm(am ~ wt + hp + z, d, family = binomial, weights = w)
-    reduced <- glm(am ~ wt, d, family = binomial, weights = w)
-    expect_equal(full$rank, 3)
-
-    k <- blr_test_lr(full, reduced)
-    a <- anova(reduced, full, test = "Chisq")
-    expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
-    expect_equal(k$test_result[["lr_ratio"]], 8.912477493356727,
-                 tolerance = 1e-6)
-    expect_equal(k$test_result[["d_f"]], 1)
-
-    fs <- blr_model_fit_stats(full)
-    expect_equal(fs$lr_ratio, 26.49604410128582, tolerance = 1e-6)
-    expect_equal(fs$lr_df, 2)
-    expect_equal(fs$lr_pval, 1.763831633771082e-6, tolerance = 1e-6)
-
-    # invalid control: reversed weight on the informative rows
-    d$v <- rev(d$wt)
-    expect_error(
-      blr_test_lr(full, glm(am ~ v, d, family = binomial, weights = w)),
-      "nested"
-    )
-  }
-})
-
 test_that("LR nesting works on translated predictors by name (bfx8, bfx9)", {
   for (sh in c(0, 1e6, 1e8)) {
     for (s in c(1, 1e3)) {
@@ -341,24 +309,32 @@ test_that("same-named but unequal columns are rejected, with no tolerance (bfx11
 })
 
 test_that("ordinary nested comparisons still run and match anova (bfx11)", {
-  d <- transform(mtcars, g = factor(cyl), lw = rep(c(1, 2), 16),
-                 off = log(rep(c(1, 1.5), 16)))
+  # non-separating simulated data, so no glm warnings
+  set.seed(11)
+  n <- 300
+  d <- data.frame(x = rnorm(n), z = rnorm(n),
+                  g = factor(sample(c("a", "b", "c"), n, TRUE)),
+                  off = rnorm(n, 0, .3))
+  d$y <- rbinom(n, 1, plogis(.2 + .5 * d$x - .4 * d$z + .3 * (d$g == "b") +
+                               d$off))
   cases <- list(
-    list(am ~ wt + hp, am ~ wt, NULL, NULL),
-    list(am ~ g + hp, am ~ g, NULL, NULL),
-    list(am ~ wt * hp, am ~ wt + hp, NULL, NULL),
-    list(am ~ g * wt, am ~ g + wt, NULL, NULL),
-    list(am ~ wt + hp, am ~ wt, "lw", NULL),
-    list(am ~ wt + hp + offset(off), am ~ wt + offset(off), NULL, NULL)
+    list(y ~ x + z, y ~ x),
+    list(y ~ g + x, y ~ g),
+    list(y ~ x * z, y ~ x + z),
+    list(y ~ g * x, y ~ g + x),
+    list(y ~ x + z + offset(off), y ~ x + offset(off))
   )
   for (cs in cases) {
-    w <- if (is.null(cs[[3]])) NULL else d[[cs[[3]]]]
-    full <- eval(bquote(glm(.(cs[[1]]), d, family = binomial, weights = .(w))))
-    red  <- eval(bquote(glm(.(cs[[2]]), d, family = binomial, weights = .(w))))
-    k <- suppressWarnings(blr_test_lr(full, red))
-    a <- suppressWarnings(anova(red, full, test = "Chisq"))
+    full <- glm(cs[[1]], d, family = binomial)
+    red  <- glm(cs[[2]], d, family = binomial)
+    k <- blr_test_lr(full, red)
+    a <- anova(red, full, test = "Chisq")
     expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
     expect_equal(k$test_result[["d_f"]], a[["Df"]][2])
     expect_equal(k$test_result[["p_value"]], a[["Pr(>Chi)"]][2])
   }
+
+  # argument offset, absent in the reduced model: not comparable
+  fo <- glm(y ~ x + z, d, family = binomial, offset = off)
+  expect_error(blr_test_lr(fo, glm(y ~ x, d, family = binomial)), "offset")
 })

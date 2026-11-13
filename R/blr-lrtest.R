@@ -2,7 +2,7 @@
 #'
 #' Performs the likelihood ratio test for full and reduced model.
 #'
-#' @param full_model An object of class \code{glm}; model with all predictors. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
+#' @param full_model An object of class \code{glm}; model with all predictors. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param reduced_model An object of class \code{glm}; nested model. Optional if
 #'   you are comparing the \code{full_model} with an intercept only model.
 #'
@@ -37,11 +37,13 @@ blr_test_lr <- function(full_model, reduced_model) UseMethod("blr_test_lr")
 #'
 blr_test_lr.default <- function(full_model, reduced_model) {
 
+  # validate the supplied model before any null-model reconstruction
+  blr_check_model(full_model)
+
   if (missing(reduced_model)) {
     reduced_model <- lr_reduced_model(full_model)
   }
 
-  blr_check_model(full_model)
   blr_check_model(reduced_model)
 
   fm_class <- model_class(full_model)

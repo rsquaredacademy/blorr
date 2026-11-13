@@ -16,56 +16,95 @@ grouped_fixture <- function(unequal = FALSE) {
        be = glm(y ~ wt + hp, e, family = binomial))
 }
 
-test_that("grouped binomial models are rejected everywhere (bfx11)", {
+# every exported function that takes a fitted glm as its first argument
+entry_points <- function() {
+  ns  <- getNamespaceExports("blorr")
+  fns <- vapply(ns, function(n) {
+    f <- get(n, envir = asNamespace("blorr"))
+    is.function(f) && length(formals(f)) > 0 &&
+      names(formals(f))[1] %in% c("model", "full_model", "object") &&
+      !(n %in% c("blr_launch_app"))
+  }, TRUE)
+  sort(ns[fns])
+}
+
+unsupported_msg <- "blorr supports unweighted 0/1 [(]Bernoulli[)] models; weighted and grouped binomial models are not supported[.]"
+refit_msg <- "refit with glm[(][.][.][.], model = TRUE, y = TRUE[)]"
+
+test_that("every entry point rejects weighted and grouped models (bfx12)", {
+  eps <- entry_points()
+  expect_gte(length(eps), 50)
+
   x <- grouped_fixture(TRUE)
-  msg <- "blorr supports 0/1 [(]Bernoulli[)] responses; grouped binomial models"
-  d0 <- x$d
-  d0$prop <- d0$s / d0$n
-  prop <- glm(prop ~ wt + hp, d0, weights = n, family = binomial)
-  bnd <- transform(d0, bp = ifelse(prop > .5, 1, 0))
-  mats <- list(x$g, x$p, prop)
-  sel <- list(blr_step_aic_forward, blr_step_aic_backward, blr_step_aic_both,
-              blr_step_p_forward, blr_step_p_backward, blr_step_p_both)
-  for (m in mats) {
-    for (f in list(blr_model_fit_stats, blr_multi_model_fit_stats, blr_pairs,
-                   blr_regress, blr_rsq_mcfadden, blr_rsq_mcfadden_adj,
-                   blr_rsq_cox_snell, blr_rsq_nagelkerke, blr_rsq_effron,
-                   blr_rsq_mckelvey_zavoina, blr_rsq_count,
-                   blr_rsq_adj_count, blr_gains_table, blr_gini_index,
-                   blr_lorenz_curve, blr_prep_lorenz_data,
-                   blr_confusion_matrix, blr_test_hosmer_lemeshow,
-                   blr_linktest, blr_test_lr, blr_coll_diag, blr_vif_tol,
-                   blr_eigen_cindex, blr_residual_diagnostics,
-                   blr_plot_diag_fit, blr_plot_diag_leverage,
-                   blr_plot_diag_influence, sel[[1]], sel[[2]], sel[[3]],
-                   sel[[4]], sel[[5]], sel[[6]])) {
-      expect_error(suppressWarnings(f(m)), msg)
+  d1 <- transform(mtcars, w = rep(c(1, 9), 16))
+  d2 <- transform(mtcars, w = rep(c(1, 9), 16), prop = am)
+  d2$w[1] <- 0
+  d2$prop[1] <- .5
+  bad <- list(
+    interior_cbind   = x$g,
+    interior_prop    = x$p,
+    boundary_cbind   = glm(cbind(am * w, (1 - am) * w) ~ wt + hp, d1,
+                           family = binomial),
+    case_weights     = glm(am ~ wt + hp, d1, weights = w, family = binomial),
+    zero_weight      = glm(am ~ wt + hp, transform(mtcars, w = c(0, rep(1, 31))),
+                           weights = w, family = binomial),
+    zero_weight_prop = glm(prop ~ wt + hp, d2, weights = w, family = binomial)
+  )
+
+  for (nm in names(bad)) {
+    for (ep in eps) {
+      f <- get(ep, envir = asNamespace("blorr"))
+      expect_error(suppressWarnings(f(bad[[nm]])), unsupported_msg,
+                   label = paste(ep, nm))
     }
   }
-  # a cbind response whose proportions are all 0 or 1 is grouped too
-  d1 <- mtcars
-  d1$w <- rep(c(1, 9), 16)
-  d1$s <- d1$am * d1$w
-  d1$f <- (1 - d1$am) * d1$w
-  g1 <- glm(cbind(s, f) ~ wt + hp, d1, family = binomial)
-  expect_error(blr_pairs(g1), msg)
-  expect_error(blr_model_fit_stats(g1), msg)
+
+  # a weighted or grouped model in either position of the LR test
+  ok <- glm(am ~ wt + hp, mtcars, family = binomial)
+  expect_error(blr_test_lr(ok, bad$case_weights), unsupported_msg)
+  expect_error(blr_test_lr(bad$case_weights, ok), unsupported_msg)
+  expect_error(blr_multi_model_fit_stats(ok, bad$interior_cbind), unsupported_msg)
 })
 
-test_that("Bernoulli models, with and without case weights, are unaffected (bfx11)", {
+test_that("a fit without its model frame or response is declined (bfx12)", {
+  eps <- entry_points()
+  d1 <- transform(mtcars, w = rep(c(1, 9), 16))
+  no_model <- glm(cbind(am * w, (1 - am) * w) ~ wt + hp, d1, family = binomial,
+                  model = FALSE)
+  x <- grouped_fixture(TRUE)
+  no_y <- glm(I(s / n) ~ wt + hp, x$d, weights = n, family = binomial,
+              y = FALSE)
+  plain_no_model <- glm(am ~ wt + hp, mtcars, family = binomial, model = FALSE)
+  plain_no_y     <- glm(am ~ wt + hp, mtcars, family = binomial, y = FALSE)
+
+  for (m in list(no_model, no_y, plain_no_model, plain_no_y)) {
+    for (ep in eps) {
+      f <- get(ep, envir = asNamespace("blorr"))
+      expect_error(suppressWarnings(f(m)), refit_msg, label = ep)
+    }
+  }
+})
+
+test_that("unweighted Bernoulli models are accepted (bfx12)", {
   m <- glm(honcomp ~ female + read + science, data = hsb2,
            family = binomial(link = "logit"))
   expect_s3_class(blr_model_fit_stats(m), "blr_model_fit_stats")
   auc <- unname((sum(rank(fitted(m))[m$y == 1]) - sum(m$y) * (sum(m$y) + 1) / 2) /
                   (sum(m$y) * sum(m$y == 0)))
   expect_equal(blr_pairs(m)$c, auc, tolerance = 1e-9)
-  expect_equal(blr_rsq_count(m), mean((fitted(m) >= .5) == m$y))
-  mw <- glm(am ~ wt + hp, mtcars, weights = rep(c(1, 2), 16),
-            family = binomial)
-  expect_s3_class(blr_regress(mw), "blr_regress")
-  # factor and logical responses are Bernoulli too
-  mf <- glm(factor(am) ~ wt, mtcars, family = binomial)
-  expect_s3_class(blr_model_fit_stats(mf), "blr_model_fit_stats")
+  # explicit unit weights, factor and logical responses, na.exclude
+  expect_s3_class(blr_regress(glm(am ~ wt, mtcars, weights = rep(1, 32),
+                                  family = binomial)), "blr_regress")
+  expect_s3_class(blr_model_fit_stats(glm(factor(am) ~ wt, mtcars,
+                                          family = binomial)),
+                  "blr_model_fit_stats")
+  expect_s3_class(blr_model_fit_stats(glm(am == 1 ~ wt, mtcars,
+                                          family = binomial)),
+                  "blr_model_fit_stats")
+  d <- mtcars
+  d$hp[2] <- NA
+  expect_s3_class(blr_regress(glm(am ~ wt + hp, d, family = binomial,
+                                  na.action = na.exclude)), "blr_regress")
 })
 
 test_that("AIC detail tables print the real df of each term (bfx10)", {
