@@ -23,3 +23,8 @@ Documentation: the `model`/`full_model` argument text of 48 Rd files and roxygen
 
 ## Checks
 See below.
+
+Clean `git archive` of 7c-commit below (the last code commit): `R CMD build` + `R CMD check --as-cran --no-manual`:
+0 errors, 0 warnings, 1 NOTE (CRAN incoming: maintainer change, expected). Examples, donttest, tests, vignette OK.
+`devtools::test()` (NOT_CRAN=true): 209 tests, 0 failures, 0 errors, 0 warnings, 1458 expectations.
+Unweighted Bernoulli examples and vignette: unchanged (snapshot tests pass without edits).
