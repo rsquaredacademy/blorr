@@ -230,20 +230,6 @@ test_that("LR nesting uses the weighted fit's informative rows (bfx7)", {
       "nested"
     )
   }
-
-  # zero-trial groups without a weights argument
-  d <- mtcars
-  d$s <- d$am
-  d$fail <- 1 - d$am
-  d$s[1:8] <- 0
-  d$fail[1:8] <- 0
-  d$z <- c(1:8, rep(0, 24))
-  full    <- glm(cbind(s, fail) ~ wt + hp + z, d, family = binomial)
-  reduced <- glm(cbind(s, fail) ~ wt, d, family = binomial)
-  k <- blr_test_lr(full, reduced)
-  a <- anova(reduced, full, test = "Chisq")
-  expect_equal(k$test_result[["lr_ratio"]], a[["Deviance"]][2])
-  expect_equal(k$test_result[["d_f"]], 1)
 })
 
 test_that("LR nesting works on translated predictors by name (bfx8, bfx9)", {

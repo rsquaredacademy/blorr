@@ -7,7 +7,7 @@
 blr_rsq_cox_snell(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 }
 \value{
 Cox Snell pseudo r-squared.

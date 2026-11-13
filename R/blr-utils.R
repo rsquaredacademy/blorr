@@ -4,34 +4,21 @@ response_var <- function(model) {
   paste(deparse(model$terms[[2]]), collapse = " ")
 }
 
-# grouped binomial data: a cbind(successes, failures) response, or proportions
-# with the trials given as weights. Functions that treat every row as one 0/1
-# observation either expand such a model to one Bernoulli observation per trial
-# (grouped_counts()) or stop with blr_check_ungrouped().
+# Grouped binomial responses are not supported (one shared guard, called by
+# blr_check_model()): a matrix response such as cbind(successes, failures), or
+# any response value other than 0/1 (proportions). A numeric 0/1 response with
+# prior weights is read as a Bernoulli response with case weights, as before;
+# such a model cannot be told apart from an all-boundary proportion response
+# with trials as weights.
 is_grouped_binomial <- function(model) {
-  y <- model$y
-  is.matrix(model$model[[1]]) || any(y > 0 & y < 1, na.rm = TRUE)
+  is.matrix(model$model[[1]]) || any(!(model$y %in% c(0, 1)))
 }
 
-# successes and failures per row of a grouped model; the counts must be whole
-grouped_counts <- function(model) {
-  w <- model$prior.weights
-  s <- model$y * w
-  f <- (1 - model$y) * w
-  if (any(abs(s - round(s)) > 1e-6 * pmax(1, abs(s))) ||
-      any(abs(f - round(f)) > 1e-6 * pmax(1, abs(f)))) {
-    stop("grouped binomial data with non-integer trial counts is not ",
-         "supported.", call. = FALSE)
-  }
-  list(s = round(s), f = round(f), fit = model$fitted.values)
-}
-
-blr_check_ungrouped <- function(model, what) {
+blr_check_grouped <- function(model) {
   if (is_grouped_binomial(model)) {
-    stop(what, " does not support grouped binomial data (a cbind(successes, ",
-         "failures) response, or proportions with trials as weights). Refit ",
-         "the model on one row per trial (Bernoulli 0/1 response).",
-         call. = FALSE)
+    stop("blorr supports 0/1 (Bernoulli) responses; grouped binomial models ",
+         "(cbind(successes, failures) or proportions with weights) are not ",
+         "supported.", call. = FALSE)
   }
   invisible(TRUE)
 }
@@ -218,10 +205,6 @@ model_response_levels <- function(model) {
 
 # response profile
 resp_profile <- function(model) {
-  if (is_grouped_binomial(model)) {
-    g <- grouped_counts(model)
-    return(c("0" = sum(g$f), "1" = sum(g$s)))
-  }
   table(model$model[[1]])
 }
 

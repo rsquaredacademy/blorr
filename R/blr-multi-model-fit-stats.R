@@ -2,7 +2,7 @@
 #'
 #' Measures of model fit statistics for multiple models.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param ... Objects of class \code{glm}.
 #'
 #' @return A tibble.

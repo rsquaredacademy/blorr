@@ -7,7 +7,7 @@
 blr_model_fit_stats(model, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{...}{Other inputs.}
 }
@@ -41,13 +41,6 @@ Using Stata. College Station: Stata Press, 2006.
 Long, J. Scott. Regression Models for Categorical and Limited Dependent Variables.  
 Thousand Oaks: Sage Publications, 1997.
 }
-\section{Grouped binomial data}{
-Grouped data (a \code{cbind(successes, failures)} response, or proportions
-with trials as weights) are evaluated as one Bernoulli row per trial: the
-likelihood, deviance, AIC, BIC and R2 measures equal those of the fit on the
-expanded data, and the count and Efron measures count trials.
-}
-
 \seealso{
 Other model fit statistics: 
 \code{\link{blr_multi_model_fit_stats}()},

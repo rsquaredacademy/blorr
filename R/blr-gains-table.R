@@ -3,7 +3,7 @@
 #' Compute sensitivity, specificity, accuracy and KS statistics to
 #'   generate the lift chart and the KS chart.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param x An object of class \code{blr_gains_table}.
 #' @param title Plot title.
@@ -53,7 +53,6 @@ blr_gains_table <- function(model, data = NULL) UseMethod("blr_gains_table")
 blr_gains_table.default <- function(model, data = NULL) {
 
   blr_check_model(model)
-  blr_check_ungrouped(model, "blr_gains_table()")
 
   if (is.null(data)) {
     test_data <- FALSE

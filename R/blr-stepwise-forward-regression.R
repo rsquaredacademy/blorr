@@ -6,7 +6,7 @@
 #' no variable left to enter any more.
 #'
 #' @param model An object of class \code{glm}; the model should include all
-#'   candidate predictor variables.
+#'   candidate predictor variables. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param penter p value; variables with p value less than \code{penter} will
 #'   enter into the model
 #' @param details Logical; if \code{TRUE}, will print the regression result at

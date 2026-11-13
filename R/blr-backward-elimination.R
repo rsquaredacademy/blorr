@@ -6,7 +6,7 @@
 #' manner until there is no variable left to remove any more.
 #'
 #' @param model An object of class \code{glm}; the model should include all
-#'   candidate predictor variables.
+#'   candidate predictor variables. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param progress Logical; if \code{TRUE}, will display variable selection progress.
 #' @param details Logical; if \code{TRUE}, will print the regression result at
 #'   each step.

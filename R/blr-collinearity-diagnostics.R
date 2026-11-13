@@ -2,7 +2,7 @@
 #'
 #' Variance inflation factor, tolerance, eigenvalues and condition indices.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @details
 #' Collinearity implies two variables are near perfect linear combinations of

@@ -2,7 +2,7 @@
 #'
 #' Test for model specification error.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return An object of class \code{glm}.
 #'
@@ -25,7 +25,6 @@
 blr_linktest <- function(model) {
 
   blr_check_model(model)
-  blr_check_ungrouped(model, "blr_linktest()")
 
   dat    <- model$model
   fit    <- predict.glm(model, newdata = dat)

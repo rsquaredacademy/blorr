@@ -2,7 +2,7 @@
 #'
 #' Hosmer-Lemeshow goodness of fit test.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param data a \code{tibble} or \code{data.frame}.
 #'
 #' @references
@@ -29,7 +29,6 @@ blr_test_hosmer_lemeshow <- function(model, data = NULL)
 blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
 
   blr_check_model(model)
-  blr_check_ungrouped(model, "blr_test_hosmer_lemeshow()")
 
   if (is.null(data)) {
     data <- model$model

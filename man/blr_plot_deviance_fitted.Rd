@@ -14,7 +14,7 @@ blr_plot_deviance_fitted(
 )
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{point_color}{Color of the points.}
 

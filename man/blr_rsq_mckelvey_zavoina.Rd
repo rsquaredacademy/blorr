@@ -7,7 +7,7 @@
 blr_rsq_mckelvey_zavoina(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 }
 \value{
 Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.

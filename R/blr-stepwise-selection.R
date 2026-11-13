@@ -5,7 +5,7 @@
 #' entering and removing predictors based on akaike information criterion, in a
 #' stepwise manner until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param details Logical; if \code{TRUE}, details of variable selection will be
 #'   printed on screen.
 #' @param ... Other arguments.

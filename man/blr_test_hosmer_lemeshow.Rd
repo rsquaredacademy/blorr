@@ -7,7 +7,7 @@
 blr_test_hosmer_lemeshow(model, data = NULL)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{data}{a \code{tibble} or \code{data.frame}.}
 }

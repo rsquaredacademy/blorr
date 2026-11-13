@@ -2,7 +2,7 @@
 #'
 #' Model fit statistics.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param ... Other inputs.
 #'
 #' @examples
@@ -33,12 +33,6 @@
 #' Long, J. Scott. Regression Models for Categorical and Limited Dependent Variables.  
 #' Thousand Oaks: Sage Publications, 1997.
 #' 
-#'
-#' @section Grouped binomial data:
-#' Grouped data (a \code{cbind(successes, failures)} response, or proportions
-#' with trials as weights) are evaluated as one Bernoulli row per trial: the
-#' likelihood, deviance, AIC, BIC and R2 measures equal those of the fit on the
-#' expanded data, and the count and Efron measures count trials.
 #'
 #' @family model fit statistics
 #'
@@ -72,18 +66,6 @@ blr_model_fit_stats.default <- function(model, ...) {
     nagelkerke   = blr_rsq_nagelkerke(model),
     count_r2     = blr_rsq_count(model),
     count_adj    = blr_rsq_adj_count(model))
-
-  if (is_grouped_binomial(model)) {
-    # likelihood quantities as for one Bernoulli row per trial
-    b <- grouped_loglik(model)
-    k <- model_d_f(model)
-    result$loglik_null  <- b$null
-    result$loglik_model <- b$model
-    result$m_deviance   <- -2 * b$model
-    result$m_aic        <- -2 * b$model + 2 * k
-    result$m_bic        <- -2 * b$model + k * log(b$n)
-    result$dev_df       <- b$n - k
-  }
 
   class(result) <- "blr_model_fit_stats"
   return(result)
@@ -125,7 +107,7 @@ model_bic <- function(model) {
 #'
 #' McFadden's pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return McFadden's r-squared.
 #' 
@@ -146,11 +128,6 @@ blr_rsq_mcfadden <- function(model) {
 
   blr_check_model(model)
 
-  if (is_grouped_binomial(model)) {
-    b <- grouped_loglik(model)
-    return(1 - (b$model / b$null))
-  }
-
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model)
   1 - (f_model_ll/ i_model_ll)
@@ -161,7 +138,7 @@ blr_rsq_mcfadden <- function(model) {
 #'
 #' McFadden's adjusted pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return McFadden's adjusted r-squared.
 #' 
@@ -182,11 +159,6 @@ blr_rsq_mcfadden_adj <- function(model) {
 
   blr_check_model(model)
 
-  if (is_grouped_binomial(model)) {
-    b <- grouped_loglik(model)
-    return(1 - ((b$model - model_d_f(model)) / b$null))
-  }
-
   i_model_ll <- imodel(model)
   f_model_ll <- model_ll(model) - model_d_f(model)
   1 - (f_model_ll / i_model_ll)
@@ -196,7 +168,7 @@ blr_rsq_mcfadden_adj <- function(model) {
 #' Cox Snell R2
 #'
 #' Cox Snell pseudo r-squared.
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Cox Snell pseudo r-squared.
 #' 
@@ -218,12 +190,6 @@ blr_rsq_mcfadden_adj <- function(model) {
 blr_rsq_cox_snell <- function(model) {
 
   blr_check_model(model)
-
-  if (is_grouped_binomial(model)) {
-    b <- grouped_loglik(model)
-    return(1 - exp(((b$null - b$model) * 2) / b$n))
-  }
-
   1 - cox_snell_comp(model)
 
 }
@@ -233,7 +199,7 @@ blr_rsq_cox_snell <- function(model) {
 #'
 #' Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -258,13 +224,6 @@ blr_rsq_nagelkerke <- function(model) {
 
   blr_check_model(model)
 
-  if (is_grouped_binomial(model)) {
-    b   <- grouped_loglik(model)
-    num <- exp(((b$null - b$model) * 2) / b$n)
-    den <- exp((b$null * 2) / b$n)
-    return((1 - num) / (1 - den))
-  }
-
   n   <- nobs(model)
   num <- exp(((model_ll(model) * -2) - (imodel(model) * -2)) / n)
   den <- exp((imodel(model) * 2) / n )
@@ -276,7 +235,7 @@ blr_rsq_nagelkerke <- function(model) {
 #'
 #' McKelvey Zavoina pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -298,21 +257,11 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- model$linear.predictors
-  pi_val    <- (pi ^ 2) / 3
-
-  if (is_grouped_binomial(model)) {
-    # one observation per trial: weight each row by its trial count
-    g              <- grouped_counts(model)
-    w              <- g$s + g$f
-    mean_predicted <- sum(w * predicted) / sum(w)
-    ess            <- sum(w * (predicted - mean_predicted) ^ 2)
-    return(ess / ((sum(w) * pi_val) + ess))
-  }
-
+  predicted      <- model$linear.predictors
   mean_predicted <- mean(predicted)
 
   ess    <- sum((predicted - mean_predicted) ^ 2)
+  pi_val <- (pi ^ 2) / 3
   n      <- (length(model$y) * pi_val) + ess
   ess / n
 
@@ -323,7 +272,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 #'
 #' Efron pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Efron pseudo r-squared.
 #' 
@@ -346,15 +295,6 @@ blr_rsq_effron <- function(model) {
   blr_check_model(model)
 
   predicted <- model$fitted.values
-
-  if (is_grouped_binomial(model)) {
-    g   <- grouped_counts(model)
-    m   <- sum(g$s) / (sum(g$s) + sum(g$f))
-    den <- sum(g$s) * (1 - m) ^ 2 + sum(g$f) * m ^ 2
-    num <- sum(g$s * (1 - predicted) ^ 2 + g$f * predicted ^ 2)
-    return(1 - num / den)
-  }
-
   resp      <- model$y
   mean_resp <- mean(resp)
   den       <- sum((resp - mean_resp) ^ 2)
@@ -368,7 +308,7 @@ blr_rsq_effron <- function(model) {
 #'
 #' Count r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Count r-squared.
 #'
@@ -388,13 +328,6 @@ blr_rsq_count <- function(model) {
 
   predicted <- model$fitted.values
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
-
-  if (is_grouped_binomial(model)) {
-    g <- grouped_counts(model)
-    return((sum(g$s[zero_one == 1]) + sum(g$f[zero_one == 0])) /
-             (sum(g$s) + sum(g$f)))
-  }
-
   resp      <- model$y
   n         <- length(resp)
 
@@ -406,7 +339,7 @@ blr_rsq_count <- function(model) {
 #'
 #' Adjusted count r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return Adjusted count r-squared.
 #'
@@ -424,20 +357,11 @@ blr_rsq_adj_count <- function(model) {
 
   blr_check_model(model)
 
-  predicted <- model$fitted.values
-  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
-
-  if (is_grouped_binomial(model)) {
-    g       <- grouped_counts(model)
-    n       <- sum(g$s) + sum(g$f)
-    n2      <- max(sum(g$s), sum(g$f))
-    correct <- sum(g$s[zero_one == 1]) + sum(g$f[zero_one == 0])
-    return((correct - n2) / (n - n2))
-  }
-
   resp      <- model$y
   n         <- length(resp)
   n2        <- max(table(resp))
+  predicted <- model$fitted.values
+  zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   den       <- n - n2
 
   (sum(ifelse(zero_one == resp, 1, 0)) - n2) / den 
@@ -504,23 +428,6 @@ cox_snell_comp <- function(model) {
   n <- nobs(model)
   exp(((imodel(model) - model_ll(model)) * 2) / n)
 
-}
-
-# Bernoulli log likelihood of a grouped binomial model, as if every trial were
-# a row: model and intercept-only, and the number of trials. glm's own logLik
-# for grouped data differs by the binomial coefficients, which the
-# one-row-per-trial fit does not have.
-grouped_loglik <- function(model) {
-  g   <- grouped_counts(model)
-  xlogy <- function(x, y) ifelse(x == 0, 0, x * log(y))
-  p   <- g$fit
-  big_s <- sum(g$s)
-  big_f <- sum(g$f)
-  n   <- big_s + big_f
-  p0  <- big_s / n
-  list(model = sum(xlogy(g$s, p) + xlogy(g$f, 1 - p)),
-       null  = xlogy(big_s, p0) + xlogy(big_f, 1 - p0),
-       n     = n)
 }
 
 imodel <- function(model) {

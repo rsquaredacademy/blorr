@@ -6,7 +6,7 @@
 #' until there is no variable left to enter or remove any more.
 #'
 #' @param model An object of class \code{glm}; the model should include all
-#'   candidate predictor variables.
+#'   candidate predictor variables. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param pent p value; variables with p value less than \code{pent} will enter
 #'   into the model.
 #' @param prem p value; variables with p more than \code{prem} will be removed

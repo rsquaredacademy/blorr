@@ -7,7 +7,7 @@
 blr_rsq_adj_count(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 }
 \value{
 Adjusted count r-squared.

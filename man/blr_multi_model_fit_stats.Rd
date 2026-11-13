@@ -10,7 +10,7 @@ blr_multi_model_fit_stats(model, ...)
 \method{blr_multi_model_fit_stats}{default}(model, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{...}{Objects of class \code{glm}.}
 }

@@ -2,7 +2,7 @@
 #'
 #' Confusion matrix and statistics.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param cutoff Cutoff for classification.
 #' @param ... Other arguments.
@@ -30,7 +30,6 @@ blr_confusion_matrix <- function(model, cutoff = 0.5, data = NULL, ...) UseMetho
 blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL, ...) {
 
   blr_check_model(model)
-  blr_check_ungrouped(model, "blr_confusion_matrix()")
   blr_check_values(cutoff, 0, 1)
 
   namu <- formula(model)[[2]]

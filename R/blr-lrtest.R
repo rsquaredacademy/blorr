@@ -2,7 +2,7 @@
 #'
 #' Performs the likelihood ratio test for full and reduced model.
 #'
-#' @param full_model An object of class \code{glm}; model with all predictors.
+#' @param full_model An object of class \code{glm}; model with all predictors. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param reduced_model An object of class \code{glm}; nested model. Optional if
 #'   you are comparing the \code{full_model} with an intercept only model.
 #'

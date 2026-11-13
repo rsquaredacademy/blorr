@@ -28,7 +28,7 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 #' Data for generating Lorenz curve.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param test_data Logical; \code{TRUE} if data is test data and \code{FALSE} if training data.
 #'
@@ -41,7 +41,7 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
 
-  blr_check_ungrouped(model, "blr_prep_lorenz_data()")
+  blr_check_model(model)
 
   # training data must be the rows the model was actually fitted on; a
   # supplied training data set may still contain rows dropped by the fit

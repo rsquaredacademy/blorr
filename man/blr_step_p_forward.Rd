@@ -14,7 +14,7 @@ blr_step_p_forward(model, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
-candidate predictor variables.}
+candidate predictor variables. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{...}{Other arguments.}
 
@@ -33,7 +33,7 @@ each step.}
 An object of class \code{"blr_step_p_forward"} is a list containing the
 following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm}}
+\item{model}{model with the least AIC; an object of class \code{glm} Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 \item{steps}{number of steps}
 \item{predictors}{variables added to the model}
 \item{aic}{akaike information criteria}

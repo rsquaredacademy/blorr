@@ -34,7 +34,7 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 #'
 #' Standardized Pearson residuals plot.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param point_color Color of the points.
 #' @param title Title of the plot.
 #' @param xaxis_title X axis label.
@@ -189,7 +189,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
 #' Diagnostics for confidence interval displacement and detecting ill fitted
 #' observations.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #'
 #' @return C, CBAR, DIFDEV and DIFCHISQ.
 #'
@@ -335,7 +335,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' Panel of plots to detect influential observations using DFBETAs.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @details

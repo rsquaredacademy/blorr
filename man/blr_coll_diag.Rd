@@ -13,7 +13,7 @@ blr_vif_tol(model)
 blr_eigen_cindex(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 }
 \value{
 \code{blr_coll_diag} returns an object of class \code{"blr_coll_diag"}.

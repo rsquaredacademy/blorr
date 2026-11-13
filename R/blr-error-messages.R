@@ -36,6 +36,10 @@ blr_check_model <- function(model) {
 
   }
 
+  if (model_class && model_family) {
+    blr_check_grouped(model)
+  }
+
 }
 
 blr_check_data <- function(data) {

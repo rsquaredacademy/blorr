@@ -10,7 +10,7 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 \method{blr_confusion_matrix}{default}(model, cutoff = 0.5, data = NULL, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Grouped binomial models (\code{cbind(successes, failures)} or proportions with weights) are not supported.}
 
 \item{cutoff}{Cutoff for classification.}
 

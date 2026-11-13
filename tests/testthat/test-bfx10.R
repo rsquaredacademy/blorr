@@ -16,73 +16,56 @@ grouped_fixture <- function(unequal = FALSE) {
        be = glm(y ~ wt + hp, e, family = binomial))
 }
 
-test_that("grouped binomial association, count and Efron/McKelvey measures match the expanded fit (bfx10)", {
-  for (un in c(FALSE, TRUE)) {
-    x <- grouped_fixture(un)
-    expect_equal(unname(coef(x$g)), unname(coef(x$be)), tolerance = 1e-6)
-
-    for (m in list(x$g, x$p)) {
-      expect_equal(blr_pairs(m), blr_pairs(x$be), tolerance = 1e-6)
-      expect_equal(blr_rsq_count(m), blr_rsq_count(x$be), tolerance = 1e-6)
-      expect_equal(blr_rsq_adj_count(m), blr_rsq_adj_count(x$be),
-                   tolerance = 1e-6)
-      expect_equal(blr_rsq_effron(m), blr_rsq_effron(x$be), tolerance = 1e-6)
-      expect_equal(blr_rsq_mcfadden(m), blr_rsq_mcfadden(x$be), tolerance = 1e-6)
-      expect_equal(blr_rsq_mcfadden_adj(m), blr_rsq_mcfadden_adj(x$be),
-                   tolerance = 1e-6)
-      expect_equal(blr_rsq_cox_snell(m), blr_rsq_cox_snell(x$be),
-                   tolerance = 1e-6)
-      expect_equal(blr_rsq_nagelkerke(m), blr_rsq_nagelkerke(x$be),
-                   tolerance = 1e-6)
-      expect_equal(blr_rsq_mckelvey_zavoina(m),
-                   blr_rsq_mckelvey_zavoina(x$be), tolerance = 1e-6)
-    }
-  }
-
-  # the full fit-statistics table equals the expanded fit, field by field
+test_that("grouped binomial models are rejected everywhere (bfx11)", {
   x <- grouped_fixture(TRUE)
-  for (m in list(x$g, x$p)) {
-    a <- blr_model_fit_stats(m)
-    b <- blr_model_fit_stats(x$be)
-    for (nm in names(b)) {
-      expect_equal(a[[nm]], b[[nm]], tolerance = 1e-6, label = nm)
+  msg <- "blorr supports 0/1 [(]Bernoulli[)] responses; grouped binomial models"
+  d0 <- x$d
+  d0$prop <- d0$s / d0$n
+  prop <- glm(prop ~ wt + hp, d0, weights = n, family = binomial)
+  bnd <- transform(d0, bp = ifelse(prop > .5, 1, 0))
+  mats <- list(x$g, x$p, prop)
+  sel <- list(blr_step_aic_forward, blr_step_aic_backward, blr_step_aic_both,
+              blr_step_p_forward, blr_step_p_backward, blr_step_p_both)
+  for (m in mats) {
+    for (f in list(blr_model_fit_stats, blr_multi_model_fit_stats, blr_pairs,
+                   blr_regress, blr_rsq_mcfadden, blr_rsq_mcfadden_adj,
+                   blr_rsq_cox_snell, blr_rsq_nagelkerke, blr_rsq_effron,
+                   blr_rsq_mckelvey_zavoina, blr_rsq_count,
+                   blr_rsq_adj_count, blr_gains_table, blr_gini_index,
+                   blr_lorenz_curve, blr_prep_lorenz_data,
+                   blr_confusion_matrix, blr_test_hosmer_lemeshow,
+                   blr_linktest, blr_test_lr, blr_coll_diag, blr_vif_tol,
+                   blr_eigen_cindex, blr_residual_diagnostics,
+                   blr_plot_diag_fit, blr_plot_diag_leverage,
+                   blr_plot_diag_influence, sel[[1]], sel[[2]], sel[[3]],
+                   sel[[4]], sel[[5]], sel[[6]])) {
+      expect_error(suppressWarnings(f(m)), msg)
     }
   }
-  expect_s3_class(blr_multi_model_fit_stats(x$g, x$p), "blr_multi_model_fit_stats")
-
-  x <- grouped_fixture()
-  expect_equal(blr_pairs(x$g)$pairs, sum(x$d$s) * sum(x$d$f) - 0 -
-                 sum(0 * x$d$s))
-  expect_equal(blr_pairs(x$g)$c, 0.595098039216, tolerance = 1e-9)
-  expect_equal(blr_rsq_count(x$g), 0.5625)
-  expect_equal(blr_rsq_adj_count(x$g), 0.0666666666667, tolerance = 1e-9)
+  # a cbind response whose proportions are all 0 or 1 is grouped too
+  d1 <- mtcars
+  d1$w <- rep(c(1, 9), 16)
+  d1$s <- d1$am * d1$w
+  d1$f <- (1 - d1$am) * d1$w
+  g1 <- glm(cbind(s, f) ~ wt + hp, d1, family = binomial)
+  expect_error(blr_pairs(g1), msg)
+  expect_error(blr_model_fit_stats(g1), msg)
 })
 
-test_that("blr_regress summaries use trials for grouped data (bfx10)", {
-  x <- grouped_fixture()
-  r <- blr_regress(x$g)
-  expect_equal(unname(unlist(r$resp_prof)), c(sum(x$d$f), sum(x$d$s)))
-  expect_equal(r$resp_prof[["1"]], 150)
-  expect_equal(r$resp_prof[["0"]], 170)
-  expect_equal(r$resp_name, "cbind(s, f)")
-  expect_equal(length(r$resp_name), 1)
-  expect_equal(r$blr_cord, blr_pairs(x$be), tolerance = 1e-6, ignore_attr = TRUE)
-  out <- capture.output(print(r))
-  expect_true(any(grepl("cbind(s, f)", out, fixed = TRUE)))
-})
-
-test_that("functions that assume 0/1 rows stop on grouped binomial data (bfx10)", {
-  x <- grouped_fixture()
-  for (m in list(x$g, x$p)) {
-    expect_error(blr_gains_table(m), "grouped binomial")
-    expect_error(blr_gini_index(m), "grouped binomial")
-    expect_error(blr_prep_lorenz_data(m), "grouped binomial")
-    expect_error(blr_confusion_matrix(m), "grouped binomial")
-    expect_error(blr_test_hosmer_lemeshow(m), "grouped binomial")
-    expect_error(blr_linktest(m), "grouped binomial")
-  }
-  # ordinary Bernoulli models are unaffected
-  expect_s3_class(blr_model_fit_stats(x$be), "blr_model_fit_stats")
+test_that("Bernoulli models, with and without case weights, are unaffected (bfx11)", {
+  m <- glm(honcomp ~ female + read + science, data = hsb2,
+           family = binomial(link = "logit"))
+  expect_s3_class(blr_model_fit_stats(m), "blr_model_fit_stats")
+  auc <- unname((sum(rank(fitted(m))[m$y == 1]) - sum(m$y) * (sum(m$y) + 1) / 2) /
+                  (sum(m$y) * sum(m$y == 0)))
+  expect_equal(blr_pairs(m)$c, auc, tolerance = 1e-9)
+  expect_equal(blr_rsq_count(m), mean((fitted(m) >= .5) == m$y))
+  mw <- glm(am ~ wt + hp, mtcars, weights = rep(c(1, 2), 16),
+            family = binomial)
+  expect_s3_class(blr_regress(mw), "blr_regress")
+  # factor and logical responses are Bernoulli too
+  mf <- glm(factor(am) ~ wt, mtcars, family = binomial)
+  expect_s3_class(blr_model_fit_stats(mf), "blr_model_fit_stats")
 })
 
 test_that("AIC detail tables print the real df of each term (bfx10)", {
