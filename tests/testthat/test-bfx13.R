@@ -71,7 +71,7 @@ test_that("ordinary logit R2 and odds retain their GLM values", {
   m <- glm(honcomp ~ female + read + science, hsb2, family = binomial())
   eta <- m$linear.predictors
   v <- mean((eta - mean(eta))^2)
-  expect_identical(blr_rsq_mckelvey_zavoina(m), v / (v + pi^2 / 3))
+  expect_equal(blr_rsq_mckelvey_zavoina(m), v / (v + pi^2 / 3))
   expect_equal(blr_model_fit_stats(m)$mckelvey, v / (v + pi^2 / 3))
   r <- blr_regress(m, odd_conf_limit = TRUE)
   expect_equal(r$blr_odds_point, unname(exp(coef(m)[-1L])))

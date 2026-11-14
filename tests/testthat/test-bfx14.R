@@ -83,7 +83,15 @@ test_that("AIC selectors break ties by candidate order and still move one term",
 
   bwd_model <- glm(y ~ x_a + x_b + noise, data = db, family = binomial)
   invisible(capture.output(bwd <- blr_step_aic_backward(bwd_model)))
-  expect_equal(bwd$predictors[1], "x_a")
+  # The two drops tie exactly only if floating point agrees bit for bit, which
+  # varies by platform/BLAS; assert the candidate-order rule only for an exact tie.
+  aic_drop_a <- AIC(glm(y ~ x_b + noise, data = db, family = binomial))
+  aic_drop_b <- AIC(glm(y ~ x_a + noise, data = db, family = binomial))
+  if (identical(aic_drop_a, aic_drop_b)) {
+    expect_equal(bwd$predictors[1], "x_a")
+  } else {
+    expect_equal(bwd$predictors[1], if (aic_drop_a < aic_drop_b) "x_a" else "x_b")
+  }
   expect_equal(bwd$steps, length(bwd$predictors))
   expect_equal(bwd$steps, nrow(bwd$result) - 1L)
 })
