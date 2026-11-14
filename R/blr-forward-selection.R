@@ -160,7 +160,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
     return(out)
   }
 
-  minc     <- which(aics == min(aics))
+  minc     <- which.min(aics)
   laic     <- aics[minc]
   lbic     <- bics[minc]
   ldev     <- devs[minc]
@@ -239,7 +239,7 @@ blr_step_aic_forward.default <- function(model, progress = FALSE, details = FALS
       cat(rep("-", w), sep = "", "\n\n")
     }
 
-    minaic <- which(aics == min(aics))
+    minaic <- which.min(aics)
 
     if (aics[minaic] < laic[lpreds]) {
       preds    <- c(preds, all_pred[minaic])

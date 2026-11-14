@@ -668,6 +668,21 @@ selection_model <- function(response, predictors, data, fit) {
   selection_restore(do.call(stats::glm, args), fit, predictors)
 }
 
+# Pick exactly one candidate from a tied set of p values. On large data the
+# p values can underflow to 0 or 1, so several candidates can tie; the Wald
+# chi-square statistic from the same candidate fits breaks the tie, largest for
+# entry and smallest for removal. Any remaining tie keeps candidate order.
+selection_p_index <- function(pvals, chisq, enter = TRUE) {
+
+  if (enter) {
+    candidates <- which(pvals == min(pvals))
+    candidates[which.max(chisq[candidates])]
+  } else {
+    candidates <- which(pvals == max(pvals))
+    candidates[which.min(chisq[candidates])]
+  }
+}
+
 # keep only the contrasts of variables that remain in a selection formula
 selection_contrasts <- function(fit, form) {
   if (is.null(fit$contrasts) || length(fit$contrasts) == 0) {

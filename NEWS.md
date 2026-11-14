@@ -47,6 +47,12 @@ weight of evidence, and the Gini index.
   missing values, including for factor responses whose levels are not 0 and 1.
 - Forward selection now stores the BIC and deviance of each step instead of
   the AIC after the first step.
+- Variable selection now adds or removes exactly one term per step when
+  candidate p values or AIC values tie. The printed step history, AIC and the
+  other per-step values are no longer mislabelled or shifted when several
+  candidates share a p value (which can underflow to 0 on large data): p-value
+  ties are broken by the Wald chi-square statistic and AIC ties by candidate
+  order.
 - Variance decomposition proportions in `blr_eigen_cindex()` now sum to one
   for each coefficient. Eigenvalues and condition indices are now computed
   from the singular values of the scaled design rather than from its

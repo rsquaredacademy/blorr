@@ -102,7 +102,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
     m <- selection_model(response, preds, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals <- m_sum$`Pr(>Chisq)`
-    maxp  <- which(pvals == max(pvals))
+    maxp  <- selection_p_index(pvals, m_sum$Chisq, enter = FALSE)
 
     suppressWarnings(
       if (pvals[maxp] > prem) {

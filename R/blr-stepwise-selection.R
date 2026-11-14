@@ -152,7 +152,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     }
 
 
-    minc <- which(aics == min(aics))
+    minc <- which.min(aics)
 
     if (aics[minc] < aic_c) {
 
@@ -236,7 +236,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
         }
 
 
-        minc2 <- which(aics == min(aics))
+        minc2 <- which.min(aics)
 
 
         if (aics[minc2] < laic[all_step]) {

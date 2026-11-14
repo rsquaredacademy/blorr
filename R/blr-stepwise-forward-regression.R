@@ -118,7 +118,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
     tvals[i] <- m_sum$Chisq[ppos]
   }
 
-  minp   <- which(pvals == min(pvals))
+  minp   <- selection_p_index(pvals, tvals, enter = TRUE)
 
   if (min(pvals) > penter) {
     cat("\nNo variables have been added to the model.\n\n")
@@ -179,7 +179,7 @@ blr_step_p_forward.default <- function(model, penter = 0.3, details = FALSE, ...
       tvals[i] <- m_sum$Chisq[ppos]
     }
 
-    minp  <- which(pvals == min(pvals))
+    minp  <- selection_p_index(pvals, tvals, enter = TRUE)
 
     if (pvals[minp] <= penter) {
 

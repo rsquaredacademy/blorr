@@ -121,7 +121,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     tvals[i] <- m_sum$Chisq[ppos]
   }
 
-  minp    <- which(pvals == min(pvals))
+  minp    <- selection_p_index(pvals, tvals, enter = TRUE)
 
   if (min(pvals) > pent) {
     cat("\nNo variables have been added to or removed from the model.\n\n")
@@ -173,7 +173,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   m_sum   <- Anova(fr, test.statistic = "Wald")
   pvals_r <- m_sum$`Pr(>Chisq)`
-  maxp    <- which.max(pvals_r)
+  maxp    <- selection_p_index(pvals_r, m_sum$Chisq, enter = FALSE)
 
   if (pvals_r[maxp] > prem) {
     var_index <- c(var_index, preds[maxp])
@@ -212,7 +212,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       tvals[i] <- m_sum$Chisq[ppos]
     }
 
-    minp  <- which(pvals == min(pvals))
+    minp  <- selection_p_index(pvals, tvals, enter = TRUE)
 
     if (pvals[minp] <= pent) {
 
@@ -257,7 +257,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       m2     <- selection_model(response, preds, l, fit = model)
       m_sum <- Anova(m2, test.statistic = "Wald")
       pvals_r <- m_sum$`Pr(>Chisq)`
-      maxp    <- which(pvals_r == max(pvals_r))
+      maxp    <- selection_p_index(pvals_r, m_sum$Chisq, enter = FALSE)
       if (pvals_r[maxp] > prem) {
 
         var_index <- c(var_index, preds[maxp])

@@ -154,7 +154,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   }
 
   while (!end) {
-    minc <- which(aics == min(aics))
+    minc <- which.min(aics)
 
     if (aics[minc] < aic_f) {
       rpred <- c(rpred, preds[minc])
