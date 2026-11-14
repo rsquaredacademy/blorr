@@ -5,7 +5,7 @@
 #' entering and removing predictors based on akaike information criterion, in a
 #' stepwise manner until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param details Logical; if \code{TRUE}, details of variable selection will be
 #'   printed on screen.
 #' @param ... Other arguments.

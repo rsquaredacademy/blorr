@@ -28,7 +28,7 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 #' Data for generating Lorenz curve.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param test_data Logical; \code{TRUE} if data is test data and \code{FALSE} if training data.
 #'

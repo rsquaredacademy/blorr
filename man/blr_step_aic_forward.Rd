@@ -13,7 +13,7 @@ blr_step_aic_forward(model, ...)
 \method{plot}{blr_step_aic_forward}(x, text_size = 3, print_plot = TRUE, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other arguments.}
 
@@ -33,7 +33,7 @@ each step.}
 \code{"blr_step_aic_forward"}. An object of class
 \code{"blr_step_aic_forward"} is a list containing the following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm} Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
+\item{model}{model with the least AIC; an object of class \code{glm} Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{candidates}{candidate predictor variables}
 \item{steps}{total number of steps}
 \item{predictors}{variables entered into the model}

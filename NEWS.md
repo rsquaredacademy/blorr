@@ -27,6 +27,7 @@ weight of evidence, and the Gini index.
 - The model overview now prints `Df. Model` as the number of estimated coefficients excluding the intercept, instead of the null residual df.
 - The stepwise p-value (both directions) summary now labels its last column `Deviance`, which is what it reports, instead of `C(p)`.
 - Weighted and grouped binomial models are not supported: every function that takes a model now stops with "blorr supports unweighted 0/1 (Bernoulli) models; weighted and grouped binomial models are not supported." This covers any prior weight other than 1 (zero weights included), a `cbind(successes, failures)` response and proportion responses. Fits stored without their model frame or response (`model = FALSE`, `y = FALSE`) are declined with a request to refit with `model = TRUE, y = TRUE`. The response name in the overview is printed as one expression.
+- Only binary logistic regression models (binomial family with logit link) are supported. All model entry points reject other links and families, including quasibinomial, with a clear error; selection rejects them before refitting.
 - The AIC selection detail tables print the real degrees of freedom of each term (for example 3 for a four-level factor) instead of 1.
 - `blr_regress()` works for a model with no coefficients, and the p-value selection procedures stop with a clear message for a model with aliased terms instead of failing with an obscure error.
 - `blr_step_aic_backward()` now takes the first row (AIC, BIC and deviance)
@@ -91,9 +92,8 @@ weight of evidence, and the Gini index.
   and predictions.
 - `blr_pairs()`, and therefore `blr_regress()`, now works for models fitted
   with `na.action = na.exclude`.
-- Variable selection on grouped binomial fits with zero-trial groups now
-  returns a model with the original formula and offsets, so `predict()` on
-  new data uses the new offset values. If a selected model cannot be rebuilt
+- Variable selection preserves the original formula and offsets, so `predict()`
+  on new data uses the new offset values. If a selected model cannot be rebuilt
   exactly from the original terms, selection now stops with an error instead
   of returning a model whose predictions could differ from `glm()`.
 - `blr_regress()` now matches standard errors, z values and p-values to the
@@ -106,9 +106,9 @@ weight of evidence, and the Gini index.
 - `blr_regress(odd_conf_limit = TRUE)` now works for intercept-only models,
   reporting an empty odds ratio table, and reports the odds ratio of every
   predictor of a model without an intercept.
-- Forward, backward and stepwise selection now keep the fitted model's weights,
-  offset, link and contrasts in every candidate model, and print the same
-  fitted model they return instead of an unweighted formula refit.
+- Forward, backward and stepwise selection now keep the fitted model's
+  offset and contrasts in every candidate model, and print the same
+  fitted model they return.
 - `blr_woe_iv()` now accepts character and numeric predictors, drops unused
   factor levels, applies a 0.5 continuity correction to levels with no
   events or no non-events, and drops rows with missing values so they are not
@@ -122,13 +122,8 @@ weight of evidence, and the Gini index.
 - Forward AIC selection now compares the best first candidate with the
   intercept-only model and returns the intercept-only model when no predictor
   improves AIC.
-- Weighted fits keep their weights, offset, link and contrasts in likelihood
-  ratio tests, pseudo R-squared measures and `blr_regress()`, and
-  `blr_regress()` can summarise a fit whose response is a transformed
+- `blr_regress()` can summarise a fit whose response is a transformed
   expression.
-- Grouped binomial fits no longer apply the trial counts twice when the null
-  model is reconstructed for pseudo R-squared measures, likelihood ratio tests
-  or variable selection, so those statistics match base R.
 - Likelihood ratio tests reject models fitted to different observations,
   weights or offsets, or non-nested models, and bivariate analysis fits its
   null model on the predictor model's complete rows. Nesting is checked

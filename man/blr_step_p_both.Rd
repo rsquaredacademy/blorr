@@ -14,7 +14,7 @@ blr_step_p_both(model, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
-candidate predictor variables. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
+candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other arguments.}
 
@@ -36,7 +36,7 @@ each step.}
 An object of class \code{"blr_step_p_both"} is a list containing the
 following components:
 
-\item{model}{final model; an object of class \code{glm} Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
+\item{model}{final model; an object of class \code{glm} Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{orders}{candidate predictor variables according to the order by which they were added or removed from the model}
 \item{method}{addition/deletion}
 \item{steps}{total number of steps}

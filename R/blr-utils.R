@@ -4,8 +4,9 @@ response_var <- function(model) {
   paste(deparse(model$terms[[2]]), collapse = " ")
 }
 
-# Supported models: unweighted 0/1 (Bernoulli) binomial models. One shared guard,
-# called by blr_check_model(), stops on weighted models (any prior weight other
+# Supported models: unweighted 0/1 (Bernoulli) binomial models with logit link.
+# One shared guard, called by blr_check_model(), rejects other families/links
+# and stops on weighted models (any prior weight other
 # than 1, zero weights included) and on grouped binomial models (a matrix
 # response such as cbind(successes, failures), or any response value other than
 # 0/1). The check uses the stored original response (model frame column 1) as
@@ -18,6 +19,13 @@ blr_unsupported_message <- function() {
 }
 
 blr_check_supported <- function(model) {
+
+  fam <- family(model)
+  if (!isTRUE(fam$family == "binomial") || !isTRUE(fam$link == "logit")) {
+    stop("blorr supports binary logistic regression only (binomial family, ",
+         "logit link). This model uses the '", fam$family,
+         "' family and the '", fam$link, "' link.", call. = FALSE)
+  }
 
   if (is.null(model$model) || is.null(model$y)) {
     stop("blorr needs the model frame and the response of the fit: refit ",

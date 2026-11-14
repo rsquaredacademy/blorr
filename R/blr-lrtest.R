@@ -2,7 +2,7 @@
 #'
 #' Performs the likelihood ratio test for full and reduced model.
 #'
-#' @param full_model An object of class \code{glm}; model with all predictors. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param full_model An object of class \code{glm}; model with all predictors. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param reduced_model An object of class \code{glm}; nested model. Optional if
 #'   you are comparing the \code{full_model} with an intercept only model.
 #'

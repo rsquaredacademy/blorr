@@ -2,7 +2,7 @@
 #'
 #' Model fit statistics.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param ... Other inputs.
 #'
 #' @examples
@@ -107,7 +107,7 @@ model_bic <- function(model) {
 #'
 #' McFadden's pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return McFadden's r-squared.
 #' 
@@ -138,7 +138,7 @@ blr_rsq_mcfadden <- function(model) {
 #'
 #' McFadden's adjusted pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return McFadden's adjusted r-squared.
 #' 
@@ -168,7 +168,7 @@ blr_rsq_mcfadden_adj <- function(model) {
 #' Cox Snell R2
 #'
 #' Cox Snell pseudo r-squared.
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cox Snell pseudo r-squared.
 #' 
@@ -199,7 +199,7 @@ blr_rsq_cox_snell <- function(model) {
 #'
 #' Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -235,7 +235,7 @@ blr_rsq_nagelkerke <- function(model) {
 #'
 #' McKelvey Zavoina pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -272,7 +272,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 #'
 #' Efron pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Efron pseudo r-squared.
 #' 
@@ -308,7 +308,7 @@ blr_rsq_effron <- function(model) {
 #'
 #' Count r-squared.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Count r-squared.
 #'
@@ -339,7 +339,7 @@ blr_rsq_count <- function(model) {
 #'
 #' Adjusted count r-squared.
 #'
-#' @param model An object of class \code{glm}. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Adjusted count r-squared.
 #'

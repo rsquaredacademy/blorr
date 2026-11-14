@@ -4,7 +4,11 @@
 #'
 #' @param object An object of class "formula" (or one that can be coerced to
 #'   that class): a symbolic description of the model to be fitted or class
-#'   \code{glm}.
+#'   \code{glm} with binomial family and logit link. Weighted models (any prior
+#'   weight other than 1) and grouped binomial models
+#'   (\code{cbind(successes, failures)} or proportions) are not supported; refit
+#'   models stored without their model frame or response using
+#'   \code{glm(..., model = TRUE, y = TRUE)}.
 #' @param odd_conf_limit If TRUE, odds ratio confidence limits will be displayed.
 #' @param ... Other inputs.
 #'
