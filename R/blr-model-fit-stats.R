@@ -2,14 +2,8 @@
 #'
 #' Model fit statistics.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param ... Other inputs.
-#'
-#' @details
-#' For models fitted with prior weights, Cox-Snell and Nagelkerke R2 use the sum
-#' of the prior weights as the number of observations. The count, adjusted count,
-#' Efron and McKelvey-Zavoina R2 values are not reported (\code{NA}) for weighted
-#' models because they are not defined for weighted fits.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -52,8 +46,7 @@ blr_model_fit_stats.default <- function(model, ...) {
 
   blr_check_model(model)
 
-  lr       <- fit_stat(model)
-  weighted <- has_prior_weights(model)
+  lr <- fit_stat(model)
 
   result <- list(
     loglik_null  = null_ll(model),
@@ -67,12 +60,12 @@ blr_model_fit_stats.default <- function(model, ...) {
     m_aic        = model_aic(model),
     cox_snell    = blr_rsq_cox_snell(model),
     m_bic        = model_bic(model),
-    mckelvey     = if (weighted) NA_real_ else blr_rsq_mckelvey_zavoina(model),
+    mckelvey     = blr_rsq_mckelvey_zavoina(model),
     lr_df        = lr$lr_df,
-    effron       = if (weighted) NA_real_ else blr_rsq_effron(model),
+    effron       = blr_rsq_effron(model),
     nagelkerke   = blr_rsq_nagelkerke(model),
-    count_r2     = if (weighted) NA_real_ else blr_rsq_count(model),
-    count_adj    = if (weighted) NA_real_ else blr_rsq_adj_count(model))
+    count_r2     = blr_rsq_count(model),
+    count_adj    = blr_rsq_adj_count(model))
 
   class(result) <- "blr_model_fit_stats"
   return(result)
@@ -114,7 +107,7 @@ model_bic <- function(model) {
 #'
 #' McFadden's pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return McFadden's r-squared.
 #' 
@@ -145,7 +138,7 @@ blr_rsq_mcfadden <- function(model) {
 #'
 #' McFadden's adjusted pseudo r-squared for the model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return McFadden's adjusted r-squared.
 #' 
@@ -175,7 +168,7 @@ blr_rsq_mcfadden_adj <- function(model) {
 #' Cox Snell R2
 #'
 #' Cox Snell pseudo r-squared.
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cox Snell pseudo r-squared.
 #' 
@@ -206,7 +199,7 @@ blr_rsq_cox_snell <- function(model) {
 #'
 #' Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -231,7 +224,7 @@ blr_rsq_nagelkerke <- function(model) {
 
   blr_check_model(model)
 
-  n   <- effective_n(model)
+  n   <- nobs(model)
   num <- exp(((model_ll(model) * -2) - (imodel(model) * -2)) / n)
   den <- exp((imodel(model) * 2) / n )
   (1 - num) / (1 - den)
@@ -242,7 +235,7 @@ blr_rsq_nagelkerke <- function(model) {
 #'
 #' McKelvey Zavoina pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.
 #' 
@@ -263,9 +256,8 @@ blr_rsq_nagelkerke <- function(model) {
 blr_rsq_mckelvey_zavoina <- function(model) {
 
   blr_check_model(model)
-  blr_check_prior_weights(model, "McKelvey & Zavoina's R2")
 
-  predicted      <- predict(model)
+  predicted      <- model$linear.predictors
   mean_predicted <- mean(predicted)
 
   ess    <- sum((predicted - mean_predicted) ^ 2)
@@ -280,7 +272,7 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 #'
 #' Efron pseudo r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Efron pseudo r-squared.
 #' 
@@ -301,10 +293,9 @@ blr_rsq_mckelvey_zavoina <- function(model) {
 blr_rsq_effron <- function(model) {
 
   blr_check_model(model)
-  blr_check_prior_weights(model, "Efron's R2")
 
-  predicted <- predict(model, type = "response")
-  resp      <-model$y
+  predicted <- model$fitted.values
+  resp      <- model$y
   mean_resp <- mean(resp)
   den       <- sum((resp - mean_resp) ^ 2)
   num       <- sum((resp - predicted) ^ 2) / den
@@ -317,7 +308,7 @@ blr_rsq_effron <- function(model) {
 #'
 #' Count r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Count r-squared.
 #'
@@ -334,9 +325,8 @@ blr_rsq_effron <- function(model) {
 blr_rsq_count <- function(model) {
 
   blr_check_model(model)
-  blr_check_prior_weights(model, "Count R2")
 
-  predicted <- predict(model, type = "response")
+  predicted <- model$fitted.values
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   resp      <- model$y
   n         <- length(resp)
@@ -349,7 +339,7 @@ blr_rsq_count <- function(model) {
 #'
 #' Adjusted count r-squared.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return Adjusted count r-squared.
 #'
@@ -366,12 +356,11 @@ blr_rsq_count <- function(model) {
 blr_rsq_adj_count <- function(model) {
 
   blr_check_model(model)
-  blr_check_prior_weights(model, "Adj Count R2")
 
   resp      <- model$y
   n         <- length(resp)
   n2        <- max(table(resp))
-  predicted <- predict(model, type = "response")
+  predicted <- model$fitted.values
   zero_one  <- ifelse(predicted >= 0.5, 1, 0)
   den       <- n - n2
 
@@ -381,10 +370,29 @@ blr_rsq_adj_count <- function(model) {
 
 fit_stat <- function(model) {
 
+  dev_df <- df.residual(model)
+
+  # the intercept-only model is only a valid null when the constant vector is
+  # in the column space of the fitted design; a no-intercept model with a
+  # genuine predictor does not contain it
+  if (!null_model_nested(model)) {
+    warning(
+      paste("likelihood ratio test is not available: the intercept-only",
+            "model is not nested within the fitted model"),
+      call. = FALSE
+    )
+    return(list(lr_ratio = NA_real_, lr_df = NA_real_,
+                lr_pval = NA_real_, dev_df = dev_df))
+  }
+
+  # a null-equivalent design is its own null model, so there is no likelihood
+  # ratio test to report
+  if (model$rank <= 1L) {
+    return(list(lr_ratio = 0, lr_df = 0, lr_pval = 1, dev_df = dev_df))
+  }
+
   lr <- blr_test_lr(model)
 
-  pred_n   <- length(model$coefficients)
-  dev_df   <- length(model$y) - pred_n
   lr_ratio <- extract_lr(lr, lr_ratio)
   lr_df    <- extract_lr(lr, d_f)
   lr_pval  <- extract_lr(lr, p_value)
@@ -396,6 +404,18 @@ fit_stat <- function(model) {
 
 }
 
+# is the intercept-only model nested in the fitted model? Structural rule: the
+# fitted model must have an estimated (non-aliased) intercept column. A
+# no-intercept model is never treated as containing the null model, even if its
+# columns happen to sum to a constant.
+null_model_nested <- function(model) {
+
+  mm <- fitted_design(model)
+
+  nrow(mm) > 0L && "(Intercept)" %in% colnames(mm)
+
+}
+
 extract_lr <- function(lr, value) {
 
   vals <- deparse(substitute(value))
@@ -403,18 +423,9 @@ extract_lr <- function(lr, value) {
 
 }
 
-# Number of observations used by the likelihood based R2 measures. For a
-# weighted fit this is the sum of the prior weights, as in the weighted
-# log-likelihood.
-effective_n <- function(model) {
-
-  sum(model$prior.weights)
-
-}
-
 cox_snell_comp <- function(model) {
 
-  n <- effective_n(model)
+  n <- nobs(model)
   exp(((imodel(model) - model_ll(model)) * 2) / n)
 
 }

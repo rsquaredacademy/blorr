@@ -6,7 +6,7 @@ model <- glm(
 
 test_that("response_var extract response variable name from the model", {
   actual <- response_var(model)
-  expected <- model$terms[[2]]
+  expected <- "honcomp"
   expect_equal(actual, expected)
 })
 
@@ -36,7 +36,7 @@ test_that("residual_df returns the residual degrees of freedom", {
 
 test_that("model_df returns the model degrees of freedom", {
   actual <- model_df(model)
-  expected <- 199
+  expected <- 3
   expect_equal(actual, expected)
 })
 

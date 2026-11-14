@@ -7,7 +7,7 @@
 blr_rsq_nagelkerke(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 }
 \value{
 Cragg-Uhler (Nagelkerke) R2 pseudo r-squared.

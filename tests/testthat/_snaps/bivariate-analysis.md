@@ -77,7 +77,7 @@
       -----------------------------
       Variable    Information Value 
       -----------------------------
-        prog           0.4329       
+        prog            0.433       
       -----------------------------
 
 # output from blr_woe_iv_stats is as expected

@@ -124,8 +124,8 @@ blr_regress(model)
 #> 
 #>  Association of Predicted Probabilities and Observed Responses  
 #> ---------------------------------------------------------------
-#> % Concordant          0.8561          Somers' D        0.7147   
-#> % Discordant          0.1425          Gamma            0.7136   
+#> % Concordant          0.8561          Somers' D        0.7136   
+#> % Discordant          0.1425          Gamma            0.7147   
 #> % Tied                0.0014          Tau-a            0.2794   
 #> Pairs                  7791           c                0.8568   
 #> ---------------------------------------------------------------
@@ -269,8 +269,7 @@ blr_lorenz_curve(model)
 
 If you encounter a bug, please file a minimal reproducible example using
 [reprex](https://reprex.tidyverse.org/index.html) on GitHub. For
-questions and clarifications, use
-[StackOverflow](https://stackoverflow.com/).
+questions and clarifications, ask on Stack Overflow with the `r` tag.
 
 ## Code of Conduct
 

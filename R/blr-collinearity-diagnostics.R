@@ -2,7 +2,7 @@
 #'
 #' Variance inflation factor, tolerance, eigenvalues and condition indices.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @details
 #' Collinearity implies two variables are near perfect linear combinations of
@@ -118,13 +118,14 @@ blr_eigen_cindex <- function(model) {
   pvdata <- NULL
 
   x      <- as.data.frame(model.matrix(model))    
-  e      <- evalue(x)$e
-  cindex <- cindx(e)
-  pv     <- pveindex(evalue(x)$pvdata)
+  ev     <- evalue(x)
+  e      <- ev$e
+  cindex <- cindx(e, ev$positive)
+  pv     <- pveindex(ev$pvdata, ev$positive)
   out    <- data.frame(Eigenvalue = cbind(e, cindex, pv))
   
   colnames(out) <- c("Eigenvalue", "Condition Index",
-                     colnames(evalue(x)$pvdata))
+                     colnames(ev$pvdata))
   return(out)
 
 }
@@ -135,24 +136,39 @@ fmrsq <- function(nam, data, i) {
   r.squared <- NULL
 
   fm <- lm(as.formula(paste0("`", nam[i], "` ", "~ .")), data = data)
-  1 - summary(fm)$r.squared
+  max(1 - summary(fm)$r.squared, 0)
 
 }
 
 viftol <- function(model) {
 
-  m   <- as.data.frame(model.matrix(model))[, -1]
-  nam <- names(m)
-  p   <- length(model$coefficients) - 1
-  tol <- c()
+  mm  <- model.matrix(model)
 
-  for (i in seq_len(p)) {
-    tol[i] <- fmrsq(nam, m, i)
+  # remove the intercept column only when the fit actually has an intercept;
+  # for a no-intercept model every design column is a predictor
+  if (attr(stats::terms(model), "intercept") == 1L &&
+      "(Intercept)" %in% colnames(mm)) {
+    mm <- mm[, colnames(mm) != "(Intercept)", drop = FALSE]
+  }
+
+  m   <- as.data.frame(mm)
+  nam <- names(m)
+  p   <- ncol(m)
+  tol <- numeric(p)
+
+  if (p > 0) {
+    zero_var <- vapply(m, function(x) {
+      length(unique(x[!is.na(x)])) < 2
+    }, logical(1))
+
+    for (i in seq_len(p)) {
+      tol[i] <- if (zero_var[i]) 0 else fmrsq(nam, m, i)
+    }
   }
 
   vifs <- 1 / tol
 
-  list(nam = names(m), tol = tol, vifs = vifs)
+  list(nam = nam, tol = tol, vifs = vifs)
 
 }
 
@@ -161,34 +177,99 @@ evalue <- function(x) {
 
   values         <- NULL
   y              <- x
-  colnames(y)[1] <- "intercept"
+
+  if ("(Intercept)" %in% colnames(y)) {
+    colnames(y)[colnames(y) == "(Intercept)"] <- "intercept"
+  }
+
   z              <- scale(y, scale = T, center = F)
-  tu             <- t(z) %*% z
-  e              <- eigen(tu / diag(tu))$values
-    
-  list(e = e, pvdata = z)
+
+  # a zero-norm column is scaled to NaN; keep it as a zero column so the rank
+  # deficiency is reported by the diagnostics instead of raising an error
+  z[!is.finite(z)] <- 0
+
+  # eigenvalues and condition indices come from the singular values of the
+  # same scaled design used for the variance proportions; forming them from
+  # the cross-product would square the condition number and lose the small
+  # positive directions of a nearly collinear full-rank design
+  svdz     <- svd(z)
+  d        <- svdz$d
+
+  # a wide design has more columns than observations; the remaining
+  # directions are zero eigenvalues and are kept so that every design column
+  # has a condition index and a variance proportion
+  if (length(d) < ncol(z)) {
+    d <- c(d, rep(0, ncol(z) - length(d)))
+  }
+
+  tol      <- max(d) * max(dim(z)) * .Machine$double.eps
+  positive <- d > tol
+  e        <- d ^ 2 / max(nrow(z) - 1L, 1L)
+
+  list(e = e, pvdata = z, positive = positive)
 
 }
 
 
-cindx <- function(e) {
+cindx <- function(e, positive = NULL) {
+
+  e <- Re(e)
+
+  # eigenvalues below the design rank are not resolvable and give an
+  # unavailable (infinite) condition index; positive eigenvalues, however
+  # small, are retained so their index stays finite
+  if (!is.null(positive)) {
+    if (length(positive) < length(e)) {
+      positive <- c(positive, rep(FALSE, length(e) - length(positive)))
+    }
+    e[!positive] <- 0
+  }
+
+  e[e < 0] <- 0
+
+  if (length(e) == 0L || e[1] <= 0) {
+    return(rep(Inf, length(e)))
+  }
 
   sqrt(e[1] / e)
 
 }
 
-pveindex <- function(z) {
-
-  d <- NULL
-  v <- NULL
+pveindex <- function(z, positive = NULL) {
 
   svdx     <- svd(z)
   svdxd    <- svdx$d
-  phi_diag <- diag(1 / svdxd)
-  phi      <- svdx$v %*% phi_diag    
+
+  if (length(svdxd) < ncol(z)) {
+    svdxd <- c(svdxd, rep(0, ncol(z) - length(svdxd)))
+  }
+
+  if (is.null(positive)) {
+    tol      <- max(svdxd) * max(dim(z)) * .Machine$double.eps
+    positive <- svdxd > tol
+  }
+
+  if (length(positive) < length(svdxd)) {
+    positive <- c(positive, rep(FALSE, length(svdxd) - length(positive)))
+  }
+
+  phi <- matrix(0, nrow = ncol(z), ncol = length(svdxd))
+  pos <- which(positive)
+
+  if (length(pos) > 0L) {
+    phi[, pos] <- svdx$v[, pos, drop = FALSE] %*%
+      diag(1 / svdxd[pos], nrow = length(pos))
+  }
+
   ph       <- t(phi ^ 2)
   diag_sum <- diag(rowSums(ph, dims = 1))
+  out      <- prop.table(ph %*% diag_sum, margin = 2)
 
-  prop.table(ph %*% diag_sum, margin = 2)  
+  # variance proportions are undefined for zero eigenvalues and for columns
+  # that are exact linear combinations of the remaining design columns
+  out[!positive, ] <- NA
+  out[, colSums(out, na.rm = TRUE) == 0] <- NA
+
+  out
   
 }

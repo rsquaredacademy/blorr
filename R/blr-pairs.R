@@ -2,7 +2,7 @@
 #'
 #' Association of predicted probabilities and observed responses.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return A tibble.
 #'
@@ -24,7 +24,7 @@ blr_pairs <- function(model) {
   blr_check_model(model)
 
   resp    <- model$y
-  fit     <- fitted(model)
+  fit     <- model$fitted.values
   pairs   <- data.frame(response = resp, fit_val = fit)
   n       <- nrow(pairs)
   p_ones  <- pairs_one_zero(pairs, 1, fit_val)
@@ -46,7 +46,7 @@ pairs_compute <- function(compute_pairs, n) {
   compute_pairs$tied        <-  compute_pairs$ties / compute_pairs$pairs
   compute_pairs$somers_d    <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$pairs)
   compute_pairs$gamma       <-  (compute_pairs$concordant - compute_pairs$discordant) / (compute_pairs$concordant + compute_pairs$discordant)
-  compute_pairs$tau         <-  (2 * (compute_pairs$concordant - compute_pairs$discordant)) / (n * (n - 1))
+  compute_pairs$tau         <-  (2 * (compute_pairs$concordant - compute_pairs$discordant)) / (as.double(n) * (n - 1))
   compute_pairs$c           <-  compute_pairs$concordance + (0.5 * compute_pairs$tied)
 
   cols_return <- c('pairs', 'concordance', 'discordance', 'tied', 'somers_d',

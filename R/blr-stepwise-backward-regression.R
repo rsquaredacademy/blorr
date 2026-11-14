@@ -5,8 +5,8 @@
 #' removing predictors based on p values, in a stepwise manner until there is
 #' no variable left to remove any more.
 #'
-#' @param model An object of class \code{lm}; the model should include all
-#'   candidate predictor variables.
+#' @param model An object of class \code{glm}; the model should include all
+#'   candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param prem p value; variables with p more than \code{prem} will be removed
 #'   from the model.
 #' @param details Logical; if \code{TRUE}, will print the regression result at
@@ -31,7 +31,6 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
-#' \dontrun{
 #' # stepwise backward regression
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
 #'   data = hsb2, family = binomial(link = 'logit'))
@@ -46,8 +45,11 @@
 #' # final model
 #' k$model
 #'
-#' }
 #'
+#' @section Aliased terms:
+#' A model with aliased (perfectly collinear) coefficients is rejected with an
+#' error, because the Wald test used to enter or remove terms does not exist
+#' for them. Remove the aliased terms and refit.
 #'
 #' @family variable selection procedures
 #'
@@ -61,13 +63,13 @@ blr_step_p_backward <- function(model, ...) UseMethod("blr_step_p_backward")
 blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...) {
 
   blr_check_model(model)
-  blr_check_weights_offset(model)
+  blr_check_aliased(model, "blr_step_p_backward()")
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
   blr_check_values(prem, 0, 1)
 
 
-  l        <- model$data
+  l        <- selection_data(model)
   nam      <- colnames(attr(model$terms, "factors"))
   response <- names(model$model)[1]
   preds    <- nam
@@ -97,10 +99,10 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   }
 
   while (!end) {
-    m <- selection_model(response, preds, l)
+    m <- selection_model(response, preds, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals <- m_sum$`Pr(>Chisq)`
-    maxp  <- which(pvals == max(pvals))
+    maxp  <- selection_p_index(pvals, m_sum$Chisq, enter = FALSE)
 
     suppressWarnings(
       if (pvals[maxp] > prem) {
@@ -109,7 +111,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         rpred  <- c(rpred, preds[maxp])
         preds  <- preds[-maxp]
         lp     <- length(rpred)
-        fr     <- selection_model(response, preds, l)
+        fr     <- selection_model(response, preds, l, fit = model)
         mfs    <- blr_model_fit_stats(fr)
         aic    <- c(aic, mfs$m_aic)
         bic    <- c(bic, mfs$m_bic)
@@ -128,7 +130,7 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
         if (details) {
           cat("\n")
           cat(paste("Backward Elimination: Step", step, "\n\n"), paste("Variable", rpred[lp], "Removed"), "\n\n")
-          m <- blr_regress(selection_formula(response, preds), l)
+          m <- blr_regress(fr)
           print(m)
           cat("\n\n")
         }
@@ -157,13 +159,10 @@ blr_step_p_backward.default <- function(model, prem = 0.3, details = FALSE, ...)
   cat("Final Model Output", "\n")
   cat(rep("-", 18), sep = "", "\n\n")
 
-  fi <- blr_regress(
-    selection_formula(response, preds),
-    data = l
-  )
-  print(fi)
+  final_model <- selection_model(response, preds, l, fit = model)
 
-  final_model <- selection_model(response, preds, l)
+  fi <- blr_regress(final_model)
+  print(fi)
 
   out <- list(removed    = rpred,
               indvar     = cterms,

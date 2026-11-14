@@ -8,7 +8,7 @@
 #' The Gini index is computed as 2 * AUC - 1, where AUC is the area under the
 #' receiver operating characteristic curve.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #'
 #' @return Gini index.
@@ -54,7 +54,10 @@ blr_gini_index <- function(model, data = NULL) {
   if (test_data) {
     response <- data[[resp_name]]
   } else {
-    response <- model$y
+    # model$y is already encoded as 0/1, so map the original fitted response
+    # labels instead; otherwise a labelled factor or logical response is
+    # compared with the numeric codes and every row becomes a non-event
+    response <- model$model[[1]]
   }
 
   if (is.null(response)) {
@@ -67,7 +70,7 @@ blr_gini_index <- function(model, data = NULL) {
   complete <- stats::complete.cases(response, prob)
   response <- response[complete]
   prob     <- prob[complete]
-  event    <- event_indicator(response)
+  event    <- model_event_indicator(model, response)
 
   r   <- rank(prob)
   n1  <- as.numeric(sum(event))
@@ -83,7 +86,7 @@ blr_gini_index <- function(model, data = NULL) {
 #' @description Lorenz curve is a visual representation of inequality. It is
 #'   used to measure the discriminatory power of the predictive model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param title Plot title.
 #' @param xaxis_title X axis title.

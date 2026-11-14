@@ -78,9 +78,11 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
       family = binomial(link = "logit")
     )
 
+    # the null model must be fitted on the same complete rows as the
+    # predictor model, not on the original data with missing values
     model1 <- glm(
-      as.formula(paste(resp_name, "~", 1)), data = mdata,
-      family = binomial(link = "logit")
+      as.formula(paste(resp_name, "~", 1)), data = model.frame(model),
+      family = model$family
     )
 
     lr           <- blr_test_lr(model, model1)
@@ -138,6 +140,7 @@ blr_segment.default <- function(data, response, predictor) {
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
   d$event <- event_indicator(d$resp)
+  d       <- d[!is.na(d$event), , drop = FALSE]
   d       <- data.table(d)
   d       <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
@@ -189,11 +192,12 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   resp          <- deparse(substitute(response))
   var_1         <- deparse(substitute(variable_1))
   var_2         <- deparse(substitute(variable_2))
-  n             <- nrow(data)
+  n             <- sum(!is.na(data[[resp]]))
   d             <- data[c(resp, var_1, var_2)]
   var_names     <- names(d)
   colnames(d)   <- c("resp", "var_1", "var_2")
-  d             <- d[d$resp == 1, c('var_1', 'var_2')]
+  event         <- event_indicator(d$resp)
+  d             <- d[!is.na(event) & event, c('var_1', 'var_2')]
   twoway        <- table(d) / n
   result        <- list(twoway_segment = twoway, varnames = var_names)
   class(result) <- "blr_segment_twoway"
@@ -288,6 +292,7 @@ segment_comp <- function(data, pred, resp) {
   d <- data[c(pred, resp)]
   colnames(d) <- c("pred", "resp")
   d$event <- event_indicator(d$resp)
+  d <- d[!is.na(d$event), , drop = FALSE]
   d <- data.table(d)
   d <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 

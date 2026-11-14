@@ -7,7 +7,7 @@
 blr_test_hosmer_lemeshow(model, data = NULL)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{data}{a \code{tibble} or \code{data.frame}.}
 }
@@ -15,14 +15,14 @@ blr_test_hosmer_lemeshow(model, data = NULL)
 Hosmer-Lemeshow goodness of fit test.
 }
 \details{
-The test is not available for models fitted with prior weights, and gives an
-error for such models.
-
-The degrees of freedom are \code{max(1, g - 2)}, where \code{g} is the number
-of partition groups actually used. With very few groups the test is
-degenerate: for example, a model with a single binary predictor gives only
-two groups, a chi-square statistic close to zero and a p-value close to one,
-which should not be read as evidence of good fit.
+The degrees of freedom are \code{g - 2}, where \code{g} is the number of
+partition groups actually used. The table prints exactly those groups, so a
+model with fewer than 10 groups no longer prints empty rows. With fewer than
+three groups the test is not available and the statistic, degrees of freedom
+and p-value are \code{NA}: with few groups the test is degenerate, for example
+a model with a single binary predictor gives only two groups and a p-value
+close to one, which should not be read as evidence of good fit. Weighted
+models are rejected before the test by the shared model guard.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -36,14 +36,14 @@ Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2n
 New  York:  John Wiley & Sons.
 }
 \seealso{
-Other model validation techniques: 
-\code{\link{blr_confusion_matrix}()},
-\code{\link{blr_decile_capture_rate}()},
-\code{\link{blr_decile_lift_chart}()},
-\code{\link{blr_gains_table}()},
-\code{\link{blr_gini_index}()},
-\code{\link{blr_ks_chart}()},
-\code{\link{blr_lorenz_curve}()},
-\code{\link{blr_roc_curve}()}
+Other model validation techniques:
+\code{\link[=blr_confusion_matrix]{blr_confusion_matrix()}},
+\code{\link[=blr_decile_capture_rate]{blr_decile_capture_rate()}},
+\code{\link[=blr_decile_lift_chart]{blr_decile_lift_chart()}},
+\code{\link[=blr_gains_table]{blr_gains_table()}},
+\code{\link[=blr_gini_index]{blr_gini_index()}},
+\code{\link[=blr_ks_chart]{blr_ks_chart()}},
+\code{\link[=blr_lorenz_curve]{blr_lorenz_curve()}},
+\code{\link[=blr_roc_curve]{blr_roc_curve()}}
 }
 \concept{model validation techniques}

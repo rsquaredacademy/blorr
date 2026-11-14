@@ -173,16 +173,112 @@ test_that("multi model fit stats label each measure by name", {
   expect_equal(value_of("BIC"), round(BIC(model2), 3))
 })
 
+test_that("pseudo R2 is identical for na.omit and na.exclude fits", {
+  d <- mtcars
+  d$hp[1] <- NA
+  me <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.exclude)
+  mo <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.omit)
 
-test_that("null model retains weights, offset, and family in blr_model_fit_stats", {
-  # weighted model
+  r2 <- function(m) {
+    c(blr_rsq_effron(m), blr_rsq_count(m), blr_rsq_adj_count(m),
+      blr_rsq_mckelvey_zavoina(m))
+  }
+
+  expect_equal(r2(me), r2(mo))
+  expect_false(anyNA(r2(me)))
+
+  k <- blr_model_fit_stats(me)
+  expect_false(anyNA(c(k$effron, k$count_r2, k$count_adj, k$mckelvey)))
+})
+
+test_that("fit statistics are available for an intercept-only model", {
+  model <- glm(am ~ 1, data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$lr_ratio, 0)
+  expect_equal(k$lr_df, 0)
+  expect_equal(k$dev_df, df.residual(model))
+})
+
+test_that("a rank-one model without an intercept has no zero LR test", {
+  model <- glm(am ~ 0 + wt, data = mtcars, family = binomial)
+
+  expect_warning(
+    k <- blr_model_fit_stats(model),
+    "likelihood ratio test is not available"
+  )
+
+  # the fitted and intercept-only likelihoods differ, so reporting a zero
+  # statistic would be wrong
+  expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+  expect_false(isTRUE(all.equal(
+    -2 * (k$loglik_null - k$loglik_model), 0
+  )))
+  expect_true(is.na(k$lr_ratio))
+  expect_true(is.na(k$lr_df))
+  expect_true(is.na(k$lr_pval))
+  expect_equal(k$dev_df, df.residual(model))
+
+  # the same applies when more than one predictor is fitted without an
+  # intercept: the intercept-only model is not nested in the fitted design
+  model2 <- glm(am ~ 0 + wt + hp, data = mtcars, family = binomial)
+
+  expect_warning(
+    k2 <- blr_model_fit_stats(model2),
+    "likelihood ratio test is not available"
+  )
+  expect_true(is.na(k2$lr_ratio))
+  expect_equal(k2$dev_df, df.residual(model2))
+})
+
+test_that("residual df uses the fitted rank when a coefficient is aliased", {
+  model <- glm(am ~ wt + I(2 * wt), data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$dev_df, df.residual(model))
+  expect_equal(model_d_f(model), model$rank)
+})
+
+test_that("no-intercept fit statistics do not depend on predictor scale", {
+  ref_ll <- NULL
+
+  for (s in c(1, 1e6, 1e8)) {
+    d     <- transform(mtcars, x = wt * s)
+    model <- glm(am ~ 0 + x, data = d, family = binomial)
+
+    expect_warning(
+      k <- blr_model_fit_stats(model),
+      "likelihood ratio test is not available"
+    )
+
+    # the fitted and intercept-only likelihoods match base R, differ from each
+    # other, and are unchanged by rescaling the predictor
+    expect_equal(k$loglik_null, as.numeric(logLik(update(model, . ~ 1))))
+    expect_equal(k$loglik_model, as.numeric(logLik(model)))
+    expect_true(is.na(k$lr_ratio))
+    expect_true(is.na(k$lr_df))
+    expect_true(is.na(k$lr_pval))
+    expect_equal(k$dev_df, df.residual(model))
+    expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+
+    if (is.null(ref_ll)) {
+      ref_ll <- c(k$loglik_null, k$loglik_model)
+    } else {
+      expect_equal(c(k$loglik_null, k$loglik_model), ref_ll)
+    }
+  }
+})
+
+test_that("null model retains offset and family; weighted fits are rejected", {
+  # weighted model: rejected by the shared guard before any statistic is built
   set.seed(3)
   w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
-  m0_w <- glm(honcomp ~ 1, data = hsb2, family = binomial, weights = w)
-  bfs_w <- blr_model_fit_stats(m_w)
-  expect_equal(bfs_w$loglik_null, as.numeric(logLik(m0_w)))
-  expect_equal(bfs_w$lr_ratio, m0_w$deviance - m_w$deviance)
+  expect_error(blr_model_fit_stats(m_w), "unweighted 0/1")
 
   # offset model
   set.seed(4)
@@ -199,62 +295,20 @@ test_that("null model retains weights, offset, and family in blr_model_fit_stats
   expect_equal(i_model(m_prob)$family$link, "probit")
 })
 
-test_that("weighted fit statistics use prior weights and report NA measures", {
-  set.seed(3)
-  w <- sample(1:4, nrow(hsb2), replace = TRUE)
-  m  <- glm(honcomp ~ female + read + science, data = hsb2,
-            family = binomial(link = "logit"), weights = w)
-  m0 <- glm(honcomp ~ 1, data = hsb2,
-            family = binomial(link = "logit"), weights = w)
-
-  n_w <- sum(w)
-  ll0 <- as.numeric(logLik(m0))
-  ll1 <- as.numeric(logLik(m))
-
-  cox_snell  <- 1 - exp((2 / n_w) * (ll0 - ll1))
-  nagelkerke <- cox_snell / (1 - exp((2 / n_w) * ll0))
-
-  res <- blr_model_fit_stats(m)
-
-  expect_equal(res$cox_snell, cox_snell)
-  expect_equal(res$nagelkerke, nagelkerke)
-  expect_true(is.na(res$count_r2))
-  expect_true(is.na(res$count_adj))
-  expect_true(is.na(res$effron))
-  expect_true(is.na(res$mckelvey))
-
-  out <- capture.output(print(res))
-  expect_true(any(grepl(
-    "not available for models with prior weights", out, fixed = TRUE
-  )))
-})
-
-test_that("weighted R2 functions error for models with prior weights", {
+test_that("weighted models are rejected by the fit statistic functions", {
   set.seed(3)
   w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m <- glm(honcomp ~ female + read + science, data = hsb2,
            family = binomial(link = "logit"), weights = w)
 
-  expect_error(
-    blr_rsq_count(m),
-    "Count R2 is not available for models with prior weights", fixed = TRUE
-  )
-  expect_error(
-    blr_rsq_adj_count(m),
-    "Adj Count R2 is not available for models with prior weights", fixed = TRUE
-  )
-  expect_error(
-    blr_rsq_effron(m),
-    "Efron's R2 is not available for models with prior weights", fixed = TRUE
-  )
-  expect_error(
-    blr_rsq_mckelvey_zavoina(m),
-    "McKelvey & Zavoina's R2 is not available for models with prior weights",
-    fixed = TRUE
-  )
+  expect_error(blr_model_fit_stats(m), "unweighted 0/1")
+  expect_error(blr_rsq_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_adj_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_effron(m), "unweighted 0/1")
+  expect_error(blr_rsq_mckelvey_zavoina(m), "unweighted 0/1")
 })
 
-test_that("null model uses the model weights when the data has a weights column", {
+test_that("null model uses the model when the data has a weights column", {
   set.seed(2)
   dd <- hsb2
   dd$weights <- runif(nrow(dd), 1, 3)
@@ -273,9 +327,8 @@ test_that("null model uses the model weights when the data has a weights column"
   expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
 })
 
-test_that("null model uses the model weights and offset when the data has both columns", {
+test_that("null model uses the model offset when the data has both columns", {
   set.seed(3)
-  w   <- sample(1:4, nrow(hsb2), replace = TRUE)
   off <- rnorm(nrow(hsb2))
 
   dd <- hsb2
@@ -283,9 +336,9 @@ test_that("null model uses the model weights and offset when the data has both c
   dd$offset  <- rnorm(nrow(dd))
 
   m  <- glm(honcomp ~ female + read + weights + offset, data = dd,
-            family = binomial, weights = w, offset = off)
+            family = binomial, offset = off)
   m0 <- glm(honcomp ~ 1, data = dd,
-            family = binomial, weights = w, offset = off)
+            family = binomial, offset = off)
 
   ll1 <- as.numeric(logLik(m))
   ll0 <- as.numeric(logLik(m0))
@@ -295,9 +348,6 @@ test_that("null model uses the model weights and offset when the data has both c
   expect_equal(res$loglik_null, ll0)
   expect_equal(res$lr_ratio, m0$deviance - m$deviance)
   expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
-  expect_equal(
-    blr_rsq_cox_snell(m),
-    1 - exp((2 / sum(w)) * (ll0 - ll1))
-  )
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
   expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
 })

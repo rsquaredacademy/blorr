@@ -50,11 +50,25 @@ blr_reg_comp <- function(formula, data, odd_conf_limit, weights = NULL, offset =
     )
   }
 
+  # the same guard every model entry point uses: reject weighted, grouped and
+  # non-logit fits instead of summarising a model blorr does not support
+  blr_check_model(model)
+
+  blr_reg_compute(model, odd_conf_limit)
+}
+
+blr_reg_compute <- function(model, odd_conf_limit) {
+
   if (interactive()) {
     cat(paste("-", "Creating model overview."), "\n")
   }
   
-  dataname       <- data_name(model)
+  dataname       <- model$call$data
+  if (is.null(dataname)) {
+    dataname <- ""
+  } else {
+    dataname <- tryCatch(deparse(dataname), error = function(e) "")
+  }
   resp_name      <- response_var(model)
   n_obs          <- data_nrows(model)
   converge       <- converge_status(model)

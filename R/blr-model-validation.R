@@ -2,7 +2,7 @@
 #'
 #' Confusion matrix and statistics.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param cutoff Cutoff for classification.
 #' @param ... Other arguments.
@@ -43,12 +43,20 @@ blr_confusion_matrix.default <- function(model, cutoff = 0.5, data = NULL, ...) 
   }
 
   p_data <- predict(model, newdata = data, type = "response")
+  event  <- model_event_indicator(model, response)
+
+  keep <- !is.na(event) & !is.na(p_data)
+  event  <- event[keep]
+  p_data <- p_data[keep]
+
   c_data <- factor(as.integer(p_data > cutoff), levels = c(0, 1))
 
-  if (is.factor(response) && length(levels(response)) > 1) {
-    ref <- factor(response, levels = levels(response))
+  ref_levels <- model_response_levels(model)
+
+  if (!is.null(ref_levels)) {
+    ref <- factor(as.integer(event), levels = c(0, 1), labels = ref_levels)
   } else {
-    ref <- factor(as.integer(event_indicator(response)), levels = c(0, 1))
+    ref <- factor(as.integer(event), levels = c(0, 1))
   }
 
   out    <- table(Prediction = c_data, Reference = ref)

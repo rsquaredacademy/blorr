@@ -7,7 +7,7 @@
 blr_prep_lorenz_data(model, data = NULL, test_data = FALSE)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{data}{A \code{tibble} or \code{data.frame}.}
 
@@ -19,7 +19,6 @@ Data for generating Lorenz curve.
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
-data <- model$data
-blr_prep_lorenz_data(model, data, FALSE)
+blr_prep_lorenz_data(model)
 
 }

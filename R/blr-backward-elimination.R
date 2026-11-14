@@ -6,7 +6,7 @@
 #' manner until there is no variable left to remove any more.
 #'
 #' @param model An object of class \code{glm}; the model should include all
-#'   candidate predictor variables.
+#'   candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param progress Logical; if \code{TRUE}, will display variable selection progress.
 #' @param details Logical; if \code{TRUE}, will print the regression result at
 #'   each step.
@@ -31,7 +31,6 @@
 #' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science + math + prog + socst,
 #' data = hsb2, family = binomial(link = 'logit'))
 #'
@@ -47,8 +46,6 @@
 #' # final model
 #' k <- blr_step_aic_backward(model)
 #' k$model
-#'
-#' }
 #'
 #' @family variable selection procedures
 #'
@@ -67,17 +64,18 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   }
 
   blr_check_model(model)
-  blr_check_weights_offset(model)
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
   response <- names(model$model)[1]
-  l        <- model$model
+  l        <- selection_data(model)
   nam      <- coeff_names(model)
   preds    <- nam
-  aic_f    <- model_aic(model)
 
-    mi <- selection_model(response, preds, l)
+  # one refitted full model supplies the baseline AIC, BIC and deviance, so
+  # the first row and every comparison come from the same fit
+  mi    <- selection_model(response, preds, l, fit = model)
+  aic_f <- model_aic(mi)
 
   laic <- aic_f
   lbic <- model_bic(mi)
@@ -105,15 +103,19 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   bics  <- c()
   devs  <- c()
 
+  dfs <- numeric(0)
+
+  base_rank <- selection_model(response, preds, l, fit = model)$rank
   for (i in seq_len(ilp)) {
     predictors <- preds[-i]
-    m <- selection_model(response, predictors, l)
+    m <- selection_model(response, predictors, l, fit = model)
     aics[i] <- model_aic(m)
+    dfs[i] <- abs(m$rank - base_rank)
     bics[i] <- model_bic(m)
     devs[i] <- model_deviance(m)
   }
 
-  da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs)
+  da  <- data.frame(predictors = preds, aics = aics, bics = bics, devs = devs, dfs = dfs)
   da2 <- da[order(da[['aics']]), ]
 
   if (details) {
@@ -134,7 +136,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
     for (i in seq_len(ln)) {
       cat(
-        fl(da2[i, 1], w1), fs(), fc(1, w2), fs(),
+        fl(da2[i, 1], w1), fs(), fc(da2[i, 5], w2), fs(),
         fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
         fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
         fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -152,7 +154,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
   }
 
   while (!end) {
-    minc <- which(aics == min(aics))
+    minc <- which.min(aics)
 
     if (aics[minc] < aic_f) {
       rpred <- c(rpred, preds[minc])
@@ -161,7 +163,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
       step  <- step + 1
       aic_f <- aics[minc]
 
-      mi <- selection_model(response, preds, l)
+      mi <- selection_model(response, preds, l, fit = model)
 
       laic <- c(laic, aic_f)
       lbic <- c(lbic, model_bic(mi))
@@ -178,10 +180,14 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
         cat(paste("x", rev(rpred)[1], "\n"))
       }
 
+      dfs <- numeric(0)
+
+      base_rank <- selection_model(response, preds, l, fit = model)$rank
       for (i in seq_len(ilp)) {
         predictors <- preds[-i]
-        m <- selection_model(response, predictors, l)
+        m <- selection_model(response, predictors, l, fit = model)
         aics[i] <- model_aic(m)
+        dfs[i] <- abs(m$rank - base_rank)
         bics[i] <- model_bic(m)
         devs[i] <- model_deviance(m)
       }
@@ -193,7 +199,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
         da <- data.frame(
           predictors = preds, aics = aics, bics = bics,
-          devs = devs
+          devs = devs, dfs = dfs
         )
         da2 <- da[order(da[['aics']]), ]
         w1  <- max(nchar("Predictor"), nchar(predictors))
@@ -213,7 +219,7 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
 
         for (i in seq_len(ln)) {
           cat(
-            fl(da2[i, 1], w1), fs(), fc(1, w2), fs(),
+            fl(da2[i, 1], w1), fs(), fc(da2[i, 5], w2), fs(),
             fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
             fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
             fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -239,19 +245,16 @@ blr_step_aic_backward.default <- function(model, progress = FALSE, details = FAL
     }
   }
 
+  final_model <- selection_model(response, preds, l, fit = model)
+
   if (progress) {
     cat("\n\n")
     cat("Final Model Output", "\n")
     cat(rep("-", 18), sep = "", "\n\n")
 
-    fi <- blr_regress(
-      selection_formula(response, preds),
-      data = l
-    )
+    fi <- blr_regress(final_model)
     print(fi)
   }
-
-  final_model <- selection_model(response, preds, l)
 
   vars <- c("Full Model", rpred)
 

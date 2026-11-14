@@ -1,79 +1,30 @@
 #' @importFrom stats family
 blr_check_model <- function(model) {
 
-  model_class <- inherits(model, "glm")
+	model_class  <- class(model)[1] == "glm"
 
-  if (!model_class) {
-    fmla <- tryCatch(paste(deparse(formula(model)), collapse = " "), error = function(e) "")
-    data <- tryCatch(paste(deparse(model$call$data), collapse = " "), error = function(e) "")
+	fmla <- deparse(formula(model))
+	data <- deparse(model$call$data)
 
-    stop(
-      paste0(
-        "Hmmm.. Looks like you have specified an incorrect model. The below steps might be helpful:\n\n",
-        "* Check if you have used the glm() function to build the model.\n",
-        "* If you have never used it before, you can learn more by typing ?glm or help(glm) in the Console.\n\n",
-        "Please specify the model in the below format:\n\n",
-        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
-        "Happy modeling :)\n"
-      ),
-      call. = FALSE
-    )
+	if (!model_class) {
+
+		cat("Hmmm.. Looks like you have specified an incorrect model. The below steps might be helpful:
+
+* Check if you have used the", "glm()", "function to build the model.
+* If you have never used it before, you can learn more by typing", "?glm", "or", "help(glm)", "in the Console.\n\n",
+
+"Please specify the model in the below format:\n\n",
+
+"glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
+
+"Happy modeling :)\n")
+
+    stop("", call. = FALSE)
+
   }
 
-  fam  <- family(model)
-  fmla <- paste(deparse(formula(model)), collapse = " ")
-  data <- paste(deparse(model$call$data), collapse = " ")
+  blr_check_supported(model)
 
-  if (!isTRUE(fam$family == "binomial")) {
-    stop(
-      paste0(
-        "The error distribution is not binomial. Please specify the error distribution using the family argument in glm().\n\n",
-        "Please specify the model in the below format:\n\n",
-        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
-        "Happy modeling :)\n"
-      ),
-      call. = FALSE
-    )
-  }
-
-  if (!isTRUE(fam$link == "logit")) {
-    stop(
-      paste0(
-        "The link function is not logit. Please specify the link function using the family argument in glm().\n\n",
-        "Please specify the model in the below format:\n\n",
-        "glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit'))\n\n",
-        "Happy modeling :)\n"
-      ),
-      call. = FALSE
-    )
-  }
-
-}
-
-has_prior_weights <- function(model) {
-  !is.null(model$prior.weights) && any(model$prior.weights != 1)
-}
-
-blr_check_prior_weights <- function(model, measure) {
-  if (has_prior_weights(model)) {
-    stop(
-      paste0(measure, " is not available for models with prior weights."),
-      call. = FALSE
-    )
-  }
-}
-
-blr_check_weights_offset <- function(model) {
-  has_weights <- has_prior_weights(model)
-  has_offset  <- !is.null(model$offset) && any(model$offset != 0)
-
-  if (has_weights && has_offset) {
-    stop("Weights and offsets are not supported by this function yet.", call. = FALSE)
-  } else if (has_weights) {
-    stop("Weights are not supported by this function yet.", call. = FALSE)
-  } else if (has_offset) {
-    stop("Offsets are not supported by this function yet.", call. = FALSE)
-  }
 }
 
 blr_check_data <- function(data) {
@@ -173,3 +124,16 @@ blr_check_varnames <- function(data, column) {
 
 
 
+
+# the p-value selection procedures test each term with a Wald statistic, which
+# does not exist for an aliased (perfectly collinear or constant) term, so a
+# model with an aliased coefficient is rejected up front
+blr_check_aliased <- function(model, what) {
+  if (anyNA(stats::coef(model))) {
+    bad <- names(stats::coef(model))[is.na(stats::coef(model))]
+    stop(what, " cannot be used with a model that has aliased (perfectly ",
+         "collinear) terms: ", paste(bad, collapse = ", "),
+         ". Remove them and refit the model.", call. = FALSE)
+  }
+  invisible(TRUE)
+}

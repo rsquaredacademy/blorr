@@ -6,15 +6,20 @@ list.
 ## Test environments
 
 * local: Windows 11, R 4.6.1
-* TODO: win-builder (devel, release)
-* TODO: R-hub
-* TODO: macOS
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-The note is specific to this machine: `Skipping checking math rendering: package 'V8' unavailable`. `V8` is not installed here; the package itself is unaffected.
+The note is the expected maintainer-address change from
+`hebbali.aravind@gmail.com` to `aravindhebbali@rsquaredacademy.com`:
+
+```
+New maintainer:
+  Aravind Hebbali <aravindhebbali@rsquaredacademy.com>
+Old maintainer(s):
+  Aravind Hebbali <hebbali.aravind@gmail.com>
+```
 
 ## Reverse dependencies
 

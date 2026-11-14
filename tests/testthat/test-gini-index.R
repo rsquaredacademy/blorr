@@ -37,6 +37,20 @@ test_that("gini index and lorenz curve use the rows the model was fitted on", {
   )
 })
 
+test_that("default gini uses the fitted response labels", {
+  d  <- transform(mtcars, am = factor(am, labels = c("no", "yes")))
+  mf <- glm(am ~ wt + hp, d, family = binomial)
+
+  expect_equal(blr_gini_index(mf), 0.967611336032)
+  expect_equal(blr_gini_index(mf), blr_gini_index(mf, d))
+
+  ml <- glm(I(am == 1) ~ wt + hp, mtcars, family = binomial)
+  mn <- glm(am ~ wt + hp, mtcars, family = binomial)
+
+  expect_equal(blr_gini_index(ml), 0.967611336032)
+  expect_equal(blr_gini_index(ml), blr_gini_index(mn))
+})
+
 test_that("gini index on a test set uses the response from the test data", {
   model <- glm(
     honcomp ~ female + read, data = hsb2,
@@ -62,6 +76,15 @@ test_that("gini index errors when data lacks the response column", {
     blr_gini_index(model, hsb2[1:50, c("female", "read")]),
     "must contain the response variable"
   )
+})
+
+test_that("lorenz data documentation uses the default data argument", {
+  rd <- system.file("man", "blr_prep_lorenz_data.Rd", package = "blorr")
+  skip_if_not(nzchar(rd) && file.exists(rd))
+
+  lines <- readLines(rd)
+  expect_false(any(grepl("model$data", lines, fixed = TRUE)))
+  expect_true(any(grepl("blr_prep_lorenz_data(model)", lines, fixed = TRUE)))
 })
 
 test_that("gini index is fast on a large model", {
@@ -119,3 +142,61 @@ test_that("gini index is finite on a large balanced model", {
   expect_true(is.finite(gini))
   expect_equal(gini, 2 * auc - 1)
 })
+
+test_that("validation uses the fitted event class when test levels differ", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td    <- transform(mtcars, am = factor(am, levels = c(9, 0, 1)))
+
+  expect_equal(blr_gini_index(model, td), blr_gini_index(model, mtcars))
+  expect_equal(sum(blr_gains_table(model, td)$gains_table[["1"]]),
+               sum(blr_gains_table(model, mtcars)$gains_table[["1"]]))
+
+  cm <- blr_confusion_matrix(model, data = td)
+  expect_equal(dim(cm$conf_matrix), c(2L, 2L))
+  expect_equal(sum(cm$conf_matrix), nrow(mtcars))
+})
+
+test_that("held-out response values outside the fitted classes are rejected", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$am[1] <- 9
+
+  expect_error(blr_gini_index(m, td), "not present in the fitted model")
+  expect_error(blr_confusion_matrix(m, data = td),
+               "not present in the fitted model")
+  expect_error(blr_gains_table(m, td), "not present in the fitted model")
+  expect_error(blr_test_hosmer_lemeshow(m, data = td),
+               "not present in the fitted model")
+
+  d  <- transform(mtcars, am = factor(am, labels = c("no", "yes")))
+  mf <- glm(am ~ wt + hp, data = d, family = binomial)
+  tf <- d
+  tf$am <- factor(as.character(tf$am), levels = c("no", "yes", "unknown"))
+  tf$am[1] <- "unknown"
+
+  expect_error(blr_gini_index(mf, tf), "not present in the fitted model")
+
+  ml <- glm(I(am == 1) ~ wt + hp, data = mtcars, family = binomial)
+  tl <- mtcars
+  tl[["I(am == 1)"]] <- c(2, mtcars$am[-1] == 1)
+
+  expect_error(blr_gini_index(ml, tl), "not present in the fitted model")
+})
+
+test_that("lorenz data uses model defaults and fitted rows", {
+  model <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+
+  k <- blr_prep_lorenz_data(model)
+  expect_equal(nrow(k), nrow(blr_gains_table(model)$gains_table) + 2L)
+  expect_equal(k$cum_1s_per[c(1, nrow(k))], c(0, 1))
+
+  d <- mtcars
+  d$hp[1] <- NA
+  m <- glm(am ~ wt + hp, data = d, family = binomial)
+
+  k2 <- blr_prep_lorenz_data(m, d, FALSE)
+  expect_equal(nrow(k2), nrow(blr_gains_table(m)$gains_table) + 2L)
+  expect_equal(k2$cum_1s_per[nrow(k2)], 1)
+})
+
+

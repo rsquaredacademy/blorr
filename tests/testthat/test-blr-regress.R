@@ -65,17 +65,62 @@ test_that("blr_regress reports nobs and response profile on data with missing va
   expect_equal(as.integer(k$resp_prof[[2]]), sum(model$y == 1))
 })
 
-test_that("blr_regress keeps weights and offset of the fitted model", {
+test_that("blr_regress can summarise a fit with a transformed response", {
+  model <- glm(I(am == 1) ~ wt, data = mtcars, family = binomial)
+
+  k <- blr_regress(model)
+
+  expect_equal(k$est, unname(coef(model)))
+  expect_equal(k$n_obs, unname(nobs(model)))
+})
+
+test_that("aliased coefficients do not shift summary statistics (bfx8)", {
+  m  <- glm(am ~ I(0 * wt) + wt + hp, mtcars, family = binomial)
+  r  <- blr_regress(m)
+  sm <- summary(m)$coefficients
+
+  expect_equal(r$parameter, c("(Intercept)", "I(0 * wt)", "wt", "hp"))
+  expect_equal(r$df, c(1, 0, 1, 1))
+  expect_true(all(is.na(c(r$est[2], r$se[2], r$zval[2], r$pval[2]))))
+  for (nm in rownames(sm)) {
+    i <- match(nm, r$parameter)
+    expect_equal(r$est[i], sm[nm, "Estimate"])
+    expect_equal(r$se[i], sm[nm, "Std. Error"])
+    expect_equal(r$zval[i], sm[nm, "z value"])
+    expect_equal(r$pval[i], sm[nm, "Pr(>|z|)"])
+  }
+  expect_equal(r$se[3], 3.068675113054696, tolerance = 1e-8)
+  expect_equal(r$zval[3], -2.634190614723622, tolerance = 1e-8)
+  expect_equal(r$pval[4], .040914646459029938, tolerance = 1e-8)
+  expect_output(print(r), "wt")
+
+  # aliased models print with odds limits, with and without an intercept
+  for (f in list(am ~ wt + I(2 * wt), am ~ 0 + wt + I(2 * wt))) {
+    ma <- glm(f, mtcars, family = binomial)
+    ra <- blr_regress(ma, odd_conf_limit = TRUE)
+    expect_output(print(ra), "Odds Ratio Estimates")
+    expect_equal(ra$blr_odds_point, unname(exp(coef(ma))[ra$blr_effects]))
+  }
+})
+
+test_that("overview Df. Model is the estimated model df excluding the intercept (bfx9)", {
+  m1 <- glm(am ~ wt + hp, mtcars, family = binomial)
+  m2 <- glm(am ~ 0 + wt + hp, mtcars, family = binomial)
+  m3 <- glm(am ~ 0 + wt + I(2 * wt), mtcars, family = binomial)
+  m4 <- glm(am ~ 1, mtcars, family = binomial)
+
+  expect_equal(blr_regress(m1)$mod_df, 2)
+  expect_equal(blr_regress(m1)$resid_df, 29)
+  expect_equal(blr_regress(m2)$mod_df, 2)
+  expect_equal(blr_regress(m3)$mod_df, 1)
+  expect_equal(blr_regress(m4)$mod_df, 0)
+})
+
+test_that("blr_regress keeps the offset of the fitted model and rejects weighted fits", {
   set.seed(42)
   w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
-  res_w <- blr_regress(m_w)
-  s_w <- summary(m_w)$coefficients
-
-  expect_equal(res_w$est, unname(s_w[, "Estimate"]), tolerance = 1e-6)
-  expect_equal(res_w$se, unname(s_w[, "Std. Error"]), tolerance = 1e-6)
-  expect_equal(res_w$zval, unname(s_w[, "z value"]), tolerance = 1e-6)
-  expect_equal(res_w$pval, unname(s_w[, "Pr(>|z|)"]), tolerance = 1e-6)
+  expect_error(blr_regress(m_w), "unweighted 0/1")
 
   # offset model
   off <- rnorm(nrow(hsb2))
@@ -104,39 +149,16 @@ test_that("blr_regress estimates match glm for formula and argument offsets", {
   expect_equal(blr_regress(m_arg)$est, unname(coef(m_arg)), tolerance = 1e-8)
   expect_equal(blr_regress(m_both)$est, unname(coef(m_both)), tolerance = 1e-8)
 
-  # weights and a formula offset together
+  # weights with a formula offset: rejected by the shared guard
   set.seed(3)
   w <- sample(1:4, nrow(hsb2), replace = TRUE)
   m_wform <- glm(honcomp ~ female + read + science + offset(off),
                  data = hsb2, family = binomial(link = "logit"), weights = w)
-  expect_equal(blr_regress(m_wform)$est, unname(coef(m_wform)), tolerance = 1e-8)
+  expect_error(blr_regress(m_wform), "unweighted 0/1")
 })
 
-test_that("blr_regress uses the model weights when the data has a weights column", {
-  set.seed(3)
-  w  <- runif(200, .5, 2)
-  dd <- hsb2
-  dd$weights <- rnorm(200)
-  dd$offset  <- rnorm(200)
-
-  mc <- suppressWarnings(glm(
-    honcomp ~ female + read + weights + offset,
-    data = dd, family = binomial, weights = w
-  ))
-
-  res <- suppressWarnings(blr_regress(mc))
-
-  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
-  expect_equal(
-    res$se,
-    unname(summary(mc)$coefficients[, 2]),
-    tolerance = 1e-8
-  )
-})
-
-test_that("blr_regress uses the model weights and offset when the data has columns with those names", {
+test_that("blr_regress uses the model offset when the data has columns with those names", {
   set.seed(6)
-  w   <- runif(200, .5, 2)
   off <- rnorm(200)
   dd  <- hsb2
   dd$weights <- runif(200, 1, 3)
@@ -144,7 +166,7 @@ test_that("blr_regress uses the model weights and offset when the data has colum
 
   mc <- suppressWarnings(glm(
     honcomp ~ female + read + weights + offset,
-    data = dd, family = binomial, weights = w, offset = off
+    data = dd, family = binomial, offset = off
   ))
 
   res <- suppressWarnings(blr_regress(mc))
@@ -157,9 +179,9 @@ test_that("blr_regress uses the model weights and offset when the data has colum
   )
 })
 
-test_that("blr_regress.default uses supplied weights and offset when the data has columns with those names", {
+test_that("blr_regress.default uses the supplied offset and rejects weights", {
   set.seed(7)
-  w   <- runif(200, .5, 2)
+  w   <- sample(1:4, 200, replace = TRUE)
   off <- rnorm(200)
   dd  <- hsb2
   dd$weights <- rnorm(200)
@@ -167,12 +189,12 @@ test_that("blr_regress.default uses supplied weights and offset when the data ha
 
   mc <- suppressWarnings(glm(
     honcomp ~ female + read,
-    data = dd, family = binomial, weights = w, offset = off
+    data = dd, family = binomial, offset = off
   ))
 
   res <- suppressWarnings(blr_regress(
     honcomp ~ female + read,
-    data = dd, weights = w, offset = off
+    data = dd, offset = off
   ))
 
   expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
@@ -180,6 +202,12 @@ test_that("blr_regress.default uses supplied weights and offset when the data ha
     res$se,
     unname(summary(mc)$coefficients[, 2]),
     tolerance = 1e-8
+  )
+
+  # a weighted formula fit is rejected by the same guard as a fitted model
+  expect_error(
+    blr_regress(honcomp ~ female + read, data = dd, weights = w),
+    "unweighted 0/1"
   )
 })
 

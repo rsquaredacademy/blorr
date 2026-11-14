@@ -73,7 +73,7 @@ print_blr_reg <- function(x) {
 
     # odds ration estimates
     w18 <- max(nchar(c("Odds Ratio", x$blr_effects)))
-    w19 <- max(nchar(c("Estimate", x$blr_odds_point)))
+    w19 <- max(nchar(c("Estimate", x$blr_odds_point)), 2, na.rm = TRUE)
     w20 <- max(nchar(c("95% Profile", format(x$blr_conf$`2.5 %`,
       round(4), nsmall = 4))))
 
@@ -179,11 +179,7 @@ print_model_fit_stats <- function(x) {
       fg(col3vals[i], w4), "\n"
     )
   }
-  cat(rep("-", w), sep = "", "\n")
-  if (anyNA(c(x$count_r2, x$count_adj, x$effron, x$mckelvey))) {
-    cat("Count R2, Adj Count R2, Efron's R2 and McKelvey & Zavoina's R2 are not available for models with prior weights.\n")
-  }
-  cat("\n")
+  cat(rep("-", w), sep = "", "\n\n")
 }
 
 
@@ -642,7 +638,7 @@ print_stepwise <- function(data) {
     format("Step", width = w1, justify = "centre"), fs(), format("Variable", width = w2, justify = "centre"), fs(),
     format("Removed", width = w3, justify = "centre"), fs(),
     format("AIC", width = w4, justify = "centre"), fs(), format("BIC", width = w5, justify = "centre"), fs(),
-    format("C(p)", width = w6, justify = "centre"), fs(), "\n"
+    format("Deviance", width = w6, justify = "centre"), fs(), "\n"
   )
   cat(rep("-", w), sep = "", "\n")
 

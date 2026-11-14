@@ -13,8 +13,8 @@ blr_step_p_both(model, ...)
 \method{plot}{blr_step_p_both}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
-\item{model}{An object of class \code{lm}; the model should include all
-candidate predictor variables.}
+\item{model}{An object of class \code{glm}; the model should include all
+candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other arguments.}
 
@@ -36,7 +36,7 @@ each step.}
 An object of class \code{"blr_step_p_both"} is a list containing the
 following components:
 
-\item{model}{final model; an object of class \code{glm}}
+\item{model}{final model; an object of class \code{glm} Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{orders}{candidate predictor variables according to the order by which they were added or removed from the model}
 \item{method}{addition/deletion}
 \item{steps}{total number of steps}
@@ -51,14 +51,20 @@ Build regression model from a set of candidate predictor variables by
 entering and removing predictors based on p values, in a stepwise manner
 until there is no variable left to enter or remove any more.
 }
+\section{Aliased terms}{
+A model with aliased (perfectly collinear) coefficients is rejected with an
+error, because the Wald test used to enter or remove terms does not exist
+for them. Remove the aliased terms and refit.
+}
+
 \examples{
-\dontrun{
+\donttest{
 # stepwise regression
-model <- glm(y ~ ., data = stepwise)
+model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 blr_step_p_both(model)
 
 # stepwise regression plot
-model <- glm(y ~ ., data = stepwise)
+model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 k <- blr_step_p_both(model)
 plot(k)
 

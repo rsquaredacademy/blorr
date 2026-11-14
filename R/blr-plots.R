@@ -34,7 +34,7 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 #'
 #' Standardized Pearson residuals plot.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param point_color Color of the points.
 #' @param title Title of the plot.
 #' @param xaxis_title X axis label.
@@ -189,7 +189,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
 #' Diagnostics for confidence interval displacement and detecting ill fitted
 #' observations.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return C, CBAR, DIFDEV and DIFCHISQ.
 #'
@@ -335,7 +335,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' Panel of plots to detect influential observations using DFBETAs.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @details
@@ -359,12 +359,10 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' New York: John Wiley & Sons. pp. ISBN 0-471-05856-4.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_dfbetas_panel(model)
-#' }
 #'
 #' @importFrom stats dfbetas
 #' @importFrom ggplot2 geom_linerange geom_text annotate

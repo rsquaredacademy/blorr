@@ -17,3 +17,5 @@
 ^Meta$
 ^revdep$
 ^CODE_OF_CONDUCT\.md$
+^docs-dev$
+^\.hz-
