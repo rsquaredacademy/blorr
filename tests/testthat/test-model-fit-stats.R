@@ -273,3 +273,81 @@ test_that("no-intercept fit statistics do not depend on predictor scale", {
   }
 })
 
+test_that("null model retains offset and family; weighted fits are rejected", {
+  # weighted model: rejected by the shared guard before any statistic is built
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
+  expect_error(blr_model_fit_stats(m_w), "unweighted 0/1")
+
+  # offset model
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, offset = off)
+  m0_off <- glm(honcomp ~ 1, data = hsb2, family = binomial, offset = off)
+  bfs_off <- blr_model_fit_stats(m_off)
+  expect_equal(bfs_off$loglik_null, as.numeric(logLik(m0_off)))
+  expect_equal(bfs_off$lr_ratio, m0_off$deviance - m_off$deviance)
+
+  # probit model
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_model_fit_stats(m_prob), "logit")
+  expect_equal(i_model(m_prob)$family$link, "probit")
+})
+
+test_that("weighted models are rejected by the fit statistic functions", {
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m <- glm(honcomp ~ female + read + science, data = hsb2,
+           family = binomial(link = "logit"), weights = w)
+
+  expect_error(blr_model_fit_stats(m), "unweighted 0/1")
+  expect_error(blr_rsq_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_adj_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_effron(m), "unweighted 0/1")
+  expect_error(blr_rsq_mckelvey_zavoina(m), "unweighted 0/1")
+})
+
+test_that("null model uses the model when the data has a weights column", {
+  set.seed(2)
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 1, 3)
+  m  <- glm(honcomp ~ female + read + weights, data = dd, family = binomial)
+  m0 <- glm(honcomp ~ 1, data = dd, family = binomial)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})
+
+test_that("null model uses the model offset when the data has both columns", {
+  set.seed(3)
+  off <- rnorm(nrow(hsb2))
+
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 0.5, 2)
+  dd$offset  <- rnorm(nrow(dd))
+
+  m  <- glm(honcomp ~ female + read + weights + offset, data = dd,
+            family = binomial, offset = off)
+  m0 <- glm(honcomp ~ 1, data = dd,
+            family = binomial, offset = off)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})

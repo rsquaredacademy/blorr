@@ -338,3 +338,24 @@ test_that("ordinary nested comparisons still run and match anova (bfx11)", {
   fo <- glm(y ~ x + z, d, family = binomial, offset = off)
   expect_error(blr_test_lr(fo, glm(y ~ x, d, family = binomial)), "offset")
 })
+
+test_that("null model retains offset and family in blr_test_lr; weights are rejected", {
+  # weighted model: rejected by the shared guard instead of reporting a result
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
+  expect_error(blr_test_lr(m_w), "unweighted 0/1")
+
+  # offset model
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, offset = off)
+  m0_off <- glm(honcomp ~ 1, data = hsb2, family = binomial, offset = off)
+  res_off <- blr_test_lr(m_off)
+  expect_equal(res_off$test_result[['lr_ratio']], m0_off$deviance - m_off$deviance)
+
+  # probit model
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_test_lr(m_prob), "logit")
+  expect_equal(i_model(m_prob)$family$link, "probit")
+})

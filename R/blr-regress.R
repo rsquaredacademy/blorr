@@ -13,6 +13,13 @@
 #' @param ... Other inputs.
 #'
 #' @details
+#' The default method fits a binomial logit model with
+#' \code{\link[stats]{glm}}. An \code{offset} may be supplied directly, and the
+#' formula environment is kept. When a fitted \code{glm} object is supplied, the
+#' fit is summarised directly, so an offset supplied through the model formula
+#' and the formula environment are respected. Weighted models are rejected by
+#' the shared model guard.
+#'
 #' Odds ratio confidence limits are profile-likelihood intervals computed by
 #' \code{\link[stats]{confint}}.
 #'
@@ -34,14 +41,29 @@
 blr_regress <- function(object, ...) UseMethod("blr_regress")
 
 
+#' @rdname blr_regress
+#'
+#' @param data A \code{data.frame} or \code{tibble} containing the variables in
+#'   the model.
+#' @param weights An optional vector of prior weights to be used in the fitting
+#'   process.
+#' @param offset An optional offset to be included in the model.
+#'
 #' @export
 #'
-blr_regress.default <- function(object, data, odd_conf_limit = FALSE, ...) {
+blr_regress.default <- function(object, data, odd_conf_limit = FALSE,
+                                weights = NULL, offset = NULL, ...) {
 
 	blr_check_data(data)
 	blr_check_logic(odd_conf_limit)
 
-  result <- blr_reg_comp(object, data, odd_conf_limit)
+  result <- blr_reg_comp(
+    formula        = object,
+    data           = data,
+    odd_conf_limit = odd_conf_limit,
+    weights        = weights,
+    offset         = offset
+  )
   
   class(result) <- "blr_regress"
   return(result)
@@ -56,6 +78,9 @@ blr_regress.glm <- function(object, odd_conf_limit = FALSE, ...) {
 	blr_check_model(object)
 	blr_check_logic(odd_conf_limit)
 
+  # summarise the supplied fit directly: refitting would lose the formula
+  # environment, a transformed response or an offset supplied through the
+  # formula. The fit already holds its own weights, offset and family.
   result <- blr_reg_compute(object, odd_conf_limit)
 
   class(result) <- "blr_regress"

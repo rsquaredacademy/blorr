@@ -115,3 +115,121 @@ test_that("overview Df. Model is the estimated model df excluding the intercept 
   expect_equal(blr_regress(m3)$mod_df, 1)
   expect_equal(blr_regress(m4)$mod_df, 0)
 })
+
+test_that("blr_regress keeps the offset of the fitted model and rejects weighted fits", {
+  set.seed(42)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
+  expect_error(blr_regress(m_w), "unweighted 0/1")
+
+  # offset model
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), offset = off)
+  res_off <- blr_regress(m_off)
+  s_off <- summary(m_off)$coefficients
+
+  expect_equal(res_off$est, unname(s_off[, "Estimate"]), tolerance = 1e-6)
+  expect_equal(res_off$se, unname(s_off[, "Std. Error"]), tolerance = 1e-6)
+  expect_equal(res_off$zval, unname(s_off[, "z value"]), tolerance = 1e-6)
+  expect_equal(res_off$pval, unname(s_off[, "Pr(>|z|)"]), tolerance = 1e-6)
+})
+
+test_that("blr_regress estimates match glm for formula and argument offsets", {
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+
+  m_form <- glm(honcomp ~ female + read + science + offset(off),
+                data = hsb2, family = binomial(link = "logit"))
+  m_arg  <- glm(honcomp ~ female + read + science, data = hsb2,
+                family = binomial(link = "logit"), offset = off)
+  m_both <- glm(honcomp ~ female + read + science + offset(off),
+                data = hsb2, family = binomial(link = "logit"), offset = off)
+
+  expect_equal(blr_regress(m_form)$est, unname(coef(m_form)), tolerance = 1e-8)
+  expect_equal(blr_regress(m_arg)$est, unname(coef(m_arg)), tolerance = 1e-8)
+  expect_equal(blr_regress(m_both)$est, unname(coef(m_both)), tolerance = 1e-8)
+
+  # weights with a formula offset: rejected by the shared guard
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_wform <- glm(honcomp ~ female + read + science + offset(off),
+                 data = hsb2, family = binomial(link = "logit"), weights = w)
+  expect_error(blr_regress(m_wform), "unweighted 0/1")
+})
+
+test_that("blr_regress uses the model offset when the data has columns with those names", {
+  set.seed(6)
+  off <- rnorm(200)
+  dd  <- hsb2
+  dd$weights <- runif(200, 1, 3)
+  dd$offset  <- rnorm(200)
+
+  mc <- suppressWarnings(glm(
+    honcomp ~ female + read + weights + offset,
+    data = dd, family = binomial, offset = off
+  ))
+
+  res <- suppressWarnings(blr_regress(mc))
+
+  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
+  expect_equal(
+    res$se,
+    unname(summary(mc)$coefficients[, 2]),
+    tolerance = 1e-8
+  )
+})
+
+test_that("blr_regress.default uses the supplied offset and rejects weights", {
+  set.seed(7)
+  w   <- sample(1:4, 200, replace = TRUE)
+  off <- rnorm(200)
+  dd  <- hsb2
+  dd$weights <- rnorm(200)
+  dd$offset  <- rnorm(200)
+
+  mc <- suppressWarnings(glm(
+    honcomp ~ female + read,
+    data = dd, family = binomial, offset = off
+  ))
+
+  res <- suppressWarnings(blr_regress(
+    honcomp ~ female + read,
+    data = dd, offset = off
+  ))
+
+  expect_equal(res$est, unname(coef(mc)), tolerance = 1e-8)
+  expect_equal(
+    res$se,
+    unname(summary(mc)$coefficients[, 2]),
+    tolerance = 1e-8
+  )
+
+  # a weighted formula fit is rejected by the same guard as a fitted model
+  expect_error(
+    blr_regress(honcomp ~ female + read, data = dd, weights = w),
+    "unweighted 0/1"
+  )
+})
+
+test_that("blr_regress keeps the formula environment", {
+  f <- local({
+    zz <- rnorm(nrow(hsb2))
+    honcomp ~ female + read + science + zz
+  })
+
+  m <- glm(f, data = hsb2, family = binomial(link = "logit"))
+
+  expect_equal(blr_regress(f, data = hsb2)$est, unname(coef(m)),
+               tolerance = 1e-8)
+  expect_equal(blr_regress(m)$est, unname(coef(m)), tolerance = 1e-8)
+})
+
+test_that("blr_regress errors on non-logit models", {
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_regress(m_prob), "logit")
+})
+
+test_that("blr_check_model errors on gaussian glm", {
+  m_gauss <- glm(read ~ female + science, data = hsb2, family = gaussian())
+  expect_error(blr_check_model(m_gauss), "binomial")
+})

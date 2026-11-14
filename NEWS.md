@@ -6,6 +6,12 @@ weight of evidence, and the Gini index.
 
 ## Bug Fixes
 
+- `blr_regress()` now summarises the fitted model directly, so an offset
+  supplied in the model formula and the formula environment are respected.
+- The intercept-only null model used in model fit statistics and likelihood
+  ratio tests retains the fitted model's response, offset and family/link, and
+  is not confused by data columns named `weights` or `offset`.
+- Package attachment no longer accesses the network to check for updates.
 - Cox-Snell and Nagelkerke R2 now use the number of observations the model was
   fitted on, so they are correct when rows are dropped for missing values or
   when the model is fitted without a `data` argument. The model fit statistics
@@ -210,11 +216,13 @@ class `glm` ([#58](https://github.com/rsquaredacademy/blorr/issues/58))
 - data preparation functions of selected plots are now exported to enable end 
 users to create customized plots and to use plotting library of their 
 choice ([#64](https://github.com/rsquaredacademy/blorr/issues/64))
-- informs users about new versions ([#1](https://github.com/rsquaredacademy/blorr/issues/1))
+- informs users about new versions
+  ([#1](https://github.com/rsquaredacademy/blorr/issues/1))
 
 ## Bug Fixes
 
-- tibble package breaking changes ([#74](https://github.com/rsquaredacademy/blorr/issues/74)) 
+- tibble package breaking changes
+  ([#74](https://github.com/rsquaredacademy/blorr/issues/74))
 
 
 # blorr 0.1.0

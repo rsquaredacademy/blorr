@@ -5,6 +5,16 @@
 #' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data a \code{tibble} or \code{data.frame}.
 #'
+#' @details
+#' The degrees of freedom are \code{g - 2}, where \code{g} is the number of
+#' partition groups actually used. The table prints exactly those groups, so a
+#' model with fewer than 10 groups no longer prints empty rows. With fewer than
+#' three groups the test is not available and the statistic, degrees of freedom
+#' and p-value are \code{NA}: with few groups the test is degenerate, for example
+#' a model with a single binary predictor gives only two groups and a p-value
+#' close to one, which should not be read as evidence of good fit. Weighted
+#' models are rejected before the test by the shared model guard.
+#'
 #' @references
 #' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
 #' New  York:  John Wiley & Sons.

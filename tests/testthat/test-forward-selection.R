@@ -402,3 +402,9 @@ test_that("p-both summary labels the deviance column as Deviance (bfx9)", {
   expect_equal(k$dev[1], deviance(glm(am ~ wt, d, family = binomial)),
                tolerance = 1e-6)
 })
+test_that("blr_step_aic_forward rejects weighted models with the shared guard", {
+  set.seed(42)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "logit"), weights = w)
+  expect_error(blr_step_aic_forward(m_w), "unweighted 0/1")
+})
