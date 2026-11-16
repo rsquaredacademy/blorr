@@ -2,7 +2,7 @@
 #'
 #' Data for generating ROC curve.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}
+#' @param gains_table An object of class \code{blr_gains_table}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -28,31 +28,35 @@ blr_prep_roc_data <- function(gains_table) {
 #'
 #' Data for generating Lorenz curve.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param test_data Logical; \code{TRUE} if data is test data and \code{FALSE} if training data.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #'              family = binomial(link = 'logit'))
-#' data <- model$data
-#' blr_prep_lorenz_data(model, data, FALSE)
+#' blr_prep_lorenz_data(model)
 #'
 #' @export
 #'
 blr_prep_lorenz_data <- function(model, data = NULL, test_data = FALSE) {
 
-  decile_count <- lorenz_decile_count(data)
+  blr_check_model(model)
 
-  x <- gains_table_prep(model, data, test_data) 
-  y <- gains_table_modify(x, decile_count = decile_count) 
-  z <- gains_table_mutate(y) 
+  # training data must be the rows the model was actually fitted on; a
+  # supplied training data set may still contain rows dropped by the fit
+  if (!test_data || is.null(data)) {
+    data      <- model$model
+    test_data <- FALSE
+  }
+
+  # derive the decile assignment from the response-prediction pairs that are
+  # actually retained, not from rows that will be dropped for missing values
+  x <- gains_table_prep(model, data, test_data)
+  y <- gains_table_modify(x, decile_count = gains_decile_count(x))
+  z <- gains_table_mutate(y)
   lorenz_plot_data(z)
 
-}
-
-lorenz_decile_count <- function(data) {
-  round(nrow(data) / 10)
 }
 
 lorenz_plot_data <- function(gains_table) {
@@ -72,7 +76,7 @@ lorenz_plot_data <- function(gains_table) {
 #'
 #' Data for generating decile capture rate.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}
+#' @param gains_table An object of class \code{blr_gains_table}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -95,7 +99,7 @@ blr_prep_dcrate_data <- function(gains_table) {
 #'
 #' Data for generating lift chart.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param gains_table An object of class \code{blr_gains_table}.
 #' @param global_mean Overall conversion rate.
 #'
 #' @examples
@@ -132,7 +136,7 @@ blr_prep_lchart_data <- function(gains_table, global_mean) {
 #'
 #' Data for generating KS chart.
 #'
-#' @param gains_table An object of clas \code{blr_gains_table}.
+#' @param gains_table An object of class \code{blr_gains_table}.
 #' @param ks_line Overall conversion rate.
 #'
 #' @examples

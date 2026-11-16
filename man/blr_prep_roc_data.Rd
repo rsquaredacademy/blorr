@@ -7,7 +7,7 @@
 blr_prep_roc_data(gains_table)
 }
 \arguments{
-\item{gains_table}{An object of clas \code{blr_gains_table}}
+\item{gains_table}{An object of class \code{blr_gains_table}}
 }
 \description{
 Data for generating ROC curve.

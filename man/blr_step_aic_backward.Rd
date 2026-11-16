@@ -14,7 +14,7 @@ blr_step_aic_backward(model, ...)
 }
 \arguments{
 \item{model}{An object of class \code{glm}; the model should include all
-candidate predictor variables.}
+candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other arguments.}
 
@@ -34,7 +34,7 @@ each step.}
 \code{"blr_step_aic_backward"}. An object of class
 \code{"blr_step_aic_backward"} is a list containing the following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm}}
+\item{model}{model with the least AIC; an object of class \code{glm} Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{candidates}{candidate predictor variables}
 \item{steps}{total number of steps}
 \item{predictors}{variables removed from the model}
@@ -48,7 +48,6 @@ removing predictors based on akaike information criterion, in a stepwise
 manner until there is no variable left to remove any more.
 }
 \examples{
-\dontrun{
 model <- glm(honcomp ~ female + read + science + math + prog + socst,
 data = hsb2, family = binomial(link = 'logit'))
 
@@ -65,7 +64,6 @@ plot(blr_step_aic_backward(model))
 k <- blr_step_aic_backward(model)
 k$model
 
-}
 
 }
 \references{

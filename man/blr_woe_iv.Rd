@@ -47,8 +47,14 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 A tibble.
 }
 \description{
-Weight of evidence and information value. Currently avialable for categorical
-  predictors only.
+Weight of evidence and information value.
+}
+\details{
+Character and numeric predictors are treated as categorical and factor
+levels without observations are dropped before the table is built. If a
+level has no events or no non-events, 0.5 is added to both counts for that
+level (Haldane-Anscombe continuity correction) before the weight of evidence
+and information value are computed.
 }
 \examples{
 # woe and iv
@@ -62,6 +68,8 @@ plot(k)
 \references{
 Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 credit  scoring. New Jersey, Wiley.
+
+Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
 }
 \seealso{
 Other bivariate analysis procedures: 

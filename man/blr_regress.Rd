@@ -2,24 +2,57 @@
 % Please edit documentation in R/blr-regress.R
 \name{blr_regress}
 \alias{blr_regress}
+\alias{blr_regress.default}
 \alias{blr_regress.glm}
 \title{Binary logistic regression}
 \usage{
 blr_regress(object, ...)
+
+\method{blr_regress}{default}(
+  object,
+  data,
+  odd_conf_limit = FALSE,
+  weights = NULL,
+  offset = NULL,
+  ...
+)
 
 \method{blr_regress}{glm}(object, odd_conf_limit = FALSE, ...)
 }
 \arguments{
 \item{object}{An object of class "formula" (or one that can be coerced to
 that class): a symbolic description of the model to be fitted or class
-\code{glm}.}
+\code{glm} with binomial family and logit link. Weighted models (any prior
+weight other than 1) and grouped binomial models
+(\code{cbind(successes, failures)} or proportions) are not supported; refit
+models stored without their model frame or response using
+\code{glm(..., model = TRUE, y = TRUE)}.}
 
 \item{...}{Other inputs.}
 
-\item{odd_conf_limit}{If TRUE, odds ratio confidence limts will be displayed.}
+\item{data}{A \code{data.frame} or \code{tibble} containing the variables in
+the model.}
+
+\item{odd_conf_limit}{If TRUE, odds ratio confidence limits will be displayed.}
+
+\item{weights}{An optional vector of prior weights to be used in the fitting
+process.}
+
+\item{offset}{An optional offset to be included in the model.}
 }
 \description{
 Binary logistic regression.
+}
+\details{
+The default method fits a binomial logit model with
+\code{\link[stats]{glm}}. An \code{offset} may be supplied directly, and the
+formula environment is kept. When a fitted \code{glm} object is supplied, the
+fit is summarised directly, so an offset supplied through the model formula
+and the formula environment are respected. Weighted models are rejected by
+the shared model guard.
+
+Odds ratio confidence limits are profile-likelihood intervals computed by
+\code{\link[stats]{confint}}.
 }
 \examples{
 # using formula

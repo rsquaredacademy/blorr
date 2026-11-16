@@ -22,7 +22,8 @@ print_blr_reg <- function(x) {
   )
   cat(rep("-", w7), sep = "", "\n\n")
 
-  w8  <- nchar("Outcome")
+  outcomes <- names(x$resp_prof)
+  w8  <- max(nchar(c("Outcome", outcomes)))
   w9  <- max(nchar(c("Frequency", x$resp_prof[[1]], x$resp_prof[[2]])))
   w10 <- sum(w8, w9, w8, w9, 24)
 
@@ -34,8 +35,8 @@ print_blr_reg <- function(x) {
   )
   cat(rep("-", w10), sep = "", "\n")
   cat(
-    fc(0, w8), fs3(), fc(x$resp_prof[[1]], w9), fs3(),
-    fc(1, w8), fs3(), fc(x$resp_prof[[2]], w9), "\n"
+    fc(outcomes[1], w8), fs3(), fc(x$resp_prof[[1]], w9), fs3(),
+    fc(outcomes[2], w8), fs3(), fc(x$resp_prof[[2]], w9), "\n"
   )
   cat(rep("-", w10), sep = "", "\n\n")
 
@@ -72,8 +73,8 @@ print_blr_reg <- function(x) {
 
     # odds ration estimates
     w18 <- max(nchar(c("Odds Ratio", x$blr_effects)))
-    w19 <- max(nchar(c("Estimate", x$blr_odds_point)))
-    w20 <- max(nchar(c("95% Wald", format(x$blr_conf$`2.5 %`,
+    w19 <- max(nchar(c("Estimate", x$blr_odds_point)), 2, na.rm = TRUE)
+    w20 <- max(nchar(c("95% Profile", format(x$blr_conf$`2.5 %`,
       round(4), nsmall = 4))))
 
     w21 <- max(nchar(c("Conf. Limit", format(x$blr_conf$`97.5 %`,
@@ -86,7 +87,7 @@ print_blr_reg <- function(x) {
     cat(fc("Odds Ratio Estimates", w22), "\n")
     cat(rep("-", w22), sep = "", "\n")
     cat(
-      fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Wald", w20),
+      fc("Effects", w18), fs(), fc("Estimate", w19), fs(), " ", fg("95% Profile", w20),
       fl("Conf. Limit", w21), "\n"
     )
     cat(rep("-", w22), sep = "", "\n")
@@ -159,20 +160,23 @@ print_model_fit_stats <- function(x) {
     "McFadden's Adj R2:", "Cragg-Uhler(Nagelkerke) R2:",
     "Efron's R2:", "Adj Count R2:", "AIC:"
   )
-  col2vec <- c(x$loglik_null, x$m_deviance, x$mcfadden, x$cox_snell, x$mckelvey,
-               x$count_r2, x$m_bic)
-  col2vals <- append(x = format(round(col2vec, 3), nsmall = 3), values = "",
-                     after = 2)
-  col4vals <- format(round(c(x$loglik_model, x$lr_ratio, x$lr_pval,
+  col1vals <- c(
+    format(round(x$loglik_null, 3), nsmall = 3),
+    format(round(x$m_deviance, 3), nsmall = 3),
+    "",
+    format(round(c(x$mcfadden, x$cox_snell, x$mckelvey, x$count_r2,
+                   x$m_bic), 3), nsmall = 3)
+  )
+  col3vals <- format(round(c(x$loglik_model, x$lr_ratio, x$lr_pval,
                              x$adj_mcfadden, x$nagelkerke, x$effron,
                              x$count_adj, x$m_aic), 3), nsmall = 3)
   nlen <- length(col3names)
   for (i in seq_len(nlen)) {
     cat(
       fl(col1names[i], w1), fs(),
-      fg(col2vals[i], w2), fs(),
+      fg(col1vals[i], w2), fs(),
       fl(col3names[i], w3), fs(),
-      fg(col4vals[i], w4), "\n"
+      fg(col3vals[i], w4), "\n"
     )
   }
   cat(rep("-", w), sep = "", "\n\n")
@@ -290,7 +294,7 @@ print_blr_test_hosmer_lemeshow <- function(x) {
     "\n"
   )
   cat(rep("-", w), sep = "", "\n")
-  for (i in seq_len(10)) {
+  for (i in seq_len(nrow(j))) {
     cat(
       fc(j$group[i], w1), fs(), fc(j$n[i], w2), fs(), fc(j$`1s_observed`[i], w3), fs(),
       fc(format(round(j$`1s_expected`[i], 2), nsmall = 2), w4), fs(), fc(j$`0s_observed`[i], w5), fs(),
@@ -634,7 +638,7 @@ print_stepwise <- function(data) {
     format("Step", width = w1, justify = "centre"), fs(), format("Variable", width = w2, justify = "centre"), fs(),
     format("Removed", width = w3, justify = "centre"), fs(),
     format("AIC", width = w4, justify = "centre"), fs(), format("BIC", width = w5, justify = "centre"), fs(),
-    format("C(p)", width = w6, justify = "centre"), fs(), "\n"
+    format("Deviance", width = w6, justify = "centre"), fs(), "\n"
   )
   cat(rep("-", w), sep = "", "\n")
 

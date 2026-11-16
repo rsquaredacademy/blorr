@@ -13,8 +13,8 @@ blr_step_p_forward(model, ...)
 \method{plot}{blr_step_p_forward}(x, model = NA, print_plot = TRUE, ...)
 }
 \arguments{
-\item{model}{An object of class \code{lm}; the model should include all
-candidate predictor variables.}
+\item{model}{An object of class \code{glm}; the model should include all
+candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other arguments.}
 
@@ -33,7 +33,7 @@ each step.}
 An object of class \code{"blr_step_p_forward"} is a list containing the
 following components:
 
-\item{model}{model with the least AIC; an object of class \code{glm}}
+\item{model}{model with the least AIC; an object of class \code{glm} Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 \item{steps}{number of steps}
 \item{predictors}{variables added to the model}
 \item{aic}{akaike information criteria}
@@ -47,7 +47,6 @@ entering predictors based on p values, in a stepwise manner until there is
 no variable left to enter any more.
 }
 \examples{
-\dontrun{
 # stepwise forward regression
 model <- glm(honcomp ~ female + read + science, data = hsb2,
   family = binomial(link = 'logit'))
@@ -62,15 +61,20 @@ plot(k)
 # final model
 k$model
 
-}
 
 }
 \references{
 Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 
-Kutner, MH, Nachtscheim CJ, Neter J and Li W., 2004, Applied Linear Statistical Models (5th edition).
+Kutner, MH, Nachtsheim CJ, Neter J and Li W., 2004, Applied Linear Statistical Models (5th edition).
 Chicago, IL., McGraw Hill/Irwin.
 }
+\section{Aliased terms}{
+A model with aliased (perfectly collinear) coefficients is rejected with an
+error, because the Wald test used to enter or remove terms does not exist
+for them. Remove the aliased terms and refit.
+}
+
 \seealso{
 Other variable selection procedures: 
 \code{\link{blr_step_aic_backward}()},

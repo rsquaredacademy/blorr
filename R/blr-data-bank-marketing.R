@@ -20,7 +20,7 @@
 #'	 \item{duration}{last contact duration, in seconds}
 #'	 \item{campaign}{number of contacts performed during this campaign and for this client}
 #'	 \item{pdays}{number of days that passed by after the client was last contacted from a previous campaign}
-#'	 \item{previous}{number of contacts performed before this campaign and for this clien}
+#'	 \item{previous}{number of contacts performed before this campaign and for this client}
 #'	 \item{poutcome}{outcome of the previous marketing campaign}
 #'	 \item{y}{has the client subscribed a term deposit?}
 #' }

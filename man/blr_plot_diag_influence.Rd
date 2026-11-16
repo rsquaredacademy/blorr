@@ -7,7 +7,7 @@
 blr_plot_diag_influence(model, print_plot = TRUE)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
@@ -15,7 +15,7 @@ blr_plot_diag_influence(model, print_plot = TRUE)
 A panel of influence diagnostic plots.
 }
 \description{
-Reisudal diagnostic plots for detecting influential observations.
+Residual diagnostic plots for detecting influential observations.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

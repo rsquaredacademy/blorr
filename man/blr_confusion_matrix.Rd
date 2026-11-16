@@ -10,7 +10,7 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 \method{blr_confusion_matrix}{default}(model, cutoff = 0.5, data = NULL, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{cutoff}{Cutoff for classification.}
 
@@ -19,7 +19,7 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 \item{...}{Other arguments.}
 }
 \value{
-Confusion matix.
+Confusion matrix.
 }
 \description{
 Confusion matrix and statistics.
@@ -30,6 +30,9 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 
 blr_confusion_matrix(model, cutoff = 0.4)
 
+}
+\references{
+Kuhn, M. (2008). Building predictive models in R using the caret package. \emph{Journal of Statistical Software}, 28(5), 1--26.
 }
 \seealso{
 Other model validation techniques: 

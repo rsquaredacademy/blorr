@@ -19,7 +19,7 @@ status](https://app.codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badg
 Tools designed to make it easier for users, particularly
 beginner/intermediate R users to build logistic regression models.
 Includes comprehensive regression output, variable selection procedures,
-model validation techniques and a ‘shiny’ app for interactive model
+model validation techniques and a 'shiny' app for interactive model
 building.
 
 ## Installation
@@ -124,8 +124,8 @@ blr_regress(model)
 #> 
 #>  Association of Predicted Probabilities and Observed Responses  
 #> ---------------------------------------------------------------
-#> % Concordant          0.8561          Somers' D        0.7147   
-#> % Discordant          0.1425          Gamma            0.7136   
+#> % Concordant          0.8561          Somers' D        0.7136   
+#> % Discordant          0.1425          Gamma            0.7147   
 #> % Tied                0.0014          Tau-a            0.2794   
 #> Pairs                  7791           c                0.8568   
 #> ---------------------------------------------------------------
@@ -268,12 +268,13 @@ blr_lorenz_curve(model)
 ## Getting Help
 
 If you encounter a bug, please file a minimal reproducible example using
-[reprex](https://reprex.tidyverse.org/index.html) on github. For
-questions and clarifications, use
-[StackOverflow](https://stackoverflow.com/).
+[reprex](https://reprex.tidyverse.org/index.html) on GitHub. For
+questions and clarifications, ask on Stack Overflow with the `r` tag.
 
 ## Code of Conduct
 
 Please note that the blorr project is released with a [Contributor Code
 of Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.
+
+<div data-rsa-signup data-site="blorr.rsquaredacademy.com" data-privacy-url="https://www.rsquaredacademy.com/privacy-policy.html"></div>

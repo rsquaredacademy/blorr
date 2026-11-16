@@ -29,14 +29,14 @@
       lr_pval                       Prob > LR    0.000    0.000
       mcfadden                  MCFadden's R2    0.307    0.269
       adj_mcfadden          McFadden's Adj R2    0.273    0.225
-      m_aic                 ML (Cox-Snell) R2  168.236  179.141
-      cox_snell    Cragg-Uhler(Nagelkerke) R2    0.299    0.267
-      m_bic           McKelvey & Zavoina's R2  181.430  195.632
-      mckelvey                     Efron's R2    0.518    0.440
-      effron                         Count R2    0.330    0.281
-      nagelkerke                 Adj Count R2    0.436    0.390
-      count_r2                            AIC    0.810    0.785
-      count_adj                           BIC    0.283    0.189
+      cox_snell             ML (Cox-Snell) R2    0.299    0.267
+      nagelkerke   Cragg-Uhler(Nagelkerke) R2    0.436    0.390
+      mckelvey        McKelvey & Zavoina's R2    0.518    0.440
+      effron                       Efron's R2    0.330    0.281
+      count_r2                       Count R2    0.810    0.785
+      count_adj                  Adj Count R2    0.283    0.189
+      m_aic                               AIC  168.236  179.141
+      m_bic                               BIC  181.430  195.632
 
 # blr_lr_test prints the correct output
 

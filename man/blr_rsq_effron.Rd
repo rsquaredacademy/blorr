@@ -2,18 +2,18 @@
 % Please edit documentation in R/blr-model-fit-stats.R
 \name{blr_rsq_effron}
 \alias{blr_rsq_effron}
-\title{Effron R2}
+\title{Efron R2}
 \usage{
 blr_rsq_effron(model)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 }
 \value{
-Effron pseudo r-squared.
+Efron pseudo r-squared.
 }
 \description{
-Effron pseudo r-squared.
+Efron pseudo r-squared.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,

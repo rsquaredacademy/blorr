@@ -2,7 +2,7 @@
 #'
 #' Measures of model fit statistics for multiple models.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param ... Objects of class \code{glm}.
 #'
 #' @return A tibble.
@@ -51,7 +51,11 @@ blr_multi_model_fit_stats.default <- function(model, ...) {
 #'
 print.blr_multi_model_fit_stats <- function(x, ...) {
 
-  df <- x$mfit[c(-7, -13)]
+  df <- x$mfit[c(
+    "loglik_null", "loglik_model", "m_deviance", "lr_ratio", "lr_pval",
+    "mcfadden", "adj_mcfadden", "cox_snell", "nagelkerke", "mckelvey",
+    "effron", "count_r2", "count_adj", "m_aic", "m_bic"
+  )]
 
   measures <- c(
     "Log-Lik Intercept Only", "Log-Lik Full Model", "Deviance",

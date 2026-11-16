@@ -20,7 +20,7 @@ blr_gains_table(model, data = NULL)
 )
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{data}{A \code{tibble} or a \code{data.frame}.}
 
@@ -66,7 +66,7 @@ Agresti, A. (2007), An Introduction to Categorical Data Analysis, Second Edition
 Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons.
 
 Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
-Oxford,  Oxford  Uni-versity Press.
+Oxford,  Oxford  University Press.
 
 Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
 A  Validation Methodology, Moody’s Investors Service.

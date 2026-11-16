@@ -2,7 +2,6 @@
 blr_check_model <- function(model) {
 
 	model_class  <- class(model)[1] == "glm"
-	model_family <- isTRUE(family(model)$family == "binomial")
 
 	fmla <- deparse(formula(model))
 	data <- deparse(model$call$data)
@@ -24,17 +23,7 @@ blr_check_model <- function(model) {
 
   }
 
-  if (!model_family) {
-
-  	cat("The error distribution is not", "binomial", ". Please specify the error distribution using the", "family", "argument in", "glm()", ".\n",
-
-"Please specify the model in the below format:",
-
-"glm(", fmla, ", data = ", data, ", family = binomial(link = 'logit')",
-
-"Happy modeling :)\n")
-
-  }
+  blr_check_supported(model)
 
 }
 
@@ -135,3 +124,16 @@ blr_check_varnames <- function(data, column) {
 
 
 
+
+# the p-value selection procedures test each term with a Wald statistic, which
+# does not exist for an aliased (perfectly collinear or constant) term, so a
+# model with an aliased coefficient is rejected up front
+blr_check_aliased <- function(model, what) {
+  if (anyNA(stats::coef(model))) {
+    bad <- names(stats::coef(model))[is.na(stats::coef(model))]
+    stop(what, " cannot be used with a model that has aliased (perfectly ",
+         "collinear) terms: ", paste(bad, collapse = ", "),
+         ". Remove them and refit the model.", call. = FALSE)
+  }
+  invisible(TRUE)
+}

@@ -20,13 +20,13 @@ blr_bivariate_analysis(data, response, ...)
 A tibble with the following columns:
 \item{Variable}{Variable name}
 \item{Information Value}{Information value}
-\item{LR Chi Square}{Likelihood ratio statisitc}
+\item{LR Chi Square}{Likelihood ratio statistic}
 \item{LR DF}{Likelihood ratio degrees of freedom}
 \item{LR p-value}{Likelihood ratio p value}
 }
 \description{
 Information value and likelihood ratio chi square test for initial
-  variable/predictor selection. Currently avialable for categorical
+  variable/predictor selection. Currently available for categorical
   predictors only.
 }
 \examples{

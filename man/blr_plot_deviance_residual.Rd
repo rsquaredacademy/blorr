@@ -2,18 +2,18 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_deviance_residual}
 \alias{blr_plot_deviance_residual}
-\title{Deviance residual values}
+\title{Standardized deviance residual values}
 \usage{
 blr_plot_deviance_residual(
   model,
   point_color = "blue",
-  title = "Deviance Residuals Plot",
+  title = "Standardized Deviance Residuals Plot",
   xaxis_title = "id",
-  yaxis_title = "Deviance Residuals"
+  yaxis_title = "Standardized Deviance Residuals"
 )
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{point_color}{Color of the points.}
 
@@ -24,7 +24,7 @@ blr_plot_deviance_residual(
 \item{yaxis_title}{Y axis label.}
 }
 \description{
-Deviance residuals plot.
+Standardized deviance residuals plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -32,4 +32,9 @@ family = binomial(link = 'logit'))
 
 blr_plot_deviance_residual(model)
 
+}
+\references{
+Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+
+McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
 }

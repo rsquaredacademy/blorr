@@ -1,7 +1,7 @@
 #' Bivariate analysis
 #'
 #' Information value and likelihood ratio chi square test for initial
-#'   variable/predictor selection. Currently avialable for categorical
+#'   variable/predictor selection. Currently available for categorical
 #'   predictors only.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
@@ -11,7 +11,7 @@
 #' @return A tibble with the following columns:
 #' \item{Variable}{Variable name}
 #' \item{Information Value}{Information value}
-#' \item{LR Chi Square}{Likelihood ratio statisitc}
+#' \item{LR Chi Square}{Likelihood ratio statistic}
 #' \item{LR DF}{Likelihood ratio degrees of freedom}
 #' \item{LR p-value}{Likelihood ratio p value}
 #'
@@ -78,9 +78,11 @@ bivar_comp <- function(len_pred_name, mdata, pred_name, resp_name) {
       family = binomial(link = "logit")
     )
 
+    # the null model must be fitted on the same complete rows as the
+    # predictor model, not on the original data with missing values
     model1 <- glm(
-      as.formula(paste(resp_name, "~", 1)), data = mdata,
-      family = binomial(link = "logit")
+      as.formula(paste(resp_name, "~", 1)), data = model.frame(model),
+      family = model$family
     )
 
     lr           <- blr_test_lr(model, model1)
@@ -109,7 +111,7 @@ lr_extract <- function(lr, value) {
 }
 #' Event rate
 #'
-#' Event rate by segements/levels of a qualitative variable.
+#' Event rate by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
@@ -137,12 +139,14 @@ blr_segment.default <- function(data, response, predictor) {
   pred    <- deparse(substitute(predictor))
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
+  d$event <- event_indicator(d$resp)
+  d       <- d[!is.na(d$event), , drop = FALSE]
   d       <- data.table(d)
-  d       <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
+  d       <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
   setDF(d)
 
-  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d$`1s%` <- round((d$`1s` / d$n), 2)
   d       <- d[c('pred', '1s%')]
   d       <- d[order(d$pred), ]
   result  <- list(segment_data = d)
@@ -188,11 +192,12 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   resp          <- deparse(substitute(response))
   var_1         <- deparse(substitute(variable_1))
   var_2         <- deparse(substitute(variable_2))
-  n             <- nrow(data)
+  n             <- sum(!is.na(data[[resp]]))
   d             <- data[c(resp, var_1, var_2)]
   var_names     <- names(d)
   colnames(d)   <- c("resp", "var_1", "var_2")
-  d             <- d[d$resp == 1, c('var_1', 'var_2')]
+  event         <- event_indicator(d$resp)
+  d             <- d[!is.na(event) & event, c('var_1', 'var_2')]
   twoway        <- table(d) / n
   result        <- list(twoway_segment = twoway, varnames = var_names)
   class(result) <- "blr_segment_twoway"
@@ -212,7 +217,7 @@ print.blr_segment_twoway <- function(x, ...) {
 
 #' Response distribution
 #'
-#' Distribution of response variable by segements/levels of a qualitative variable.
+#' Distribution of response variable by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param response Response variable; column in \code{data}.
@@ -286,13 +291,15 @@ segment_comp <- function(data, pred, resp) {
 
   d <- data[c(pred, resp)]
   colnames(d) <- c("pred", "resp")
+  d$event <- event_indicator(d$resp)
+  d <- d[!is.na(d$event), , drop = FALSE]
   d <- data.table(d)
-  d <- d[, .(n = .N, `1s` = table(resp)[[2]]), by = pred]
+  d <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
   setDF(d)
 
   d$`n%`  <- round((d$n / sum(d$n)), 2)
-  d$`1s%` <- round((d$`1s` / sum(d$n)), 2)
+  d$`1s%` <- round((d$`1s` / d$n), 2)
   d <- d[order(d$pred), ]
 
   return(d)

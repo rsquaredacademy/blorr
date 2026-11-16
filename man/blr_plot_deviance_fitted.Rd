@@ -2,19 +2,19 @@
 % Please edit documentation in R/blr-plots.R
 \name{blr_plot_deviance_fitted}
 \alias{blr_plot_deviance_fitted}
-\title{Deviance vs fitted values plot}
+\title{Standardized deviance vs fitted values plot}
 \usage{
 blr_plot_deviance_fitted(
   model,
   point_color = "blue",
   line_color = "red",
-  title = "Deviance Residual vs Fitted Values",
+  title = "Standardized Deviance Residual vs Fitted Values",
   xaxis_title = "Fitted Values",
-  yaxis_title = "Deviance Residual"
+  yaxis_title = "Standardized Deviance Residual"
 )
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{point_color}{Color of the points.}
 
@@ -27,7 +27,7 @@ blr_plot_deviance_fitted(
 \item{yaxis_title}{Y axis label.}
 }
 \description{
-Deviance vs fitted values plot.
+Standardized deviance vs fitted values plot.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -35,4 +35,9 @@ family = binomial(link = 'logit'))
 
 blr_plot_deviance_fitted(model)
 
+}
+\references{
+Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+
+McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
 }

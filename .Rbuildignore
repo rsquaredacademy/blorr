@@ -10,9 +10,12 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^docs$
+^pkgdown$
 ^hex_blorr\.png$
 ^cran-comments\.md$
 ^\.github$
 ^Meta$
 ^revdep$
 ^CODE_OF_CONDUCT\.md$
+^docs-dev$
+^\.hz-

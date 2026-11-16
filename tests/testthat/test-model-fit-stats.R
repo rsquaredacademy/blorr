@@ -107,3 +107,247 @@ test_that("blr_lr_test prints the correct output", {
   k <- blr_test_lr(model)
   expect_snapshot(k)
 })
+
+test_that("pseudo R2 uses the number of observations used to fit the model", {
+  d <- hsb2
+  d$read[which(d$honcomp == "0")[1:10]] <- NA
+
+  m   <- glm(honcomp ~ female + read + science, data = d,
+             family = binomial(link = "logit"))
+  n   <- nobs(m)
+  ll0 <- as.numeric(logLik(glm(honcomp ~ 1, data = model.frame(m),
+                               family = binomial(link = "logit"))))
+  ll1 <- as.numeric(logLik(m))
+
+  cox_snell  <- 1 - exp((2 / n) * (ll0 - ll1))
+  nagelkerke <- cox_snell / (1 - exp((2 / n) * ll0))
+
+  expect_equal(blr_rsq_cox_snell(m), cox_snell)
+  expect_equal(blr_rsq_nagelkerke(m), nagelkerke)
+})
+
+test_that("pseudo R2 and printed fit stats work without a data argument", {
+  honcomp <- hsb2$honcomp
+  female  <- hsb2$female
+  read    <- hsb2$read
+  science <- hsb2$science
+
+  m   <- glm(honcomp ~ female + read + science,
+             family = binomial(link = "logit"))
+  n   <- nobs(m)
+  ll0 <- as.numeric(logLik(glm(honcomp ~ 1, family = binomial(link = "logit"))))
+  ll1 <- as.numeric(logLik(m))
+
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / n) * (ll0 - ll1)))
+  expect_length(blr_rsq_nagelkerke(m), 1)
+
+  out      <- capture.output(print(blr_model_fit_stats(m)))
+  bic_line <- out[grepl("BIC:", out, fixed = TRUE)]
+
+  expect_equal(length(bic_line), 1)
+  expect_match(bic_line, format(round(BIC(m), 3), nsmall = 3), fixed = TRUE)
+})
+
+test_that("multi model fit stats label each measure by name", {
+  model1 <- glm(honcomp ~ prog + read + science, data = hsb2,
+                family = binomial(link = "logit"))
+  model2 <- glm(honcomp ~ female + read + math, data = hsb2,
+                family = binomial(link = "logit"))
+
+  out <- capture.output(print(blr_multi_model_fit_stats(model1, model2)))
+
+  value_of <- function(label) {
+    line <- out[grepl(label, out, fixed = TRUE)]
+    expect_length(line, 1)
+    as.numeric(tail(strsplit(trimws(line), "[[:space:]]+")[[1]], 1))
+  }
+
+  expect_equal(value_of("ML (Cox-Snell) R2"),
+               round(blr_rsq_cox_snell(model2), 3))
+  expect_equal(value_of("Cragg-Uhler(Nagelkerke) R2"),
+               round(blr_rsq_nagelkerke(model2), 3))
+  expect_equal(value_of("McKelvey & Zavoina's R2"),
+               round(blr_rsq_mckelvey_zavoina(model2), 3))
+  expect_equal(value_of("Efron's R2"), round(blr_rsq_effron(model2), 3))
+  expect_equal(value_of("AIC"), round(AIC(model2), 3))
+  expect_equal(value_of("BIC"), round(BIC(model2), 3))
+})
+
+test_that("pseudo R2 is identical for na.omit and na.exclude fits", {
+  d <- mtcars
+  d$hp[1] <- NA
+  me <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.exclude)
+  mo <- glm(am ~ wt + hp, data = d, family = binomial,
+            na.action = na.omit)
+
+  r2 <- function(m) {
+    c(blr_rsq_effron(m), blr_rsq_count(m), blr_rsq_adj_count(m),
+      blr_rsq_mckelvey_zavoina(m))
+  }
+
+  expect_equal(r2(me), r2(mo))
+  expect_false(anyNA(r2(me)))
+
+  k <- blr_model_fit_stats(me)
+  expect_false(anyNA(c(k$effron, k$count_r2, k$count_adj, k$mckelvey)))
+})
+
+test_that("fit statistics are available for an intercept-only model", {
+  model <- glm(am ~ 1, data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$lr_ratio, 0)
+  expect_equal(k$lr_df, 0)
+  expect_equal(k$dev_df, df.residual(model))
+})
+
+test_that("a rank-one model without an intercept has no zero LR test", {
+  model <- glm(am ~ 0 + wt, data = mtcars, family = binomial)
+
+  expect_warning(
+    k <- blr_model_fit_stats(model),
+    "likelihood ratio test is not available"
+  )
+
+  # the fitted and intercept-only likelihoods differ, so reporting a zero
+  # statistic would be wrong
+  expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+  expect_false(isTRUE(all.equal(
+    -2 * (k$loglik_null - k$loglik_model), 0
+  )))
+  expect_true(is.na(k$lr_ratio))
+  expect_true(is.na(k$lr_df))
+  expect_true(is.na(k$lr_pval))
+  expect_equal(k$dev_df, df.residual(model))
+
+  # the same applies when more than one predictor is fitted without an
+  # intercept: the intercept-only model is not nested in the fitted design
+  model2 <- glm(am ~ 0 + wt + hp, data = mtcars, family = binomial)
+
+  expect_warning(
+    k2 <- blr_model_fit_stats(model2),
+    "likelihood ratio test is not available"
+  )
+  expect_true(is.na(k2$lr_ratio))
+  expect_equal(k2$dev_df, df.residual(model2))
+})
+
+test_that("residual df uses the fitted rank when a coefficient is aliased", {
+  model <- glm(am ~ wt + I(2 * wt), data = mtcars, family = binomial)
+
+  k <- blr_model_fit_stats(model)
+
+  expect_equal(k$dev_df, df.residual(model))
+  expect_equal(model_d_f(model), model$rank)
+})
+
+test_that("no-intercept fit statistics do not depend on predictor scale", {
+  ref_ll <- NULL
+
+  for (s in c(1, 1e6, 1e8)) {
+    d     <- transform(mtcars, x = wt * s)
+    model <- glm(am ~ 0 + x, data = d, family = binomial)
+
+    expect_warning(
+      k <- blr_model_fit_stats(model),
+      "likelihood ratio test is not available"
+    )
+
+    # the fitted and intercept-only likelihoods match base R, differ from each
+    # other, and are unchanged by rescaling the predictor
+    expect_equal(k$loglik_null, as.numeric(logLik(update(model, . ~ 1))))
+    expect_equal(k$loglik_model, as.numeric(logLik(model)))
+    expect_true(is.na(k$lr_ratio))
+    expect_true(is.na(k$lr_df))
+    expect_true(is.na(k$lr_pval))
+    expect_equal(k$dev_df, df.residual(model))
+    expect_false(isTRUE(all.equal(k$loglik_null, k$loglik_model)))
+
+    if (is.null(ref_ll)) {
+      ref_ll <- c(k$loglik_null, k$loglik_model)
+    } else {
+      expect_equal(c(k$loglik_null, k$loglik_model), ref_ll)
+    }
+  }
+})
+
+test_that("null model retains offset and family; weighted fits are rejected", {
+  # weighted model: rejected by the shared guard before any statistic is built
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m_w <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, weights = w)
+  expect_error(blr_model_fit_stats(m_w), "unweighted 0/1")
+
+  # offset model
+  set.seed(4)
+  off <- rnorm(nrow(hsb2))
+  m_off <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial, offset = off)
+  m0_off <- glm(honcomp ~ 1, data = hsb2, family = binomial, offset = off)
+  bfs_off <- blr_model_fit_stats(m_off)
+  expect_equal(bfs_off$loglik_null, as.numeric(logLik(m0_off)))
+  expect_equal(bfs_off$lr_ratio, m0_off$deviance - m_off$deviance)
+
+  # probit model
+  m_prob <- glm(honcomp ~ female + read + science, data = hsb2, family = binomial(link = "probit"))
+  expect_error(blr_model_fit_stats(m_prob), "logit")
+  expect_equal(i_model(m_prob)$family$link, "probit")
+})
+
+test_that("weighted models are rejected by the fit statistic functions", {
+  set.seed(3)
+  w <- sample(1:4, nrow(hsb2), replace = TRUE)
+  m <- glm(honcomp ~ female + read + science, data = hsb2,
+           family = binomial(link = "logit"), weights = w)
+
+  expect_error(blr_model_fit_stats(m), "unweighted 0/1")
+  expect_error(blr_rsq_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_adj_count(m), "unweighted 0/1")
+  expect_error(blr_rsq_effron(m), "unweighted 0/1")
+  expect_error(blr_rsq_mckelvey_zavoina(m), "unweighted 0/1")
+})
+
+test_that("null model uses the model when the data has a weights column", {
+  set.seed(2)
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 1, 3)
+  m  <- glm(honcomp ~ female + read + weights, data = dd, family = binomial)
+  m0 <- glm(honcomp ~ 1, data = dd, family = binomial)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})
+
+test_that("null model uses the model offset when the data has both columns", {
+  set.seed(3)
+  off <- rnorm(nrow(hsb2))
+
+  dd <- hsb2
+  dd$weights <- runif(nrow(dd), 0.5, 2)
+  dd$offset  <- rnorm(nrow(dd))
+
+  m  <- glm(honcomp ~ female + read + weights + offset, data = dd,
+            family = binomial, offset = off)
+  m0 <- glm(honcomp ~ 1, data = dd,
+            family = binomial, offset = off)
+
+  ll1 <- as.numeric(logLik(m))
+  ll0 <- as.numeric(logLik(m0))
+
+  res <- blr_model_fit_stats(m)
+
+  expect_equal(res$loglik_null, ll0)
+  expect_equal(res$lr_ratio, m0$deviance - m$deviance)
+  expect_equal(blr_rsq_mcfadden(m), 1 - (ll1 / ll0))
+  expect_equal(blr_rsq_cox_snell(m), 1 - exp((2 / nobs(m)) * (ll0 - ll1)))
+  expect_equal(blr_test_lr(m)$test_result$lr_ratio, m0$deviance - m$deviance)
+})

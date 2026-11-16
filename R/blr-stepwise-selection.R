@@ -5,7 +5,7 @@
 #' entering and removing predictors based on akaike information criterion, in a
 #' stepwise manner until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{lm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param details Logical; if \code{TRUE}, details of variable selection will be
 #'   printed on screen.
 #' @param ... Other arguments.
@@ -29,8 +29,8 @@
 #' Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth edition. Springer.
 #'
 #' @examples
-#' \dontrun{
-#' model <- glm(y ~ ., data = stepwise)
+#' \donttest{
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #'
 #' # selection summary
 #' blr_step_aic_both(model)
@@ -61,15 +61,14 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
 
-  l          <- model$model
+  l          <- selection_data(model)
   nam        <- colnames(attr(model$terms, "factors"))
   response   <- names(model$model)[1]
   predictors <- nam
   mlen_p     <- length(predictors)
   tech       <- c("addition", "removal")
 
-  mo <- glm(paste(response, "~", 1), data = l,
-            family = binomial(link = "logit"))
+  mo <- selection_model(response, character(0), l, fit = model)
   aic_c <- model_aic(mo)
 
   cat(format("Stepwise Selection Method", justify = "left", width = 25), "\n")
@@ -87,7 +86,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
   step      <- 0
   all_step  <- 0
   preds     <- c()
-  var_index <- c()
+  var_index <- character(0)
   method    <- c()
   laic      <- c()
   lbic      <- c()
@@ -104,20 +103,21 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     devs <- c()
     lpds <- length(predictors)
 
+    dfs <- numeric(0)
+
+    base_rank <- selection_model(response, preds, l, fit = model)$rank
     for (i in seq_len(lpds)) {
       predn <- c(preds, predictors[i])
-      m <- glm(
-        paste(response, "~", paste(predn, collapse = " + ")),
-        data = l, family = binomial(link = "logit")
-      )
+      m <- selection_model(response, predn, l, fit = model)
       aics[i] <- model_aic(m)
+      dfs[i] <- abs(m$rank - base_rank)
       bics[i] <- model_bic(m)
       devs[i] <- model_deviance(m)
     }
 
     da <- data.frame(
       predictors = predictors, aics = aics, bics = bics,
-      devs = devs
+      devs = devs, dfs = dfs
     )
     da2 <- da[order(da[['aics']]), ]
 
@@ -141,7 +141,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
       for (i in seq_len(ln)) {
         cat(
-          fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+          fl(da2[i, 1], w1), fs(), fg(da2[i, 5], w2), fs(),
           fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
           fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
           fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -152,7 +152,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     }
 
 
-    minc <- which(aics == min(aics))
+    minc <- which.min(aics)
 
     if (aics[minc] < aic_c) {
 
@@ -188,20 +188,21 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
         bics <- c()
         devs <- c()
 
+        dfs <- numeric(0)
+
+        base_rank <- selection_model(response, preds, l, fit = model)$rank
         for (i in seq_len(lpreds)) {
           preda <- preds[-i]
-          m <- glm(
-            paste(response, "~", paste(preda, collapse = " + ")),
-            data = l, family = binomial(link = "logit")
-          )
+          m <- selection_model(response, preda, l, fit = model)
           aics[i] <- model_aic(m)
+          dfs[i] <- abs(m$rank - base_rank)
           bics[i] <- model_bic(m)
           devs[i] <- model_deviance(m)
         }
 
         da <- data.frame(
           predictors = preds, aics = aics, bics = bics,
-          devs = devs
+          devs = devs, dfs = dfs
         )
         da2 <- da[order(da[['aics']]), ]
 
@@ -224,7 +225,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
 
           for (i in seq_len(ln)) {
             cat(
-              fl(da2[i, 1], w1), fs(), fg(1, w2), fs(),
+              fl(da2[i, 1], w1), fs(), fg(da2[i, 5], w2), fs(),
               fg(format(round(da2[i, 2], 3), nsmall = 3), w3), fs(),
               fg(format(round(da2[i, 3], 3), nsmall = 3), w4), fs(),
               fg(format(round(da2[i, 4], 3), nsmall = 3), w5), "\n"
@@ -235,7 +236,7 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
         }
 
 
-        minc2 <- which(aics == min(aics))
+        minc2 <- which.min(aics)
 
 
         if (aics[minc2] < laic[all_step]) {
@@ -276,20 +277,16 @@ blr_step_aic_both.default <- function(model, details = FALSE, ...) {
     }
   }
 
+  final_model <- selection_model(response, preds, l, fit = model)
+
   if (details == TRUE) {
     cat("\n\n")
     cat("Final Model Output", "\n")
     cat(rep("-", 18), sep = "", "\n\n")
 
-    fi <- blr_regress(
-      paste(response, "~", paste(preds, collapse = " + ")),
-      data = l
-    )
+    fi <- blr_regress(final_model)
     print(fi)
   }
-
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")), 
-    data = l, family = binomial(link = 'logit'))
 
   out <- list(
     candidates = nam,

@@ -7,7 +7,7 @@
 blr_model_fit_stats(model, ...)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{...}{Other inputs.}
 }
@@ -42,15 +42,17 @@ Long, J. Scott. Regression Models for Categorical and Limited Dependent Variable
 Thousand Oaks: Sage Publications, 1997.
 }
 \seealso{
-Other model fit statistics: 
-\code{\link{blr_multi_model_fit_stats}()},
-\code{\link{blr_pairs}()},
-\code{\link{blr_rsq_adj_count}()},
-\code{\link{blr_rsq_cox_snell}()},
-\code{\link{blr_rsq_effron}()},
-\code{\link{blr_rsq_mcfadden_adj}()},
-\code{\link{blr_rsq_mckelvey_zavoina}()},
-\code{\link{blr_rsq_nagelkerke}()},
-\code{\link{blr_test_lr}()}
+Other model fit statistics:
+\code{\link[=blr_multi_model_fit_stats]{blr_multi_model_fit_stats()}},
+\code{\link[=blr_pairs]{blr_pairs()}},
+\code{\link[=blr_rsq_adj_count]{blr_rsq_adj_count()}},
+\code{\link[=blr_rsq_count]{blr_rsq_count()}},
+\code{\link[=blr_rsq_cox_snell]{blr_rsq_cox_snell()}},
+\code{\link[=blr_rsq_effron]{blr_rsq_effron()}},
+\code{\link[=blr_rsq_mcfadden]{blr_rsq_mcfadden()}},
+\code{\link[=blr_rsq_mcfadden_adj]{blr_rsq_mcfadden_adj()}},
+\code{\link[=blr_rsq_mckelvey_zavoina]{blr_rsq_mckelvey_zavoina()}},
+\code{\link[=blr_rsq_nagelkerke]{blr_rsq_nagelkerke()}},
+\code{\link[=blr_test_lr]{blr_test_lr()}}
 }
 \concept{model fit statistics}

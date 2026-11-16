@@ -3,6 +3,40 @@ model <- glm(
   family = binomial(link = "logit")
 )
 
+# R 4.6 changed glm residuals, so these plots have one snapshot per R version.
+r_variant <- if (getRversion() >= "4.6.0") "R-4.6" else "R-pre-4.6"
+
+test_that("dfbetas panel returns plots whose values match dfbetas()", {
+  k   <- blr_plot_dfbetas_panel(model, print_plot = FALSE)
+  dfb <- dfbetas(model)
+
+  expect_equal(length(k$plots), ncol(dfb))
+
+  for (i in seq_len(ncol(dfb))) {
+    expect_equal(k$plots[[i]]$data$dbetas, unname(dfb[, i]))
+  }
+
+  expect_equal(
+    k$outliers[[1]]$dbetas,
+    unname(dfb[k$outliers[[1]]$obs, 1])
+  )
+})
+
+test_that("deviance residual plots are labelled as standardized", {
+  p <- blr_plot_deviance_residual(model)
+
+  expect_equal(p$labels$title, "Standardized Deviance Residuals Plot")
+  expect_equal(p$labels$y, "Standardized Deviance Residuals")
+  expect_equal(p$data$y, unname(rstandard(model, type = "deviance")))
+
+  p2 <- blr_plot_deviance_fitted(model)
+
+  expect_equal(p2$labels$title,
+    "Standardized Deviance Residual vs Fitted Values")
+  expect_equal(p2$labels$y, "Standardized Deviance Residual")
+  expect_equal(p2$data$y, unname(rstandard(model, type = "deviance")))
+})
+
 test_that("event segmentation distribution plot is as expected", {
   skip_on_cran()
 
@@ -72,7 +106,7 @@ test_that("deviance vs fitted plot is as expected", {
 
   p <- blr_plot_deviance_fitted(model)
 
-  vdiffr::expect_doppelganger("deviance fitted plot", p)
+  vdiffr::expect_doppelganger("deviance fitted plot", p, variant = r_variant)
 })
 
 test_that("deviance residual plot is as expected", {
@@ -80,7 +114,7 @@ test_that("deviance residual plot is as expected", {
 
   p <- blr_plot_deviance_residual(model)
 
-  vdiffr::expect_doppelganger("deviance residual plot", p)
+  vdiffr::expect_doppelganger("deviance residual plot", p, variant = r_variant)
 })
 
 
@@ -129,7 +163,7 @@ test_that("difdev plot is as expected", {
 
   p <- blr_plot_diag_difdev(model)
 
-  vdiffr::expect_doppelganger("difdev plot", p)
+  vdiffr::expect_doppelganger("difdev plot", p, variant = r_variant)
 })
 
 
@@ -154,7 +188,7 @@ test_that("difdev vs fitted plot is as expected", {
 
   p <- blr_plot_difdev_fitted(model)
 
-  vdiffr::expect_doppelganger("difdev fitted plot", p)
+  vdiffr::expect_doppelganger("difdev fitted plot", p, variant = r_variant)
 })
 
 test_that("difdev vs leverage plot is as expected", {
@@ -162,7 +196,7 @@ test_that("difdev vs leverage plot is as expected", {
 
   p <- blr_plot_difdev_leverage(model)
 
-  vdiffr::expect_doppelganger("difdev leverage plot", p)
+  vdiffr::expect_doppelganger("difdev leverage plot", p, variant = r_variant)
 })
 
 test_that("difchisq vs leverage plot is as expected", {

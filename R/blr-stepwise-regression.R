@@ -5,8 +5,8 @@
 #' entering and removing predictors based on p values, in a stepwise manner
 #' until there is no variable left to enter or remove any more.
 #'
-#' @param model An object of class \code{lm}; the model should include all
-#'   candidate predictor variables.
+#' @param model An object of class \code{glm}; the model should include all
+#'   candidate predictor variables. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param pent p value; variables with p value less than \code{pent} will enter
 #'   into the model.
 #' @param prem p value; variables with p more than \code{prem} will be removed
@@ -34,13 +34,13 @@
 #' Chatterjee, Samprit and Hadi, Ali. Regression Analysis by Example. 5th ed. N.p.: John Wiley & Sons, 2012. Print.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # stepwise regression
-#' model <- glm(y ~ ., data = stepwise)
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #' blr_step_p_both(model)
 #'
 #' # stepwise regression plot
-#' model <- glm(y ~ ., data = stepwise)
+#' model <- glm(y ~ ., data = stepwise, family = binomial(link = 'logit'))
 #' k <- blr_step_p_both(model)
 #' plot(k)
 #'
@@ -48,6 +48,11 @@
 #' k$model
 #'
 #' }
+#'
+#' @section Aliased terms:
+#' A model with aliased (perfectly collinear) coefficients is rejected with an
+#' error, because the Wald test used to enter or remove terms does not exist
+#' for them. Remove the aliased terms and refit.
 #'
 #' @family variable selection_procedures
 #'
@@ -61,13 +66,14 @@ blr_step_p_both <- function(model, ...) UseMethod("blr_step_p_both")
 blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FALSE, ...) {
 
   blr_check_model(model)
+  blr_check_aliased(model, "blr_step_p_both()")
   blr_check_logic(details)
   blr_check_npredictors(model, 3)
   blr_check_values(pent, 0, 1)
   blr_check_values(prem, 0, 1)
 
   response <- names(model$model)[1]
-  l        <- model$data
+  l        <- selection_data(model)
   nam      <- colnames(attr(model$terms, "factors"))
   df       <- nrow(l) - 2
   tenter   <- qt(1 - (pent) / 2, df)
@@ -109,17 +115,33 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   for (i in seq_len(mlen_p)) {
     predictors <- all_pred[i]
-    m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
-             l, family = binomial(link = 'logit'))
+    m <- selection_model(response, predictors, l, fit = model)
     m_sum <- Anova(m, test.statistic = "Wald")
     pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
     tvals[i] <- m_sum$Chisq[ppos]
   }
 
-  minp    <- which(pvals == min(pvals))
+  minp    <- selection_p_index(pvals, tvals, enter = TRUE)
+
+  if (min(pvals) > pent) {
+    cat("\nNo variables have been added to or removed from the model.\n\n")
+    final_model <- selection_model(response, character(0), l, fit = model)
+    out <- list(orders     = character(0),
+                method     = character(0),
+                steps      = 0,
+                predictors = character(0),
+                aic        = numeric(0),
+                bic        = numeric(0),
+                dev        = numeric(0),
+                indvar     = cterms,
+                model      = final_model)
+    class(out) <- "blr_step_p_both"
+    return(out)
+  }
+
   preds   <- all_pred[minp]
   lpreds  <- length(preds)
-  fr      <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+  fr      <- selection_model(response, preds, l, fit = model)
   mfs     <- blr_model_fit_stats(fr)
   aic     <- mfs$m_aic
   bic     <- mfs$m_bic
@@ -139,7 +161,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
   if (details) {
     cat("\n")
-    m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+    m <- blr_regress(fr)
     print(m)
     cat("\n\n")
   }
@@ -148,6 +170,29 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   tech      <- c("addition", "removal")
   var_index <- preds
   method    <- tech[1]
+
+  m_sum   <- Anova(fr, test.statistic = "Wald")
+  pvals_r <- m_sum$`Pr(>Chisq)`
+  maxp    <- selection_p_index(pvals_r, m_sum$Chisq, enter = FALSE)
+
+  if (pvals_r[maxp] > prem) {
+    var_index <- c(var_index, preds[maxp])
+    method    <- c(method, tech[2])
+    preds     <- preds[-maxp]
+    all_step  <- all_step + 1
+    ppos      <- ppos - length(maxp)
+    fr        <- selection_model(response, preds, l, fit = model)
+    mfs       <- blr_model_fit_stats(fr)
+    aic       <- c(aic, mfs$m_aic)
+    bic       <- c(bic, mfs$m_bic)
+    dev       <- c(dev, mfs$m_deviance)
+
+    if (interactive()) {
+      cat(paste("-", rev(var_index)[1], "removed"), "\n")
+    } else {
+      cat(paste("-", rev(var_index)[1], "removed"), "\n")
+    }
+  }
 
   while (step < mlen_p) {
 
@@ -161,14 +206,13 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
     for (i in seq_len(len_p)) {
 
       predictors <- c(preds, all_pred[i])
-      m <- glm(paste(response, "~", paste(predictors, collapse = " + ")),
-             l, family = binomial(link = 'logit'))
+      m <- selection_model(response, predictors, l, fit = model)
       m_sum <- Anova(m, test.statistic = "Wald")
       pvals[i] <- m_sum$`Pr(>Chisq)`[ppos]
       tvals[i] <- m_sum$Chisq[ppos]
     }
 
-    minp  <- which(pvals == min(pvals))
+    minp  <- selection_p_index(pvals, tvals, enter = TRUE)
 
     if (pvals[minp] <= pent) {
 
@@ -177,7 +221,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       method    <- c(method, tech[1])
       lpreds    <- length(preds)
       all_step  <- all_step + 1
-      fr     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+      fr     <- selection_model(response, preds, l, fit = model)
       mfs    <- blr_model_fit_stats(fr)
       aic    <- c(aic, mfs$m_aic)
       bic    <- c(bic, mfs$m_bic)
@@ -197,7 +241,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
       if (details == TRUE) {
         cat("\n")
-        m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+        m <- blr_regress(fr)
         print(m)
         cat("\n\n")
       }
@@ -210,11 +254,10 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
       #   cat("\n\n")
       # }
 
-      m2     <- glm(paste(response, "~", paste(preds, collapse = " + ")), l,
-                  family = binomial(link = 'logit'))
+      m2     <- selection_model(response, preds, l, fit = model)
       m_sum <- Anova(m2, test.statistic = "Wald")
       pvals_r <- m_sum$`Pr(>Chisq)`
-      maxp    <- which(pvals_r == max(pvals_r))
+      maxp    <- selection_p_index(pvals_r, m_sum$Chisq, enter = FALSE)
       if (pvals_r[maxp] > prem) {
 
         var_index <- c(var_index, preds[maxp])
@@ -223,7 +266,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
         preds     <- preds[-maxp]
         all_step  <- all_step + 1
         ppos      <- ppos - length(maxp)
-        fr        <- glm(paste(response, "~", paste(preds, collapse = " + ")), l, family = binomial(link = 'logit'))
+        fr        <- selection_model(response, preds, l, fit = model)
         mfs       <- blr_model_fit_stats(fr)
         aic       <- c(aic, mfs$m_aic)
         bic       <- c(bic, mfs$m_bic)
@@ -243,7 +286,7 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
 
         if (details) {
           cat("\n")
-          m <- blr_regress(paste(response, "~", paste(preds, collapse = " + ")), l)
+          m <- blr_regress(fr)
           print(m)
           cat("\n\n")
         }
@@ -263,14 +306,10 @@ blr_step_p_both.default <- function(model, pent = 0.1, prem = 0.3, details = FAL
   cat("Final Model Output", "\n")
   cat(rep("-", 18), sep = "", "\n\n")
 
-  fi <- blr_regress(
-    paste(response, "~", paste(preds, collapse = " + ")),
-    data = l
-  )
-  print(fi)
+  final_model <- selection_model(response, preds, l, fit = model)
 
-  final_model <- glm(paste(response, "~", paste(preds, collapse = " + ")),
-    data = l, family = binomial(link = 'logit'))
+  fi <- blr_regress(final_model)
+  print(fi)
 
   out <- list(
     orders     = var_index,

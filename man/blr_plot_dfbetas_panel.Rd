@@ -7,7 +7,7 @@
 blr_plot_dfbetas_panel(model, print_plot = TRUE)
 }
 \arguments{
-\item{model}{An object of class \code{glm}.}
+\item{model}{An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.}
 
 \item{print_plot}{logical; if \code{TRUE}, prints the plot else returns a plot object.}
 }
@@ -30,12 +30,10 @@ general cutoff value to indicate influential observations and
 \eqn{2/\sqrt(n)} as a size-adjusted cutoff.
 }
 \examples{
-\dontrun{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_plot_dfbetas_panel(model)
-}
 
 }
 \references{

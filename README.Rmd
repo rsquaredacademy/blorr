@@ -141,9 +141,11 @@ blr_lorenz_curve(model)
 ## Getting Help
 
 If you encounter a bug, please file a minimal reproducible example using 
-[reprex](https://reprex.tidyverse.org/index.html) on github. For questions and 
-clarifications, use [StackOverflow](https://stackoverflow.com/).
+[reprex](https://reprex.tidyverse.org/index.html) on GitHub. For questions and
+clarifications, ask on Stack Overflow with the `r` tag.
 
 ## Code of Conduct
 
 Please note that the blorr project is released with a [Contributor Code of Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
+<div data-rsa-signup data-site="blorr.rsquaredacademy.com" data-privacy-url="https://www.rsquaredacademy.com/privacy-policy.html"></div>

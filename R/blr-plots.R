@@ -32,9 +32,9 @@ blr_plot_residual_fitted <- function(model, point_color = "blue", line_color = "
 
 #' Residual values plot
 #'
-#' Standardised pearson residuals plot.
+#' Standardized Pearson residuals plot.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param point_color Color of the points.
 #' @param title Title of the plot.
 #' @param xaxis_title X axis label.
@@ -61,12 +61,17 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 }
 
 
-#' Deviance vs fitted values plot
+#' Standardized deviance vs fitted values plot
 #'
-#' Deviance vs fitted values plot.
+#' Standardized deviance vs fitted values plot.
 #'
 #' @inheritParams blr_plot_pearson_residual
 #' @param line_color Color of the horizontal line.
+#'
+#' @references
+#' Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+#'
+#' McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -77,23 +82,28 @@ blr_plot_pearson_residual <- function(model, point_color = "blue",
 #' @export
 #'
 blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "red",
-                                     title = "Deviance Residual vs Fitted Values",
+                                     title = "Standardized Deviance Residual vs Fitted Values",
                                      xaxis_title = "Fitted Values",
-                                     yaxis_title = "Deviance Residual") {
+                                     yaxis_title = "Standardized Deviance Residual") {
 
   blr_check_model(model)
   fit_val <- fitted(model)
-  res_val <- rstandard(model)
+  res_val <- rstandard(model, type = "deviance")
 
   create_plot(fit_val, res_val, point_color, title, xaxis_title, yaxis_title) +
     geom_hline(yintercept = 0, color = line_color)
 }
 
-#' Deviance residual values
+#' Standardized deviance residual values
 #'
-#' Deviance residuals plot.
+#' Standardized deviance residuals plot.
 #'
 #' @inheritParams blr_plot_pearson_residual
+#'
+#' @references
+#' Williams, D. A. (1987). Generalized linear model diagnostics using the deviance and single case deletions. \emph{Journal of the Royal Statistical Society, Series C (Applied Statistics)}, 36(2), 181--191.
+#'
+#' McCullagh, P. and Nelder, J. A. (1989). \emph{Generalized Linear Models}, 2nd ed. London: Chapman and Hall.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -104,12 +114,12 @@ blr_plot_deviance_fitted <- function(model, point_color = "blue", line_color = "
 #' @export
 #'
 blr_plot_deviance_residual <- function(model, point_color = "blue",
-                                       title = "Deviance Residuals Plot",
+                                       title = "Standardized Deviance Residuals Plot",
                                        xaxis_title = "id",
-                                       yaxis_title = "Deviance Residuals") {
+                                       yaxis_title = "Standardized Deviance Residuals") {
 
   blr_check_model(model)
-  res_val <- rstandard(model)
+  res_val <- rstandard(model, type = "deviance")
   id      <- plot_id(res_val)
 
   create_plot(id, res_val, point_color, title, xaxis_title, yaxis_title)
@@ -179,7 +189,7 @@ blr_plot_leverage <- function(model, point_color = "blue",
 #' Diagnostics for confidence interval displacement and detecting ill fitted
 #' observations.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #'
 #' @return C, CBAR, DIFDEV and DIFCHISQ.
 #'
@@ -265,7 +275,7 @@ blr_plot_diag_cbar <- function(model, point_color = "blue",
 }
 
 
-#' Delta chisquare plot
+#' Delta chi-square plot
 #'
 #' Diagnostics for detecting ill fitted observations.
 #'
@@ -325,7 +335,7 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #'
 #' Panel of plots to detect influential observations using DFBETAs.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @details
@@ -349,12 +359,10 @@ blr_plot_diag_difdev <- function(model, point_color = "blue",
 #' New York: John Wiley & Sons. pp. ISBN 0-471-05856-4.
 #'
 #' @examples
-#' \dontrun{
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
 #' family = binomial(link = 'logit'))
 #'
 #' blr_plot_dfbetas_panel(model)
-#' }
 #'
 #' @importFrom stats dfbetas
 #' @importFrom ggplot2 geom_linerange geom_text annotate
@@ -602,8 +610,10 @@ dfbetas_data_prep <- function(dfb, n, threshold, i) {
 
   d$color <- ifelse(((d$dbetas >= threshold) | (d$dbetas <= -threshold)), 
     c("outlier"), c("normal"))
-  d$fct_color <- ordered(factor(color), levels = c("normal", "outlier"))
-  d$txt   <- ifelse(d$color == "outlier", obs, NA)
+  d$fct_color <- ordered(factor(d$color), levels = c("normal", "outlier"))
+  d$txt   <- ifelse(d$color == "outlier", d$obs, NA)
+
+  return(d)
 
   # tibble(obs = seq_len(n), dbetas = dbetas) %>%
   #   mutate(
@@ -636,7 +646,7 @@ dfbetas_plot <- function(d, threshold, dfb, i) {
 
 
 dfbetas_outlier_data <- function(d) {
-  d[d$color == "outlier", c('obs', 'betas')]
+  d[d$color == "outlier", c('obs', 'dbetas')]
 }
 
 

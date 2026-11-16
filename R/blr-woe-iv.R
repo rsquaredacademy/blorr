@@ -1,7 +1,13 @@
 #' WoE & IV
 #'
-#' Weight of evidence and information value. Currently avialable for categorical
-#'   predictors only.
+#' Weight of evidence and information value.
+#'
+#' @details
+#' Character and numeric predictors are treated as categorical and factor
+#' levels without observations are dropped before the table is built. If a
+#' level has no events or no non-events, 0.5 is added to both counts for that
+#' level (Haldane-Anscombe continuity correction) before the weight of evidence
+#' and information value are computed.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
@@ -21,6 +27,8 @@
 #' @references
 #' Siddiqi  N  (2006):  Credit  Risk  Scorecards:  developing  and  implementing  intelligent
 #' credit  scoring. New Jersey, Wiley.
+#'
+#' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
 #'
 #' @examples
 #' # woe and iv
@@ -57,10 +65,10 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
   }
 
   dat      <- data[c(pred, resp)]
+  dat      <- dat[stats::complete.cases(dat), , drop = FALSE]
+  dat[[pred]] <- droplevels(factor(dat[[pred]]))
   lev      <- levels(dat[[pred]])
-  f        <- table(dat)
-  f1       <- table(dat)
-  d1       <- woe_data_prep(f, f1)
+  d1       <- woe_data_prep(dat[[pred]], dat[[resp]])
   d2       <- woe_data_modify(d1, lev = lev, digits = digits)
   woe_iv   <- woe_data_select(d2)
   var_name <- names(dat)[1]
@@ -108,11 +116,13 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Multi variable WOE & IV
 #'
 #' Prints weight of evidence and information value for multiple variables.
-#'   Currently avialable for categorical predictors only.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
 #' @param response Response variable; column in \code{data}.
 #' @param ... Predictor variables; column in \code{data}.
+#'
+#' @references
+#' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
 #'
 #' @examples
 #' blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
@@ -140,24 +150,41 @@ blr_woe_iv_stats <- function(data, response, ...) {
   }
 }
 
-woe_data_prep <- function(f, f1) {
+woe_data_prep <- function(predictor, response) {
 
-  d <- data.frame(unique(rbind(f, f1)))[c('X0', 'X1')]
-  colnames(d) <- c('no', 'yes')
-  return(d)
+  event <- event_indicator(response)
+
+  data.frame(
+    no  = as.vector(tapply(!event, predictor, sum)),
+    yes = as.vector(tapply(event, predictor, sum))
+  )
 
 }
 
 woe_data_modify <- function(data, lev, digits) {
 
   data$total        <- data$no + data$yes
-  data$distribution <- round((data$total / sum(data$total) * 100), digits = digits)
-  data$approval     <- round(((data$yes / data$total) * 100), digits = digits)
-  data$dist_yes     <- round(data$yes / sum(data$yes), digits = digits)
-  data$dist_no      <- round(data$no / sum(data$no), digits = digits)
-  data$woe          <- round(log(data$dist_no / data$dist_yes), digits = digits)
+  data$distribution <- (data$total / sum(data$total) * 100)
+  data$approval     <- ((data$yes / data$total) * 100)
+
+  # Haldane-Anscombe correction for levels with no events or no non-events
+  no  <- data$no
+  yes <- data$yes
+  zero_cell <- no == 0 | yes == 0
+  no[zero_cell]  <- no[zero_cell] + 0.5
+  yes[zero_cell] <- yes[zero_cell] + 0.5
+
+  # distributions, logarithms and IV are computed at full precision; values
+  # are rounded only when returned so small proportions do not become zero
+  data$dist_yes     <- yes / sum(yes)
+  data$dist_no      <- no / sum(no)
+  data$woe          <- log(data$dist_no / data$dist_yes)
   data$dist_diff    <- data$dist_no - data$dist_yes
-  data$iv           <- round((data$dist_diff * data$woe), digits = digits)
+  data$iv           <- data$dist_diff * data$woe
+
+  round_cols <- c("distribution", "approval", "dist_yes", "dist_no", "woe", "iv")
+  data[round_cols] <- lapply(data[round_cols], round, digits = digits)
+
   cbind(data.frame(levels = lev), data)
 
 }

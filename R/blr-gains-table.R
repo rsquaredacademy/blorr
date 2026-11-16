@@ -3,7 +3,7 @@
 #' Compute sensitivity, specificity, accuracy and KS statistics to
 #'   generate the lift chart and the KS chart.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or a \code{data.frame}.
 #' @param x An object of class \code{blr_gains_table}.
 #' @param title Plot title.
@@ -23,7 +23,7 @@
 #' Agresti, A. (2013), Categorical Data Analysis, Third Edition, New York: John Wiley & Sons.
 #'
 #' Thomas LC (2009): Consumer  Credit  Models:  Pricing,  Profit,  and  Portfolio.
-#' Oxford,  Oxford  Uni-versity Press.
+#' Oxford,  Oxford  University Press.
 #'
 #' Sobehart  J,  Keenan  S,  Stein  R  (2000):  Benchmarking  Quantitative  Default  Risk  Models:
 #' A  Validation Methodology, Moody’s Investors Service.
@@ -63,8 +63,8 @@ blr_gains_table.default <- function(model, data = NULL) {
     data      <- data
   }
 
-  dct <- gains_decile_count(data)
   gtp <- gains_table_prep(model, data, test_data)
+  dct <- gains_decile_count(gtp)
   gtm <- gains_table_modify(gtp, decile_count = dct)
   gt  <- gains_table_mutate(gtm)
 
@@ -128,7 +128,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
 #'
 #' @references
-#' \url{https://pubmed.ncbi.nlm.nih.gov/843576/}
+#' \doi{10.2307/2529319}
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -277,8 +277,11 @@ blr_decile_lift_chart <- function(gains_table, xaxis_title = "Decile",
 }
 
 
+# assign ten score-ordered groups; ceiling(i * 10 / n) covers every row
+# exactly once, even when n is small
 gains_decile_count <- function(data) {
-  round(nrow(data) / 10)
+  n <- nrow(data)
+  ceiling(seq_len(n) * 10 / n)
 }
 
 
@@ -288,13 +291,18 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
     namu <- names(model$model)[1]
     response <- data[[namu]]
   } else {
-    response <- model$model[1]
+    response <- model$model[[1]]
   }
 
-  resp_tib <- data.frame(response = response)
-  prob_tib <- data.frame(predicted = predict.glm(model, newdata = data, type = "response"))
-  out <- cbind(resp_tib, prob_tib)
-  colnames(out) <- c('response', 'predicted')
+  prob <- predict.glm(model, newdata = data, type = "response")
+
+  out <- data.frame(
+    response  = response,
+    predicted = prob,
+    event     = as.integer(model_event_indicator(model, response))
+  )
+
+  out <- out[stats::complete.cases(out), , drop = FALSE]
   return(out)
 
 }
@@ -302,16 +310,14 @@ gains_table_prep <- function(model, data, test_data = FALSE) {
 #' @importFrom data.table data.table setorder .N := setDF
 gains_table_modify <- function(data, decile_count) {
 
-  residual <- nrow(data) - (decile_count * 9)
-
-  d1 <- data[c('response', 'predicted')]
-  colnames(d1) <- c('response', 'prob')
+  d1 <- data[c('response', 'predicted', 'event')]
+  colnames(d1) <- c('response', 'prob', 'event')
+  d1$event    <- as.integer(d1$event)
   d1 <- data.table(d1)
   setorder(d1, -prob)
-  d1[, decile := c(rep(1:9, each = decile_count),
-                   rep(10, times = residual))]
+  d1[, decile := decile_count]
 
-  out <- d1[, .(total = .N, `1` = table(response)[[2]]), by = decile]
+  out <- d1[, .(total = .N, `1` = sum(event)), by = decile]
   setDF(out)
   return(out)
 
@@ -328,12 +334,12 @@ gains_table_mutate <- function(data) {
   data$`cum_0s_%`    <- (data$cum_0s / sum(data$`0`)) * 100
   data$ks            <- data$`cum_1s_%` - data$`cum_0s_%`
   data$tp            <- data$cum_1s
-  data$tn            <- data$cum_0s[10] - data$cum_0s
+  data$tn            <- utils::tail(data$cum_0s, 1) - data$cum_0s
   data$fp            <- data$cum_0s
-  data$fn            <- data$cum_1s[10] - data$cum_1s
+  data$fn            <- utils::tail(data$cum_1s, 1) - data$cum_1s
   data$sensitivity   <- (data$tp / (data$tp + data$fn)) * 100
   data$specificity   <- (data$tn / (data$tn + data$fp)) * 100
-  data$accuracy      <- ((data$tp + data$tn) / data$cum_total[10]) * 100
+  data$accuracy      <- ((data$tp + data$tn) / utils::tail(data$cum_total, 1)) * 100
 
   return(data)
 

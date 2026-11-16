@@ -13,4 +13,70 @@ test_that("output from blr_gains_table is as expected", {
   expect_equal(actual, expected)
 })
 
+test_that("gains table assigns every observation to exactly one decile", {
+  for (n in c(8, 15, 35)) {
+    set.seed(n)
+    d <- data.frame(y = rbinom(n, 1, 0.5), x = rnorm(n))
+    m <- glm(y ~ x, data = d, family = binomial)
+    gt <- blr_gains_table(m)$gains_table
+
+    expect_equal(sum(gt$total), nrow(d))
+    expect_equal(sum(gt$`1`), sum(d$y))
+    expect_true(all(gt$decile >= 1 & gt$decile <= 10))
+    expect_equal(anyDuplicated(gt$decile), 0L)
+  }
+})
+
+test_that("gains table assigns deciles after dropping missing outcomes", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$am[1] <- NA
+
+  gt <- blr_gains_table(m, td)$gains_table
+
+  expect_equal(sum(gt$total), 31)
+  expect_equal(sum(gt$`1`), 12)
+  expect_true(all(gt$decile >= 1 & gt$decile <= 10))
+  expect_equal(anyDuplicated(gt$decile), 0L)
+  expect_equal(tail(gt$`cum_total_%`, 1), 100)
+  expect_equal(tail(gt$`cum_1s_%`, 1), 100)
+  expect_equal(tail(gt$`cum_0s_%`, 1), 100)
+
+  lz <- blr_prep_lorenz_data(m, td, TRUE)
+  expect_equal(nrow(lz), nrow(gt) + 2L)
+  expect_equal(lz$cum_1s_per[c(1, nrow(lz))], c(0, 1))
+  expect_equal(lz$cum_0s_per[c(1, nrow(lz))], c(0, 1))
+})
+
+test_that("gains table assigns deciles after dropping missing predictors", {
+  m  <- glm(am ~ wt + hp, data = mtcars, family = binomial)
+  td <- mtcars
+  td$hp[1] <- NA
+
+  gt <- blr_gains_table(m, td)$gains_table
+
+  expect_equal(sum(gt$total), 31)
+  expect_equal(sum(gt$`1`), sum(mtcars$am[-1]))
+  expect_equal(tail(gt$`cum_total_%`, 1), 100)
+
+  lz <- blr_prep_lorenz_data(m, td, TRUE)
+  expect_equal(nrow(lz), nrow(gt) + 2L)
+  expect_equal(lz$cum_1s_per[nrow(lz)], 1)
+})
+
+test_that("gains table handles a decile with no events", {
+  p <- predict(model, newdata = hsb2, type = "response")
+
+  test_data <- hsb2
+  test_data$honcomp <- as.integer(
+    rank(-p) > 20 & hsb2$honcomp == "1"
+  )
+
+  gt <- blr_gains_table(model, test_data)$gains_table
+
+  expect_equal(gt$`1`[1], 0)
+  expect_equal(sum(gt$`1`), sum(test_data$honcomp))
+  expect_equal(sum(gt$total), nrow(test_data))
+})
+
 

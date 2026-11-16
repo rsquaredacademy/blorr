@@ -4,7 +4,11 @@
 #'   inequality in labour market. In the predictive model, Gini Index is used
 #'   for measuring discriminatory power.
 #'
-#' @param model An object of class \code{glm}.
+#' @details
+#' The Gini index is computed as 2 * AUC - 1, where AUC is the area under the
+#' receiver operating characteristic curve.
+#'
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #'
 #' @return Gini index.
@@ -15,6 +19,12 @@
 #'
 #' Müller M, Rönz B (2000): Credit Scoring using Semiparametric Methods. In: Franke J, Härdle W, Stahl G (Eds.):
 #' Measuring Risk in Complex Stochastic Systems. New York, Springer-Verlag.
+#'
+#' Hand, D. J. and Till, R. J. (2001). A simple generalisation of the area under the ROC curve for multiple class classification problems. \emph{Machine Learning}, 45(2), 171--186.
+#'
+#' Hanley, J. A. and McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. \emph{Radiology}, 143(1), 29--36.
+#'
+#' Mann, H. B. and Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. \emph{The Annals of Mathematical Statistics}, 18(1), 50--60.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -31,18 +41,43 @@ blr_gini_index <- function(model, data = NULL) {
   blr_check_model(model)
 
   if (is.null(data)) {
-    data <- model$data
+    data      <- model$model
+    test_data <- FALSE
+  } else {
+    test_data <- TRUE
   }
 
   blr_check_data(data)
 
-  data$prob   <- predict.glm(model, newdata = data, type = "response")
-  n           <- length(data$prob)
-  data        <- data[order(data[['prob']]), ]
-  data$n      <- seq_len(nrow(data))
-  data$prob_n <- data$prob * data$n
+  resp_name <- names(model$model)[1]
 
-  (((sum(data$prob_n) / sum(data$prob)) * 2) - (n + 1)) / n
+  if (test_data) {
+    response <- data[[resp_name]]
+  } else {
+    # model$y is already encoded as 0/1, so map the original fitted response
+    # labels instead; otherwise a labelled factor or logical response is
+    # compared with the numeric codes and every row becomes a non-event
+    response <- model$model[[1]]
+  }
+
+  if (is.null(response)) {
+    stop("`data` must contain the response variable used to fit the model.",
+      call. = FALSE
+    )
+  }
+
+  prob     <- predict.glm(model, newdata = data, type = "response")
+  complete <- stats::complete.cases(response, prob)
+  response <- response[complete]
+  prob     <- prob[complete]
+  event    <- model_event_indicator(model, response)
+
+  r   <- rank(prob)
+  n1  <- as.numeric(sum(event))
+  n0  <- as.numeric(sum(!event))
+  auc <- (sum(r[event]) - n1 * (n1 + 1) / 2) / (n1 * n0)
+
+  2 * auc - 1
 
 }
 
@@ -51,7 +86,7 @@ blr_gini_index <- function(model, data = NULL) {
 #' @description Lorenz curve is a visual representation of inequality. It is
 #'   used to measure the discriminatory power of the predictive model.
 #'
-#' @param model An object of class \code{glm}.
+#' @param model An object of class \code{glm}. Only binary logistic regression models (binomial family with logit link) are supported. Weighted models (any prior weight other than 1) and grouped binomial models (\code{cbind(successes, failures)} or proportions) are not supported; the model must be fitted with \code{model = TRUE, y = TRUE}.
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param title Plot title.
 #' @param xaxis_title X axis title.
@@ -59,6 +94,13 @@ blr_gini_index <- function(model, data = NULL) {
 #' @param lorenz_curve_col Color of the lorenz curve.
 #' @param diag_line_col Diagonal line color.
 #' @param print_plot logical; if \code{TRUE}, prints the plot else returns a plot object.
+#'
+#' @references
+#' Hand, D. J. and Till, R. J. (2001). A simple generalisation of the area under the ROC curve for multiple class classification problems. \emph{Machine Learning}, 45(2), 171--186.
+#'
+#' Hanley, J. A. and McNeil, B. J. (1982). The meaning and use of the area under a receiver operating characteristic (ROC) curve. \emph{Radiology}, 143(1), 29--36.
+#'
+#' Mann, H. B. and Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. \emph{The Annals of Mathematical Statistics}, 18(1), 50--60.
 #'
 #' @examples
 #' model <- glm(honcomp ~ female + read + science, data = hsb2,
@@ -78,7 +120,7 @@ blr_lorenz_curve <- function(model, data = NULL, title = "Lorenz Curve",
 
   if (is.null(data)) {
     test_data <- FALSE
-    data      <- model$data
+    data      <- model$model
   } else {
     test_data <- TRUE
     data      <- data
