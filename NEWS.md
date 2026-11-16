@@ -1,3 +1,16 @@
+# blorr (development version)
+
+## Bug fixes
+
+- `blr_residual_diagnostics()` now computes the delta deviance (`difdev`) as
+  the squared deviance residual plus CBAR. Versions up to and including 0.3.2
+  used the squared standardized Pearson residual instead, so their `difdev`
+  values were wrong (for `glm(am ~ wt + hp, mtcars, family = binomial())` the
+  first three were 0.272, 2.398 and 0.036 instead of 0.385, 2.273 and 0.063).
+  `blr_plot_diag_difdev()`, `blr_plot_difdev_fitted()`,
+  `blr_plot_difdev_leverage()` and `blr_plot_diag_influence()` show the
+  corrected values.
+
 # blorr 0.3.2
 
 This is a patch release that fixes several bugs in model fit statistics,

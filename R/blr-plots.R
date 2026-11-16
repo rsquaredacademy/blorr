@@ -212,7 +212,7 @@ blr_residual_diagnostics <- function(model) {
   c        <- num / (den ^ 2)
   cbar     <- num / den
   difchisq <- cbar / hat_val
-  difdev   <- (rstandard(model) ^ 2) + cbar
+  difdev   <- (residuals(model, type = "deviance") ^ 2) + cbar
     
   data.frame(c = c, cbar = cbar, difdev = difdev, difchisq = difchisq)
 
