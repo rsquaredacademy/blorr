@@ -105,7 +105,8 @@ print_blr_reg <- function(x) {
 
 
   w23 <- 12
-  w24 <- max(nchar(format(unlist(x$blr_cord[1:4], use.names = FALSE), nsmall = 4)))
+  w24 <- max(nchar(format(c(x$blr_cord[[1]],
+    unlist(x$blr_cord[2:4], use.names = FALSE) * 100), nsmall = 4)))
   w25 <- 9
   w26 <- max(nchar(format(unlist(x$blr_cord[5:8], use.names = FALSE), nsmall = 4)))
   w27 <- sum(w23, w24, w25, w26, 21)
@@ -114,19 +115,19 @@ print_blr_reg <- function(x) {
   cat(rep("-", w27), sep = "", "\n")
   cat(
     fl("% Concordant", w23), fs2(),
-    fc(format(round(x$blr_cord[[2]], 4), nsmall = 4), w24), fs2(),
+    fc(format(round(x$blr_cord[[2]] * 100, 4), nsmall = 4), w24), fs2(),
     fl("Somers' D", w25), fs2(),
     fc(format(round(x$blr_cord[[5]], 4), nsmall = 4), w26), "\n"
   )
   cat(
     fl("% Discordant", w23), fs2(),
-    fc(format(round(x$blr_cord[[3]], 4), nsmall = 4), w24), fs2(),
+    fc(format(round(x$blr_cord[[3]] * 100, 4), nsmall = 4), w24), fs2(),
     fl("Gamma", w25), fs2(),
     fc(format(round(x$blr_cord[[6]], 4), nsmall = 4), w26), "\n"
   )
   cat(
     fl("% Tied", w23), fs2(),
-    fc(format(round(x$blr_cord[[4]], 4), nsmall = 4), w24), fs2(),
+    fc(format(round(x$blr_cord[[4]] * 100, 4), nsmall = 4), w24), fs2(),
     fl("Tau-a", w25), fs2(),
     fc(format(round(x$blr_cord[[7]], 4), nsmall = 4), w26), "\n"
   )
@@ -215,15 +216,12 @@ print_bivariate_analysis <- function(x) {
 
 print_blr_segment <- function(x) {
 
-  y1 <- unname(sapply(lapply(lapply(x$segment, as.character), nchar), max))
-  y2 <- nchar(names(x$segment_data))
-  w  <- mapply(max, y1, y2)
-
-  wsum   <- sum(w, 11)
   rnames <- names(x$segment_data)
   dtable <- x$segment_data
-  c1     <- c(rnames[1], dtable[[rnames[1]]])
-  c2     <- c(rnames[2], format(round(dtable[[rnames[2]]], 2), nsmall = 2))
+  c1     <- c(rnames[1], as.character(dtable[[rnames[1]]]))
+  c2     <- c(rnames[2], format(round(dtable[[rnames[2]]] * 100, 2), nsmall = 2))
+  w      <- vapply(list(c1, c2), function(z) max(nchar(z)), integer(1))
+  wsum   <- sum(w, 11)
   clen   <- length(c1)
 
   cat(fc("Event By Attributes", wsum), "\n")
@@ -240,17 +238,15 @@ print_blr_segment <- function(x) {
 
 print_blr_segment_dist <- function(x) {
 
-  y1     <- unname(sapply(lapply(lapply(x$dist_table, as.character), nchar), max))
-  y2     <- nchar(names(x$dist_table))
-  w      <- mapply(max, y1, y2)
-  wsum   <- sum(w, 16)
   rnames <- names(x$dist_table)
   dtable <- x$dist_table
-  c1     <- c(x$var_name, dtable[[rnames[1]]])
+  c1     <- c(x$var_name, as.character(dtable[[rnames[1]]]))
   c2     <- c(rnames[2], dtable[[rnames[2]]])
   c3     <- c(rnames[3], dtable[[rnames[3]]])
-  c4     <- c(rnames[4], format(round(dtable[[rnames[4]]], 2), nsmall = 2))
-  c5     <- c(rnames[5], format(round(dtable[[rnames[5]]], 2), nsmall = 2))
+  c4     <- c(rnames[4], format(round(dtable[[rnames[4]]] * 100, 2), nsmall = 2))
+  c5     <- c(rnames[5], format(round(dtable[[rnames[5]]] * 100, 2), nsmall = 2))
+  w      <- vapply(list(c1, c2, c3, c4, c5), function(z) max(nchar(z)), integer(1))
+  wsum   <- sum(w, 16)
   clen   <- length(c1)
 
   cat(fc("Event Segmentation", wsum), "\n")
@@ -499,13 +495,13 @@ print_stepwise_selection <- function(data) {
 
 print_blr_twoway_segment <- function(x) {
 
-  cnames <- c(x$varnames[1], colnames(x$twoway_segment))
+  cnames <- c(x$varnames[2], colnames(x$twoway_segment))
   k      <- cbind(rownames(x$twoway_segment),
                   format(round(x$twoway_segment, 3), nsmall = 3))
   nc     <- ncol(k)
   nr     <- nrow(k)
   wc     <- max(nchar(k))
-  vname  <- x$varnames[2]
+  vname  <- x$varnames[3]
   w      <- (nc * wc) + (4 * (nc - 1))
   w2     <- w - wc - 4 - 3
 

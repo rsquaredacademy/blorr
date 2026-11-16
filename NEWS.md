@@ -2,6 +2,21 @@
 
 ## Bug fixes
 
+- The association table in the `blr_regress()` output now prints `% Concordant`,
+  `% Discordant` and `% Tied` on the percentage scale, keeping the `%` labels:
+  for `am ~ wt + hp` on `mtcars` it shows 98.3806, 1.6194 and 0.0000. Versions
+  up to 0.3.2 printed the proportions 0.9838, 0.0162 and 0.0000 under the same
+  labels. The `n%` and `1s%` columns printed by `blr_segment()` and
+  `blr_segment_dist()` follow the same convention, so an event rate of 0.73 is
+  now printed as 73.00. The values returned in the fitted object are unchanged.
+- `blr_segment_dist()` now prints the predictor's factor levels (for
+  `blr_segment_dist(mtcarz, am, cyl)`, 4, 6 and 8 instead of the integer codes
+  1, 2 and 3) and the predictor's name as the column header (`cyl` instead of
+  the internal `pred`); the same name is used as the plot title.
+  `blr_segment_twoway()` now prints the two grouping variables as its headers
+  (`gear` across the top and `cyl` down the left) instead of the response and
+  the first predictor. Earlier versions printed `am` and `cyl` for
+  `blr_segment_twoway(mtcarz, am, cyl, gear)`.
 - `blr_residual_diagnostics()` now computes the delta deviance (`difdev`) as
   the squared deviance residual plus CBAR. Versions up to and including 0.3.2
   used the squared standardized Pearson residual instead, so their `difdev`

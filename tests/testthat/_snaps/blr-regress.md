@@ -38,9 +38,9 @@
       
        Association of Predicted Probabilities and Observed Responses  
       ---------------------------------------------------------------
-      % Concordant          0.8561          Somers' D        0.7136   
-      % Discordant          0.1425          Gamma            0.7147   
-      % Tied                0.0014          Tau-a            0.2794   
+      % Concordant         85.6116          Somers' D        0.7136   
+      % Discordant         14.2472          Gamma            0.7147   
+      % Tied                0.1412          Tau-a            0.2794   
       Pairs                  7791           c                0.8568   
       ---------------------------------------------------------------
       

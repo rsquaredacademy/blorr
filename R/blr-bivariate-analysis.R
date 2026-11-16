@@ -278,7 +278,7 @@ blr_segment_dist.default <- function(data, response, predictor) {
   }
 
   dist_table <- segment_comp(data, pred, resp)
-  var_name <- names(dist_table)[1]
+  var_name <- pred
   names(dist_table)[1] <- "variable"
   result <- list(dist_table = dist_table, var_name = var_name)
   class(result) <- "blr_segment_dist"
