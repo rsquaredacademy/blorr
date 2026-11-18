@@ -12,7 +12,8 @@ response_var <- function(model) {
 # 0/1). The check uses the stored original response (model frame column 1) as
 # well as the initialized response, so it does not depend on which of them
 # glm() normalized; a fit stored without its model frame or response is
-# declined.
+# declined. Responses with more than two levels are rejected by
+# blr_check_binary_response(), see below.
 blr_unsupported_message <- function() {
   paste("blorr supports unweighted 0/1 (Bernoulli) models; weighted and",
         "grouped binomial models are not supported.")
@@ -48,6 +49,49 @@ blr_check_supported <- function(model) {
 
   if (bad) {
     stop(blr_unsupported_message(), call. = FALSE)
+  }
+
+  blr_check_binary_response(resp, names(model$model)[1], exactly = FALSE)
+
+  invisible(TRUE)
+}
+
+# Responses supported by blorr are binary: exactly two levels. glm() silently
+# recodes a factor or character response with more levels as
+# "first level" versus "everything else", so a three-level response used to be
+# fitted without complaint and the response profile and its printed summary
+# showed only the first two levels of the table (dropping the rest). Count the
+# levels the fitted model actually saw (glm() drops unused factor levels) and
+# name the response in the error. `resp` may also be a response profile table,
+# whose length is its number of outcomes, so print_blr_reg() can reuse the
+# check.
+#
+# `exactly = FALSE` rejects only responses with more than two levels. The
+# shared model guard uses it so that degenerate single-outcome fits keep the
+# handling they had before (blr_confusion_matrix() reports them instead of
+# refusing); the response profile and its printer need exactly two outcomes
+# because they print the two outcomes side by side.
+blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
+
+  if (is.null(resp)) {
+    return(invisible(TRUE))
+  }
+
+  n <- if (is.table(resp)) {
+    length(resp)
+  } else if (is.factor(resp)) {
+    nlevels(resp)
+  } else {
+    length(unique(resp[!is.na(resp)]))
+  }
+
+  bad <- n > 2L || (exactly && n < 2L)
+
+  if (bad) {
+    stop("The response `", name, "` has ", n,
+         if (n == 1L) " level" else " levels",
+         "; blorr supports a binary response with exactly two levels.",
+         call. = FALSE)
   }
 
   invisible(TRUE)
@@ -235,7 +279,13 @@ model_response_levels <- function(model) {
 
 # response profile
 resp_profile <- function(model) {
+
+  resp <- model$model[[1]]
+
+  blr_check_binary_response(resp, response_var(model))
+
   table(model$model[[1]])
+
 }
 
 

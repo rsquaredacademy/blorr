@@ -2,6 +2,16 @@
 
 ## Bug fixes
 
+- A response with more than two levels is now rejected with an error naming
+  the response and the number of levels found. `glm()` silently recodes a
+  factor or character response with three or more levels as "first level"
+  versus "everything else", so `blr_regress()`, the response profile
+  (`resp_profile()`) and the printed response summary (`print_blr_reg()`)
+  showed the frequencies of only the first two levels: for
+  `glm(ses ~ female + read, hsb2, family = binomial())` the profile of the
+  three-level `ses` response reported 47 and 95 of 200 observations and
+  silently dropped the third level (58). Binary responses are unchanged.
+
 - The association table in the `blr_regress()` output now prints `% Concordant`,
   `% Discordant` and `% Tied` on the percentage scale, keeping the `%` labels:
   for `am ~ wt + hp` on `mtcars` it shows 98.3806, 1.6194 and 0.0000. Versions
