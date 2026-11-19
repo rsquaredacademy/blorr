@@ -9,7 +9,8 @@ blr_woe_iv_stats(data, response, ...)
 \arguments{
 \item{data}{A \code{data.frame} or \code{tibble}.}
 
-\item{response}{Response variable; column in \code{data}.}
+\item{response}{Response variable; column in \code{data} with at most two
+observed, non-missing levels. Unused factor levels are ignored.}
 
 \item{...}{Predictor variables; column in \code{data}.}
 }

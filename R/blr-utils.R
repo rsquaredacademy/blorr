@@ -57,7 +57,7 @@ blr_check_supported <- function(model) {
 }
 
 # Responses supported by blorr are binary: exactly two levels. glm() silently
-# recodes a factor or character response with more levels as
+# recodes a factor response with more levels as
 # "first level" versus "everything else", so a three-level response used to be
 # fitted without complaint and the response profile and its printed summary
 # showed only the first two levels of the table (dropping the rest). Count the

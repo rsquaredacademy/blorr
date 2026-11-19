@@ -11,7 +11,8 @@
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
-#' @param response Response variable; column in \code{data}.
+#' @param response Response variable; column in \code{data} with at most two
+#'   observed, non-missing levels. Unused factor levels are ignored.
 #' @param digits Number of decimal digits to round off.
 #' @param x An object of class \code{blr_segment_dist}.
 #' @param title Plot title.
@@ -57,6 +58,8 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
   } else {
     resp <- response
   }
+
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
 
   if (is.symbol(substitute(predictor))) {
     pred <- deparse(substitute(predictor))
@@ -118,7 +121,8 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Prints weight of evidence and information value for multiple variables.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
-#' @param response Response variable; column in \code{data}.
+#' @param response Response variable; column in \code{data} with at most two
+#'   observed, non-missing levels. Unused factor levels are ignored.
 #' @param ... Predictor variables; column in \code{data}.
 #'
 #' @references
@@ -134,6 +138,7 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 blr_woe_iv_stats <- function(data, response, ...) {
 
   resp        <- deparse(substitute(response))
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   predictors  <- vapply(substitute(...()), deparse, NA_character_)
   dat         <- data[c(resp, predictors)]
   varnames    <- names(dat)
