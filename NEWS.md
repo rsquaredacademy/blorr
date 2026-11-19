@@ -5,12 +5,17 @@
 - A response with more than two levels is now rejected with an error naming
   the response and the number of levels found. `glm()` silently recodes a
   factor or character response with three or more levels as "first level"
-  versus "everything else", so `blr_regress()`, the response profile
-  (`resp_profile()`) and the printed response summary (`print_blr_reg()`)
-  showed the frequencies of only the first two levels: for
-  `glm(ses ~ female + read, hsb2, family = binomial())` the profile of the
-  three-level `ses` response reported 47 and 95 of 200 observations and
-  silently dropped the third level (58). Binary responses are unchanged.
+  versus "everything else", so a three-level response was fitted without
+  complaint. For `glm(ses ~ female + read, hsb2, family = binomial())` the
+  three-level `ses` response was fitted and the summary printed by
+  `blr_regress()` reported 47 and 95 of 200 observations, silently dropping
+  the third level (58). Every model entry point now raises this error:
+  `blr_regress()`, `blr_model_fit_stats()`, the `blr_rsq_*()` functions, the
+  stepwise functions, `blr_gains_table()`, `blr_confusion_matrix()` and
+  `blr_test_hosmer_lemeshow()`. A response with a single outcome is also
+  rejected by `blr_regress()` at fit time with the same error naming the one
+  level found; previously the object was built and printing it failed with
+  "subscript out of bounds". Binary responses are unchanged.
 
 - The association table in the `blr_regress()` output now prints `% Concordant`,
   `% Discordant` and `% Tied` on the percentage scale, keeping the `%` labels:

@@ -38,6 +38,28 @@ test_that("print_blr_reg errors when the stored profile is not binary (#130)", {
   )
 })
 
+test_that("model functions reject a three-level response through the shared gate (#130)", {
+  d <- three_level_data()
+  m <- glm(ses3 ~ female + read, data = d, family = binomial)
+
+  # both fit statistics and R2 helpers reach blr_check_supported() directly
+  expect_error(
+    blr_model_fit_stats(m),
+    "The response `ses3` has 3 levels"
+  )
+  expect_error(
+    blr_rsq_adj_count(m),
+    "The response `ses3` has 3 levels"
+  )
+
+  # a stepwise entry point, with a full candidate set
+  ms <- glm(ses3 ~ female + read + math, data = d, family = binomial)
+  expect_error(
+    blr_step_aic_forward(ms),
+    "The response `ses3` has 3 levels"
+  )
+})
+
 test_that("binary responses are unchanged (#130)", {
   # values captured from the package before the check was added
   m <- glm(honcomp ~ female + read + science, data = hsb2,
