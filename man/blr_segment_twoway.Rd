@@ -12,7 +12,8 @@ blr_segment_twoway(data, response, variable_1, variable_2)
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{response}{Response variable; column in \code{data}.}
+\item{response}{Response variable; column in \code{data} with at most two
+observed, non-missing levels. Unused factor levels are ignored.}
 
 \item{variable_1}{Column in \code{data}.}
 

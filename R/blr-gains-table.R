@@ -136,7 +136,7 @@ plot.blr_gains_table <- function(x, title = "Lift Chart", xaxis_title = "% Popul
 #' gt <- blr_gains_table(model)
 #' blr_ks_chart(gt)
 #'
-#' @importFrom ggplot2 element_blank annotate geom_segment
+#' @importFrom ggplot2 element_blank element_text annotate geom_segment theme
 #'
 #' @family model validation techniques
 #'

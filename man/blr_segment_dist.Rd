@@ -22,7 +22,8 @@ blr_segment_dist(data, response, predictor)
 \arguments{
 \item{data}{A \code{tibble} or a \code{data.frame}.}
 
-\item{response}{Response variable; column in \code{data}.}
+\item{response}{Response variable; column in \code{data} with at most two
+observed, non-missing levels. Unused factor levels are ignored.}
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 

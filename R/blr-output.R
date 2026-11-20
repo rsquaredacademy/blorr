@@ -1,4 +1,9 @@
 print_blr_reg <- function(x) {
+
+  # the response summary below prints exactly two outcomes side by side; a
+  # profile with more rows would silently drop all but the first two
+  blr_check_binary_response(x$resp_prof, x$resp_name)
+
   w1 <- max(nchar("Data Set"), nchar(x$dataname))
   w2 <- max(nchar("Resp Var"), nchar(x$resp_name))
   w3 <- max(nchar("Obs."), nchar(x$n_obs))

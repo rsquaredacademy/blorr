@@ -23,7 +23,8 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 
-\item{response}{Response variable; column in \code{data}.}
+\item{response}{Response variable; column in \code{data} with at most two
+observed, non-missing levels. Unused factor levels are ignored.}
 
 \item{digits}{Number of decimal digits to round off.}
 

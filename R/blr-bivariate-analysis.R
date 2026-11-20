@@ -114,7 +114,8 @@ lr_extract <- function(lr, value) {
 #' Event rate by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
-#' @param response Response variable; column in \code{data}.
+#' @param response Response variable; column in \code{data} with at most two
+#'   observed, non-missing levels. Unused factor levels are ignored.
 #' @param predictor Predictor variable; column in \code{data}.
 #'
 #' @return A tibble.
@@ -136,6 +137,7 @@ blr_segment.default <- function(data, response, predictor) {
   blr_check_data(data)
 
   resp    <- deparse(substitute(response))
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   pred    <- deparse(substitute(predictor))
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
@@ -167,7 +169,8 @@ print.blr_segment <- function(x, ...) {
 #' Event rate across two qualitative variables.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
-#' @param response Response variable; column in \code{data}.
+#' @param response Response variable; column in \code{data} with at most two
+#'   observed, non-missing levels. Unused factor levels are ignored.
 #' @param variable_1 Column in \code{data}.
 #' @param variable_2 Column in \code{data}.
 #'
@@ -190,6 +193,7 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   blr_check_data(data)
 
   resp          <- deparse(substitute(response))
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   var_1         <- deparse(substitute(variable_1))
   var_2         <- deparse(substitute(variable_2))
   n             <- sum(!is.na(data[[resp]]))
@@ -220,7 +224,8 @@ print.blr_segment_twoway <- function(x, ...) {
 #' Distribution of response variable by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
-#' @param response Response variable; column in \code{data}.
+#' @param response Response variable; column in \code{data} with at most two
+#'   observed, non-missing levels. Unused factor levels are ignored.
 #' @param predictor Predictor variable; column in \code{data}.
 #' @param x An object of class \code{blr_segment_dist}.
 #' @param title Plot title.
@@ -276,6 +281,8 @@ blr_segment_dist.default <- function(data, response, predictor) {
 
     stop("", call. = FALSE)
   }
+
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
 
   dist_table <- segment_comp(data, pred, resp)
   var_name <- pred
