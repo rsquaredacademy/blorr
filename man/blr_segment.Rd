@@ -12,8 +12,12 @@ blr_segment(data, response, predictor)
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{response}{Response variable; column in \code{data} with at most two
-observed, non-missing levels. Unused factor levels are ignored.}
+\item{response}{Response variable; column in \code{data} with one or two
+observed, non-missing levels. The event is the second level of a factor or
+character response, \code{TRUE} for a logical response and \code{1} for a
+numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+event. Numeric responses must be coded 0/1. Unused factor levels are
+ignored.}
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 }
@@ -22,6 +26,15 @@ A tibble.
 }
 \description{
 Event rate by segments/levels of a qualitative variable.
+}
+\details{
+A response with one observed level is allowed: the defined event rate is
+returned for that class (0 when all responses are non-events, 1 when all are
+events). A response with no observed levels is an error. Rows with a missing
+response are excluded. A missing predictor is kept as its own \code{NA}
+level, so its rows appear in a final \code{NA} segment with their own count
+and rate. The event rate is returned unrounded and printed to two decimal
+places.
 }
 \examples{
 blr_segment(hsb2, honcomp, prog)

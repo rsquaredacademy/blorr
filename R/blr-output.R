@@ -224,6 +224,7 @@ print_blr_segment <- function(x) {
   rnames <- names(x$segment_data)
   dtable <- x$segment_data
   c1     <- c(rnames[1], as.character(dtable[[rnames[1]]]))
+  c1[is.na(c1)] <- "NA"
   c2     <- c(rnames[2], format(round(dtable[[rnames[2]]] * 100, 2), nsmall = 2))
   w      <- vapply(list(c1, c2), function(z) max(nchar(z)), integer(1))
   wsum   <- sum(w, 11)
@@ -246,6 +247,7 @@ print_blr_segment_dist <- function(x) {
   rnames <- names(x$dist_table)
   dtable <- x$dist_table
   c1     <- c(x$var_name, as.character(dtable[[rnames[1]]]))
+  c1[is.na(c1)] <- "NA"
   c2     <- c(rnames[2], dtable[[rnames[2]]])
   c3     <- c(rnames[3], dtable[[rnames[3]]])
   c4     <- c(rnames[4], format(round(dtable[[rnames[4]]] * 100, 2), nsmall = 2))
@@ -384,7 +386,11 @@ print_blr_woe_iv <- function(x) {
   l1     <- max(nchar(c("Variable", x$var_name)))
   l2     <- 17
   lsum   <- sum(l1, l2, 4)
-  ivalue <- sum(woe_iv[['iv']])
+  ivalue <- if (is.null(x$iv_total)) {
+    sum(woe_iv[['iv']])
+  } else {
+    round(x$iv_total, if (is.null(x$digits)) 4 else x$digits)
+  }
 
   cat(fc("Information Value", lsum), "\n")
   cat(rep("-", lsum), sep = "", "\n")
@@ -500,11 +506,24 @@ print_stepwise_selection <- function(data) {
 
 print_blr_twoway_segment <- function(x) {
 
-  cnames <- c(x$varnames[2], colnames(x$twoway_segment))
-  k      <- cbind(rownames(x$twoway_segment),
-                  format(round(x$twoway_segment, 3), nsmall = 3))
+  tab <- x$twoway_segment
+  nr  <- nrow(tab)
+  nc  <- ncol(tab)
+
+  # an empty table has no cells to size: print a clear line instead of failing
+  # in max(nchar(...)) or rep("-", negative width)
+  if (nr == 0L || nc == 0L) {
+    cat("No non-missing observations to summarise.\n")
+    return(invisible(x))
+  }
+
+  cnames <- c(x$varnames[2], colnames(tab))
+  cnames[is.na(cnames)] <- "NA"
+  values <- format(round(tab, 3), nsmall = 3)
+  values[is.na(tab)] <- "-"
+  k      <- cbind(rownames(tab), values)
+  k[is.na(k)] <- "NA"
   nc     <- ncol(k)
-  nr     <- nrow(k)
   wc     <- max(nchar(k))
   vname  <- x$varnames[3]
   w      <- (nc * wc) + (4 * (nc - 1))

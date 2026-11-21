@@ -4,16 +4,37 @@
 #'
 #' @details
 #' Character and numeric predictors are treated as categorical and factor
-#' levels without observations are dropped before the table is built. If a
-#' level has no events or no non-events, 0.5 is added to both counts for that
-#' level (Haldane-Anscombe continuity correction) before the weight of evidence
-#' and information value are computed.
+#' levels without observations are dropped before the table is built. Rows with
+#' a missing response or predictor (including an explicit missing factor level)
+#' are excluded. If no complete observations remain, WoE/IV is an error rather
+#' than an empty table with a zero total. If a level has no events or no
+#' non-events, 0.5 is added to both counts for that level (Haldane-Anscombe
+#' continuity correction) before the weight of evidence and information value
+#' are computed.
+#'
+#' The response may have one or two observed, non-missing levels. A response
+#' with no observed levels is an error. With a single observed level, the
+#' Haldane-Anscombe correction adds 0.5 to both zero cells, so the corrected
+#' within-class distributions are equal and WoE and IV are 0. A level labelled
+#' \code{"1"} or \code{TRUE} is the event, so numeric and factor one-level
+#' encodings agree. The event is otherwise the second level of a factor or
+#' character response, \code{TRUE} for a logical response and \code{1} for a
+#' numeric response. Numeric responses must be coded 0/1; unused factor levels
+#' are ignored. The \code{digits} argument controls the returned weight of
+#' evidence and information value components and the printed values. The total
+#' information value is computed from the unrounded components and rounded only
+#' once for printing.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
-#' @param response Response variable; column in \code{data} with at most two
-#'   observed, non-missing levels. Unused factor levels are ignored.
-#' @param digits Number of decimal digits to round off.
+#' @param response Response variable; column in \code{data} with one or two
+#'   observed, non-missing levels. The event is the second level of a factor or
+#'   character response, \code{TRUE} for a logical response and \code{1} for a
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
+#' @param digits Number of decimal digits used for the returned WoE/IV table and
+#'   printed values; the total information value is rounded only at print time.
 #' @param x An object of class \code{blr_segment_dist}.
 #' @param title Plot title.
 #' @param xaxis_title X axis title.
@@ -67,15 +88,31 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
     pred <- predictor
   }
 
-  dat      <- data[c(pred, resp)]
-  dat      <- dat[stats::complete.cases(dat), , drop = FALSE]
+  # Identify the event on the full response before removing incomplete rows.
+  # Otherwise a factor response whose non-event class disappears with a
+  # missing predictor is re-levelled by droplevels() and its remaining event
+  # class becomes the non-event class. Rows with a missing response or
+  # predictor (including an explicit NA factor level) are then excluded.
+  event <- event_indicator(data[[resp]])
+  keep  <- !is.na(event) & !is.na(data[[pred]])
+
+  dat      <- data[keep, c(pred, resp), drop = FALSE]
+  event    <- event[keep]
+
+  if (nrow(dat) == 0L) {
+    stop("No complete observations remain for predictor `", pred,
+         "` and response `", resp, "`: every row has a missing response or ",
+         "predictor, so WoE/IV is undefined.", call. = FALSE)
+  }
+
   dat[[pred]] <- droplevels(factor(dat[[pred]]))
   lev      <- levels(dat[[pred]])
-  d1       <- woe_data_prep(dat[[pred]], dat[[resp]])
+  d1       <- woe_data_prep(dat[[pred]], event)
   d2       <- woe_data_modify(d1, lev = lev, digits = digits)
   woe_iv   <- woe_data_select(d2)
   var_name <- names(dat)[1]
-  result   <- list(woe_iv_table = woe_iv, var_name = var_name)
+  result   <- list(woe_iv_table = woe_iv, var_name = var_name,
+                   iv_total = attr(d2, "iv_total"), digits = digits)
 
   class(result) <- "blr_woe_iv"
   return(result)
@@ -121,9 +158,21 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Prints weight of evidence and information value for multiple variables.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
-#' @param response Response variable; column in \code{data} with at most two
-#'   observed, non-missing levels. Unused factor levels are ignored.
+#' @param response Response variable; column in \code{data} with one or two
+#'   observed, non-missing levels. The event is the second level of a factor or
+#'   character response, \code{TRUE} for a logical response and \code{1} for a
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param ... Predictor variables; column in \code{data}.
+#'
+#' @details
+#' A response with one observed level is allowed; the continuity-corrected WoE
+#' and IV are 0 for each level. A response with no observed levels is an error.
+#' Each variable's table is the same table returned by \code{blr_woe_iv()}:
+#' rows with a missing response or predictor are excluded, a variable with no
+#' complete observations is an error, and the total information value is
+#' computed from the unrounded components and rounded only once for printing.
 #'
 #' @references
 #' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
@@ -155,9 +204,7 @@ blr_woe_iv_stats <- function(data, response, ...) {
   }
 }
 
-woe_data_prep <- function(predictor, response) {
-
-  event <- event_indicator(response)
+woe_data_prep <- function(predictor, event) {
 
   data.frame(
     no  = as.vector(tapply(!event, predictor, sum)),
@@ -180,17 +227,23 @@ woe_data_modify <- function(data, lev, digits) {
   yes[zero_cell] <- yes[zero_cell] + 0.5
 
   # distributions, logarithms and IV are computed at full precision; values
-  # are rounded only when returned so small proportions do not become zero
+  # are rounded only when returned so small proportions do not become zero.
+  # The total IV is kept unrounded as well and is rounded once by the printer,
+  # so it is not the sum of rounded components.
   data$dist_yes     <- yes / sum(yes)
   data$dist_no      <- no / sum(no)
   data$woe          <- log(data$dist_no / data$dist_yes)
   data$dist_diff    <- data$dist_no - data$dist_yes
   data$iv           <- data$dist_diff * data$woe
 
+  iv_total <- sum(data$iv)
+
   round_cols <- c("distribution", "approval", "dist_yes", "dist_no", "woe", "iv")
   data[round_cols] <- lapply(data[round_cols], round, digits = digits)
 
-  cbind(data.frame(levels = lev), data)
+  out <- cbind(data.frame(levels = lev), data)
+  attr(out, "iv_total") <- iv_total
+  out
 
 }
 

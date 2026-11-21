@@ -46,7 +46,8 @@ test_that("segment distribution prints levels, predictor name and percent cells 
   expect_equal(as.character(k$dist_table$variable), c("4", "6", "8"))
   expect_equal(k$dist_table$n, c(11L, 7L, 14L))
   expect_equal(k$dist_table$`1s`, c(8L, 3L, 2L))
-  expect_equal(k$dist_table$`1s%`, c(0.73, 0.43, 0.14))
+  expect_equal(k$dist_table$`1s%`, c(8 / 11, 3 / 7, 2 / 14))
+  expect_equal(k$dist_table$`n%`, c(11 / 32, 7 / 32, 14 / 32))
 
   out <- capture.output(print(k))
 
@@ -55,13 +56,14 @@ test_that("segment distribution prints levels, predictor name and percent cells 
   expect_false(any(grepl("pred", out)))
   expect_false(any(grepl("^\\s+[123]\\s", out)))
 
-  # rows are labelled with the levels they describe
-  row4 <- assoc_line(out, "73\\.00")
-  expect_match(row4, "^\\s*4\\s+11\\s+8\\s+34\\.00\\s+73\\.00")
-  row6 <- assoc_line(out, "43\\.00")
-  expect_match(row6, "^\\s*6\\s+7\\s+3\\s+22\\.00\\s+43\\.00")
-  row8 <- assoc_line(out, "14\\.00")
-  expect_match(row8, "^\\s*8\\s+14\\s+2\\s+44\\.00\\s+14\\.00")
+  # rows are labelled with the levels they describe and percentages are
+  # computed from the unrounded proportions
+  row4 <- assoc_line(out, "72\\.73")
+  expect_match(row4, "^\\s*4\\s+11\\s+8\\s+34\\.38\\s+72\\.73")
+  row6 <- assoc_line(out, "42\\.86")
+  expect_match(row6, "^\\s*6\\s+7\\s+3\\s+21\\.88\\s+42\\.86")
+  row8 <- assoc_line(out, "14\\.29")
+  expect_match(row8, "^\\s*8\\s+14\\s+2\\s+43\\.75\\s+14\\.29")
 })
 
 test_that("two-way segmentation uses the two grouping variable names as headers (M7)", {
@@ -69,7 +71,9 @@ test_that("two-way segmentation uses the two grouping variable names as headers 
   k <- blr_segment_twoway(d, am, cyl, gear)
 
   event <- d$am == "1"
-  tab <- table(d$cyl[event], d$gear[event]) / sum(!is.na(d$am))
+  den <- table(d$cyl, d$gear)
+  tab <- table(d$cyl[event], d$gear[event]) / den
+  tab[den == 0] <- NA
   expect_equal(unname(unclass(k$twoway_segment)), unname(unclass(tab)))
   expect_equal(unname(dimnames(k$twoway_segment)), list(c("4", "6", "8"), c("3", "4", "5")))
 
