@@ -1,4 +1,11 @@
-# Event rate by decile
+# `Event rate by decile`
+
+# `Event rate by decile`
+
+Source:
+[`R/blr-gains-table.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-gains-table.R)
+
+`blr_decile_capture_rate.Rd`
 
 Visualize the decile wise event rate.
 

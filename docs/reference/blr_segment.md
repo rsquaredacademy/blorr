@@ -1,6 +1,13 @@
-# Event rate
+# `Event rate`
 
-Event rate by segements/levels of a qualitative variable.
+# `Event rate`
+
+Source:
+[`R/blr-bivariate-analysis.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-bivariate-analysis.R)
+
+`blr_segment.Rd`
+
+Event rate by segments/levels of a qualitative variable.
 
 ## Usage
 
@@ -46,9 +53,9 @@ blr_segment(hsb2, honcomp, prog)
 #> -------------------
 #> pred           1s%  
 #> -------------------
-#>  1             0.04 
-#>  2             0.20 
-#>  3             0.03 
+#>  1             0.16 
+#>  2             0.38 
+#>  3             0.12 
 #> -------------------
 #> 
 ```

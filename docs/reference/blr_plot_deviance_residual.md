@@ -1,6 +1,13 @@
-# Deviance residual values
+# `Standardized deviance residual values`
 
-Deviance residuals plot.
+# `Standardized deviance residual values`
+
+Source:
+[`R/blr-plots.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots.R)
+
+`blr_plot_deviance_residual.Rd`
+
+Standardized deviance residuals plot.
 
 ## Usage
 
@@ -8,9 +15,9 @@ Deviance residuals plot.
 blr_plot_deviance_residual(
   model,
   point_color = "blue",
-  title = "Deviance Residuals Plot",
+  title = "Standardized Deviance Residuals Plot",
   xaxis_title = "id",
-  yaxis_title = "Deviance Residuals"
+  yaxis_title = "Standardized Deviance Residuals"
 )
 ```
 
@@ -18,7 +25,11 @@ blr_plot_deviance_residual(
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - point_color:
 
@@ -35,6 +46,15 @@ blr_plot_deviance_residual(
 - yaxis_title:
 
   Y axis label.
+
+## References
+
+Williams, D. A. (1987). Generalized linear model diagnostics using the
+deviance and single case deletions. *Journal of the Royal Statistical
+Society, Series C (Applied Statistics)*, 36(2), 181–191.
+
+McCullagh, P. and Nelder, J. A. (1989). *Generalized Linear Models*, 2nd
+ed. London: Chapman and Hall.
 
 ## Examples
 

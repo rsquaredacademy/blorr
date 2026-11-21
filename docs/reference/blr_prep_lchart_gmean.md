@@ -1,4 +1,11 @@
-# Lift Chart data
+# `Lift Chart data`
+
+# `Lift Chart data`
+
+Source:
+[`R/blr-plots-data.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots-data.R)
+
+`blr_prep_lchart_gmean.Rd`
 
 Data for generating lift chart.
 
@@ -14,7 +21,7 @@ blr_prep_lchart_data(gains_table, global_mean)
 
 - gains_table:
 
-  An object of clas `blr_gains_table`.
+  An object of class `blr_gains_table`.
 
 - global_mean:
 

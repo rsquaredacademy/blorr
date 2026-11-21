@@ -1,0 +1,62 @@
+# >>> rsatemplate: blocked paths (do not edit inside this block)
+/AGENTS.html         /404.html   404!
+/AGENTS.md           /404.html   404!
+/agents              /404.html   404!
+/agents.html         /404.html   404!
+/GEMINI.html         /404.html   404!
+/GEMINI.md           /404.html   404!
+/gemini              /404.html   404!
+/gemini.html         /404.html   404!
+/CLAUDE.html         /404.html   404!
+/CLAUDE.md           /404.html   404!
+/claude              /404.html   404!
+/claude.html         /404.html   404!
+/README.md           /404.html   404!
+/CONTRIBUTING.md     /404.html   404!
+/package.json        /404.html   404!
+/package-lock.json   /404.html   404!
+/build.mjs           /404.html   404!
+/check.mjs           /404.html   404!
+/hash.mjs            /404.html   404!
+# <<< rsatemplate: blocked paths
+
+# /dev/ (pkgdown development mode): same blocked paths
+/dev/AGENTS.html         /404.html   404!
+/dev/AGENTS.md           /404.html   404!
+/dev/agents              /404.html   404!
+/dev/agents.html         /404.html   404!
+/dev/GEMINI.html         /404.html   404!
+/dev/GEMINI.md           /404.html   404!
+/dev/gemini              /404.html   404!
+/dev/gemini.html         /404.html   404!
+/dev/CLAUDE.html         /404.html   404!
+/dev/CLAUDE.md           /404.html   404!
+/dev/claude              /404.html   404!
+/dev/claude.html         /404.html   404!
+/dev/README.md           /404.html   404!
+/dev/CONTRIBUTING.md     /404.html   404!
+/dev/package.json        /404.html   404!
+/dev/package-lock.json   /404.html   404!
+/dev/build.mjs           /404.html   404!
+/dev/check.mjs           /404.html   404!
+/dev/hash.mjs            /404.html   404!
+/dev/TODO.html       /404.html   404!
+/dev/TODO.md         /404.html   404!
+
+# Additional internal files and obsolete development pages
+/TODO.html /404.html 404!
+/TODO.md /404.html 404!
+/todo /404.html 404!
+/todo.html /404.html 404!
+/todo.md /404.html 404!
+/docs-dev /404.html 404!
+/docs-dev.html /404.html 404!
+/docs-dev/* /404.html 404!
+/dev/TODO.html /404.html 404!
+/dev/TODO.md /404.html 404!
+/dev/todo /404.html 404!
+/dev/todo.html /404.html 404!
+/dev/todo.md /404.html 404!
+/dev/docs-dev /404.html 404!
+/dev/docs-dev.html /404.html 404!
+/dev/docs-dev/* /404.html 404!

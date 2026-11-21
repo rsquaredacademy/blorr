@@ -1,7 +1,14 @@
-# Bivariate analysis
+# `Bivariate analysis`
+
+# `Bivariate analysis`
+
+Source:
+[`R/blr-bivariate-analysis.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-bivariate-analysis.R)
+
+`blr_bivariate_analysis.Rd`
 
 Information value and likelihood ratio chi square test for initial
-variable/predictor selection. Currently avialable for categorical
+variable/predictor selection. Currently available for categorical
 predictors only.
 
 ## Usage
@@ -41,7 +48,7 @@ A tibble with the following columns:
 
 - LR Chi Square:
 
-  Likelihood ratio statisitc
+  Likelihood ratio statistic
 
 - LR DF:
 

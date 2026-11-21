@@ -1,7 +1,13 @@
-# WoE & IV
+# `WoE & IV`
 
-Weight of evidence and information value. Currently avialable for
-categorical predictors only.
+# `WoE & IV`
+
+Source:
+[`R/blr-woe-iv.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-woe-iv.R)
+
+`blr_woe_iv.Rd`
+
+Weight of evidence and information value.
 
 ## Usage
 
@@ -75,10 +81,22 @@ plot(
 
 A tibble.
 
+## Details
+
+Character and numeric predictors are treated as categorical and factor
+levels without observations are dropped before the table is built. If a
+level has no events or no non-events, 0.5 is added to both counts for
+that level (Haldane-Anscombe continuity correction) before the weight of
+evidence and information value are computed.
+
 ## References
 
 Siddiqi N (2006): Credit Risk Scorecards: developing and implementing
 intelligent credit scoring. New Jersey, Wiley.
+
+Haldane, J. B. S. (1956). The estimation and significance of the
+logarithm of a ratio of frequencies. *Annals of Human Genetics*, 20(4),
+309–311.
 
 ## See also
 
@@ -107,7 +125,7 @@ k
 #> -----------------------------
 #> Variable    Information Value 
 #> -----------------------------
-#>  female          0.1023       
+#>  female          0.1022       
 #> -----------------------------
 
 # plot woe

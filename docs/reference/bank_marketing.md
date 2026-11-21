@@ -1,4 +1,11 @@
-# Bank marketing data set
+# `Bank marketing data set`
+
+# `Bank marketing data set`
+
+Source:
+[`R/blr-data-bank-marketing.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-data-bank-marketing.R)
+
+`bank_marketing.Rd`
 
 The data is related with direct marketing campaigns of a Portuguese
 banking institution. The marketing campaigns were based on phone calls.
@@ -71,7 +78,7 @@ A tibble with 4521 rows and 17 variables:
 
 - previous:
 
-  number of contacts performed before this campaign and for this clien
+  number of contacts performed before this campaign and for this client
 
 - poutcome:
 

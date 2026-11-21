@@ -1,4 +1,11 @@
-# ROC curve data
+# `ROC curve data`
+
+# `ROC curve data`
+
+Source:
+[`R/blr-plots-data.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots-data.R)
+
+`blr_prep_roc_data.Rd`
 
 Data for generating ROC curve.
 
@@ -12,7 +19,7 @@ blr_prep_roc_data(gains_table)
 
 - gains_table:
 
-  An object of clas `blr_gains_table`
+  An object of class `blr_gains_table`
 
 ## Examples
 

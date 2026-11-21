@@ -1,7 +1,13 @@
-# Multi variable WOE & IV
+# `Multi variable WOE & IV`
+
+# `Multi variable WOE & IV`
+
+Source:
+[`R/blr-woe-iv.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-woe-iv.R)
+
+`blr_woe_iv_stats.Rd`
 
 Prints weight of evidence and information value for multiple variables.
-Currently avialable for categorical predictors only.
 
 ## Usage
 
@@ -22,6 +28,12 @@ blr_woe_iv_stats(data, response, ...)
 - ...:
 
   Predictor variables; column in `data`.
+
+## References
+
+Haldane, J. B. S. (1956). The estimation and significance of the
+logarithm of a ratio of frequencies. *Annals of Human Genetics*, 20(4),
+309–311.
 
 ## See also
 
@@ -51,7 +63,7 @@ blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 #> -----------------------------
 #> Variable    Information Value 
 #> -----------------------------
-#>   prog           0.4329       
+#>   prog            0.433       
 #> -----------------------------
 #> 
 #> 
@@ -71,7 +83,7 @@ blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 #> -----------------------------
 #> Variable    Information Value 
 #> -----------------------------
-#>   race            0.326       
+#>   race           0.3258       
 #> -----------------------------
 #> 
 #> 
@@ -89,7 +101,7 @@ blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
 #> -----------------------------
 #> Variable    Information Value 
 #> -----------------------------
-#>  female          0.1023       
+#>  female          0.1022       
 #> -----------------------------
 #> 
 #> 

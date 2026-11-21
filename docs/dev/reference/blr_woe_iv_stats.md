@@ -1,0 +1,142 @@
+# `Multi variable WOE & IV`
+
+# `Multi variable WOE & IV`
+
+Source:
+[`R/blr-woe-iv.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-woe-iv.R)
+
+`blr_woe_iv_stats.Rd`
+
+Prints weight of evidence and information value for multiple variables.
+
+## Usage
+
+``` r
+blr_woe_iv_stats(data, response, ...)
+```
+
+## Arguments
+
+- data:
+
+  A `data.frame` or `tibble`.
+
+- response:
+
+  Response variable; column in `data` with one or two observed,
+  non-missing levels. The event is the second level of a factor or
+  character response, `TRUE` for a logical response and `1` for a
+  numeric response; a single level labelled `"1"` or `TRUE` is the
+  event. Numeric responses must be coded 0/1. Unused factor levels are
+  ignored.
+
+- ...:
+
+  Predictor variables; column in `data`.
+
+## Details
+
+A response with one observed level is allowed; the continuity-corrected
+WoE and IV are 0 for each level. A response with no observed levels is
+an error. Each variable's table is the same table returned by
+[`blr_woe_iv()`](https://blorr.rsquaredacademy.com/dev/reference/blr_woe_iv.md):
+rows with a missing response or predictor are excluded, a variable with
+no complete observations is an error, and the total information value is
+computed from the unrounded components and rounded only once for
+printing.
+
+## References
+
+Haldane, J. B. S. (1956). The estimation and significance of the
+logarithm of a ratio of frequencies. *Annals of Human Genetics*, 20(4),
+309–311.
+
+## See also
+
+Other bivariate analysis procedures:
+[`blr_bivariate_analysis()`](https://blorr.rsquaredacademy.com/dev/reference/blr_bivariate_analysis.md),
+[`blr_segment()`](https://blorr.rsquaredacademy.com/dev/reference/blr_segment.md),
+[`blr_segment_dist()`](https://blorr.rsquaredacademy.com/dev/reference/blr_segment_dist.md),
+[`blr_segment_twoway()`](https://blorr.rsquaredacademy.com/dev/reference/blr_segment_twoway.md),
+[`blr_woe_iv()`](https://blorr.rsquaredacademy.com/dev/reference/blr_woe_iv.md)
+
+## Examples
+
+``` r
+blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)
+#> Variable: prog
+#> 
+#>                            Weight of Evidence                             
+#> -------------------------------------------------------------------------
+#> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
+#> -------------------------------------------------------------------------
+#>   1          38          7           0.26       0.13       0.67     0.08  
+#>   2          65          40          0.44       0.75      -0.53     0.17  
+#>   3          44          6           0.30       0.11       0.97     0.18  
+#> -------------------------------------------------------------------------
+#> 
+#>       Information Value       
+#> -----------------------------
+#> Variable    Information Value 
+#> -----------------------------
+#>   prog           0.4329       
+#> -----------------------------
+#> 
+#> 
+#> Variable: race
+#> 
+#>                            Weight of Evidence                             
+#> -------------------------------------------------------------------------
+#> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
+#> -------------------------------------------------------------------------
+#>   1          22          2           0.15       0.04       1.38     0.15  
+#>   2          6           5           0.04       0.09      -0.84     0.04  
+#>   3          18          2           0.12       0.04       1.18     0.10  
+#>   4         101          44          0.69       0.83      -0.19     0.03  
+#> -------------------------------------------------------------------------
+#> 
+#>       Information Value       
+#> -----------------------------
+#> Variable    Information Value 
+#> -----------------------------
+#>   race           0.3258       
+#> -----------------------------
+#> 
+#> 
+#> Variable: female
+#> 
+#>                            Weight of Evidence                             
+#> -------------------------------------------------------------------------
+#> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
+#> -------------------------------------------------------------------------
+#>   0          73          18          0.50       0.34       0.38     0.06  
+#>   1          74          35          0.50       0.66      -0.27     0.04  
+#> -------------------------------------------------------------------------
+#> 
+#>       Information Value       
+#> -----------------------------
+#> Variable    Information Value 
+#> -----------------------------
+#>  female          0.1022       
+#> -----------------------------
+#> 
+#> 
+#> Variable: schtyp
+#> 
+#>                            Weight of Evidence                            
+#> ------------------------------------------------------------------------
+#> levels    count_0s    count_1s    dist_0s    dist_1s        woe     iv   
+#> ------------------------------------------------------------------------
+#>   1         123          45          0.84       0.85      -0.01    0.00  
+#>   2          24          8           0.16       0.15       0.08    0.00  
+#> ------------------------------------------------------------------------
+#> 
+#>       Information Value       
+#> -----------------------------
+#> Variable    Information Value 
+#> -----------------------------
+#>  schtyp          0.0011       
+#> -----------------------------
+#> 
+#> 
+```

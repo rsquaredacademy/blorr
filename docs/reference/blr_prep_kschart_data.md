@@ -1,4 +1,11 @@
-# KS Chart data
+# `KS Chart data`
+
+# `KS Chart data`
+
+Source:
+[`R/blr-plots-data.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots-data.R)
+
+`blr_prep_kschart_data.Rd`
 
 Data for generating KS chart.
 
@@ -20,7 +27,7 @@ blr_prep_ksannotate_x(ks_line)
 
 - gains_table:
 
-  An object of clas `blr_gains_table`.
+  An object of class `blr_gains_table`.
 
 - ks_line:
 

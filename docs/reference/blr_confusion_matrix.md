@@ -1,4 +1,11 @@
-# Confusion matrix
+# `Confusion matrix`
+
+# `Confusion matrix`
+
+Source:
+[`R/blr-model-validation.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-model-validation.R)
+
+`blr_confusion_matrix.Rd`
 
 Confusion matrix and statistics.
 
@@ -15,7 +22,11 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - cutoff:
 
@@ -31,7 +42,12 @@ blr_confusion_matrix(model, cutoff = 0.5, data = NULL, ...)
 
 ## Value
 
-Confusion matix.
+Confusion matrix.
+
+## References
+
+Kuhn, M. (2008). Building predictive models in R using the caret
+package. *Journal of Statistical Software*, 28(5), 1–26.
 
 ## See also
 

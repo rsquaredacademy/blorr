@@ -1,4 +1,11 @@
-# High School and Beyond Data Set
+# `High School and Beyond Data Set`
+
+# `High School and Beyond Data Set`
+
+Source:
+[`R/blr-data-hsb.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-data-hsb.R)
+
+`hsb2.Rd`
 
 A dataset containing demographic information and standardized test
 scores of high school students.

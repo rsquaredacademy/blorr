@@ -1,4 +1,11 @@
-# Decile lift chart
+# `Decile lift chart`
+
+# `Decile lift chart`
+
+Source:
+[`R/blr-gains-table.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-gains-table.R)
+
+`blr_decile_lift_chart.Rd`
 
 Decile wise lift chart.
 

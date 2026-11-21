@@ -1,4 +1,11 @@
-# Delta deviance vs fitted values plot
+# `Delta deviance vs fitted values plot`
+
+# `Delta deviance vs fitted values plot`
+
+Source:
+[`R/blr-plots.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots.R)
+
+`blr_plot_difdev_fitted.Rd`
 
 Delta deviance vs fitted values plot for detecting ill fitted
 observations.
@@ -19,7 +26,11 @@ blr_plot_difdev_fitted(
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - point_color:
 
