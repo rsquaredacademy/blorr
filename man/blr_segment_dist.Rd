@@ -22,8 +22,11 @@ blr_segment_dist(data, response, predictor)
 \arguments{
 \item{data}{A \code{tibble} or a \code{data.frame}.}
 
-\item{response}{Response variable; column in \code{data} with at most two
-observed, non-missing levels. Unused factor levels are ignored.}
+\item{response}{Response variable; column in \code{data} with exactly two
+observed, non-missing levels. The event is the second level of a factor or
+character response, \code{TRUE} for a logical response and \code{1} for a
+numeric response. Numeric responses must be coded 0/1. Unused factor levels are
+ignored.}
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 
@@ -50,6 +53,13 @@ A tibble.
 }
 \description{
 Distribution of response variable by segments/levels of a qualitative variable.
+}
+\details{
+A response with one observed level is an error: blorr needs both events and
+non-events. Rows with a missing response are excluded. The predictor must have a
+value for every observation; a missing predictor is an error naming the column.
+The sample share (\code{n\%}) and event rate (\code{1s\%}) are returned unrounded
+and printed to two decimal places; the plot uses the unrounded proportions.
 }
 \examples{
 k <- blr_segment_dist(hsb2, honcomp, prog)

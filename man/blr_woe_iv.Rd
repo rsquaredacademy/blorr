@@ -23,10 +23,14 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 
-\item{response}{Response variable; column in \code{data} with at most two
-observed, non-missing levels. Unused factor levels are ignored.}
+\item{response}{Response variable; column in \code{data} with exactly two
+observed, non-missing levels. The event is the second level of a factor or
+character response, \code{TRUE} for a logical response and \code{1} for a
+numeric response. Numeric responses must be coded 0/1. Unused factor levels are
+ignored.}
 
-\item{digits}{Number of decimal digits to round off.}
+\item{digits}{Number of decimal digits used for the returned WoE/IV table and
+printed values; the total information value is rounded only at print time.}
 
 \item{...}{Other inputs.}
 
@@ -51,11 +55,20 @@ A tibble.
 Weight of evidence and information value.
 }
 \details{
-Character and numeric predictors are treated as categorical and factor
-levels without observations are dropped before the table is built. If a
-level has no events or no non-events, 0.5 is added to both counts for that
-level (Haldane-Anscombe continuity correction) before the weight of evidence
-and information value are computed.
+Character and numeric predictors are treated as categorical and factor levels
+without observations are dropped before the table is built. Rows with a missing
+response or predictor are excluded. If a level has no events or no non-events,
+0.5 is added to both counts for that level (Haldane-Anscombe continuity
+correction) before the weight of evidence and information value are computed.
+
+The response must have exactly two observed, non-missing levels. A response
+with one observed level is an error: blorr needs both events and non-events. The
+event is the second level of a factor or character response, \code{TRUE} for a
+logical response and \code{1} for a numeric response. Numeric responses must be
+coded 0/1; unused factor levels are ignored. The \code{digits} argument controls
+the returned weight of evidence and information value components and the printed
+values. The total information value is computed from the unrounded components
+and rounded only once for printing.
 }
 \examples{
 # woe and iv

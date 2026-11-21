@@ -51,27 +51,27 @@ blr_check_supported <- function(model) {
     stop(blr_unsupported_message(), call. = FALSE)
   }
 
-  blr_check_binary_response(resp, names(model$model)[1], exactly = FALSE)
+  blr_check_binary_response(resp, names(model$model)[1])
 
   invisible(TRUE)
 }
 
-# Responses supported by blorr are binary: exactly two levels. glm() silently
-# recodes a factor response with more levels as
-# "first level" versus "everything else", so a three-level response used to be
-# fitted without complaint and the response profile and its printed summary
-# showed only the first two levels of the table (dropping the rest). Count the
-# levels the fitted model actually saw (glm() drops unused factor levels) and
-# name the response in the error. `resp` may also be a response profile table,
-# whose length is its number of outcomes, so print_blr_reg() can reuse the
-# check.
+# Responses supported by blorr are binary: exactly two observed levels, one
+# event class and one non-event class. glm() silently recodes a factor response
+# with more levels as "first level" versus "everything else", so a three-level
+# response used to be fitted without complaint and the response profile and its
+# printed summary showed only the first two levels of the table (dropping the
+# rest). Count the levels the fitted model actually saw (glm() drops unused
+# factor levels) and name the response in the error. `resp` may also be a
+# response profile table, whose length is its number of outcomes, so
+# print_blr_reg() can reuse the check.
 #
-# `exactly = FALSE` rejects only responses with more than two levels. The
-# shared model guard uses it so that degenerate single-outcome fits keep the
-# handling they had before (blr_confusion_matrix() reports them instead of
-# refusing); the response profile and its printer need exactly two outcomes
-# because they print the two outcomes side by side.
-blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
+# A one-level response is rejected for every response type. Numeric 1 and
+# factor 1 used to disagree (numeric 1 counted every observation as an event
+# while factor 1 counted every observation as a non-event), so no degenerate
+# encoding is given a meaning: the data must contain both events and
+# non-events.
+blr_check_binary_response <- function(resp, name = "response") {
 
   if (is.null(resp)) {
     return(invisible(TRUE))
@@ -85,12 +85,30 @@ blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
     length(unique(resp[!is.na(resp)]))
   }
 
-  bad <- n > 2L || (exactly && n < 2L)
+  if (n < 2L) {
+    stop("`", name, "` has ", n, if (n == 1L) " level" else " levels",
+         "; blorr needs both events and non-events.", call. = FALSE)
+  }
 
-  if (bad) {
+  if (n > 2L) {
     stop("The response `", name, "` has ", n,
-         if (n == 1L) " level" else " levels",
-         "; blorr supports a binary response with exactly two levels.",
+         " levels; blorr supports a binary response with exactly two levels.",
+         call. = FALSE)
+  }
+
+  invisible(TRUE)
+}
+
+# Segment and two-way tables need a value for every observation. A missing
+# predictor used to reach the width calculation of the printers and fail with
+# "invalid 'width' argument"; reject it at construction with the column name.
+blr_check_predictor_missing <- function(x, name) {
+  n <- sum(is.na(x))
+
+  if (n > 0L) {
+    stop("The predictor `", name, "` has ", n,
+         " missing value", if (n == 1L) "" else "s",
+         "; blorr's segment tables need a value for every observation.",
          call. = FALSE)
   }
 

@@ -1,6 +1,6 @@
 test_that("output from blr_bivariate_analysis is as expected", {
   k <- blr_bivariate_analysis(hsb2, honcomp, female, prog)
-  expect_equal(k$iv, c(0.1022, 0.4330))
+  expect_equal(k$iv, c(0.1022496, 0.4329500), tolerance = 1e-6)
   expect_equal(round(k$likelihood_ratio, 2), c(3.94, 16.15))
 })
 
@@ -14,13 +14,13 @@ test_that("output from blr_segment is as expected", {
   
   k        <- blr_segment(hsb2, honcomp, race)
   actual   <- rev(k$segment_data[['1s%']])[1]
-  expected <- c(0.30)
+  expected <- c(44 / 145)
 
   expect_equal(actual, expected)
 })
 
 test_that("event rate by level is events in level divided by n in level", {
-  expected <- round(as.numeric(tapply(hsb2$honcomp == 1, hsb2$race, mean)), 2)
+  expected <- as.numeric(tapply(hsb2$honcomp == 1, hsb2$race, mean))
 
   k <- blr_segment(hsb2, honcomp, race)
   expect_equal(k$segment_data[['1s%']], expected)
@@ -44,7 +44,7 @@ test_that("event rate by level works when a level has no events", {
 test_that("event rate uses the second level of a factor response with non-0/1 labels", {
   d <- hsb2
   d$hc_lab <- factor(ifelse(d$honcomp == 1, "yes", "no"), levels = c("no", "yes"))
-  expected <- round(as.numeric(tapply(d$hc_lab == "yes", d$race, mean)), 2)
+  expected <- as.numeric(tapply(d$hc_lab == "yes", d$race, mean))
 
   k <- blr_segment(d, hc_lab, race)
   expect_equal(k$segment_data[['1s%']], expected)
@@ -91,7 +91,7 @@ test_that("output from blr_twoway_segment is as expected", {
 
   k        <- blr_segment_twoway(hsb2, honcomp, prog, race)
   actual   <- unname(round(k$twoway_segment[, 4], 3))
-  expected <- c(0.035, 0.165, 0.020)
+  expected <- c(0.219, 0.418, 0.118)
   expect_equal(actual, expected)
 })
 
@@ -104,7 +104,7 @@ test_that("output from blr_segment_dist is as expected", {
   
   k        <- blr_segment_dist(hsb2, honcomp, race)
   actual   <- rev(k$dist_table[['1s%']])[1]
-  expected <- c(0.30)
+  expected <- c(44 / 145)
   expect_equal(actual, expected)
 })
 

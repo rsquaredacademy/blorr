@@ -1,5 +1,50 @@
 # blorr (development version)
 
+## Supported inputs and precision
+
+- The data-column functions (`blr_segment()`, `blr_segment_dist()`,
+  `blr_segment_twoway()`, `blr_woe_iv()`, `blr_woe_iv_stats()` and
+  `blr_bivariate_analysis()`) require exactly two observed, non-missing
+  response levels with both events and non-events. Supported encodings are
+  numeric 0/1, logical, a two-level factor and a two-value character vector;
+  the event is the second level, `TRUE` or 1. Unused factor levels and rows
+  with a missing response are ignored. Numeric codes other than 0/1 are not
+  supported. Segment and two-way functions reject a missing predictor with an
+  error naming the column; WoE/IV excludes rows with a missing response or
+  predictor. Empty input is an error because it has no response levels.
+- Proportions are returned unrounded. Segment tables print percentages to two
+  decimal places, two-way rates to three decimal places, WoE/IV components to
+  `digits` decimal places, and the total information value is rounded once at
+  print time. Plots use the unrounded proportions.
+
+## Behaviour changes
+
+- `blr_segment_twoway()` now reports the event rate within each pair of
+  levels: events in a cyl x gear cell divided by the non-missing responses in
+  that cell. Versions up to 0.3.2 divided the event counts of each cell by all
+  non-missing responses in the sample (the share of all observations), which
+  understated every rate. For `am`, `cyl` and `gear` in `mtcars`, the cyl 4 /
+  gear 4 cell is now 0.750 (6 events out of 8 observations) instead of 0.188
+  (6 out of 32). A cell with no non-missing responses is `NA` and prints as
+  `-`.
+
+- `blr_segment()` and `blr_segment_dist()` now return unrounded proportions in
+  `1s%` and `n%` and round only when printing. Versions up to 0.3.2 rounded the
+  proportions to two decimal places before multiplying by 100, so the printed
+  percentages and the plot used false precision: for `am` by `cyl` in
+  `mtcars`, cyl 4 is now 34.38% of the sample and has a 72.73% event rate,
+  instead of printing 34.00% and 73.00% from the stored 0.34 and 0.73. The plot
+  of `blr_segment_dist()` now uses the unrounded proportions.
+
+- A response with one observed level is now rejected by every data-column
+  function with the error `` `y` has 1 level; blorr needs both events and
+  non-events. `` This applies equally to numeric and factor responses.
+  Previously a numeric response of all 1s was treated as all events while a
+  factor response of all 1s was treated as all non-events, so the same data
+  gave opposite answers. `blr_segment()`, `blr_segment_dist()`,
+  `blr_segment_twoway()`, `blr_woe_iv()` and `blr_woe_iv_stats()` require both
+  events and non-events.
+
 ## Bug fixes
 
 - A response with more than two levels is now rejected with an error naming
@@ -15,8 +60,8 @@
   `blr_regress()`, `blr_model_fit_stats()`, the `blr_rsq_*()` functions, the
   stepwise functions, `blr_gains_table()`, `blr_confusion_matrix()` and
   `blr_test_hosmer_lemeshow()`. A response with a single outcome is also
-  rejected by `blr_regress()` at fit time with the same error naming the one
-  level found; previously the object was built and printing it failed with
+  rejected at fit time with `` `y` has 1 level; blorr needs both events and
+  non-events. ``; previously the object was built and printing it failed with
   "subscript out of bounds". Binary responses are unchanged.
 
 - `blr_woe_iv()`, `blr_woe_iv_stats()`, `blr_segment()`,
@@ -31,8 +76,24 @@
   for `am ~ wt + hp` on `mtcars` it shows 98.3806, 1.6194 and 0.0000. Versions
   up to 0.3.2 printed the proportions 0.9838, 0.0162 and 0.0000 under the same
   labels. The `n%` and `1s%` columns printed by `blr_segment()` and
-  `blr_segment_dist()` follow the same convention, so an event rate of 0.73 is
-  now printed as 73.00. The values returned in the fitted object are unchanged.
+  `blr_segment_dist()` follow the same convention; their returned proportions
+  are now unrounded (see Behaviour changes).
+
+- The total information value printed by `blr_woe_iv()` and
+  `blr_woe_iv_stats()` is now computed from the unrounded information value
+  components and rounded once for printing, instead of summing components that
+  had already been rounded to `digits`. For the two-level example with
+  `digits = 1` the total is now 0.5 rather than 0.4. `blr_bivariate_analysis()`
+  likewise uses the unrounded total.
+
+- `blr_segment()`, `blr_segment_dist()` and `blr_segment_twoway()` now stop
+  with an error naming the predictor column when it contains missing values,
+  instead of failing inside the printer with "invalid 'width' argument". Rows
+  with a missing response are still excluded, as documented.
+
+- The `blr_segment_twoway()` printer now handles a table with no rows or no
+  columns without failing in `max()` or `rep()`. A no-event cell in a
+  non-empty table shows a zero rate, and an empty cell shows `-`.
 - `blr_segment_dist()` now prints the predictor's factor levels (for
   `blr_segment_dist(mtcarz, am, cyl)`, 4, 6 and 8 instead of the integer codes
   1, 2 and 3) and the predictor's name as the column header (`cyl` instead of

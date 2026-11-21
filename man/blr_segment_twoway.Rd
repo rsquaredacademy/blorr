@@ -12,8 +12,11 @@ blr_segment_twoway(data, response, variable_1, variable_2)
 \arguments{
 \item{data}{A \code{tibble} or \code{data.frame}.}
 
-\item{response}{Response variable; column in \code{data} with at most two
-observed, non-missing levels. Unused factor levels are ignored.}
+\item{response}{Response variable; column in \code{data} with exactly two
+observed, non-missing levels. The event is the second level of a factor or
+character response, \code{TRUE} for a logical response and \code{1} for a
+numeric response. Numeric responses must be coded 0/1. Unused factor levels are
+ignored.}
 
 \item{variable_1}{Column in \code{data}.}
 
@@ -24,6 +27,18 @@ A tibble.
 }
 \description{
 Event rate across two qualitative variables.
+}
+\details{
+A response with one observed level is an error: blorr needs both events and
+non-events. Rows with a missing response are excluded. Both grouping variables
+must have a value for every observation; a missing predictor is an error naming
+the column.
+
+Each cell is the event rate within that pair of levels: the number of events in
+the cell divided by the number of non-missing responses in the cell. It is not
+the share of all observations. A cell with no non-missing responses is \code{NA}
+and prints as \code{-}. Rates are returned unrounded and printed to three
+decimal places.
 }
 \examples{
 blr_segment_twoway(hsb2, honcomp, prog, female)

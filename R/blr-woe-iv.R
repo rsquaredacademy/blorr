@@ -4,16 +4,30 @@
 #'
 #' @details
 #' Character and numeric predictors are treated as categorical and factor
-#' levels without observations are dropped before the table is built. If a
-#' level has no events or no non-events, 0.5 is added to both counts for that
-#' level (Haldane-Anscombe continuity correction) before the weight of evidence
-#' and information value are computed.
+#' levels without observations are dropped before the table is built. Rows with
+#' a missing response or predictor are excluded. If a level has no events or no
+#' non-events, 0.5 is added to both counts for that level (Haldane-Anscombe
+#' continuity correction) before the weight of evidence and information value
+#' are computed.
+#'
+#' The response must have exactly two observed, non-missing levels. A response
+#' with one observed level is an error: blorr needs both events and non-events.
+#' The event is the second level of a factor or character response, \code{TRUE}
+#' for a logical response and \code{1} for a numeric response. Numeric responses
+#' must be coded 0/1; unused factor levels are ignored. The \code{digits}
+#' argument controls the returned weight of evidence and information value
+#' components and the printed values. The total information value is computed
+#' from the unrounded components and rounded only once for printing.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
-#' @param response Response variable; column in \code{data} with at most two
-#'   observed, non-missing levels. Unused factor levels are ignored.
-#' @param digits Number of decimal digits to round off.
+#' @param response Response variable; column in \code{data} with exactly two
+#'   observed, non-missing levels. The event is the second level of a factor or
+#'   character response, \code{TRUE} for a logical response and \code{1} for a
+#'   numeric response. Numeric responses must be coded 0/1. Unused factor
+#'   levels are ignored.
+#' @param digits Number of decimal digits used for the returned WoE/IV table and
+#'   printed values; the total information value is rounded only at print time.
 #' @param x An object of class \code{blr_segment_dist}.
 #' @param title Plot title.
 #' @param xaxis_title X axis title.
@@ -59,7 +73,7 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
     resp <- response
   }
 
-  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
+  blr_check_binary_response(factor(data[[resp]]), resp)
 
   if (is.symbol(substitute(predictor))) {
     pred <- deparse(substitute(predictor))
@@ -75,7 +89,8 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
   d2       <- woe_data_modify(d1, lev = lev, digits = digits)
   woe_iv   <- woe_data_select(d2)
   var_name <- names(dat)[1]
-  result   <- list(woe_iv_table = woe_iv, var_name = var_name)
+  result   <- list(woe_iv_table = woe_iv, var_name = var_name,
+                   iv_total = attr(d2, "iv_total"), digits = digits)
 
   class(result) <- "blr_woe_iv"
   return(result)
@@ -121,9 +136,19 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Prints weight of evidence and information value for multiple variables.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
-#' @param response Response variable; column in \code{data} with at most two
-#'   observed, non-missing levels. Unused factor levels are ignored.
+#' @param response Response variable; column in \code{data} with exactly two
+#'   observed, non-missing levels. The event is the second level of a factor or
+#'   character response, \code{TRUE} for a logical response and \code{1} for a
+#'   numeric response. Numeric responses must be coded 0/1. Unused factor
+#'   levels are ignored.
 #' @param ... Predictor variables; column in \code{data}.
+#'
+#' @details
+#' A response with one observed level is an error: blorr needs both events and
+#' non-events. Each variable's table is the same table returned by
+#' \code{blr_woe_iv()}: rows with a missing response or predictor are excluded,
+#' and the total information value is computed from the unrounded components
+#' and rounded only once for printing.
 #'
 #' @references
 #' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
@@ -138,7 +163,7 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 blr_woe_iv_stats <- function(data, response, ...) {
 
   resp        <- deparse(substitute(response))
-  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
+  blr_check_binary_response(factor(data[[resp]]), resp)
   predictors  <- vapply(substitute(...()), deparse, NA_character_)
   dat         <- data[c(resp, predictors)]
   varnames    <- names(dat)
@@ -180,17 +205,23 @@ woe_data_modify <- function(data, lev, digits) {
   yes[zero_cell] <- yes[zero_cell] + 0.5
 
   # distributions, logarithms and IV are computed at full precision; values
-  # are rounded only when returned so small proportions do not become zero
+  # are rounded only when returned so small proportions do not become zero.
+  # The total IV is kept unrounded as well and is rounded once by the printer,
+  # so it is not the sum of rounded components.
   data$dist_yes     <- yes / sum(yes)
   data$dist_no      <- no / sum(no)
   data$woe          <- log(data$dist_no / data$dist_yes)
   data$dist_diff    <- data$dist_no - data$dist_yes
   data$iv           <- data$dist_diff * data$woe
 
+  iv_total <- sum(data$iv)
+
   round_cols <- c("distribution", "approval", "dist_yes", "dist_no", "woe", "iv")
   data[round_cols] <- lapply(data[round_cols], round, digits = digits)
 
-  cbind(data.frame(levels = lev), data)
+  out <- cbind(data.frame(levels = lev), data)
+  attr(out, "iv_total") <- iv_total
+  out
 
 }
 

@@ -39,8 +39,9 @@ test_that("confusion matrix handles a model that predicts one class", {
 })
 
 test_that("McNemar's test is missing when there are no discordant predictions", {
-  d <- data.frame(y = rep(0, 10), x = seq_len(10))
-  m <- glm(y ~ x, data = d, family = binomial)
+  d <- data.frame(y = c(rep(0, 10), rep(1, 10)),
+                  x = c(seq_len(10), seq_len(10) + 20))
+  m <- suppressWarnings(glm(y ~ x, data = d, family = binomial))
 
   k <- blr_confusion_matrix(m)
 
