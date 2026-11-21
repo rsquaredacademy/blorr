@@ -43,10 +43,11 @@ test_that("M2: the other model APIs that accepted a one-class fit still do", {
   expect_equal(sum(gains$total), 32)
 
   # Degenerate one-class fit: the statistic is 0/0 territory and differs by
-  # platform (0 on Windows, NA on Linux/macOS). The regression being guarded
+  # platform (about 0 on Windows, NA on Linux/macOS). The regression being guarded
   # is that the call works at all, as it did on c848118.
-  hl <- expect_no_error(blr_test_hosmer_lemeshow(m))
-  expect_true(is.na(hl$chisq_stat) || hl$chisq_stat == 0)
+  expect_no_error(blr_test_hosmer_lemeshow(m))
+  hl <- blr_test_hosmer_lemeshow(m)
+  expect_true(is.na(hl$chisq_stat) || abs(hl$chisq_stat) < 1e-6)
 })
 
 # M4: a predictor value is only required on rows retained after a missing
