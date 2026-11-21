@@ -59,10 +59,17 @@
   the third level (58). Every model entry point now raises this error:
   `blr_regress()`, `blr_model_fit_stats()`, the `blr_rsq_*()` functions, the
   stepwise functions, `blr_gains_table()`, `blr_confusion_matrix()` and
-  `blr_test_hosmer_lemeshow()`. A response with a single outcome is also
-  rejected at fit time with `` `y` has 1 level; blorr needs both events and
-  non-events. ``; previously the object was built and printing it failed with
-  "subscript out of bounds". Binary responses are unchanged.
+  `blr_test_hosmer_lemeshow()`. Binary responses are unchanged.
+
+- A response with a single outcome is rejected by `blr_regress()` with
+  `` `y` has 1 level; blorr needs both events and non-events. `` because its
+  response summary prints the two outcomes side by side. The model diagnostics
+  accept a degenerate single-outcome fit again, as they did before the
+  one-level check was added: `blr_confusion_matrix()` reports the defined
+  counts (for `glm(rep(0, 32) ~ wt, mtcars, family = binomial())`, 32 true
+  zeroes and accuracy 1) and marks the undefined statistics `NA`, and
+  `blr_model_fit_stats()`, the `blr_rsq_*()` functions, `blr_gains_table()` and
+  `blr_test_hosmer_lemeshow()` run on it again.
 
 - `blr_woe_iv()`, `blr_woe_iv_stats()`, `blr_segment()`,
   `blr_segment_dist()` and `blr_segment_twoway()` now use the same error for
@@ -70,6 +77,26 @@
   of silently treating the second level as the event. Numeric 0/1, two-level
   factor, logical and two-value character responses are unchanged; unused
   factor levels are ignored.
+
+- An explicit missing factor response (`factor(..., exclude = NULL)`) is now
+  excluded from the data-column functions like any other missing response.
+  Previously `is.na()` did not detect the explicit missing level, so the row
+  was counted as a non-event: for `y = factor(c("0", "1", NA, "0", "1"),
+  exclude = NULL)` grouped by `g`, the `a` group had `n = 3` and one event
+  instead of `n = 2` and one event, and WoE/IV counted two non-events instead
+  of one. The event is also the second non-missing level when a factor carries
+  an explicit missing level.
+
+- `blr_woe_iv()` and `blr_woe_iv_stats()` keep the event class of the original
+  response when rows with a missing predictor are removed. Previously a factor
+  response whose non-event class disappeared with those rows was re-levelled
+  and its remaining event class became the non-event class; numeric 0/1
+  responses already gave the correct counts. Both encodings now agree.
+
+- `blr_woe_iv()` and `blr_woe_iv_stats()` now stop with a named complete-case
+  error when no complete observations remain. Previously a two-class response
+  with an all-missing predictor produced an empty table and printed
+  Information Value 0, which read as zero information rather than no evidence.
 
 - The association table in the `blr_regress()` output now prints `% Concordant`,
   `% Discordant` and `% Tied` on the percentage scale, keeping the `%` labels:
@@ -87,9 +114,11 @@
   likewise uses the unrounded total.
 
 - `blr_segment()`, `blr_segment_dist()` and `blr_segment_twoway()` now stop
-  with an error naming the predictor column when it contains missing values,
-  instead of failing inside the printer with "invalid 'width' argument". Rows
-  with a missing response are still excluded, as documented.
+  with an error naming the predictor column when it contains missing values on
+  a row retained after excluding missing responses, instead of failing inside
+  the printer with "invalid 'width' argument". Rows with a missing response are
+  excluded first, so a predictor value is not required on a row that a missing
+  response already removes.
 
 - The `blr_segment_twoway()` printer now handles a table with no rows or no
   columns without failing in `max()` or `rep()`. A no-event cell in a

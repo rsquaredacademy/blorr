@@ -29,8 +29,9 @@ Event rate by segments/levels of a qualitative variable.
 \details{
 A response with one observed level is an error: blorr needs both events and
 non-events. Rows with a missing response are excluded. The predictor must have a
-value for every observation; a missing predictor is an error naming the column.
-The event rate is returned unrounded and printed to two decimal places.
+value for every observation with a non-missing response; a missing predictor on
+such a row is an error naming the column. The event rate is returned unrounded
+and printed to two decimal places.
 }
 \examples{
 blr_segment(hsb2, honcomp, prog)

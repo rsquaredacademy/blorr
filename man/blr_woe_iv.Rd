@@ -57,9 +57,11 @@ Weight of evidence and information value.
 \details{
 Character and numeric predictors are treated as categorical and factor levels
 without observations are dropped before the table is built. Rows with a missing
-response or predictor are excluded. If a level has no events or no non-events,
-0.5 is added to both counts for that level (Haldane-Anscombe continuity
-correction) before the weight of evidence and information value are computed.
+response or predictor (including an explicit missing factor level) are excluded.
+If no complete observations remain, WoE/IV is an error rather than an empty table
+with a zero total. If a level has no events or no non-events, 0.5 is added to
+both counts for that level (Haldane-Anscombe continuity correction) before the
+weight of evidence and information value are computed.
 
 The response must have exactly two observed, non-missing levels. A response
 with one observed level is an error: blorr needs both events and non-events. The

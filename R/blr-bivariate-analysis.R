@@ -34,6 +34,17 @@ blr_bivariate_analysis.default <- function(data, response, ...) {
 
   blr_check_data(data)
 
+  # Rows with a missing response are excluded before either analysis. This is
+  # required for a factor response with an explicit NA level: glm() would
+  # otherwise treat that level as an observed outcome instead of dropping the
+  # row.
+  keep          <- !is.na(event_indicator(data[[resp]]))
+  data          <- data[keep, , drop = FALSE]
+
+  if (is.factor(data[[resp]])) {
+    data[[resp]] <- droplevels(data[[resp]])
+  }
+
   mdata         <- data[c(resp, predictors)]
   varnames      <- names(mdata)
   resp_name     <- varnames[1]
@@ -130,8 +141,9 @@ lr_extract <- function(lr, value) {
 #' @details
 #' A response with one observed level is an error: blorr needs both events and
 #' non-events. Rows with a missing response are excluded. The predictor must
-#' have a value for every observation; a missing predictor is an error naming
-#' the column. The event rate is returned unrounded and printed to two decimal
+#' have a value for every observation with a non-missing response; a missing
+#' predictor on such a row is an error naming the column. The event rate is
+#' returned unrounded and printed to two decimal
 #' places.
 #'
 #' @return A tibble.
@@ -155,11 +167,16 @@ blr_segment.default <- function(data, response, predictor) {
   resp    <- deparse(substitute(response))
   blr_check_binary_response(factor(data[[resp]]), resp)
   pred    <- deparse(substitute(predictor))
-  blr_check_predictor_missing(data[[pred]], pred)
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
   d$event <- event_indicator(d$resp)
   d       <- d[!is.na(d$event), , drop = FALSE]
+
+  # A missing response removes its row before the predictor is required, so a
+  # predictor value is only needed on the retained rows (as before the guard
+  # was added). A missing predictor on a retained row is still an error.
+  blr_check_predictor_missing(d$pred, pred)
+
   d       <- data.table(d)
   d       <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
@@ -197,8 +214,8 @@ print.blr_segment <- function(x, ...) {
 #' @details
 #' A response with one observed level is an error: blorr needs both events and
 #' non-events. Rows with a missing response are excluded. Both grouping
-#' variables must have a value for every observation; a missing predictor is an
-#' error naming the column.
+#' variables must have a value for every observation with a non-missing
+#' response; a missing predictor on such a row is an error naming the column.
 #'
 #' Each cell is the event rate within that pair of levels: the number of events
 #' in the cell divided by the number of non-missing responses in the cell. It is
@@ -228,8 +245,6 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   blr_check_binary_response(factor(data[[resp]]), resp)
   var_1         <- deparse(substitute(variable_1))
   var_2         <- deparse(substitute(variable_2))
-  blr_check_predictor_missing(data[[var_1]], var_1)
-  blr_check_predictor_missing(data[[var_2]], var_2)
   d             <- data[c(resp, var_1, var_2)]
   var_names     <- names(d)
   colnames(d)   <- c("resp", "var_1", "var_2")
@@ -238,6 +253,11 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   v1            <- d$var_1[keep]
   v2            <- d$var_2[keep]
   events        <- event[keep]
+
+  # missing responses are removed first, then both grouping columns must have
+  # a value on the rows that remain
+  blr_check_predictor_missing(v1, var_1)
+  blr_check_predictor_missing(v2, var_2)
 
   # Each cell is the event rate within that pair of levels: events in the cell
   # divided by non-missing responses in the cell. Levels are taken from the
@@ -291,8 +311,9 @@ print.blr_segment_twoway <- function(x, ...) {
 #' @details
 #' A response with one observed level is an error: blorr needs both events and
 #' non-events. Rows with a missing response are excluded. The predictor must
-#' have a value for every observation; a missing predictor is an error naming
-#' the column. The sample share (\code{n\%}) and event rate (\code{1s\%}) are
+#' have a value for every observation with a non-missing response; a missing
+#' predictor on such a row is an error naming the column. The sample share
+#' (\code{n\%}) and event rate (\code{1s\%}) are
 #' returned unrounded and printed to two decimal places; the plot uses the
 #' unrounded proportions.
 #'
@@ -342,7 +363,11 @@ blr_segment_dist.default <- function(data, response, predictor) {
   }
 
   blr_check_binary_response(factor(data[[resp]]), resp)
-  blr_check_predictor_missing(data[[pred]], pred)
+
+  # exclude missing responses before requiring a predictor value (as before the
+  # guard was added); a missing predictor on a retained row is still an error
+  event <- event_indicator(data[[resp]])
+  blr_check_predictor_missing(data[[pred]][!is.na(event)], pred)
 
   dist_table <- segment_comp(data, pred, resp)
   var_name <- pred

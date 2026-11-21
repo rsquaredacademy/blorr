@@ -31,8 +31,8 @@ Event rate across two qualitative variables.
 \details{
 A response with one observed level is an error: blorr needs both events and
 non-events. Rows with a missing response are excluded. Both grouping variables
-must have a value for every observation; a missing predictor is an error naming
-the column.
+must have a value for every observation with a non-missing response; a missing
+predictor on such a row is an error naming the column.
 
 Each cell is the event rate within that pair of levels: the number of events in
 the cell divided by the number of non-missing responses in the cell. It is not

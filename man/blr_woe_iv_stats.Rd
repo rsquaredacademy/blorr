@@ -23,9 +23,10 @@ Prints weight of evidence and information value for multiple variables.
 \details{
 A response with one observed level is an error: blorr needs both events and
 non-events. Each variable's table is the same table returned by
-\code{blr_woe_iv()}: rows with a missing response or predictor are excluded, and
-the total information value is computed from the unrounded components and
-rounded only once for printing.
+\code{blr_woe_iv()}: rows with a missing response or predictor are excluded, a
+variable with no complete observations is an error, and the total information
+value is computed from the unrounded components and rounded only once for
+printing.
 }
 \examples{
 blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)

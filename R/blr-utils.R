@@ -51,7 +51,7 @@ blr_check_supported <- function(model) {
     stop(blr_unsupported_message(), call. = FALSE)
   }
 
-  blr_check_binary_response(resp, names(model$model)[1])
+  blr_check_binary_response(resp, names(model$model)[1], exactly = FALSE)
 
   invisible(TRUE)
 }
@@ -66,12 +66,20 @@ blr_check_supported <- function(model) {
 # response profile table, whose length is its number of outcomes, so
 # print_blr_reg() can reuse the check.
 #
-# A one-level response is rejected for every response type. Numeric 1 and
-# factor 1 used to disagree (numeric 1 counted every observation as an event
-# while factor 1 counted every observation as a non-event), so no degenerate
-# encoding is given a meaning: the data must contain both events and
-# non-events.
-blr_check_binary_response <- function(resp, name = "response") {
+# The data-column functions call with the default `exactly = TRUE`: a
+# one-level response is rejected for every response type. Numeric 1 and factor
+# 1 used to disagree (numeric 1 counted every observation as an event while
+# factor 1 counted every observation as a non-event), so no degenerate encoding
+# is given a meaning: the data must contain both events and non-events.
+#
+# The shared model guard calls with `exactly = FALSE`, which rejects only
+# responses with more than two levels. A single-outcome fit is degenerate but
+# meaningful to the diagnostic APIs (the confusion matrix reports its defined
+# counts with the undefined statistics marked NA), and those APIs worked that
+# way before the one-level check was added. `blr_regress()` still reaches the
+# exact check through resp_profile() because its response summary prints the
+# two outcomes side by side.
+blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
 
   if (is.null(resp)) {
     return(invisible(TRUE))
@@ -85,15 +93,15 @@ blr_check_binary_response <- function(resp, name = "response") {
     length(unique(resp[!is.na(resp)]))
   }
 
-  if (n < 2L) {
-    stop("`", name, "` has ", n, if (n == 1L) " level" else " levels",
-         "; blorr needs both events and non-events.", call. = FALSE)
-  }
-
   if (n > 2L) {
     stop("The response `", name, "` has ", n,
          " levels; blorr supports a binary response with exactly two levels.",
          call. = FALSE)
+  }
+
+  if (exactly && n < 2L) {
+    stop("`", name, "` has ", n, if (n == 1L) " level" else " levels",
+         "; blorr needs both events and non-events.", call. = FALSE)
   }
 
   invisible(TRUE)
@@ -150,10 +158,13 @@ model_df <- function(model) {
 # fitted response classes are supplied as `levels`, any other observed label is
 # an error rather than silently becoming a non-event.
 event_indicator <- function(resp, event = NULL, levels = NULL) {
-  missing <- is.na(resp)
+  # A factor can carry an explicit NA level (factor(..., exclude = NULL)), for
+  # which is.na() is FALSE even though the label is missing. Missing labels
+  # must be excluded from all counting, so test the character labels too.
+  labels  <- as.character(resp)
+  missing <- is.na(resp) | is.na(labels)
 
   if (!is.null(event)) {
-    labels <- as.character(resp)
 
     if (!is.null(levels)) {
       levels <- as.character(levels)
@@ -178,13 +189,13 @@ event_indicator <- function(resp, event = NULL, levels = NULL) {
   }
 
   if (is.factor(resp)) {
-    resp <- droplevels(resp)
-    lvls <- levels(resp)
+    lvls <- levels(droplevels(resp))
+    lvls <- lvls[!is.na(lvls)]
 
     if (length(lvls) < 2) {
       out <- rep(FALSE, length(resp))
     } else {
-      out <- resp == lvls[2]
+      out <- labels == lvls[2]
     }
 
     out[missing] <- NA
@@ -226,6 +237,7 @@ model_event_level <- function(model) {
 
   if (is.factor(resp)) {
     lvls <- levels(resp)
+    lvls <- lvls[!is.na(lvls)]
 
     if (length(lvls) < 2) {
       return(NULL)
@@ -270,6 +282,7 @@ model_response_levels <- function(model) {
 
   if (is.factor(resp)) {
     lvls <- levels(resp)
+    lvls <- lvls[!is.na(lvls)]
 
     if (length(lvls) < 2) {
       return(NULL)

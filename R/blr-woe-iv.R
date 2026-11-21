@@ -5,7 +5,9 @@
 #' @details
 #' Character and numeric predictors are treated as categorical and factor
 #' levels without observations are dropped before the table is built. Rows with
-#' a missing response or predictor are excluded. If a level has no events or no
+#' a missing response or predictor (including an explicit missing factor level)
+#' are excluded. If no complete observations remain, WoE/IV is an error rather
+#' than an empty table with a zero total. If a level has no events or no
 #' non-events, 0.5 is added to both counts for that level (Haldane-Anscombe
 #' continuity correction) before the weight of evidence and information value
 #' are computed.
@@ -81,11 +83,26 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
     pred <- predictor
   }
 
-  dat      <- data[c(pred, resp)]
-  dat      <- dat[stats::complete.cases(dat), , drop = FALSE]
+  # Identify the event on the full response before removing incomplete rows.
+  # Otherwise a factor response whose non-event class disappears with a
+  # missing predictor is re-levelled by droplevels() and its remaining event
+  # class becomes the non-event class. Rows with a missing response or
+  # predictor (including an explicit NA factor level) are then excluded.
+  event <- event_indicator(data[[resp]])
+  keep  <- !is.na(event) & !is.na(data[[pred]])
+
+  dat      <- data[keep, c(pred, resp), drop = FALSE]
+  event    <- event[keep]
+
+  if (nrow(dat) == 0L) {
+    stop("No complete observations remain for predictor `", pred,
+         "` and response `", resp, "`: every row has a missing response or ",
+         "predictor, so WoE/IV is undefined.", call. = FALSE)
+  }
+
   dat[[pred]] <- droplevels(factor(dat[[pred]]))
   lev      <- levels(dat[[pred]])
-  d1       <- woe_data_prep(dat[[pred]], dat[[resp]])
+  d1       <- woe_data_prep(dat[[pred]], event)
   d2       <- woe_data_modify(d1, lev = lev, digits = digits)
   woe_iv   <- woe_data_select(d2)
   var_name <- names(dat)[1]
@@ -147,8 +164,9 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' A response with one observed level is an error: blorr needs both events and
 #' non-events. Each variable's table is the same table returned by
 #' \code{blr_woe_iv()}: rows with a missing response or predictor are excluded,
-#' and the total information value is computed from the unrounded components
-#' and rounded only once for printing.
+#' a variable with no complete observations is an error, and the total
+#' information value is computed from the unrounded components and rounded only
+#' once for printing.
 #'
 #' @references
 #' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
@@ -180,9 +198,7 @@ blr_woe_iv_stats <- function(data, response, ...) {
   }
 }
 
-woe_data_prep <- function(predictor, response) {
-
-  event <- event_indicator(response)
+woe_data_prep <- function(predictor, event) {
 
   data.frame(
     no  = as.vector(tapply(!event, predictor, sum)),
