@@ -12,22 +12,27 @@
 #' continuity correction) before the weight of evidence and information value
 #' are computed.
 #'
-#' The response must have exactly two observed, non-missing levels. A response
-#' with one observed level is an error: blorr needs both events and non-events.
-#' The event is the second level of a factor or character response, \code{TRUE}
-#' for a logical response and \code{1} for a numeric response. Numeric responses
-#' must be coded 0/1; unused factor levels are ignored. The \code{digits}
-#' argument controls the returned weight of evidence and information value
-#' components and the printed values. The total information value is computed
-#' from the unrounded components and rounded only once for printing.
+#' The response may have one or two observed, non-missing levels. A response
+#' with no observed levels is an error. With a single observed level, the
+#' Haldane-Anscombe correction adds 0.5 to both zero cells, so the corrected
+#' within-class distributions are equal and WoE and IV are 0. A level labelled
+#' \code{"1"} or \code{TRUE} is the event, so numeric and factor one-level
+#' encodings agree. The event is otherwise the second level of a factor or
+#' character response, \code{TRUE} for a logical response and \code{1} for a
+#' numeric response. Numeric responses must be coded 0/1; unused factor levels
+#' are ignored. The \code{digits} argument controls the returned weight of
+#' evidence and information value components and the printed values. The total
+#' information value is computed from the unrounded components and rounded only
+#' once for printing.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
 #' @param predictor Predictor variable; column in \code{data}.
-#' @param response Response variable; column in \code{data} with exactly two
+#' @param response Response variable; column in \code{data} with one or two
 #'   observed, non-missing levels. The event is the second level of a factor or
 #'   character response, \code{TRUE} for a logical response and \code{1} for a
-#'   numeric response. Numeric responses must be coded 0/1. Unused factor
-#'   levels are ignored.
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param digits Number of decimal digits used for the returned WoE/IV table and
 #'   printed values; the total information value is rounded only at print time.
 #' @param x An object of class \code{blr_segment_dist}.
@@ -75,7 +80,7 @@ blr_woe_iv.default <- function(data, predictor, response, digits = 4, ...) {
     resp <- response
   }
 
-  blr_check_binary_response(factor(data[[resp]]), resp)
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
 
   if (is.symbol(substitute(predictor))) {
     pred <- deparse(substitute(predictor))
@@ -153,20 +158,21 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 #' Prints weight of evidence and information value for multiple variables.
 #'
 #' @param data A \code{data.frame} or \code{tibble}.
-#' @param response Response variable; column in \code{data} with exactly two
+#' @param response Response variable; column in \code{data} with one or two
 #'   observed, non-missing levels. The event is the second level of a factor or
 #'   character response, \code{TRUE} for a logical response and \code{1} for a
-#'   numeric response. Numeric responses must be coded 0/1. Unused factor
-#'   levels are ignored.
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param ... Predictor variables; column in \code{data}.
 #'
 #' @details
-#' A response with one observed level is an error: blorr needs both events and
-#' non-events. Each variable's table is the same table returned by
-#' \code{blr_woe_iv()}: rows with a missing response or predictor are excluded,
-#' a variable with no complete observations is an error, and the total
-#' information value is computed from the unrounded components and rounded only
-#' once for printing.
+#' A response with one observed level is allowed; the continuity-corrected WoE
+#' and IV are 0 for each level. A response with no observed levels is an error.
+#' Each variable's table is the same table returned by \code{blr_woe_iv()}:
+#' rows with a missing response or predictor are excluded, a variable with no
+#' complete observations is an error, and the total information value is
+#' computed from the unrounded components and rounded only once for printing.
 #'
 #' @references
 #' Haldane, J. B. S. (1956). The estimation and significance of the logarithm of a ratio of frequencies. \emph{Annals of Human Genetics}, 20(4), 309--311.
@@ -181,7 +187,7 @@ plot.blr_woe_iv <- function(x, title = NA, xaxis_title = "Levels",
 blr_woe_iv_stats <- function(data, response, ...) {
 
   resp        <- deparse(substitute(response))
-  blr_check_binary_response(factor(data[[resp]]), resp)
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   predictors  <- vapply(substitute(...()), deparse, NA_character_)
   dat         <- data[c(resp, predictors)]
   varnames    <- names(dat)

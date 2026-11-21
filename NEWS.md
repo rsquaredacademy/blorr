@@ -4,14 +4,15 @@
 
 - The data-column functions (`blr_segment()`, `blr_segment_dist()`,
   `blr_segment_twoway()`, `blr_woe_iv()`, `blr_woe_iv_stats()` and
-  `blr_bivariate_analysis()`) require exactly two observed, non-missing
-  response levels with both events and non-events. Supported encodings are
-  numeric 0/1, logical, a two-level factor and a two-value character vector;
-  the event is the second level, `TRUE` or 1. Unused factor levels and rows
-  with a missing response are ignored. Numeric codes other than 0/1 are not
-  supported. Segment and two-way functions reject a missing predictor with an
-  error naming the column; WoE/IV excludes rows with a missing response or
-  predictor. Empty input is an error because it has no response levels.
+  `blr_bivariate_analysis()`) support one or two observed, non-missing
+  response levels. Supported encodings are numeric 0/1, logical, factor and
+  character; the event is the second level, `TRUE` or 1. A single observed
+  level returns the defined rate (all 0 or all 1), and a level labelled `"1"`
+  or `TRUE` is the event, so numeric and factor encodings agree. Unused factor
+  levels and rows with a missing response are ignored. Numeric codes other
+  than 0/1 are not supported. Segment and two-way functions keep a missing
+  predictor as its own `NA` level; WoE/IV excludes rows with a missing response
+  or predictor. Empty input is an error because it has no response levels.
 - Proportions are returned unrounded. Segment tables print percentages to two
   decimal places, two-way rates to three decimal places, WoE/IV components to
   `digits` decimal places, and the total information value is rounded once at
@@ -36,14 +37,15 @@
   instead of printing 34.00% and 73.00% from the stored 0.34 and 0.73. The plot
   of `blr_segment_dist()` now uses the unrounded proportions.
 
-- A response with one observed level is now rejected by every data-column
-  function with the error `` `y` has 1 level; blorr needs both events and
-  non-events. `` This applies equally to numeric and factor responses.
-  Previously a numeric response of all 1s was treated as all events while a
-  factor response of all 1s was treated as all non-events, so the same data
-  gave opposite answers. `blr_segment()`, `blr_segment_dist()`,
-  `blr_segment_twoway()`, `blr_woe_iv()` and `blr_woe_iv_stats()` require both
-  events and non-events.
+- A response with one observed level is accepted again by the data-column
+  functions and returns the defined empirical rates: 0 when every response is
+  a non-event and 1 when every response is an event. `blr_woe_iv()` and
+  `blr_woe_iv_stats()` apply the documented 0.5 continuity correction to the
+  zero cells, so their corrected within-class distributions are equal and WoE
+  and IV are 0. A factor whose only level is `"1"` or `TRUE` is now all events,
+  the same as numeric 1, so the earlier numeric/factor disagreement is fixed.
+  A response with no observed level remains an error, and the model APIs that
+  need two classes still reject a one-level response.
 
 ## Bug fixes
 
@@ -113,12 +115,12 @@
   `digits = 1` the total is now 0.5 rather than 0.4. `blr_bivariate_analysis()`
   likewise uses the unrounded total.
 
-- `blr_segment()`, `blr_segment_dist()` and `blr_segment_twoway()` now stop
-  with an error naming the predictor column when it contains missing values on
-  a row retained after excluding missing responses, instead of failing inside
-  the printer with "invalid 'width' argument". Rows with a missing response are
-  excluded first, so a predictor value is not required on a row that a missing
-  response already removes.
+- `blr_segment()`, `blr_segment_dist()` and `blr_segment_twoway()` keep a
+  missing predictor as its own `NA` level instead of failing inside the width
+  calculation of the printer. The `NA` rows get their own count, sample share
+  and event rate, and print with an `NA` label. Rows with a missing response
+  are still excluded first. The two-way function keeps the within-cell rate
+  fix and adds an `NA` row or column for a missing grouping value.
 
 - The `blr_segment_twoway()` printer now handles a table with no rows or no
   columns without failing in `max()` or `rep()`. A no-event cell in a

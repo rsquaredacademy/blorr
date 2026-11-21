@@ -9,10 +9,11 @@ blr_woe_iv_stats(data, response, ...)
 \arguments{
 \item{data}{A \code{data.frame} or \code{tibble}.}
 
-\item{response}{Response variable; column in \code{data} with exactly two
+\item{response}{Response variable; column in \code{data} with one or two
 observed, non-missing levels. The event is the second level of a factor or
 character response, \code{TRUE} for a logical response and \code{1} for a
-numeric response. Numeric responses must be coded 0/1. Unused factor levels are
+numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+event. Numeric responses must be coded 0/1. Unused factor levels are
 ignored.}
 
 \item{...}{Predictor variables; column in \code{data}.}
@@ -21,12 +22,12 @@ ignored.}
 Prints weight of evidence and information value for multiple variables.
 }
 \details{
-A response with one observed level is an error: blorr needs both events and
-non-events. Each variable's table is the same table returned by
-\code{blr_woe_iv()}: rows with a missing response or predictor are excluded, a
-variable with no complete observations is an error, and the total information
-value is computed from the unrounded components and rounded only once for
-printing.
+A response with one observed level is allowed; the continuity-corrected WoE
+and IV are 0 for each level. A response with no observed levels is an error.
+Each variable's table is the same table returned by \code{blr_woe_iv()}:
+rows with a missing response or predictor are excluded, a variable with no
+complete observations is an error, and the total information value is
+computed from the unrounded components and rounded only once for printing.
 }
 \examples{
 blr_woe_iv_stats(hsb2, honcomp, prog, race, female, schtyp)

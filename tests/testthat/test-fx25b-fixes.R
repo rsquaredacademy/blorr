@@ -69,13 +69,11 @@ test_that("M4: missing responses are removed before the predictor guard", {
   expect_equal(unname(two["b", "x"]), 0)
   expect_equal(unname(two["b", "y"]), 1)
 
-  # a missing predictor on a row with a non-missing response is still an error
+  # a missing predictor on a retained row is its own NA level (fx25c)
   d$g[2] <- NA
-  expect_error(
-    blr_segment(d, y, g),
-    "The predictor `g` has 1 missing value",
-    fixed = TRUE
-  )
+  seg_na <- blr_segment(d, y, g)$segment_data
+  expect_equal(as.character(seg_na$pred), c("a", "b", NA))
+  expect_equal(seg_na[["1s%"]], c(0, 0.5, 1))
 })
 
 # H1: an explicit missing factor level is a missing response, not a non-event.

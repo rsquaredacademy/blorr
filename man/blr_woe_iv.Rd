@@ -23,10 +23,11 @@ blr_woe_iv(data, predictor, response, digits = 4, ...)
 
 \item{predictor}{Predictor variable; column in \code{data}.}
 
-\item{response}{Response variable; column in \code{data} with exactly two
+\item{response}{Response variable; column in \code{data} with one or two
 observed, non-missing levels. The event is the second level of a factor or
 character response, \code{TRUE} for a logical response and \code{1} for a
-numeric response. Numeric responses must be coded 0/1. Unused factor levels are
+numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+event. Numeric responses must be coded 0/1. Unused factor levels are
 ignored.}
 
 \item{digits}{Number of decimal digits used for the returned WoE/IV table and
@@ -63,14 +64,18 @@ with a zero total. If a level has no events or no non-events, 0.5 is added to
 both counts for that level (Haldane-Anscombe continuity correction) before the
 weight of evidence and information value are computed.
 
-The response must have exactly two observed, non-missing levels. A response
-with one observed level is an error: blorr needs both events and non-events. The
-event is the second level of a factor or character response, \code{TRUE} for a
-logical response and \code{1} for a numeric response. Numeric responses must be
-coded 0/1; unused factor levels are ignored. The \code{digits} argument controls
-the returned weight of evidence and information value components and the printed
-values. The total information value is computed from the unrounded components
-and rounded only once for printing.
+The response may have one or two observed, non-missing levels. A response
+with no observed levels is an error. With a single observed level, the
+Haldane-Anscombe correction adds 0.5 to both zero cells, so the corrected
+within-class distributions are equal and WoE and IV are 0. A level labelled
+\code{"1"} or \code{TRUE} is the event, so numeric and factor one-level
+encodings agree. The event is otherwise the second level of a factor or
+character response, \code{TRUE} for a logical response and \code{1} for a
+numeric response. Numeric responses must be coded 0/1; unused factor levels
+are ignored. The \code{digits} argument controls the returned weight of
+evidence and information value components and the printed values. The total
+information value is computed from the unrounded components and rounded only
+once for printing.
 }
 \examples{
 # woe and iv

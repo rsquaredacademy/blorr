@@ -131,19 +131,21 @@ lr_extract <- function(lr, value) {
 #' Event rate by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
-#' @param response Response variable; column in \code{data} with exactly two
+#' @param response Response variable; column in \code{data} with one or two
 #'   observed, non-missing levels. The event is the second level of a factor or
 #'   character response, \code{TRUE} for a logical response and \code{1} for a
-#'   numeric response. Numeric responses must be coded 0/1. Unused factor
-#'   levels are ignored.
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param predictor Predictor variable; column in \code{data}.
 #'
 #' @details
-#' A response with one observed level is an error: blorr needs both events and
-#' non-events. Rows with a missing response are excluded. The predictor must
-#' have a value for every observation with a non-missing response; a missing
-#' predictor on such a row is an error naming the column. The event rate is
-#' returned unrounded and printed to two decimal
+#' A response with one observed level is allowed: the defined event rate is
+#' returned for that class (0 when all responses are non-events, 1 when all are
+#' events). A response with no observed levels is an error. Rows with a missing
+#' response are excluded. A missing predictor is kept as its own \code{NA}
+#' level, so its rows appear in a final \code{NA} segment with their own count
+#' and rate. The event rate is returned unrounded and printed to two decimal
 #' places.
 #'
 #' @return A tibble.
@@ -165,18 +167,15 @@ blr_segment.default <- function(data, response, predictor) {
   blr_check_data(data)
 
   resp    <- deparse(substitute(response))
-  blr_check_binary_response(factor(data[[resp]]), resp)
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   pred    <- deparse(substitute(predictor))
   d       <- data[c(resp, pred)]
   colnames(d) <- c("resp", "pred")
   d$event <- event_indicator(d$resp)
   d       <- d[!is.na(d$event), , drop = FALSE]
 
-  # A missing response removes its row before the predictor is required, so a
-  # predictor value is only needed on the retained rows (as before the guard
-  # was added). A missing predictor on a retained row is still an error.
-  blr_check_predictor_missing(d$pred, pred)
-
+  # A missing predictor is a level of its own: data.table keeps it in the
+  # grouping and the printers display the NA label.
   d       <- data.table(d)
   d       <- d[, .(n = .N, `1s` = sum(event)), by = pred]
 
@@ -203,19 +202,21 @@ print.blr_segment <- function(x, ...) {
 #' Event rate across two qualitative variables.
 #'
 #' @param data A \code{tibble} or \code{data.frame}.
-#' @param response Response variable; column in \code{data} with exactly two
+#' @param response Response variable; column in \code{data} with one or two
 #'   observed, non-missing levels. The event is the second level of a factor or
 #'   character response, \code{TRUE} for a logical response and \code{1} for a
-#'   numeric response. Numeric responses must be coded 0/1. Unused factor
-#'   levels are ignored.
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param variable_1 Column in \code{data}.
 #' @param variable_2 Column in \code{data}.
 #'
 #' @details
-#' A response with one observed level is an error: blorr needs both events and
-#' non-events. Rows with a missing response are excluded. Both grouping
-#' variables must have a value for every observation with a non-missing
-#' response; a missing predictor on such a row is an error naming the column.
+#' A response with one observed level is allowed: each defined within-cell event
+#' rate is 0 when all responses are non-events or 1 when all are events. A
+#' response with no observed levels is an error. Rows with a missing response
+#' are excluded. A missing value in either grouping variable is kept as its own
+#' \code{NA} level and appears as a final row or column labelled \code{NA}.
 #'
 #' Each cell is the event rate within that pair of levels: the number of events
 #' in the cell divided by the number of non-missing responses in the cell. It is
@@ -242,7 +243,7 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   blr_check_data(data)
 
   resp          <- deparse(substitute(response))
-  blr_check_binary_response(factor(data[[resp]]), resp)
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
   var_1         <- deparse(substitute(variable_1))
   var_2         <- deparse(substitute(variable_2))
   d             <- data[c(resp, var_1, var_2)]
@@ -254,20 +255,17 @@ blr_segment_twoway.default <- function(data, response, variable_1, variable_2) {
   v2            <- d$var_2[keep]
   events        <- event[keep]
 
-  # missing responses are removed first, then both grouping columns must have
-  # a value on the rows that remain
-  blr_check_predictor_missing(v1, var_1)
-  blr_check_predictor_missing(v2, var_2)
-
   # Each cell is the event rate within that pair of levels: events in the cell
   # divided by non-missing responses in the cell. Levels are taken from the
-  # non-missing response rows, so unused levels are ignored and the two tables
-  # always have the same shape. A cell with no non-missing responses is NA.
-  l1     <- if (is.factor(v1)) levels(droplevels(v1)) else sort(unique(v1))
-  l2     <- if (is.factor(v2)) levels(droplevels(v2)) else sort(unique(v2))
-  denom  <- table(factor(v1, levels = l1), factor(v2, levels = l2))
-  counts <- table(factor(v1[events], levels = l1),
-                  factor(v2[events], levels = l2))
+  # non-missing response rows, so unused levels are ignored. A missing grouping
+  # value is added as its own final NA level, matching the one-way segment
+  # tables. A cell with no non-missing responses is NA.
+  l1     <- segment_group_levels(v1)
+  l2     <- segment_group_levels(v2)
+  f1     <- segment_group_factor(v1, l1)
+  f2     <- segment_group_factor(v2, l2)
+  denom  <- table(f1, f2)
+  counts <- table(f1[events], f2[events])
   twoway <- counts / denom
   twoway[denom == 0] <- NA
 
@@ -285,6 +283,30 @@ print.blr_segment_twoway <- function(x, ...) {
   print_blr_twoway_segment(x)
 }
 
+# levels of a two-way grouping variable, in their usual sorted/declared order,
+# with missing values excluded here and added back as the final NA level below
+segment_group_levels <- function(x) {
+  if (is.factor(x)) {
+    lvls <- levels(droplevels(x))
+  } else {
+    lvls <- sort(unique(x[!is.na(x)]))
+  }
+
+  lvls[!is.na(lvls)]
+}
+
+# the grouping factor used by the two-way table; an ordinary missing value or
+# an explicit missing factor level becomes an NA level at the end
+segment_group_factor <- function(x, levels) {
+  out <- factor(x, levels = levels)
+
+  if (anyNA(as.character(x))) {
+    out <- addNA(out)
+  }
+
+  out
+}
+
 
 
 #' Response distribution
@@ -292,11 +314,12 @@ print.blr_segment_twoway <- function(x, ...) {
 #' Distribution of response variable by segments/levels of a qualitative variable.
 #'
 #' @param data A \code{tibble} or a \code{data.frame}.
-#' @param response Response variable; column in \code{data} with exactly two
+#' @param response Response variable; column in \code{data} with one or two
 #'   observed, non-missing levels. The event is the second level of a factor or
 #'   character response, \code{TRUE} for a logical response and \code{1} for a
-#'   numeric response. Numeric responses must be coded 0/1. Unused factor
-#'   levels are ignored.
+#'   numeric response; a single level labelled \code{"1"} or \code{TRUE} is the
+#'   event. Numeric responses must be coded 0/1. Unused factor levels are
+#'   ignored.
 #' @param predictor Predictor variable; column in \code{data}.
 #' @param x An object of class \code{blr_segment_dist}.
 #' @param title Plot title.
@@ -309,13 +332,14 @@ print.blr_segment_twoway <- function(x, ...) {
 #' @param ... Other inputs.
 #'
 #' @details
-#' A response with one observed level is an error: blorr needs both events and
-#' non-events. Rows with a missing response are excluded. The predictor must
-#' have a value for every observation with a non-missing response; a missing
-#' predictor on such a row is an error naming the column. The sample share
-#' (\code{n\%}) and event rate (\code{1s\%}) are
-#' returned unrounded and printed to two decimal places; the plot uses the
-#' unrounded proportions.
+#' A response with one observed level is allowed: the defined event rate is
+#' returned for that class (0 when all responses are non-events, 1 when all are
+#' events). A response with no observed levels is an error. Rows with a missing
+#' response are excluded. A missing predictor is kept as its own \code{NA}
+#' level, so its rows appear in a final \code{NA} segment with their own count,
+#' sample share and event rate. The sample share (\code{n\%}) and event rate
+#' (\code{1s\%}) are returned unrounded and printed to two decimal places; the
+#' plot uses the unrounded proportions.
 #'
 #' @return A tibble.
 #'
@@ -362,13 +386,10 @@ blr_segment_dist.default <- function(data, response, predictor) {
     stop("", call. = FALSE)
   }
 
-  blr_check_binary_response(factor(data[[resp]]), resp)
+  blr_check_binary_response(factor(data[[resp]]), resp, exactly = FALSE)
 
-  # exclude missing responses before requiring a predictor value (as before the
-  # guard was added); a missing predictor on a retained row is still an error
-  event <- event_indicator(data[[resp]])
-  blr_check_predictor_missing(data[[pred]][!is.na(event)], pred)
-
+  # a missing predictor is a level of its own; segment_comp keeps it in the
+  # grouping and the printer displays the NA label
   dist_table <- segment_comp(data, pred, resp)
   var_name <- pred
   names(dist_table)[1] <- "variable"

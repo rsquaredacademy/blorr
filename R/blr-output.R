@@ -224,6 +224,7 @@ print_blr_segment <- function(x) {
   rnames <- names(x$segment_data)
   dtable <- x$segment_data
   c1     <- c(rnames[1], as.character(dtable[[rnames[1]]]))
+  c1[is.na(c1)] <- "NA"
   c2     <- c(rnames[2], format(round(dtable[[rnames[2]]] * 100, 2), nsmall = 2))
   w      <- vapply(list(c1, c2), function(z) max(nchar(z)), integer(1))
   wsum   <- sum(w, 11)
@@ -246,6 +247,7 @@ print_blr_segment_dist <- function(x) {
   rnames <- names(x$dist_table)
   dtable <- x$dist_table
   c1     <- c(x$var_name, as.character(dtable[[rnames[1]]]))
+  c1[is.na(c1)] <- "NA"
   c2     <- c(rnames[2], dtable[[rnames[2]]])
   c3     <- c(rnames[3], dtable[[rnames[3]]])
   c4     <- c(rnames[4], format(round(dtable[[rnames[4]]] * 100, 2), nsmall = 2))
@@ -516,9 +518,11 @@ print_blr_twoway_segment <- function(x) {
   }
 
   cnames <- c(x$varnames[2], colnames(tab))
+  cnames[is.na(cnames)] <- "NA"
   values <- format(round(tab, 3), nsmall = 3)
   values[is.na(tab)] <- "-"
   k      <- cbind(rownames(tab), values)
+  k[is.na(k)] <- "NA"
   nc     <- ncol(k)
   wc     <- max(nchar(k))
   vname  <- x$varnames[3]

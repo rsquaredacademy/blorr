@@ -66,19 +66,18 @@ blr_check_supported <- function(model) {
 # response profile table, whose length is its number of outcomes, so
 # print_blr_reg() can reuse the check.
 #
-# The data-column functions call with the default `exactly = TRUE`: a
-# one-level response is rejected for every response type. Numeric 1 and factor
-# 1 used to disagree (numeric 1 counted every observation as an event while
-# factor 1 counted every observation as a non-event), so no degenerate encoding
-# is given a meaning: the data must contain both events and non-events.
+# The data-column functions call with `exactly = FALSE`: a one-level response
+# is allowed because its event rate is defined (all non-events or all events).
+# A response with no observed levels remains an error. The one-class event
+# mapping is the same for numeric, logical, character and factor responses: a
+# single observed level labelled "1" or "TRUE" is the event and "0"/"FALSE" is
+# the non-event, so numeric 1 and factor 1 now agree (the original H3 bug).
 #
-# The shared model guard calls with `exactly = FALSE`, which rejects only
-# responses with more than two levels. A single-outcome fit is degenerate but
-# meaningful to the diagnostic APIs (the confusion matrix reports its defined
-# counts with the undefined statistics marked NA), and those APIs worked that
-# way before the one-level check was added. `blr_regress()` still reaches the
-# exact check through resp_profile() because its response summary prints the
-# two outcomes side by side.
+# The shared model guard also calls with `exactly = FALSE`, because a
+# single-outcome fit is degenerate but meaningful to the diagnostic APIs (the
+# confusion matrix reports its defined counts with the undefined statistics
+# marked NA). `blr_regress()` still requires two outcomes through
+# resp_profile() because its response summary prints them side by side.
 blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
 
   if (is.null(resp)) {
@@ -99,25 +98,9 @@ blr_check_binary_response <- function(resp, name = "response", exactly = TRUE) {
          call. = FALSE)
   }
 
-  if (exactly && n < 2L) {
+  if (n == 0L || (exactly && n == 1L)) {
     stop("`", name, "` has ", n, if (n == 1L) " level" else " levels",
          "; blorr needs both events and non-events.", call. = FALSE)
-  }
-
-  invisible(TRUE)
-}
-
-# Segment and two-way tables need a value for every observation. A missing
-# predictor used to reach the width calculation of the printers and fail with
-# "invalid 'width' argument"; reject it at construction with the column name.
-blr_check_predictor_missing <- function(x, name) {
-  n <- sum(is.na(x))
-
-  if (n > 0L) {
-    stop("The predictor `", name, "` has ", n,
-         " missing value", if (n == 1L) "" else "s",
-         "; blorr's segment tables need a value for every observation.",
-         call. = FALSE)
   }
 
   invisible(TRUE)
@@ -189,13 +172,32 @@ event_indicator <- function(resp, event = NULL, levels = NULL) {
   }
 
   if (is.factor(resp)) {
-    lvls <- levels(droplevels(resp))
-    lvls <- lvls[!is.na(lvls)]
+    observed <- levels(droplevels(resp))
+    observed <- observed[!is.na(observed)]
+    declared <- levels(resp)
+    declared <- declared[!is.na(declared)]
 
-    if (length(lvls) < 2) {
+    # With two observed levels the event is the second one. With a single
+    # observed level, keep the declared event when that level is the second
+    # declared level (for example factor(c("1", "1"), levels = c("0", "1")));
+    # otherwise a level labelled "1" or "TRUE" is the event. This makes a
+    # one-level factor "1" agree with numeric 1 instead of silently counting
+    # every observation as a non-event.
+    if (length(observed) >= 2L) {
+      event_level <- observed[2]
+    } else if (length(observed) == 1L && length(declared) >= 2L &&
+               observed == declared[2]) {
+      event_level <- observed
+    } else if (length(observed) == 1L && observed %in% c("1", "TRUE")) {
+      event_level <- observed
+    } else {
+      event_level <- NULL
+    }
+
+    if (is.null(event_level)) {
       out <- rep(FALSE, length(resp))
     } else {
-      out <- labels == lvls[2]
+      out <- labels == event_level
     }
 
     out[missing] <- NA
@@ -217,7 +219,7 @@ event_indicator <- function(resp, event = NULL, levels = NULL) {
   lvls <- levels(droplevels(factor(resp)))
 
   if (length(lvls) < 2) {
-    out <- rep(FALSE, length(resp))
+    out <- labels %in% c("1", "TRUE")
   } else {
     out <- as.character(resp) == lvls[2]
   }

@@ -259,7 +259,7 @@ test_that("H2: the segment distribution plot uses the unrounded values", {
                tolerance = 1e-12)
 })
 
-test_that("H3: one-level numeric and factor responses are both rejected", {
+test_that("H3: one-level data-column responses return their defined rates", {
   apis <- list(
     blr_segment = function(d) blr_segment(d, y, g),
     blr_segment_dist = function(d) blr_segment_dist(d, y, g),
@@ -273,14 +273,11 @@ test_that("H3: one-level numeric and factor responses are both rejected", {
     for (y in list(c(1, 1, 1, 1), factor(c(1, 1, 1, 1)))) {
       d <- base
       d$y <- y
-      expect_error(
-        apis[[api]](d),
-        "`y` has 1 level; blorr needs both events and non-events.",
-        fixed = TRUE
-      )
+      expect_error(apis[[api]](d), NA)
     }
   }
 
+  # the helper's exact check is still used by the two-outcome model profile
   expect_error(
     blr_check_binary_response(c(1, 1, 1), "y"),
     "`y` has 1 level; blorr needs both events and non-events.",
@@ -308,26 +305,30 @@ test_that("H4: total IV is rounded once from full-precision components", {
   expect_false(any(grepl("0\\.4\\s*$", out)))
 })
 
-test_that("M1: a missing predictor is a named error, not a printer crash", {
+test_that("M1: a missing predictor is its own NA level, not a printer crash", {
   d <- data.frame(y = c(0, 1, 0, 1),
                   g = c("a", "a", NA, "b"),
                   h = c("x", "y", "x", "y"))
 
-  expect_error(
-    blr_segment(d, y, g),
-    "The predictor `g` has 1 missing value",
-    fixed = TRUE
-  )
-  expect_error(
-    blr_segment_dist(d, y, g),
-    "The predictor `g` has 1 missing value",
-    fixed = TRUE
-  )
-  expect_error(
-    blr_segment_twoway(d, y, h, g),
-    "The predictor `g` has 1 missing value",
-    fixed = TRUE
-  )
+  seg <- blr_segment(d, y, g)$segment_data
+  expect_equal(as.character(seg$pred), c("a", "b", NA))
+  expect_equal(seg[["1s%"]], c(0.5, 1, 0))
+  expect_output(print(blr_segment(d, y, g)), "NA")
+
+  dist <- blr_segment_dist(d, y, g)$dist_table
+  expect_equal(dist$n, c(2L, 1L, 1L))
+  expect_equal(dist[["1s"]], c(1L, 1L, 0L))
+  expect_equal(dist[["n%"]], c(0.5, 0.25, 0.25))
+  expect_equal(dist[["1s%"]], c(0.5, 1, 0))
+  expect_output(print(blr_segment_dist(d, y, g)), "NA")
+
+  two <- blr_segment_twoway(d, y, h, g)$twoway_segment
+  na_col <- which(is.na(colnames(two)))
+  expect_equal(unname(two["x", "a"]), 0)
+  expect_equal(unname(two["y", "a"]), 1)
+  expect_equal(unname(two["y", "b"]), 1)
+  expect_equal(unname(two["x", na_col]), 0)
+  expect_output(print(blr_segment_twoway(d, y, h, g)), "NA")
 })
 
 test_that("M2: no-event cells are zero and empty tables print without a crash", {
@@ -339,11 +340,9 @@ test_that("M2: no-event cells are zero and empty tables print without a crash", 
 
   zero <- data.frame(y = c(0, 0, 0, 0), g = c("a", "a", "b", "b"),
                      h = c("x", "y", "x", "y"))
-  expect_error(
-    blr_segment_twoway(zero, y, g, h),
-    "`y` has 1 level; blorr needs both events and non-events.",
-    fixed = TRUE
-  )
+  kz <- blr_segment_twoway(zero, y, g, h)$twoway_segment
+  expect_true(all(kz == 0, na.rm = TRUE))
+  expect_output(print(blr_segment_twoway(zero, y, g, h)), "0\\.000")
 
   empty <- data.frame(y = numeric(0), g = character(0), h = character(0))
   expect_error(

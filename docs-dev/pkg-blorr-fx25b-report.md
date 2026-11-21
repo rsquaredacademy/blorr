@@ -341,3 +341,50 @@ These were deliberately not fixed in this round.
 Not done or deliberately unchanged: no version bump (`0.3.2.9000`), no push, no
 GitHub calls, no branch switch, no changes outside this worktree, and no
 permanent package installation.
+
+## pkg-blorr-fx25c: one-class and missing-predictor restore
+
+Restored the two boundary results that `c848118` returned correctly, while
+keeping the fx25 two-way per-cell rate fix and the fx25b model-level one-class
+handling. `d0 <- data.frame(y = rep(0, 4), g = c("a", "a", "b", "b"))`,
+`d2 <- transform(d0, y = 1)`, and
+`d1 <- data.frame(y = c(0, 1, 0, 1), g = c("a", "a", NA, "b"))`.
+
+| case | c848118 | before 3237266 | after this commit |
+| --- | --- | --- | --- |
+| `blr_segment(d1, y, g)` | rates a 0.5, b 1, NA 0 | error: predictor `g` has 1 missing value | same rates, final `NA` level |
+| `blr_segment_dist(d1, y, g)` | n (2, 1, 1), events (1, 1, 0), shares (0.5, 0.25, 0.25), rates (0.5, 1, 0) | same missing-predictor error | same counts, shares and rates; printer shows `NA` |
+| `blr_segment(d0, y, g)` / `blr_segment(d2, y, g)` | rates (0, 0) / (1, 1) | error: `y` has 1 level | (0, 0) / (1, 1) |
+| `blr_segment_dist(d0, y, g)` / `blr_segment_dist(d2, y, g)` | n (2, 2), shares (0.5, 0.5), events (0, 0) / (2, 2), rates (0, 0) / (1, 1) | one-level error | same counts, shares and rates |
+| `blr_woe_iv(d0, g, y)` and `blr_woe_iv(d2, g, y)` | counts (2, 0) / (0, 2), corrected dists (0.5, 0.5), WoE 0, IV 0, total 0 | one-level error | same corrected values |
+| `blr_woe_iv_stats(d0, y, g)` / `blr_woe_iv_stats(d2, y, g)` | same corrected table, total IV 0 | one-level error | same corrected table, total IV 0 |
+| one-level factor `"1"` / `"0"` | factor `"1"` was the original H3 disagreement | one-level error for numeric and factor | factor `"1"` is all events, factor `"0"` all non-events; numeric, factor and logical encodings agree |
+| `blr_segment_twoway(d1, y, g, h)` | global denominator, no `NA` handling | missing-predictor error | within-cell rates with a final `NA` row/column; printer shows `NA` |
+
+`c848118` returned the missing-predictor values above but its printer failed on
+the `NA` label with "invalid 'width' argument"; construction now keeps the
+level and the printers substitute the `NA` label before sizing. The
+fx25/fx25b model APIs still reject a one-level response only where two classes
+are needed (`blr_regress()` and the response profile); the diagnostic model
+APIs and the data-column functions keep their restored behaviour. Value tests
+are in `tests/testthat/test-fx25c-restores.R`, checked against base-R
+`tapply()`/`table()` output and the documented 0.5 continuity correction.
+
+### Check results
+
+`devtools::test()` from a disposable `git archive HEAD` copy
+(`C:/Users/DELL/AppData/Local/Temp/opencode/blorr-fx25c/clean`,
+`NOT_CRAN=true`) completed with no failures or errors in 134.1 s.
+
+`R CMD build` produced `blorr_0.3.2.9000.tar.gz`. `R CMD check --as-cran
+--no-manual` on that tarball, with `LANG=C`, `LC_ALL=C` and a disposable
+`R_LIBS_USER`, ended with **0 errors, 0 warnings, 1 NOTE**. The NOTE is the
+existing CRAN incoming feasibility notice for version `0.3.2.9000` (large
+components). The test stage was `[177s] OK`:
+`[ FAIL 0 | WARN 0 | SKIP 50 | PASS 2441 ]`, under four minutes; the 50 skips
+are the existing on-CRAN vdiffr/source-path checks. Remote incoming and URL
+checks were disabled as before, so those were not verified.
+
+The archive, tarball, check directory and temporary library under
+`C:/Users/DELL/AppData/Local/Temp/opencode/blorr-fx25c/` were deleted after
+capturing the results. No permanent library installation was made.
