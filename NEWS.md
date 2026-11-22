@@ -49,6 +49,10 @@
 
 ## Bug fixes
 
+- `blr_test_hosmer_lemeshow()` now returns `NA` with a message for a one-class
+  response on every platform; before, Windows returned a near-zero statistic
+  (#162).
+
 - A response with more than two levels is now rejected with an error naming
   the response and the number of levels found. `glm()` silently recodes a
   factor response with three or more levels as "first level"

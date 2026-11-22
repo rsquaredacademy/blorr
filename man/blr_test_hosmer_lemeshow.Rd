@@ -11,6 +11,11 @@ blr_test_hosmer_lemeshow(model, data = NULL)
 
 \item{data}{a \code{tibble} or \code{data.frame}.}
 }
+\value{
+A list with the partition table and the chi-square statistic, degrees
+of freedom and p-value. A response with only one class returns \code{NA} for
+the statistic, degrees of freedom and p-value, with a message.
+}
 \description{
 Hosmer-Lemeshow goodness of fit test.
 }
@@ -21,8 +26,9 @@ model with fewer than 10 groups no longer prints empty rows. With fewer than
 three groups the test is not available and the statistic, degrees of freedom
 and p-value are \code{NA}: with few groups the test is degenerate, for example
 a model with a single binary predictor gives only two groups and a p-value
-close to one, which should not be read as evidence of good fit. Weighted
-models are rejected before the test by the shared model guard.
+close to one, which should not be read as evidence of good fit. A response
+with only one class is undefined and returns \code{NA} with a message.
+Weighted models are rejected before the test by the shared model guard.
 }
 \examples{
 model <- glm(honcomp ~ female + read + science, data = hsb2,
