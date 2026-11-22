@@ -12,8 +12,13 @@
 #' three groups the test is not available and the statistic, degrees of freedom
 #' and p-value are \code{NA}: with few groups the test is degenerate, for example
 #' a model with a single binary predictor gives only two groups and a p-value
-#' close to one, which should not be read as evidence of good fit. Weighted
-#' models are rejected before the test by the shared model guard.
+#' close to one, which should not be read as evidence of good fit. A response
+#' with only one class is undefined and returns \code{NA} with a message.
+#' Weighted models are rejected before the test by the shared model guard.
+#'
+#' @return A list with the partition table and the chi-square statistic, degrees
+#' of freedom and p-value. A response with only one class returns \code{NA} for
+#' the statistic, degrees of freedom and p-value, with a message.
 #'
 #' @references
 #' Hosmer,  D.W.,  Jr.,  &  Lemeshow,  S.  (2000), Applied  logistic  regression(2nd  ed.).
@@ -57,6 +62,44 @@ blr_test_hosmer_lemeshow.default <- function(model, data = NULL) {
   }
 
   event       <- model_event_indicator(model, resp)
+
+  # The statistic is undefined when every observation belongs to the same
+  # response class: each partition group has zero expected events in one of the
+  # two cells. Return NA on every platform instead of a near-zero statistic.
+  if (length(unique(event[!is.na(event)])) < 2L) {
+    partition_table <- tryCatch({
+      hoslem_data <- hoslem_data_prep(model, data, event)
+      int_limits  <- hoslem_int_limits(hoslem_data)
+      h1          <- hoslem_data_mutate(hoslem_data, int_limits = int_limits)
+      hoslem_table_data(h1)
+    }, error = function(e) {
+      data.frame(
+        group         = integer(0),
+        n             = integer(0),
+        `1s_observed` = numeric(0),
+        avg_prob      = numeric(0),
+        `0s_observed` = numeric(0),
+        `1s_expected` = numeric(0),
+        `0s_expected` = numeric(0),
+        positive      = numeric(0),
+        negative      = numeric(0),
+        check.names   = FALSE
+      )
+    })
+
+    message(paste("The Hosmer-Lemeshow test is undefined when the response",
+                  "has only one class; returning NA."))
+
+    result <- list(partition_table = partition_table,
+                   chisq_stat      = NA_real_,
+                   df              = NA_integer_,
+                   pvalue          = NA_real_
+    )
+
+    class(result) <- "blr_test_hosmer_lemeshow"
+    return(result)
+  }
+
   hoslem_data <- hoslem_data_prep(model, data, event)
   int_limits  <- hoslem_int_limits(hoslem_data)
 

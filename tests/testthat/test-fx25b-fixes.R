@@ -42,12 +42,26 @@ test_that("M2: the other model APIs that accepted a one-class fit still do", {
   expect_equal(nrow(gains), 10L)
   expect_equal(sum(gains$total), 32)
 
-  # Degenerate one-class fit: the statistic is 0/0 territory and differs by
-  # platform (about 0 on Windows, NA on Linux/macOS). The regression being guarded
-  # is that the call works at all, as it did on c848118.
-  expect_no_error(blr_test_hosmer_lemeshow(m))
-  hl <- blr_test_hosmer_lemeshow(m)
-  expect_true(is.na(hl$chisq_stat) || abs(hl$chisq_stat) < 1e-6)
+  # Degenerate one-class fits: the statistic is undefined, so it is NA on every
+  # platform and carries a message. Before, Windows returned a near-zero
+  # statistic while Linux and macOS returned NA.
+  m0 <- suppressWarnings(glm(rep(0, 32) ~ wt, mtcars, family = binomial()))
+  m1 <- suppressWarnings(glm(rep(1, 32) ~ wt, mtcars, family = binomial()))
+
+  expect_message(hl0 <- blr_test_hosmer_lemeshow(m0), "one class")
+  expect_message(hl1 <- blr_test_hosmer_lemeshow(m1), "one class")
+
+  expect_identical(hl0$chisq_stat, NA_real_)
+  expect_identical(hl0$df, NA_integer_)
+  expect_identical(hl0$pvalue, NA_real_)
+  expect_identical(hl1$chisq_stat, NA_real_)
+  expect_identical(hl1$df, NA_integer_)
+  expect_identical(hl1$pvalue, NA_real_)
+
+  for (hl in list(hl0, hl1)) {
+    out <- capture.output(print(hl))
+    expect_true(any(grepl("NA", out, fixed = TRUE)))
+  }
 })
 
 # M4: a predictor value is only required on rows retained after a missing
