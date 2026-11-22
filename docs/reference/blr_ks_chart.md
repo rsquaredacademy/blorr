@@ -1,4 +1,11 @@
-# KS chart
+# `KS chart`
+
+# `KS chart`
+
+Source:
+[`R/blr-gains-table.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-gains-table.R)
+
+`blr_ks_chart.Rd`
 
 Kolmogorov-Smirnov (KS) statistics is used to assess predictive power
 for marketing or credit risk models. It is the maximum difference
@@ -47,7 +54,7 @@ blr_ks_chart(
 
 ## References
 
-<https://pubmed.ncbi.nlm.nih.gov/843576/>
+[doi:10.2307/2529319](https://doi.org/10.2307/2529319)
 
 ## See also
 

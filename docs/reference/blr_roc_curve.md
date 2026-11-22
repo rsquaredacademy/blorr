@@ -1,4 +1,11 @@
-# ROC curve
+# `ROC curve`
+
+# `ROC curve`
+
+Source:
+[`R/blr-roc-curve.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-roc-curve.R)
+
+`blr_roc_curve.Rd`
 
 Receiver operating characteristic curve (ROC) curve is used for
 assessing accuracy of the model classification.

@@ -1,4 +1,11 @@
-# Likelihood ratio test
+# `Likelihood ratio test`
+
+# `Likelihood ratio test`
+
+Source:
+[`R/blr-lrtest.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-lrtest.R)
+
+`blr_test_lr.Rd`
 
 Performs the likelihood ratio test for full and reduced model.
 
@@ -15,7 +22,11 @@ blr_test_lr(full_model, reduced_model)
 
 - full_model:
 
-  An object of class `glm`; model with all predictors.
+  An object of class `glm`; model with all predictors. Only binary
+  logistic regression models (binomial family with logit link) are
+  supported. Weighted models (any prior weight other than 1) and grouped
+  binomial models (`cbind(successes, failures)` or proportions) are not
+  supported; the model must be fitted with `model = TRUE, y = TRUE`.
 
 - reduced_model:
 

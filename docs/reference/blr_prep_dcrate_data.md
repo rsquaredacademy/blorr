@@ -1,4 +1,11 @@
-# Decile capture rate data
+# `Decile capture rate data`
+
+# `Decile capture rate data`
+
+Source:
+[`R/blr-plots-data.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots-data.R)
+
+`blr_prep_dcrate_data.Rd`
 
 Data for generating decile capture rate.
 
@@ -12,7 +19,7 @@ blr_prep_dcrate_data(gains_table)
 
 - gains_table:
 
-  An object of clas `blr_gains_table`
+  An object of class `blr_gains_table`
 
 ## Examples
 

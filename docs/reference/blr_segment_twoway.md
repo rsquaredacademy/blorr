@@ -1,4 +1,11 @@
-# Two way event rate
+# `Two way event rate`
+
+# `Two way event rate`
+
+Source:
+[`R/blr-bivariate-analysis.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-bivariate-analysis.R)
+
+`blr_segment_twoway.Rd`
 
 Event rate across two qualitative variables.
 

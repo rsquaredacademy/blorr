@@ -1,4 +1,11 @@
-# Multi model fit statistics
+# `Multi model fit statistics`
+
+# `Multi model fit statistics`
+
+Source:
+[`R/blr-multi-model-fit-stats.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-multi-model-fit-stats.R)
+
+`blr_multi_model_fit_stats.Rd`
 
 Measures of model fit statistics for multiple models.
 
@@ -15,7 +22,11 @@ blr_multi_model_fit_stats(model, ...)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - ...:
 
@@ -56,12 +67,12 @@ blr_multi_model_fit_stats(model, model2)
 #> lr_pval                       Prob > LR    0.000    0.000
 #> mcfadden                  MCFadden's R2    0.307    0.350
 #> adj_mcfadden          McFadden's Adj R2    0.273    0.315
-#> m_aic                 ML (Cox-Snell) R2  168.236  158.420
-#> cox_snell    Cragg-Uhler(Nagelkerke) R2    0.299    0.333
-#> m_bic           McKelvey & Zavoina's R2  181.430  171.613
-#> mckelvey                     Efron's R2    0.518    0.523
-#> effron                         Count R2    0.330    0.379
-#> nagelkerke                 Adj Count R2    0.436    0.485
-#> count_r2                            AIC    0.810    0.830
-#> count_adj                           BIC    0.283    0.358
+#> cox_snell             ML (Cox-Snell) R2    0.299    0.333
+#> nagelkerke   Cragg-Uhler(Nagelkerke) R2    0.436    0.485
+#> mckelvey        McKelvey & Zavoina's R2    0.518    0.523
+#> effron                       Efron's R2    0.330    0.379
+#> count_r2                       Count R2    0.810    0.830
+#> count_adj                  Adj Count R2    0.283    0.358
+#> m_aic                               AIC  168.236  158.420
+#> m_bic                               BIC  181.430  171.613
 ```

@@ -1,4 +1,11 @@
-# Concordant & discordant pairs
+# `Concordant & discordant pairs`
+
+# `Concordant & discordant pairs`
+
+Source:
+[`R/blr-pairs.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-pairs.R)
+
+`blr_pairs.Rd`
 
 Association of predicted probabilities and observed responses.
 
@@ -12,7 +19,11 @@ blr_pairs(model)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 ## Value
 
@@ -38,8 +49,8 @@ model <- glm(honcomp ~ female + read + science, data = hsb2,
 family = binomial(link = 'logit'))
 
 blr_pairs(model)
-#>   pairs concordance discordance        tied somers_d     gamma      tau
-#> 1  7791    0.856116   0.1424721 0.001411886 0.714653 0.7136439 0.279397
+#>   pairs concordance discordance        tied  somers_d    gamma      tau
+#> 1  7791    0.856116   0.1424721 0.001411886 0.7136439 0.714653 0.279397
 #>          c
 #> 1 0.856822
 ```

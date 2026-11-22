@@ -1,4 +1,11 @@
-# Fitted values diagnostics plot
+# `Fitted values diagnostics plot`
+
+# `Fitted values diagnostics plot`
+
+Source:
+[`R/blr-residual-diagnostics.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-residual-diagnostics.R)
+
+`blr_plot_diag_fit.Rd`
 
 Diagnostic plots for fitted values.
 
@@ -12,7 +19,11 @@ blr_plot_diag_fit(model, print_plot = TRUE)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - print_plot:
 

@@ -1,6 +1,13 @@
-# Effron R2
+# `Efron R2`
 
-Effron pseudo r-squared.
+# `Efron R2`
+
+Source:
+[`R/blr-model-fit-stats.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-model-fit-stats.R)
+
+`blr_rsq_effron.Rd`
+
+Efron pseudo r-squared.
 
 ## Usage
 
@@ -12,11 +19,15 @@ blr_rsq_effron(model)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 ## Value
 
-Effron pseudo r-squared.
+Efron pseudo r-squared.
 
 ## References
 

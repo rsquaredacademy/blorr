@@ -1,6 +1,13 @@
-# Response distribution
+# `Response distribution`
 
-Distribution of response variable by segements/levels of a qualitative
+# `Response distribution`
+
+Source:
+[`R/blr-bivariate-analysis.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-bivariate-analysis.R)
+
+`blr_segment_dist.Rd`
+
+Distribution of response variable by segments/levels of a qualitative
 variable.
 
 ## Usage
@@ -94,9 +101,9 @@ k
 #> -------------------------------------
 #>   pred       n     1s     n%     1s%  
 #> -------------------------------------
-#>    1        45     7     0.22    0.04 
-#>    2        105    40    0.52    0.20 
-#>    3        50     6     0.25    0.03 
+#>    1        45     7     0.22    0.16 
+#>    2        105    40    0.52    0.38 
+#>    3        50     6     0.25    0.12 
 #> -------------------------------------
 #> 
 

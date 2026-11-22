@@ -1,4 +1,11 @@
-# Collinearity diagnostics
+# `Collinearity diagnostics`
+
+# `Collinearity diagnostics`
+
+Source:
+[`R/blr-collinearity-diagnostics.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-collinearity-diagnostics.R)
+
+`blr_coll_diag.Rd`
 
 Variance inflation factor, tolerance, eigenvalues and condition indices.
 
@@ -16,7 +23,11 @@ blr_eigen_cindex(model)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 ## Value
 
@@ -49,10 +60,10 @@ other predictors.
 Variance inflation factors measure the inflation in the variances of the
 parameter estimates due to collinearities that exist among the
 predictors. It is a measure of how much the variance of the estimated
-regression coefficient \\\beta_k\\ is inflated by the existence of
+regression coefficient \\(\beta_k\\) is inflated by the existence of
 correlation among the predictor variables in the model. A VIF of 1 means
 that there is no correlation among the kth predictor and the remaining
-predictor variables, and hence the variance of \\\beta_k\\ is not
+predictor variables, and hence the variance of \\(\beta_k\\) is not
 inflated at all. The general rule of thumb is that VIFs exceeding 4
 warrant further investigation, while VIFs exceeding 10 are signs of
 serious multicollinearity requiring correction.
@@ -94,16 +105,11 @@ blr_vif_tol(model)
 
 # eigenvalues and condition indices
 blr_eigen_cindex(model)
-#>   Eigenvalue Condition Index    intercept      female1         read
-#> 1 3.57391760        1.000000 3.500782e-06 2.232611e-05 0.0006577134
-#> 2 0.39409893        3.011408 5.155657e-06 8.559696e-04 0.0015266309
-#> 3 0.01888407       13.757025 1.632498e-03 4.397949e-05 0.1143698337
-#> 4 0.01309940       16.517583 5.619292e-05 1.312420e-05 0.2758987745
-#>        science
-#> 1 0.0009448623
-#> 2 0.0025603607
-#> 3 0.0545537252
-#> 4 0.5468553525
+#>   Eigenvalue Condition Index   intercept    female1        read     science
+#> 1 3.57391760        1.000000 0.002062502 0.02386799 0.001675904 0.001561977
+#> 2 0.39409893        3.011408 0.003037479 0.91508462 0.003889972 0.004232601
+#> 3 0.01888407       13.757025 0.961793702 0.04701680 0.291423043 0.090184221
+#> 4 0.01309940       16.517583 0.033106318 0.01403058 0.703011081 0.904021201
 
 # collinearity diagnostics
 blr_coll_diag(model)
@@ -117,14 +123,9 @@ blr_coll_diag(model)
 #> 
 #> Eigenvalue and Condition Index
 #> ------------------------------
-#>   Eigenvalue Condition Index    intercept      female1         read
-#> 1 3.57391760        1.000000 3.500782e-06 2.232611e-05 0.0006577134
-#> 2 0.39409893        3.011408 5.155657e-06 8.559696e-04 0.0015266309
-#> 3 0.01888407       13.757025 1.632498e-03 4.397949e-05 0.1143698337
-#> 4 0.01309940       16.517583 5.619292e-05 1.312420e-05 0.2758987745
-#>        science
-#> 1 0.0009448623
-#> 2 0.0025603607
-#> 3 0.0545537252
-#> 4 0.5468553525
+#>   Eigenvalue Condition Index   intercept    female1        read     science
+#> 1 3.57391760        1.000000 0.002062502 0.02386799 0.001675904 0.001561977
+#> 2 0.39409893        3.011408 0.003037479 0.91508462 0.003889972 0.004232601
+#> 3 0.01888407       13.757025 0.961793702 0.04701680 0.291423043 0.090184221
+#> 4 0.01309940       16.517583 0.033106318 0.01403058 0.703011081 0.904021201
 ```

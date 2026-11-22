@@ -1,4 +1,11 @@
-# Lorenz curve data
+# `Lorenz curve data`
+
+# `Lorenz curve data`
+
+Source:
+[`R/blr-plots-data.R`](https://github.com/rsquaredacademy/blorr/blob/HEAD/R/blr-plots-data.R)
+
+`blr_prep_lorenz_data.Rd`
 
 Data for generating Lorenz curve.
 
@@ -12,7 +19,11 @@ blr_prep_lorenz_data(model, data = NULL, test_data = FALSE)
 
 - model:
 
-  An object of class `glm`.
+  An object of class `glm`. Only binary logistic regression models
+  (binomial family with logit link) are supported. Weighted models (any
+  prior weight other than 1) and grouped binomial models
+  (`cbind(successes, failures)` or proportions) are not supported; the
+  model must be fitted with `model = TRUE, y = TRUE`.
 
 - data:
 
@@ -27,8 +38,7 @@ blr_prep_lorenz_data(model, data = NULL, test_data = FALSE)
 ``` r
 model <- glm(honcomp ~ female + read + science, data = hsb2,
              family = binomial(link = 'logit'))
-data <- model$data
-blr_prep_lorenz_data(model, data, FALSE)
+blr_prep_lorenz_data(model)
 #>    cum_0s_per cum_1s_per
 #> 1  0.00000000  0.0000000
 #> 2  0.04081633  0.2641509
