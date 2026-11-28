@@ -3,278 +3,168 @@
 
 # blorr
 
-> Tools for building binary logistic regression models
-
 <!-- badges: start -->
 
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/blorr)](https://CRAN.R-project.org/package=blorr)
 [![R-CMD-check](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml)
-[![Coverage
-status](https://app.codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://app.codecov.io/github/rsquaredacademy/blorr?branch=master)
-
+[![Codecov test
+coverage](https://codecov.io/gh/rsquaredacademy/blorr/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/rsquaredacademy/blorr?branch=develop)
 <!-- badges: end -->
 
-## Overview
-
-Tools designed to make it easier for users, particularly
-beginner/intermediate R users to build logistic regression models.
-Includes comprehensive regression output, variable selection procedures,
-model validation techniques and a 'shiny' app for interactive model
-building.
+blorr helps analysts build and validate binary logistic regression
+models, with clear output, model checks and selection tools.
 
 ## Installation
 
 ``` r
-# Install blorr from CRAN
+# Release version from CRAN
 install.packages("blorr")
 
-# Install development version from GitHub
-# install.packages("devtools")
-devtools::install_github("rsquaredacademy/blorr")
-
-# Install the development version from `rsquaredacademy` universe
-install.packages("blorr", repos = "https://rsquaredacademy.r-universe.dev")
+# Development version from GitHub
+# install.packages("pak")
+pak::pak("rsquaredacademy/blorr")
 ```
 
-## Articles
+## Quick example
 
-- [A Short Introduction to the blorr
-  Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
+### Read the regression output
 
-## Usage
+Which bank clients are likely to subscribe to a term deposit?
 
-blorr uses consistent prefix `blr_*` for easy tab completion.
-
-``` r
-library(blorr)
-library(magrittr)
-```
-
-### Bivariate Analysis
+This example uses 4,521 clients from a Portuguese bank marketing
+campaign. The response `y` is 1 for a subscription and 0 otherwise.
 
 ``` r
-blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
-#>                          Bivariate Analysis                           
-#> ---------------------------------------------------------------------
-#> Variable    Information Value    LR Chi Square    LR DF    LR p-value 
-#> ---------------------------------------------------------------------
-#>  female           0.10              3.9350          1        0.0473   
-#>   prog            0.43              16.1450         2        3e-04    
-#>   race            0.33              11.3694         3        0.0099   
-#>  schtyp           0.00              0.0445          1        0.8330   
-#> ---------------------------------------------------------------------
-```
-
-### Weight of Evidence & Information Value
-
-``` r
-blr_woe_iv(hsb2, prog, honcomp)
-#>                            Weight of Evidence                             
-#> -------------------------------------------------------------------------
-#> levels    count_0s    count_1s    dist_0s    dist_1s        woe      iv   
-#> -------------------------------------------------------------------------
-#>   1          38          7           0.26       0.13       0.67     0.08  
-#>   2          65          40          0.44       0.75      -0.53     0.17  
-#>   3          44          6           0.30       0.11       0.97     0.18  
-#> -------------------------------------------------------------------------
-#> 
-#>       Information Value       
-#> -----------------------------
-#> Variable    Information Value 
-#> -----------------------------
-#>   prog           0.4329       
-#> -----------------------------
-```
-
-### Model
-
-``` r
-# create model using glm
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-             family = binomial(link = 'logit'))
-```
-
-### Regression Output
-
-``` r
+model <- glm(y ~ campaign + previous + housing + loan,
+             data = bank_marketing, family = binomial(link = "logit"))
 blr_regress(model)
-#>                              Model Overview                              
-#> ------------------------------------------------------------------------
-#> Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
-#> ------------------------------------------------------------------------
-#>   data      honcomp     200        199           196            TRUE     
-#> ------------------------------------------------------------------------
+#>                                 Model Overview                                 
+#> ------------------------------------------------------------------------------
+#>       Data Set    Resp Var    Obs.    Df. Model    Df. Residual    Convergence 
+#> ------------------------------------------------------------------------------
+#> bank_marketing       y        4521        4            4516           TRUE     
+#> ------------------------------------------------------------------------------
 #> 
 #>                     Response Summary                     
 #> --------------------------------------------------------
 #> Outcome        Frequency        Outcome        Frequency 
 #> --------------------------------------------------------
-#>    0              147              1              53     
+#>    0             4004              1              517    
 #> --------------------------------------------------------
 #> 
-#>                   Maximum Likelihood Estimates                    
-#> -----------------------------------------------------------------
-#>  Parameter     DF    Estimate    Std. Error    z value    Pr(>|z|) 
-#> -----------------------------------------------------------------
-#> (Intercept)    1     -12.7772       1.9755    -6.4677      0.0000 
-#>   female1      1      1.4825        0.4474     3.3139       9e-04 
-#>    read        1      0.1035        0.0258     4.0186       1e-04 
-#>   science      1      0.0948        0.0305     3.1129      0.0019 
-#> -----------------------------------------------------------------
+#>                    Maximum Likelihood Estimates                    
+#> ------------------------------------------------------------------
+#>  Parameter     DF    Estimate    Std. Error    z value     Pr(>|z|) 
+#> ------------------------------------------------------------------
+#> (Intercept)    1     -2.8653        0.1735    -16.5170      0.0000 
+#>  campaign      1     -0.1335        0.0264     -5.0609      0.0000 
+#>  previous      1      0.1285        0.0211      6.0889      0.0000 
+#>  housingno     1      0.8363        0.0971      8.6138      0.0000 
+#>   loanno       1      0.7185        0.1633      4.4008      0.0000 
+#> ------------------------------------------------------------------
 #> 
-#>  Association of Predicted Probabilities and Observed Responses  
-#> ---------------------------------------------------------------
-#> % Concordant          0.8561          Somers' D        0.7136   
-#> % Discordant          0.1425          Gamma            0.7147   
-#> % Tied                0.0014          Tau-a            0.2794   
-#> Pairs                  7791           c                0.8568   
-#> ---------------------------------------------------------------
+#>  Association of Predicted Probabilities and Observed Responses   
+#> ----------------------------------------------------------------
+#> % Concordant         64.5775          Somers' D         0.3426   
+#> % Discordant         30.3185          Gamma             0.3610   
+#> % Tied                5.1040          Tau-a             0.0694   
+#> Pairs                2070068          c                 0.6713   
+#> ----------------------------------------------------------------
 ```
 
-### Model Fit Statistics
+More campaign contacts go with a lower chance of subscribing (-0.13). A
+previous contact (+0.13), no housing loan (+0.84) and no personal loan
+(+0.72) go with a higher chance.
+
+An estimate is the change in log-odds for a one-unit increase in a
+predictor. Log-odds are a chance score: 0 is even odds, and positive
+values mean a higher chance.
+
+A p-value is the chance of an estimate this large if the predictor had
+no effect. All four are below 0.0001, though they print as 0.0000.
+
+`c` (0.6713) is the share of subscriber and non-subscriber pairs the
+model ranks correctly. A value of 0.5 is a coin flip; 1 is perfect.
+
+### Choose a cut-off
+
+Which clients should the bank call first?
+
+A cut-off is the predicted probability above which a client is flagged
+as a likely subscriber.
+
+Only 517 of the 4,521 clients subscribe, about one in nine. A cut-off of
+0.15 therefore flags more subscribers than the usual 0.5, at the cost of
+more false alarms.
 
 ``` r
-blr_model_fit_stats(model)
-#>                               Model Fit Statistics                                
-#> ---------------------------------------------------------------------------------
-#> Log-Lik Intercept Only:      -115.644    Log-Lik Full Model:              -80.118 
-#> Deviance(196):                160.236    LR(3):                            71.052 
-#>                                          Prob > LR:                         0.000 
-#> MCFadden's R2                   0.307    McFadden's Adj R2:                 0.273 
-#> ML (Cox-Snell) R2:              0.299    Cragg-Uhler(Nagelkerke) R2:        0.436 
-#> McKelvey & Zavoina's R2:        0.518    Efron's R2:                        0.330 
-#> Count R2:                       0.810    Adj Count R2:                      0.283 
-#> BIC:                          181.430    AIC:                             168.236 
-#> ---------------------------------------------------------------------------------
-```
-
-### Confusion Matrix
-
-``` r
-blr_confusion_matrix(model)
-#> Confusion Matrix and Statistics 
-#> 
+cm <- blr_confusion_matrix(model, data = bank_marketing, cutoff = 0.15)
+cm$conf_matrix
 #>           Reference
-#> Prediction   0   1
-#>          0 135  26
-#>          1  12  27
-#> 
-#> 
-#>                 Accuracy : 0.8100 
-#>      No Information Rate : 0.7350 
-#> 
-#>                    Kappa : 0.4673 
-#> 
-#> McNemars's Test P-Value  : 0.0350 
-#> 
-#>              Sensitivity : 0.5094 
-#>              Specificity : 0.9184 
-#>           Pos Pred Value : 0.6923 
-#>           Neg Pred Value : 0.8385 
-#>               Prevalence : 0.2650 
-#>           Detection Rate : 0.1350 
-#>     Detection Prevalence : 0.1950 
-#>        Balanced Accuracy : 0.7139 
-#>                Precision : 0.6923 
-#>                   Recall : 0.5094 
-#> 
-#>         'Positive' Class : 1
+#> Prediction    0    1
+#>          0 2912  244
+#>          1 1092  273
+round(c(accuracy = cm$accuracy, no_information_rate = cm$no_information_rate,
+        sensitivity = cm$sensitivity, specificity = cm$specificity), 4)
+#>            accuracy no_information_rate         sensitivity         specificity 
+#>              0.7045              0.8856              0.5280              0.7273
 ```
 
-### Hosmer Lemeshow Test
+At a cut-off of 0.15, the model catches 273 of 517 subscribers and
+clears 2,912 of 4,004 non-subscribers.
+
+Sensitivity is the share of real subscribers flagged (0.5280).
+Specificity is the share of non-subscribers left unflagged (0.7273).
+
+Accuracy (0.7045) is the overall share correct, but calling nobody would
+score 0.8856, because most clients do not subscribe.
+
+### Rank clients with an ROC curve
+
+How well does the model separate subscribers from non-subscribers?
 
 ``` r
-blr_test_hosmer_lemeshow(model)
-#>            Partition for the Hosmer & Lemeshow Test            
-#> --------------------------------------------------------------
-#>                         def = 1                 def = 0        
-#> Group    Total    Observed    Expected    Observed    Expected 
-#> --------------------------------------------------------------
-#>   1       20         0          0.16         20        19.84   
-#>   2       20         0          0.53         20        19.47   
-#>   3       20         2          0.99         18        19.01   
-#>   4       20         1          1.64         19        18.36   
-#>   5       21         3          2.72         18        18.28   
-#>   6       19         3          4.05         16        14.95   
-#>   7       20         7          6.50         13        13.50   
-#>   8       20         10         8.90         10        11.10   
-#>   9       20         13        11.49         7          8.51   
-#>  10       20         14        16.02         6          3.98   
-#> --------------------------------------------------------------
-#> 
-#>      Goodness of Fit Test      
-#> ------------------------------
-#> Chi-Square    DF    Pr > ChiSq 
-#> ------------------------------
-#>   4.4998      8       0.8095   
-#> ------------------------------
+gains <- blr_gains_table(model, data = bank_marketing)
+blr_roc_curve(gains)
 ```
 
-### Gains Table
+<img src="tools/README-roc-1.png" alt="ROC curve for the bank marketing model. The blue curve rises above the red chance line and reaches about 50% sensitivity near 27% 1 - specificity."  />
 
-``` r
-blr_gains_table(model)
-#>    decile total  1  0       ks tp  tn  fp fn sensitivity specificity accuracy
-#> 1       1    20 14  6 22.33346 14 141   6 39    26.41509    95.91837     77.5
-#> 2       2    20 13  7 42.09986 27 134  13 26    50.94340    91.15646     80.5
-#> 3       3    20 10 10 54.16506 37 124  23 16    69.81132    84.35374     80.5
-#> 4       4    20  7 13 58.52907 44 111  36  9    83.01887    75.51020     77.5
-#> 5       5    20  3 17 52.62482 47  94  53  6    88.67925    63.94558     70.5
-#> 6       6    20  3 17 46.72058 50  77  70  3    94.33962    52.38095     63.5
-#> 7       7    20  1 19 35.68220 51  58  89  2    96.22642    39.45578     54.5
-#> 8       8    20  2 18 27.21088 53  40 107  0   100.00000    27.21088     46.5
-#> 9       9    20  0 20 13.60544 53  20 127  0   100.00000    13.60544     36.5
-#> 10     10    20  0 20  0.00000 53   0 147  0   100.00000     0.00000     26.5
-```
+The curve sits above the red chance line, so the model ranks subscribers
+above non-subscribers more often than chance.
 
-### Lift Chart
+The ROC curve plots sensitivity against 1 - specificity as the cut-off
+moves. The red line is chance. The area under the curve is `c`, 0.6713.
 
-``` r
-model %>%
-  blr_gains_table() %>%
-  plot()
-```
+## Learn more
 
-![](tools/README-lift-1.png)<!-- -->
+- [Documentation site](https://blorr.rsquaredacademy.com)
+- Vignettes:
+  - [A Short Introduction to the blorr
+    Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
+- [NEWS](https://blorr.rsquaredacademy.com/news/index.html)
 
-### ROC Curve
+## Getting help and contributing
 
-``` r
-model %>%
-  blr_gains_table() %>%
-  blr_roc_curve()
-```
+**Help:** open an
+[issue](https://github.com/rsquaredacademy/blorr/issues) with a minimal
+reproducible example, built with
+[reprex](https://reprex.tidyverse.org/).
 
-![](tools/README-roc-1.png)<!-- -->
+**Contributing:** read the [contributing
+guide](https://github.com/rsquaredacademy/blorr/blob/develop/.github/CONTRIBUTING.md).
 
-### KS Chart
-
-``` r
-model %>%
-  blr_gains_table() %>%
-  blr_ks_chart()
-```
-
-![](tools/README-kschart-1.png)<!-- -->
-
-### Lorenz Curve
-
-``` r
-blr_lorenz_curve(model)
-```
-
-![](tools/README-unnamed-chunk-2-1.png)<!-- -->
-
-## Getting Help
-
-If you encounter a bug, please file a minimal reproducible example using
-[reprex](https://reprex.tidyverse.org/index.html) on GitHub. For
-questions and clarifications, ask on Stack Overflow with the `r` tag.
-
-## Code of Conduct
-
-Please note that the blorr project is released with a [Contributor Code
-of Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By
+**Code of Conduct:** Please note that the blorr project is released with
+a [Contributor Code of
+Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By
 contributing to this project, you agree to abide by its terms.
 
-<div data-rsa-signup data-site="blorr.rsquaredacademy.com" data-privacy-url="https://www.rsquaredacademy.com/privacy-policy.html"></div>
+**Citation:** run `citation("blorr")`. The [authors
+page](https://blorr.rsquaredacademy.com/authors.html) lists the package
+authors.
+
+<div data-rsa-signup="" data-site="blorr.rsquaredacademy.com"
+data-privacy-url="https://www.rsquaredacademy.com/privacy-policy.html">
+
+</div>
