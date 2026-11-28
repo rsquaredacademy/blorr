@@ -1,5 +1,7 @@
 # blorr (development version)
 
+- The README has a new quick example on `bank_marketing`, with real output.
+
 ## Supported inputs and precision
 
 - The data-column functions (`blr_segment()`, `blr_segment_dist()`,

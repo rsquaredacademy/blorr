@@ -8,144 +8,109 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "tools/README-"
+  fig.path = "tools/README-",
+  fig.width = 7,
+  fig.height = 4
 )
 options(tibble.width = Inf)
 ```
 
-# blorr 
-
-> Tools for building binary logistic regression models
+# blorr
 
 <!-- badges: start -->
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/blorr)](https://cran.r-project.org/package=blorr) 
+[![CRAN status](https://www.r-pkg.org/badges/version/blorr)](https://CRAN.R-project.org/package=blorr)
 [![R-CMD-check](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsquaredacademy/blorr/actions/workflows/R-CMD-check.yaml)
-[![Coverage status](https://app.codecov.io/gh/rsquaredacademy/blorr/branch/master/graph/badge.svg)](https://app.codecov.io/github/rsquaredacademy/blorr?branch=master)  
-
+[![Codecov test coverage](https://codecov.io/gh/rsquaredacademy/blorr/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/rsquaredacademy/blorr?branch=develop)
 <!-- badges: end -->
 
-## Overview
- 
-Tools designed to make it easier for users, particularly beginner/intermediate 
-R users to build logistic regression models. Includes comprehensive regression 
-output, variable selection procedures, model validation techniques and a 
-'shiny' app for interactive model building.
+blorr helps analysts build and validate binary logistic regression models, with clear output, model checks and selection tools.
 
 ## Installation
 
-```{r gh-installation, eval = FALSE}
-# Install blorr from CRAN
+```{r installation, eval = FALSE}
+# Release version from CRAN
 install.packages("blorr")
 
-# Install development version from GitHub
-# install.packages("devtools")
-devtools::install_github("rsquaredacademy/blorr")
-
-# Install the development version from `rsquaredacademy` universe
-install.packages("blorr", repos = "https://rsquaredacademy.r-universe.dev")
+# Development version from GitHub
+# install.packages("pak")
+pak::pak("rsquaredacademy/blorr")
 ```
 
-## Articles
+## Quick example
 
-- [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
-
-## Usage
-
-blorr uses consistent prefix `blr_*` for easy tab completion.
-
-```{r libs}
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
 library(blorr)
-library(magrittr)
 ```
 
-### Bivariate Analysis 
+### Read the regression output
 
-```{r bivar}
-blr_bivariate_analysis(hsb2, honcomp, female, prog, race, schtyp)
-```
+Which bank clients are likely to subscribe to a term deposit?
 
-### Weight of Evidence & Information Value
-
-```{r woeiv}
-blr_woe_iv(hsb2, prog, honcomp)
-```
-
-### Model
-
-```{r model}
-# create model using glm
-model <- glm(honcomp ~ female + read + science, data = hsb2,
-             family = binomial(link = 'logit'))
-```
-
-### Regression Output
+This example uses 4,521 clients from a Portuguese bank marketing campaign. The response `y` is 1 for a subscription and 0 otherwise.
 
 ```{r regress}
+model <- glm(y ~ campaign + previous + housing + loan,
+             data = bank_marketing, family = binomial(link = "logit"))
 blr_regress(model)
 ```
 
-### Model Fit Statistics
+More campaign contacts go with a lower chance of subscribing (-0.13). A previous contact (+0.13), no housing loan (+0.84) and no personal loan (+0.72) go with a higher chance.
 
-```{r mfs}
-blr_model_fit_stats(model)
+An estimate is the change in log-odds for a one-unit increase in a predictor. Log-odds are a chance score: 0 is even odds, and positive values mean a higher chance.
+
+A p-value is the chance of an estimate this large if the predictor had no effect. All four are below 0.0001, though they print as 0.0000.
+
+`c` (0.6713) is the share of subscriber and non-subscriber pairs the model ranks correctly. A value of 0.5 is a coin flip; 1 is perfect.
+
+### Choose a cut-off
+
+Which clients should the bank call first?
+
+A cut-off is the predicted probability above which a client is flagged as a likely subscriber.
+
+Only 517 of the 4,521 clients subscribe, about one in nine. A cut-off of 0.15 therefore flags more subscribers than the usual 0.5, at the cost of more false alarms.
+
+```{r confusion}
+cm <- blr_confusion_matrix(model, data = bank_marketing, cutoff = 0.15)
+cm$conf_matrix
+round(c(accuracy = cm$accuracy, no_information_rate = cm$no_information_rate,
+        sensitivity = cm$sensitivity, specificity = cm$specificity), 4)
 ```
 
-### Confusion Matrix
+At a cut-off of 0.15, the model catches 273 of 517 subscribers and clears 2,912 of 4,004 non-subscribers.
 
-```{r conf}
-blr_confusion_matrix(model)
+Sensitivity is the share of real subscribers flagged (0.5280). Specificity is the share of non-subscribers left unflagged (0.7273).
+
+Accuracy (0.7045) is the overall share correct, but calling nobody would score 0.8856, because most clients do not subscribe.
+
+### Rank clients with an ROC curve
+
+How well does the model separate subscribers from non-subscribers?
+
+```{r roc, fig.alt = "ROC curve for the bank marketing model. The blue curve rises above the red chance line and reaches about 50% sensitivity near 27% 1 - specificity."}
+gains <- blr_gains_table(model, data = bank_marketing)
+blr_roc_curve(gains)
 ```
 
-### Hosmer Lemeshow Test
+The curve sits above the red chance line, so the model ranks subscribers above non-subscribers more often than chance.
 
-```{r hoslem}
-blr_test_hosmer_lemeshow(model)
-```
+The ROC curve plots sensitivity against 1 - specificity as the cut-off moves. The red line is chance. The area under the curve is `c`, 0.6713.
 
-### Gains Table
+## Learn more
 
-```{r gains}
-blr_gains_table(model)
-```
+- [Documentation site](https://blorr.rsquaredacademy.com)
+- Vignettes:
+  - [A Short Introduction to the blorr Package](https://blorr.rsquaredacademy.com/articles/introduction.html)
+- [NEWS](https://blorr.rsquaredacademy.com/news/index.html)
 
-### Lift Chart
+## Getting help and contributing
 
-```{r lift}
-model %>%
-  blr_gains_table() %>%
-  plot()
-```
+**Help:** open an [issue](https://github.com/rsquaredacademy/blorr/issues) with a minimal reproducible example, built with [reprex](https://reprex.tidyverse.org/).
 
-### ROC Curve
+**Contributing:** read the [contributing guide](https://github.com/rsquaredacademy/blorr/blob/develop/.github/CONTRIBUTING.md).
 
-```{r roc}
-model %>%
-  blr_gains_table() %>%
-  blr_roc_curve()
-```
+**Code of Conduct:** Please note that the blorr project is released with a [Contributor Code of Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
-### KS Chart
-
-```{r kschart}
-model %>%
-  blr_gains_table() %>%
-  blr_ks_chart()
-```
-
-### Lorenz Curve
-
-```{r}
-blr_lorenz_curve(model)
-```
-
-## Getting Help
-
-If you encounter a bug, please file a minimal reproducible example using 
-[reprex](https://reprex.tidyverse.org/index.html) on GitHub. For questions and
-clarifications, ask on Stack Overflow with the `r` tag.
-
-## Code of Conduct
-
-Please note that the blorr project is released with a [Contributor Code of Conduct](https://blorr.rsquaredacademy.com/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+**Citation:** run `citation("blorr")`. The [authors page](https://blorr.rsquaredacademy.com/authors.html) lists the package authors.
 
 <div data-rsa-signup data-site="blorr.rsquaredacademy.com" data-privacy-url="https://www.rsquaredacademy.com/privacy-policy.html"></div>
